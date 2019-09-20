@@ -5,7 +5,7 @@ namespace app\commands;
 
 
 use app\models\app\Organizations;
-use app\models\User;
+use app\models\UserConsole as User;
 use Lcobucci\JWT\Builder;
 use Lcobucci\JWT\Parser;
 use Lcobucci\JWT\Signer\Key;
@@ -44,6 +44,9 @@ class ReferenceController extends Controller
         $user->updated_at=$user->created_at=
         $admin->updated_at=$admin->created_at=
         $root->updated_at=$root->created_at=time();
+        $root->setPassword('password');
+        $admin->setPassword('password');
+        $user->setPassword('password');
         echo 'root=>'.$root->save();
         echo 'admin=>'.$admin->save();
         echo 'user=>'.$user->save();
