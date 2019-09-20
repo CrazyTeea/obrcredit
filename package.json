@@ -1,0 +1,29 @@
+{
+  "name": "educational_lending",
+  "version": "1.0.0",
+  "description": "<p align=\"center\">     <a href=\"https://github.com/yiisoft\" target=\"_blank\">         <img src=\"https://avatars0.githubusercontent.com/u/993323\" height=\"100px\">     </a>     <h1 align=\"center\">Yii 2 Basic Project Template</h1>     <br> </p>",
+  "main": "index.js",
+  "directories": {
+    "test": "tests"
+  },
+  "scripts": {
+    "dev": "webpack-dev-server --config config/webpack.dev.config.js --hot --inline",
+    "prod": "webpack --config config/webpack.prod.config.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://CrazyTea@bitbucket.org/CrazyTea/educational_lending.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "homepage": "https://bitbucket.org/CrazyTea/educational_lending#readme",
+  "devDependencies": {
+    "webpack-cli": "^3.3.9"
+  },
+  "dependencies": {
+    "mini-css-extract-plugin": "latest",
+    "postcss-nested": "^4.1.2",
+    "webpack": "latest"
+  }
+}
