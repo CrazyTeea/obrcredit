@@ -47,6 +47,9 @@ class ReferenceController extends Controller
         $root->setPassword('password');
         $admin->setPassword('password');
         $user->setPassword('password');
+        $root->generateAuthKey();
+        $admin->generateAuthKey();
+        $user->generateAuthKey();
         echo 'root=>'.$root->save();
         echo 'admin=>'.$admin->save();
         echo 'user=>'.$user->save();
