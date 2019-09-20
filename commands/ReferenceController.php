@@ -58,7 +58,7 @@ class ReferenceController extends Controller
 
         $rootr = $pm->getRole('root');
         $adminr = $pm->getRole('admin');
-        $userr= $pm->getRole('user');
+        $userr= $pm->getRole('podved');
         $pm->revokeAll($root->id);
         $pm->revokeAll($admin->id);
         $pm->revokeAll($user->id);
