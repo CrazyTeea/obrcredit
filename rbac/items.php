@@ -10,4 +10,49 @@ return [
     '/*' => [
         'type' => 2,
     ],
+    '/admin/*' => [
+        'type' => 2,
+    ],
+    '/admin/assignment/index' => [
+        'type' => 2,
+    ],
+    '/site/change-password' => [
+        'type' => 2,
+    ],
+    'admin' => [
+        'type' => 1,
+        'children' => [
+            '/app/students/*',
+            '/site/signup',
+        ],
+    ],
+    'podved' => [
+        'type' => 1,
+        'children' => [
+            '/app/students/index',
+            '/app/students/view',
+            '/app/students/update',
+        ],
+    ],
+    '/app/students/*' => [
+        'type' => 2,
+    ],
+    '/app/students/delete' => [
+        'type' => 2,
+    ],
+    '/app/students/create' => [
+        'type' => 2,
+    ],
+    '/app/students/update' => [
+        'type' => 2,
+    ],
+    '/app/students/view' => [
+        'type' => 2,
+    ],
+    '/app/students/index' => [
+        'type' => 2,
+    ],
+    '/site/signup' => [
+        'type' => 2,
+    ],
 ];

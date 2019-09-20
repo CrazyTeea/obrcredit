@@ -14,7 +14,9 @@ use yii\web\IdentityInterface;
  * User model
  *
  * @property integer $id
+ * @property integer $id_org
  * @property string $username
+ * @property string $name
  * @property string $password_hash
  * @property string $password_reset_token
  * @property string $email
@@ -30,6 +32,17 @@ class User extends ActiveRecord implements IdentityInterface
 {
     const STATUS_INACTIVE = 0;
     const STATUS_ACTIVE = 10;
+    public static $cans;
+
+    public function __construct($config = [])
+    {
+        parent::__construct($config);
+        self::$cans = [
+          Yii::$app->getUser()->can('root'),
+          Yii::$app->getUser()->can('admin'),
+          Yii::$app->getUser()->can('podved')
+        ];
+    }
 
     /**
      * @inheritdoc

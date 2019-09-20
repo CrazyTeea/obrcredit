@@ -1,5 +1,6 @@
 <?php
 
+use kartik\select2\Select2;
 use yii\helpers\Html;
 use yii\widgets\ActiveForm;
 
@@ -14,25 +15,21 @@ use yii\widgets\ActiveForm;
 
     <?= $form->field($model, 'name')->textInput(['maxlength' => true]) ?>
 
-    <?= $form->field($model, 'id_org')->textInput() ?>
+    <?= $form->field($model, 'id_org') ->widget(Select2::className(),['data'=>$orgs])?>
 
     <?= $form->field($model, 'code')->textInput(['maxlength' => true]) ?>
 
     <?= $form->field($model, 'education_status')->textInput() ?>
 
-    <?= $form->field($model, 'date_education_status')->textInput() ?>
+    <?= $form->field($model, 'date_education_status')->Input('date') ?>
 
-    <?= $form->field($model, 'date_create')->textInput() ?>
+    <?= $form->field($model, 'date_create')->Input('date') ?>
 
-    <?= $form->field($model, 'status')->textInput() ?>
+    <?= $form->field($model, 'status') ?>
 
     <?= $form->field($model, 'osnovanie')->textInput() ?>
 
-    <?= $form->field($model, 'grace_period')->textInput() ?>
 
-    <?= $form->field($model, 'date_start_grace_period')->textInput() ?>
-
-    <?= $form->field($model, 'date_end_grace_period')->textInput() ?>
 
     <div class="form-group">
         <?= Html::submitButton('Save', ['class' => 'btn btn-success']) ?>

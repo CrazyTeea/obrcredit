@@ -2,6 +2,7 @@
 
 namespace app\models\app\students;
 
+use app\models\app\Organizations;
 use Yii;
 
 /**
@@ -49,17 +50,41 @@ class Students extends \yii\db\ActiveRecord
     {
         return [
             'id' => 'ID',
-            'name' => 'Name',
+            'name' => 'ФИО',
             'id_org' => 'Id Org',
-            'code' => 'Code',
-            'education_status' => 'Education Status',
+            'code' => 'Код направления',
+            'education_status' => ' Статус обучающегося',
             'date_education_status' => 'Date Education Status',
             'date_create' => 'Date Create',
-            'status' => 'Status',
+            'status' => 'Статус отчета',
             'osnovanie' => 'Osnovanie',
             'grace_period' => 'Grace Period',
             'date_start_grace_period' => 'Date Start Grace Period',
             'date_end_grace_period' => 'Date End Grace Period',
         ];
+    }
+    public function getOrganization(){
+        return $this->hasOne(Organizations::className(),['id'=>'id_org']);
+    }
+    public static function getOsnovanie(){
+        return [
+            'отчисление как меры дисциплинарного взыскания, в случае невыполнения обучающимся по профессиональной образовательной программе обязанностей по добросовестному освоению такой образовательной программы и выполнению учебного плана',
+            'установление нарушения порядка приема в образовательную организацию, повлекшего по вине обучающегося его незаконное зачисление в образовательную организацию',
+            'отчислен по инициативе обучающегося или родителей (законных представителей) несовершеннолетнего обучающегося',
+            'в связи с ликвидацией образовательной организации',
+            'по независящим от воли обучающегося или родителей (законных представителей) несовершеннолетнего обучающегося и образовательной организации',
+            'обучающимся (заемщиком) принято решение об отказе от продолжения обучения, по обстоятельствам, не зависящим от воли обучающегося или родителей (законных представителей) несовершеннолетнего обучающегося и образовательной организации, в том числе в случае ликвидации образовательной организации'
+        ];
+    }
+    public static function getGracePeriod(){
+        return[
+          'академический отпуск',
+          'отпуск по беременности и родам',
+          'отпуск по уходу за ребенком по достижении им 3-х лет',
+        ];
+    }
+    public function getDocs()
+    {
+        return $this->hasMany(StudentDocs::className(),['id_student'=>'id']);
     }
 }

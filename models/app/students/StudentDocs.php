@@ -2,6 +2,8 @@
 
 namespace app\models\app\students;
 
+use crazyteea\beautyfiles\models\Descriptions;
+use crazyteea\beautyfiles\models\Files;
 use Yii;
 
 /**
@@ -10,6 +12,7 @@ use Yii;
  * @property int $id
  * @property int $id_file
  * @property int $id_descriptor
+ * @property int $id_student
  */
 class StudentDocs extends \yii\db\ActiveRecord
 {
@@ -27,7 +30,7 @@ class StudentDocs extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['id_file', 'id_descriptor'], 'integer'],
+            [['id_file', 'id_descriptor','id_student'], 'integer'],
         ];
     }
 
@@ -40,6 +43,23 @@ class StudentDocs extends \yii\db\ActiveRecord
             'id' => 'ID',
             'id_file' => 'Id File',
             'id_descriptor' => 'Id Descriptor',
+            'id_student'=>'student'
         ];
+    }
+    public function getFile(){
+        return $this->hasOne(Files::className(),['id'=>'id_file']);
+    }
+    public function getDescriptor(){
+        return $this->hasOne(Descriptions::className(),['id'=>'id_descriptor']);
+    }
+    public static function getDocByDescriptorId($id,$id_student){
+        return self::findOne(['id_descriptor'=>$id,'id_student'=>$id_student]);
+    }
+    public static function getDocByDescriptorName($desc,$id_student){
+        $desc = Descriptions::findOne(['name'=>$desc]);
+        if (!$desc)
+            return null;
+        return self::findOne(['id_descriptor'=>$desc->id,'id_student'=>$id_student]);
+
     }
 }

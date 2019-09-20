@@ -2,6 +2,8 @@
 
 namespace app\models\app\students;
 
+use app\models\User;
+use Yii;
 use yii\base\Model;
 use yii\data\ActiveDataProvider;
 use app\models\app\students\Students;
@@ -40,7 +42,10 @@ class StudentsSearch extends Students
      */
     public function search($params)
     {
-        $query = Students::find();
+        $query = Students::find();//->joinWith(['organization']);
+
+        if ( User::$cans[2])
+            $query->andWhere(['id_org'=>User::findIdentity(Yii::$app->getUser()->getId())->id_org]);
 
         // add conditions that should always apply here
 

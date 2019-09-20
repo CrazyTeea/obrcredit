@@ -1,5 +1,6 @@
 <?php
 
+use app\models\User;
 use yii\helpers\Html;
 use yii\grid\GridView;
 use yii\helpers\Url;
@@ -9,15 +10,19 @@ use yii\widgets\Pjax;
 /* @var $dataProvider yii\data\ActiveDataProvider */
 
 $this->title = 'Студенты';
+$this->params['breadcrumbs'][] = ['label'=>'Организации','url'=>['app/organizations']];
 $this->params['breadcrumbs'][] = $this->title;
 ?>
 <div class="students-index">
 
     <h1><?= Html::encode($this->title) ?></h1>
 
-    <p>
-        <?= Html::a('Добавить студента', ['create'], ['class' => 'btn btn-success']) ?>
-    </p>
+    <?php if (User::$cans[0] || User::$cans[1]):?>
+
+        <p>
+            <?= Html::a('Добавить студента', ['create'], ['class' => 'btn btn-success']) ?>
+        </p>
+    <?php endif;?>
 
     <?php Pjax::begin(); ?>
     <?php // echo $this->render('_search', ['model' => $searchModel]); ?>
@@ -28,20 +33,26 @@ $this->params['breadcrumbs'][] = $this->title;
         'columns' => [
             ['class' => 'yii\grid\SerialColumn'],
 
-            'id',
+            //   'id',
             'name',
-            'id_org',
+            'organization.short_name',
             'code',
-            'education_status',
+            ['attribute'=>'education_status','content'=>function($model){
+                $val = $model->education_status ? 'Обучается' : 'Не обучается';
+                return  "<span class='label label-info'> {$val}</span>";
+            }],
             //'date_education_status',
-            //'date_create',
-            //'status',
+            'date_create:date',
+            ['attribute'=>'status','content'=>function($model){
+                $val = $model->status ? 'Действующий' : 'Не действующий';
+                return  "<span class='label label-info'> {$val}</span>";
+            }],
             //'osnovanie',
             //'grace_period',
             //'date_start_grace_period',
             //'date_end_grace_period',
 
-            ['class' => 'yii\grid\ActionColumn'],
+            //['class' => 'yii\grid\ActionColumn'],
         ],
         'rowOptions'=>function($model, $index, $attribute)
         {

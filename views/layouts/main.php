@@ -4,9 +4,11 @@
 /* @var $content string */
 
 use app\widgets\Alert;
+use mdm\admin\components\MenuHelper;
 use yii\helpers\Html;
 use yii\bootstrap\Nav;
 use yii\bootstrap\NavBar;
+use yii\helpers\Url;
 use yii\widgets\Breadcrumbs;
 use app\assets\AppAsset;
 
@@ -30,10 +32,14 @@ AppAsset::register($this);
     <?php
     NavBar::begin([
         'brandLabel' => 'Обр кредит',
-        'brandUrl' => Yii::$app->homeUrl,
+        'brandUrl' => Url::toRoute(['site/index']),
         'options' => [
             'class' => 'navbar-inverse navbar-fixed-top',
         ],
+    ]);
+    echo Nav::widget([
+        'options' => ['class' => 'navbar-nav navbar-left'],
+        'items' => MenuHelper::getAssignedMenu(Yii::$app->user->id)
     ]);
     echo Nav::widget([
         'options' => ['class' => 'navbar-nav navbar-right'],

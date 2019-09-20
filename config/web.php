@@ -8,7 +8,7 @@ $config = [
     'basePath' => dirname(__DIR__),
     'bootstrap' => ['log'],
     'language'=>'ru-RU',
-    'defaultRoute'=>'app/students/index',
+    //'defaultRoute'=>'app/students/index',
     'homeUrl'=>['app/students/index'],
     'aliases' => [
         '@bower' => '@vendor/bower-asset',
@@ -29,7 +29,9 @@ $config = [
     'as access' => [
         'class' => 'mdm\admin\components\AccessControl',
         'allowActions' => [
-           'site/*',
+           'site/about',
+            'site/login',
+            'site/logout',
         ]
     ],
     'components' => [
