@@ -2,8 +2,8 @@
 
 return [
     'class' => 'yii\db\Connection',
-    'dsn' => 'mysql:host=127.0.0.1;dbname=credit',
-    'username' => 'staff',
+    'dsn' => 'mysql:host=127.0.0.1;dbname=educational_lending',
+    'username' => 'root',
     'password' => 'staffsql123',
     'charset' => 'utf8',
 
