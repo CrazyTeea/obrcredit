@@ -5,6 +5,7 @@ namespace app\commands;
 
 
 use app\models\app\Organizations;
+use app\models\User;
 use Lcobucci\JWT\Builder;
 use Lcobucci\JWT\Parser;
 use Lcobucci\JWT\Signer\Key;
@@ -12,6 +13,7 @@ use Lcobucci\JWT\Signer\Hmac\Sha256;
 use Yii;
 use yii\console\Controller;
 use yii\console\ExitCode;
+use yii\rbac\PhpManager;
 
 class ReferenceController extends Controller
 {
@@ -31,8 +33,38 @@ class ReferenceController extends Controller
 
         return ExitCode::OK;
     }
+    public function actionAddStartUsers(){
+        $admin = new User();
+        $root = new User();
+        $user = new User();
+        $root->email = $root->username = 'root@admin.ru';
+        $admin->username = $admin->email = 'admin@admin.ru';
+        $user->username = $user->email = 'user@admin.ru';
+        $user->status= $admin->status=$root->status = User::STATUS_ACTIVE;
+        $user->updated_at=$user->created_at=
+        $admin->updated_at=$admin->created_at=
+        $root->updated_at=$root->created_at=time();
+        echo 'root=>'.$root->save();
+        echo 'admin=>'.$admin->save();
+        echo 'user=>'.$user->save();
 
-    private function actionOrganization()
+        $pm = new PhpManager();
+
+        $rootr = $pm->getRole('root');
+        $adminr = $pm->getRole('admin');
+        $userr= $pm->getRole('user');
+        $pm->revokeAll($root->id);
+        $pm->revokeAll($admin->id);
+        $pm->revokeAll($user->id);
+        $pm->assign($rootr,$root->id);
+        $pm->assign($adminr,$admin->id);
+        $pm->assign($userr,$user->id);
+
+
+    }
+
+
+    public function actionOrganization()
     {
         echo "Выполняется синхронизация организаций\n";
         $err = 0;
