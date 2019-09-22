@@ -74,7 +74,7 @@ AppAsset::register($this);
 
 <footer class="footer">
     <div class="container">
-        <p class="pull-left">&copy; Минобрнауки России  <?= date('Y') ?></p>
+        <p class="text-center">&copy; Минобрнауки России  <?= date('Y') ?></p>
     </div>
 </footer>
 

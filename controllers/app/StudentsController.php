@@ -44,7 +44,7 @@ class StudentsController extends AppController
             Yii::$app->session['id_org'] = $id;
         if (!(User::$cans[0] || User::$cans[1]))
             Yii::$app->session['id_org'] = User::findIdentity(Yii::$app->user->id)->id_org ? User::findIdentity(Yii::$app->user->id)->id_org : 1;
-
+        Yii::$app->session['short_name_org']=Organizations::findOne(Yii::$app->session['id_org'])->short_name;
 
         $searchModel->id_org = Yii::$app->session['id_org'];
         $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
