@@ -1,6 +1,7 @@
 <?php
 
 use app\models\app\students\Students;
+use app\models\User;
 use kartik\select2\Select2;
 use yii\helpers\Html;
 use yii\widgets\ActiveForm;
@@ -12,13 +13,13 @@ use yii\widgets\ActiveForm;
 
 <div class="students-form">
 
-    <?php $form = ActiveForm::begin(); ?>
+    <?php $readonly = (User::$cans[0] || User::$cans[1]) ? 0 : 1; $form = ActiveForm::begin(); ?>
     <div class="row">
         <div class="col-md-6">
-            <?= $form->field($model,'name') ?>
+            <?= $form->field($model,'name')->textInput(['readonly'=>$readonly]) ?>
         </div>
         <div class="col-md-6">
-            <?= $form->field($model,'code')?>
+            <?= $form->field($model,'code')->textInput(['readonly'=>$readonly])?>
         </div>
     </div>
 
