@@ -13,7 +13,7 @@ use yii\widgets\ActiveForm;
 
 <div class="students-form">
 
-    <?php $readonly = (User::$cans[0] || User::$cans[1]) ? 0 : 1; $form = ActiveForm::begin(); ?>
+    <?php $readonly = User::$cans[0] or User::$cans[1] ? 0 : 1; $form = ActiveForm::begin(); ?>
     <div class="row">
         <div class="col-md-6">
             <?= $form->field($model,'name')->textInput(['readonly'=>$readonly]) ?>

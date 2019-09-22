@@ -1,6 +1,7 @@
 <?php
 
 use app\models\User;
+use kartik\export\ExportMenu;
 use yii\helpers\Html;
 use yii\grid\GridView;
 use yii\helpers\Url;
@@ -19,10 +20,30 @@ $this->params['breadcrumbs'][] = $this->title;
 
     <?php if (User::$cans[0] || User::$cans[1]):?>
 
-        <p>
-            <?= Html::a('Добавить студента', ['create'], ['class' => 'btn btn-success']) ?>
-        </p>
+        <button class="btn btn-success">
+            <?= Html::a('Добавить студента', ['create']) ?>
+        </button>
     <?php endif;?>
+
+
+        <?= ExportMenu::widget(['dataProvider'=>$dataProvider,
+            'columns' => [
+                ['class' => 'yii\grid\SerialColumn'],
+                'name',
+                'organization.short_name',
+                'code',
+                ['attribute'=>'education_status','content'=>function($model){
+                    $val = $model->education_status ? 'Обучается' : 'Не обучается';
+                    return  "<span class='label label-info'> {$val}</span>";
+                }],
+                'date_create:date',
+                ['attribute'=>'status','content'=>function($model){
+                    $val = $model->status ? 'Действующий' : 'Не действующий';
+                    return  "<span class='label label-info'> {$val}</span>";
+                }],
+            ],
+            ]) ?>
+
 
     <?php Pjax::begin(); ?>
     <?php // echo $this->render('_search', ['model' => $searchModel]); ?>
