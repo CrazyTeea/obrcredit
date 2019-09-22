@@ -103,6 +103,7 @@ class SiteController extends Controller
         return $this->render('login', [
             'model' => $model,
         ]);
+
     }
     public function actionSignup(){
         $new_user = new SignupForm();

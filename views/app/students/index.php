@@ -9,13 +9,13 @@ use yii\widgets\Pjax;
 /* @var $searchModel app\models\app\students\StudentsSearch */
 /* @var $dataProvider yii\data\ActiveDataProvider */
 
-$this->title = 'Студенты';
+$this->title = "Студенты ".Yii::$app->session['short_name_org'];
 $this->params['breadcrumbs'][] = ['label'=>'Организации','url'=>['app/organizations']];
 $this->params['breadcrumbs'][] = $this->title;
 ?>
 <div class="students-index">
 
-    <h1><?= Html::encode($this->title) ?></h1>
+    <h3><?= Html::encode($this->title) ?></h3>
 
     <?php if (User::$cans[0] || User::$cans[1]):?>
 
