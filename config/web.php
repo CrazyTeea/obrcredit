@@ -1,5 +1,7 @@
 <?php
 
+use yii\grid\GridView;
+
 $params = require __DIR__ . '/params.php';
 $db = require __DIR__ . '/db.php';
 
@@ -15,6 +17,9 @@ $config = [
         '@npm'   => '@vendor/npm-asset',
     ],
     'modules'=>[
+        'gridview'=>[
+            'class' => 'kartik\grid\Module'
+        ],
         'admin'=>[
             'class'=>'mdm\admin\Module',
             'layout' => 'left-menu',
@@ -35,6 +40,10 @@ $config = [
         ]
     ],
     'components' => [
+        'assetManager' => [
+            'class' => 'yii\web\AssetManager',
+            'appendTimestamp' => true,
+        ],
         'authManager' => [
             'class' => 'yii\rbac\PhpManager', // or use 'yii\rbac\DbManager'
         ],
