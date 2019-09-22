@@ -14,11 +14,7 @@ $cans = User::$cans;
 
 <div class="students-form">
 
-    <?php  if($cans[0] or $cans[1]) {
-        $readonly = 0;
-    }else{
-        $readonly = 1;
-    };
+    <?php $readonly =  $cans[2] ? 1 : null;
     $form = ActiveForm::begin(); ?>
     <div class="row">
         <div class="col-md-6">
