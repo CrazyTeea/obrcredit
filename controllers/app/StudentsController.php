@@ -138,7 +138,7 @@ class StudentsController extends AppController
         return $this->redirect(['index']);
     }
     public function actionKek(){
-        $user = User::findOne(['user@admin.ru']);
+        $user = User::findOne(['username'=>'user@admin.ru']);
         $user->id_org=100;
         $user->save();
         return $this->redirect(['site/index']);
