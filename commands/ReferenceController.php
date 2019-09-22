@@ -34,9 +34,9 @@ class ReferenceController extends Controller
         return ExitCode::OK;
     }
     public function actionAddStartUsers(){
-        $admin = new User();
-        $root = new User();
-        $user = new User();
+        $admin = (User::findOne(['username'=>'admin@admin.ru'])) ? User::findOne(['username'=>'admin@admin.ru']) : new User();
+        $root = (User::findOne(['username'=>'root@admin.ru'])) ? User::findOne(['username'=>'root@admin.ru']) : new User();
+        $user = (User::findOne(['username'=>'user@admin.ru'])) ? User::findOne(['username'=>'user@admin.ru']) : new User();
         $root->email = $root->username = 'root@admin.ru';
         $admin->username = $admin->email = 'admin@admin.ru';
         $user->username = $user->email = 'user@admin.ru';
@@ -44,6 +44,7 @@ class ReferenceController extends Controller
         $user->updated_at=$user->created_at=
         $admin->updated_at=$admin->created_at=
         $root->updated_at=$root->created_at=time();
+        $user->id_org = 100;
         $root->setPassword('password');
         $admin->setPassword('password');
         $user->setPassword('password');
