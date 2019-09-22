@@ -22,8 +22,9 @@ return [
     'admin' => [
         'type' => 1,
         'children' => [
-            '/app/students/*',
             '/site/signup',
+            '/site/index',
+            '/app/*',
         ],
     ],
     'podved' => [
@@ -32,6 +33,7 @@ return [
             '/app/students/index',
             '/app/students/view',
             '/app/students/update',
+            '/site/index',
         ],
     ],
     '/app/students/*' => [
@@ -53,6 +55,15 @@ return [
         'type' => 2,
     ],
     '/site/signup' => [
+        'type' => 2,
+    ],
+    '/site/index' => [
+        'type' => 2,
+    ],
+    '/app' => [
+        'type' => 2,
+    ],
+    '/app/*' => [
         'type' => 2,
     ],
 ];
