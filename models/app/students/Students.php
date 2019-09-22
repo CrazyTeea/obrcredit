@@ -23,6 +23,7 @@ use Yii;
  */
 class Students extends \yii\db\ActiveRecord
 {
+    public $docs;
     /**
      * {@inheritdoc}
      */
@@ -55,12 +56,12 @@ class Students extends \yii\db\ActiveRecord
             'code' => 'Код направления',
             'education_status' => ' Статус обучающегося',
             'date_education_status' => 'Date Education Status',
-            'date_create' => 'Date Create',
+            'date_create' => 'Дата добавления',
             'status' => 'Статус отчета',
             'osnovanie' => 'Osnovanie',
             'grace_period' => 'Grace Period',
-            'date_start_grace_period' => 'Date Start Grace Period',
-            'date_end_grace_period' => 'Date End Grace Period',
+            'date_start_grace_period' => 'Начало',
+            'date_end_grace_period' => 'Конец',
         ];
     }
     public function getOrganization(){

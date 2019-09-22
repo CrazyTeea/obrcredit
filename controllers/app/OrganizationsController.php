@@ -12,7 +12,7 @@ use yii\filters\VerbFilter;
 /**
  * OrganizationsController implements the CRUD actions for Organizations model.
  */
-class OrganizationsController extends Controller
+class OrganizationsController extends AppController
 {
     /**
      * {@inheritdoc}

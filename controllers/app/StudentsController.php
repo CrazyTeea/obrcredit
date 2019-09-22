@@ -3,6 +3,7 @@
 namespace app\controllers\app;
 
 use app\models\app\Organizations;
+use app\models\User;
 use Yii;
 use app\models\app\students\Students;
 use app\models\app\students\StudentsSearch;
@@ -14,7 +15,7 @@ use yii\filters\VerbFilter;
 /**
  * StudentsController implements the CRUD actions for Students model.
  */
-class StudentsController extends Controller
+class StudentsController extends AppController
 {
     /**
      * {@inheritdoc}
@@ -33,13 +34,19 @@ class StudentsController extends Controller
 
     /**
      * Lists all Students models.
+     * @param null $id
      * @return mixed
      */
     public function actionIndex($id = null)
     {
         $searchModel = new StudentsSearch();
         if (!empty($id))
-            $searchModel->id_org = $id;
+            Yii::$app->session['id_org'] = $id;
+        if (!(User::$cans[0] || User::$cans[1]))
+            Yii::$app->session['id_org'] = User::findIdentity(Yii::$app->user->id)->id_org ? User::findIdentity(Yii::$app->user->id)->id_org : 1;
+
+
+        $searchModel->id_org = Yii::$app->session['id_org'];
         $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
 
         return $this->render('index', [
@@ -72,13 +79,19 @@ class StudentsController extends Controller
         $model = new Students();
         $orgs = Organizations::getOrgs();
 
-        if ($model->load(Yii::$app->request->post()) && $model->save()) {
-            return $this->redirect(['view', 'id' => $model->id]);
+        if ($model->load(Yii::$app->request->post())) {
+            $model->status=0;
+            $model->date_create = date('Y-m-d');
+            $model->date_education_status = date('Y-m-d');
+            $model->id_org = Yii::$app->session['id_org'];
+            if ($model->save())
+                return $this->redirect(['view', 'id' => $model->id]);
         }
 
         return $this->render('create', [
             'model' => $model,
-            'orgs'=>$orgs
+            'orgs'=>$orgs,
+           // 'id_org'=>Yii::$app->session['id_org']
         ]);
     }
 
@@ -92,15 +105,21 @@ class StudentsController extends Controller
     public function actionUpdate($id)
     {
         $model = $this->findModel($id);
-        $orgs = ArrayHelper::map(Organizations::find()->select(['id','short_name'])->all(),'id','short_name');
+       // $orgs = ArrayHelper::map(Organizations::find()->select(['id','short_name'])->all(),'id','short_name');
+        $orgs = Organizations::getOrgs();
 
-        if ($model->load(Yii::$app->request->post()) && $model->save()) {
-            return $this->redirect(['view', 'id' => $model->id]);
+        if ($model->load(Yii::$app->request->post())) {
+            if (User::$cans[0] || User::$cans[1])
+                $model->status=1;
+            $model->date_education_status = date('Y-m-d');
+            if ($model->save())
+                return $this->redirect(['view', 'id' => $model->id]);
         }
 
         return $this->render('update', [
             'model' => $model,
-            'orgs'=>$orgs
+            'orgs'=>$orgs,
+           // 'id_org'=>Yii::$app->session['id_org']
         ]);
     }
 

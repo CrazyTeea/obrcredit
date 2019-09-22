@@ -16,6 +16,12 @@ use Yii;
  */
 class StudentDocs extends \yii\db\ActiveRecord
 {
+    public $rasp_act0,
+        $rasp_act1,
+        $rasp_act2,
+        $rasp_act3,
+        $dogovor,
+        $rasp_act_otch;
     /**
      * {@inheritdoc}
      */
@@ -30,6 +36,7 @@ class StudentDocs extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
+            [['rasp_act0','rasp_act1','rasp_act2','rasp_act3','dogovor','rasp_act_otch'],'file'],
             [['id_file', 'id_descriptor','id_student'], 'integer'],
         ];
     }
