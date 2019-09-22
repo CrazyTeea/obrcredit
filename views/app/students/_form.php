@@ -9,11 +9,12 @@ use yii\widgets\ActiveForm;
 /* @var $this yii\web\View */
 /* @var $model app\models\app\students\Students */
 /* @var $form yii\widgets\ActiveForm */
+$cans = User::$cans;
 ?>
 
 <div class="students-form">
 
-    <?php  if(User::$cans[0] or User::$cans[1]) {
+    <?php  if($cans[0] or $cans[1]) {
         $readonly = 0;
     }else{
         $readonly = 1;
