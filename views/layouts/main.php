@@ -31,7 +31,7 @@ AppAsset::register($this);
 <div class="wrap">
     <?php
     NavBar::begin([
-        'brandLabel' => 'Обр кредит',
+        'brandLabel' => 'Мониторинг образовательного кредитированеия',
         'brandUrl' => Url::toRoute(['site/index']),
         'options' => [
             'class' => 'navbar-inverse navbar-fixed-top',
