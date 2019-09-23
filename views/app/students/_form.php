@@ -25,6 +25,15 @@ $cans = User::$cans;
         </div>
     </div>
 
+    <div style="display: none">
+        <?= $form->field($model,'osnovanie')->radioList([
+            ''
+        ])->label(false) ?>
+        <?= $form->field($model,'grace_period')->radioList([
+            '',
+        ])->label(false) ?>
+    </div>
+
 
 
 
@@ -55,7 +64,7 @@ $cans = User::$cans;
         <tbody>
         <tr>
             <td rowspan="5">
-                <?= $form->field($model,'education_status')->checkbox() ?> <br>
+                <?= $form->field($model,'education_status')->radioList(['Не обучается','Обучается']) ?> <br>
                 <?= date('d. M Y') ?> </td>
             <td rowspan="3"><p class="text-sm-center"> пункт 20 </p></td>
             <td rowspan="2">
