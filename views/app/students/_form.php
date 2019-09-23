@@ -162,7 +162,7 @@ $cans = User::$cans;
 
 
     <div class="form-group">
-        <?= Html::submitButton('Добавить', ['class' => 'btn btn-success']) ?>
+        <?= Html::submitButton($model->isNewRecord ? 'Добавить' : 'Сохранить', ['class' => 'btn btn-success']) ?>
     </div>
 
     <?php ActiveForm::end(); ?>
