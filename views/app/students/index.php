@@ -11,7 +11,8 @@ use yii\widgets\Pjax;
 /* @var $dataProvider yii\data\ActiveDataProvider */
 
 $this->title = "Студенты ".Yii::$app->session['short_name_org'];
-$this->params['breadcrumbs'][] = ['label'=>'Организации','url'=>['app/organizations']];
+if (User::$cans[0] || User::$cans[1])
+    $this->params['breadcrumbs'][] = ['label'=>'Организации','url'=>['app/organizations']];
 $this->params['breadcrumbs'][] = $this->title;
 ?>
 <div class="students-index">

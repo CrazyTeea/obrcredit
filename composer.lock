@@ -168,12 +168,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/CrazyTeea/yii2-beautyfiles.git",
-                "reference": "dcfbfeb73a2558edd7166450496c69b9b09a1285"
+                "reference": "683985fc184aacd70936082684e8648617c3e71c"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/CrazyTeea/yii2-beautyfiles/zipball/dcfbfeb73a2558edd7166450496c69b9b09a1285",
-                "reference": "dcfbfeb73a2558edd7166450496c69b9b09a1285",
+                "url": "https://api.github.com/repos/CrazyTeea/yii2-beautyfiles/zipball/683985fc184aacd70936082684e8648617c3e71c",
+                "reference": "683985fc184aacd70936082684e8648617c3e71c",
                 "shasum": ""
             },
             "require": {
@@ -204,7 +204,7 @@
                 "files",
                 "yii2"
             ],
-            "time": "2019-09-23T11:16:21+00:00"
+            "time": "2019-09-23T12:05:37+00:00"
         },
         {
             "name": "doctrine/lexer",
