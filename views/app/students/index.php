@@ -10,7 +10,7 @@ use yii\widgets\Pjax;
 /* @var $searchModel app\models\app\students\StudentsSearch */
 /* @var $dataProvider yii\data\ActiveDataProvider */
 
-$this->title = "Студенты ".Yii::$app->session['short_name_org'];
+$this->title = "Студенты: ".Yii::$app->session['short_name_org'];
 if (User::$cans[0] || User::$cans[1])
     $this->params['breadcrumbs'][] = ['label'=>'Организации','url'=>['app/organizations']];
 $this->params['breadcrumbs'][] = $this->title;
