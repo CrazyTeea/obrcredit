@@ -68,7 +68,7 @@ $cans = User::$cans;
                 </p>
             </td>
             <td rowspan="3">
-                <?= $form->field($model,'docs[rasp_act0]')->fileInput()->label('Акт')//$rasp_act0 ?  $rasp_act0->file->name : 'Файл не загружен' ?>
+                <?= $form->field($model,'rasp_act0')->fileInput()->label('Акт')//$rasp_act0 ?  $rasp_act0->file->name : 'Файл не загружен' ?>
             </td>
             <td rowspan="3">
                 <?= $form->field($model,'grace_period')->radioList([
@@ -83,7 +83,7 @@ $cans = User::$cans;
                 </p>
             </td>
             <td rowspan="3">
-                <?= $form->field($model,'docs[rasp_act1]')->fileInput() ->label('Акт')//$rasp_act1 ?  $rasp_act1->file->name : 'Файл не загружен' ?>
+                <?= $form->field($model,'rasp_act1')->fileInput() ->label('Акт')//$rasp_act1 ?  $rasp_act1->file->name : 'Файл не загружен' ?>
             </td>
         </tr>
         <tr>
@@ -108,7 +108,7 @@ $cans = User::$cans;
                 </p>
             </td>
             <td>
-                <?= $form->field($model,'docs[dogovor]')->fileInput()->label('Договор') //$dogovor ?  $dogovor->file->name : 'Файл не загружен' ?>
+                <?= $form->field($model,'dogovor')->fileInput()->label('Договор') //$dogovor ?  $dogovor->file->name : 'Файл не загружен' ?>
             </td>
             <td>
                 <?= $form->field($model,'grace_period')->radioList([
@@ -116,7 +116,7 @@ $cans = User::$cans;
                 ])->label(false) ?>
             </td>
             <td>
-                <?= $form->field($model,'docs[rasp_act2]')->fileInput()->label('Акт')//$rasp_act2 ?  $rasp_act2->file->name : 'Файл не загружен' ?>
+                <?= $form->field($model,'rasp_act2')->fileInput()->label('Акт')//$rasp_act2 ?  $rasp_act2->file->name : 'Файл не загружен' ?>
             </td>
 
 
@@ -129,7 +129,7 @@ $cans = User::$cans;
                 ])->label(false) ?>
             </td>
             <td>
-                <?= $form->field($model,'docs[rasp_act_otch]')->fileInput()->label('Отчет')//$rasp_act_otch ?  $rasp_act_otch->file->name : 'Файл не загружен' ?>
+                <?= $form->field($model,'rasp_act_otch')->fileInput()->label('Отчет')//$rasp_act_otch ?  $rasp_act_otch->file->name : 'Файл не загружен' ?>
             </td>
             <td>
                 <?= $form->field($model,'grace_period')->radioList([
@@ -137,7 +137,7 @@ $cans = User::$cans;
                 ])->label(false) ?>
             </td>
             <td>
-                <?= $form->field($model,'docs[rasp_act3]')->fileInput()->label('Акт')// $rasp_act3 ?  $rasp_act3->file->name : 'Файл не загружен' ?>
+                <?= $form->field($model,'rasp_act3')->fileInput()->label('Акт')// $rasp_act3 ?  $rasp_act3->file->name : 'Файл не загружен' ?>
             </td>
 
 

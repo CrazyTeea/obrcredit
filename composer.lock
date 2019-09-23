@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "91e6e6fa44110c998e416bfa43172180",
+    "content-hash": "c7b4e883274c6e9f34caed512d82185f",
     "packages": [
         {
             "name": "bower-asset/bootstrap",
@@ -168,12 +168,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/CrazyTeea/yii2-beautyfiles.git",
-                "reference": "b5739bedcf25441b7468c4599cb36ae274edcb6e"
+                "reference": "dcfbfeb73a2558edd7166450496c69b9b09a1285"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/CrazyTeea/yii2-beautyfiles/zipball/b5739bedcf25441b7468c4599cb36ae274edcb6e",
-                "reference": "b5739bedcf25441b7468c4599cb36ae274edcb6e",
+                "url": "https://api.github.com/repos/CrazyTeea/yii2-beautyfiles/zipball/dcfbfeb73a2558edd7166450496c69b9b09a1285",
+                "reference": "dcfbfeb73a2558edd7166450496c69b9b09a1285",
                 "shasum": ""
             },
             "require": {
@@ -204,7 +204,7 @@
                 "files",
                 "yii2"
             ],
-            "time": "2019-09-19T13:37:30+00:00"
+            "time": "2019-09-23T11:16:21+00:00"
         },
         {
             "name": "doctrine/lexer",
