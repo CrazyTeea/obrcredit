@@ -10,10 +10,10 @@ export default ()=>{
 
         let elements = document.getElementsByTagName('input');
         for (let i = 0; i < elements.length; i++) {
-            if (elements[i].type === 'radio' && elements[i].name ==='Students[osnovanie]'
+            if (elements[i].type === 'radio'&& elements[i].value !== "0" && elements[i].name ==='Students[osnovanie]'
                 || (elements[i].type === 'file' && elements[i].name ==='Students[rasp_act0]')
                 || (elements[i].type === 'file' && elements[i].name ==='Students[dogovor]')
-                || (elements[i].type === 'file' && elements[i].name ==='Students[rasp_act_otch]')) {
+                || (elements[i].type === 'file' && elements[i].name ==='Students[rasp_act_otch]')  ) {
                 elements[i].disabled = !elements[i].disabled;
             }
             if (elements[i].type === 'radio' && elements[i].name ==='Students[osnovanie]' && elements[i].value === "0" && !e_status.value)

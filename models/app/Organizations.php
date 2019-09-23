@@ -45,9 +45,9 @@ class Organizations extends \yii\db\ActiveRecord
     {
         return [
             'id' => 'ID',
-            'name' => 'Название',
-            'short_name' => 'Краткое название',
-            'full_name' => 'Полное название',
+            'name' => 'Наименование',
+            'short_name' => 'Краткое Наименование',
+            'full_name' => 'Полное Наименование',
         ];
     }
     public static function getOrgs(){

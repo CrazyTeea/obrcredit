@@ -24,15 +24,15 @@ $cans = User::$cans;
             <?= $form->field($model,'code')->textInput(['readonly'=>$readonly])?>
         </div>
     </div>
-
     <div style="display: none">
-        <?= $form->field($model,'osnovanie')->radioList([
-            ''
+        <?= $form->field($model,'osnovanie')->radio([
+            'label'=>'s','value'=>0,'uncheck'=>null
         ])->label(false) ?>
-        <?= $form->field($model,'grace_period')->radioList([
-            '',
+        <?= $form->field($model,'grace_period')->radio([
+            'label'=>'s','value'=>0,'uncheck'=>null
         ])->label(false) ?>
     </div>
+
 
 
 
@@ -70,19 +70,22 @@ $cans = User::$cans;
             <td rowspan="2">
                 <p class="text-sm-center">пункт 2 части 2 статьи 61 Федерального закона
                     № 273-ФЗ
-                    <?= $form->field($model,'osnovanie')->radioList([
-                        1=>'отчисление как меры дисциплинарного взыскания, в случае невыполнения обучающимся по профессиональной образовательной программе обязанностей по добросовестному освоению такой образовательной программы и выполнению учебного плана',
-                        2=>'установление нарушения порядка приема в образовательную организацию, повлекшего по вине обучающегося его незаконное зачисление в образовательную организацию',
-                    ])->label(false) ?>
+                    <?= $form->field($model,'osnovanie')->radio([
+                        'label'=>'отчисление как меры дисциплинарного взыскания, в случае невыполнения обучающимся по профессиональной образовательной программе обязанностей по добросовестному освоению такой образовательной программы и выполнению учебного плана',
+                   'value'=>1,'uncheck'=>null])->label(false) ?>
+                    <?= $form->field($model,'osnovanie')->radio([
+                        'label'=>'установление нарушения порядка приема в образовательную организацию, повлекшего по вине обучающегося его незаконное зачисление в образовательную организацию',
+                        'value'=>2,'uncheck'=>null])->label(false) ?>
                 </p>
             </td>
             <td rowspan="3">
                 <?= $form->field($model,'rasp_act0')->fileInput()->label('Акт')//$rasp_act0 ?  $rasp_act0->file->name : 'Файл не загружен' ?>
             </td>
             <td rowspan="3">
-                <?= $form->field($model,'grace_period')->radioList([
-                    1=>'академический отпуск',
+                <?= $form->field($model,'grace_period')->radio([
+                    'label'=>'академический отпуск','value'=>1,'uncheck'=>null
                 ])->label(false) ?>
+
             </td>
             <td rowspan="5" style="text-align: center; vertical-align: middle;" >
                 <p class="text-center">
@@ -99,9 +102,9 @@ $cans = User::$cans;
         </tr>
         <tr>
             <td>
-                <?= $form->field($model,'osnovanie')->radioList([
-                   3=> 'отчислен по инициативе обучающегося или родителей (законных представителей) несовершеннолетнего обучающегося',
-                ])->label(false) ?>
+                <?= $form->field($model,'osnovanie')->radio([
+                    'label'=> 'отчислен по инициативе обучающегося или родителей (законных представителей) несовершеннолетнего обучающегося',
+                    'value'=>3,'uncheck'=>null])->label(false) ?>
             </td>
 
 
@@ -110,18 +113,20 @@ $cans = User::$cans;
             <td><p class="text-sm-center"> пункт 21 </p></td>
             <td><p class="text-sm-center">
                     перевод обучающегося для продолжения освоения основной профессиональной образовательной программы в другую образовательную организацию:
-                    <?= $form->field($model,'osnovanie')->radioList([
-                       4=> 'в связи с ликвидацией образовательной организации',
-                        5=>'по независящим от воли обучающегося или родителей (законных представителей) несовершеннолетнего обучающегося и образовательной организации',
-                    ])->label(false) ?>
+                    <?= $form->field($model,'osnovanie')->radio([
+                        'label'=>  'в связи с ликвидацией образовательной организации',
+                        'value'=>4,'uncheck'=>null])->label(false) ?>
+                    <?= $form->field($model,'osnovanie')->radio([
+                        'label'=> 'по независящим от воли обучающегося или родителей (законных представителей) несовершеннолетнего обучающегося и образовательной организации',
+                        'value'=>5,'uncheck'=>null])->label(false) ?>
                 </p>
             </td>
             <td>
                 <?= $form->field($model,'dogovor')->fileInput()->label('Договор') //$dogovor ?  $dogovor->file->name : 'Файл не загружен' ?>
             </td>
             <td>
-                <?= $form->field($model,'grace_period')->radioList([
-                    2=>'отпуск по беременности и родам',
+                <?= $form->field($model,'grace_period')->radio([
+                    'label'=>'отпуск по беременности и родам','value'=>2,'uncheck'=>null
                 ])->label(false) ?>
             </td>
             <td>
@@ -133,16 +138,16 @@ $cans = User::$cans;
         <tr>
             <td><p class="text-sm-center"> пункт 22 </p></td>
             <td>
-                <?= $form->field($model,'osnovanie')->radioList([
-                   6=> 'обучающимся (заемщиком) принято решение об отказе от продолжения обучения, по обстоятельствам, не зависящим от воли обучающегося или родителей (законных представителей) несовершеннолетнего обучающегося и образовательной организации, в том числе в случае ликвидации образовательной организации'
-                ])->label(false) ?>
+                <?= $form->field($model,'osnovanie')->radio([
+                    'label'=>   'обучающимся (заемщиком) принято решение об отказе от продолжения обучения, по обстоятельствам, не зависящим от воли обучающегося или родителей (законных представителей) несовершеннолетнего обучающегося и образовательной организации, в том числе в случае ликвидации образовательной организации',
+                    'value'=>6,'uncheck'=>null])->label(false) ?>
             </td>
             <td>
                 <?= $form->field($model,'rasp_act_otch')->fileInput()->label('Отчет')//$rasp_act_otch ?  $rasp_act_otch->file->name : 'Файл не загружен' ?>
             </td>
             <td>
-                <?= $form->field($model,'grace_period')->radioList([
-                    3=>'отпуск по уходу за ребенком по достижении им 3-х лет',
+                <?= $form->field($model,'grace_period')->radio([
+                    'label'=>'отпуск по уходу за ребенком по достижении им 3-х лет','value'=>3,'uncheck'=>null
                 ])->label(false) ?>
             </td>
             <td>

@@ -95,6 +95,7 @@ class StudentsController extends AppController
             $model->date_create = date('Y-m-d');
             $model->date_education_status = date('Y-m-d');
             $model->id_org = Yii::$app->session['id_org'];
+
             if ($model->save()) {
                 $this->addDocs($model);
                 StudentDocs::addDoc($model,"/$model->id_org/$model->id",'rasp_act_otch');
@@ -127,8 +128,10 @@ class StudentsController extends AppController
         $orgs = Organizations::getOrgs();
 
         if ($model->load(Yii::$app->request->post())) {
+           // var_dump(Yii::$app->request->post());exit();
             if (User::$cans[0] || User::$cans[1])
                 $model->status=1;
+
             $model->date_education_status = date('Y-m-d');
             $this->addDocs($model);
             if ($model->save())
