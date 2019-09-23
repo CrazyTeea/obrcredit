@@ -35,7 +35,7 @@ $rasp_act_otch = StudentDocs::getDocByDescriptorName('rasp_act_otch',$model->id)
         <?= ($cans[0] or $cans[1]) ? Html::a('Удалить', ['delete', 'id' => $model->id], [
             'class' => 'btn btn-danger',
             'data' => [
-                'confirm' => 'Are you sure you want to delete this item?',
+                'confirm' => 'Вы уверены, что хотите удалить студента?',
                 'method' => 'post',
             ],
         ]) : '' ?>
@@ -74,7 +74,7 @@ $rasp_act_otch = StudentDocs::getDocByDescriptorName('rasp_act_otch',$model->id)
             <td rowspan="2">
                 <p class="text-sm-center">пункт 2 части 2 статьи 61 Федерального закона
                     № 273-ФЗ
-                    <?php for ($i=0; $i< 2; $i++){
+                    <?php for ($i=1; $i< 3; $i++){
                         $k = Students::getOsnovanie()[$i];
                         if ($i==$model->osnovanie)
                             echo "<p class='text-sm-center' > &#9745; {$k} </p>";
@@ -87,8 +87,8 @@ $rasp_act_otch = StudentDocs::getDocByDescriptorName('rasp_act_otch',$model->id)
             </td>
             <td rowspan="3">
                 <?php
-                $k = Students::getGracePeriod()[0];
-                if (0==$model->grace_period)
+                $k = Students::getGracePeriod()[1];
+                if (1==$model->grace_period)
                     echo "<p class='text-sm-center' > &#9745; {$k} </p>";
                 else echo "<p class='text-sm-center'> &#9744; $k</p>";
                 ?>
@@ -108,8 +108,8 @@ $rasp_act_otch = StudentDocs::getDocByDescriptorName('rasp_act_otch',$model->id)
         <tr>
             <td>
                 <?php
-                $k = Students::getOsnovanie()[2];
-                if (2==$model->osnovanie)
+                $k = Students::getOsnovanie()[3];
+                if (3==$model->osnovanie)
                     echo "<p class='text-sm-center' > &#9745; {$k} </p>";
                 else echo "<p class='text-sm-center'> &#9744; $k</p>";
                 ?>
@@ -121,7 +121,7 @@ $rasp_act_otch = StudentDocs::getDocByDescriptorName('rasp_act_otch',$model->id)
             <td><p class="text-sm-center"> пункт 21 </p></td>
             <td><p class="text-sm-center">
                     перевод обучающегося для продолжения освоения основной профессиональной образовательной программы в другую образовательную организацию:
-                    <?php for ($i=3; $i< 5; $i++){
+                    <?php for ($i=4; $i< 6; $i++){
                         $k = Students::getOsnovanie()[$i];
                         if ($i==$model->osnovanie)
                             echo "<p class='text-sm-center' > &#9745; {$k} </p>";
@@ -133,8 +133,8 @@ $rasp_act_otch = StudentDocs::getDocByDescriptorName('rasp_act_otch',$model->id)
             </td>
             <td>
                 <?php
-                $k = Students::getGracePeriod()[1];
-                if (1==$model->grace_period)
+                $k = Students::getGracePeriod()[2];
+                if (2==$model->grace_period)
                     echo "<p class='text-sm-center' > &#9745; {$k} </p>";
                 else echo "<p class='text-sm-center'> &#9744; $k</p>";
                 ?>
@@ -149,8 +149,8 @@ $rasp_act_otch = StudentDocs::getDocByDescriptorName('rasp_act_otch',$model->id)
             <td><p class="text-sm-center"> пункт 22 </p></td>
             <td>
                 <?php
-                $k = Students::getOsnovanie()[5];
-                if (5==$model->osnovanie)
+                $k = Students::getOsnovanie()[6];
+                if (6==$model->osnovanie)
                     echo "<p class='text-sm-center' > &#9745; {$k} </p>";
                 else echo "<p class='text-sm-center'> &#9744; $k</p>";
                 ?>
@@ -160,8 +160,8 @@ $rasp_act_otch = StudentDocs::getDocByDescriptorName('rasp_act_otch',$model->id)
             </td>
             <td>
                 <?php
-                $k = Students::getGracePeriod()[2];
-                if (2==$model->grace_period)
+                $k = Students::getGracePeriod()[3];
+                if (3==$model->grace_period)
                     echo "<p class='text-sm-center' > &#9745; {$k} </p>";
                 else echo "<p class='text-sm-center'> &#9744; $k</p>";
                 ?>
