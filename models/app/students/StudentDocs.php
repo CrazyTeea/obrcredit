@@ -95,12 +95,7 @@ class StudentDocs extends \yii\db\ActiveRecord
                 $doc->id_file=$file->id;
                 if ($doc->save())
                     return true;
-                $docErr = serialize($doc->errors);
-                throw new Exception("Ошибка  {$docErr} ");
             }
-
-            $modelErr = serialize($model->errors);
-            throw new Exception("Ошибка  {$modelErr}");
 
         }
         throw new NotFoundHttpException("Не найден десриптор файла: $descriptor");
