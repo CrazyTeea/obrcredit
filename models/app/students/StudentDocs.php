@@ -96,7 +96,7 @@ class StudentDocs extends \yii\db\ActiveRecord
                 if ($doc->save())
                     return true;
             }
-
+            return false;
         }
         throw new NotFoundHttpException("Не найден десриптор файла: $descriptor");
     }
