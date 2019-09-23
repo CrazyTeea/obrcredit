@@ -22,9 +22,11 @@ export default ()=>{
         }
     }
     Router('update').then(()=>{
+        let form = document.getElementById('w0');
         let e_status = document.getElementById('students-education_status');
-        if (!e_status.value)
-        disable(e_status);
+        console.log(!e_status.value);
+        if (form.elements['Students[education_status]'].value==1)
+            disable(e_status);
         e_status.onchange = e=>{
             disable(e_status);
         };
