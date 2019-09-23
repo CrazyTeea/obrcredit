@@ -1,5 +1,7 @@
 <?php
 
+
+use crazyteea\beautyfiles\Module;
 use yii\grid\GridView;
 
 $params = require __DIR__ . '/params.php';
@@ -29,6 +31,9 @@ $config = [
                     'class' => 'mdm\admin\controllers\AssignmentController',
                 ],
             ],
+        ],
+        'beautyfiles'=>[
+            'class'=>'crazyteea\beautyfiles\Module'
         ]
     ],
     'as access' => [

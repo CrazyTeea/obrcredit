@@ -83,7 +83,7 @@ $rasp_act_otch = StudentDocs::getDocByDescriptorName('rasp_act_otch',$model->id)
                 </p>
             </td>
             <td rowspan="3">
-                <?= $rasp_act0 ?  $rasp_act0->file->name : 'Файл не загружен' ?>
+                <?= $rasp_act0 ? Html::a($rasp_act0->file->name,['download','id'=>$rasp_act0->id])  : 'Файл не загружен' ?>
             </td>
             <td rowspan="3">
                 <?php
@@ -100,7 +100,7 @@ $rasp_act_otch = StudentDocs::getDocByDescriptorName('rasp_act_otch',$model->id)
                 </p>
             </td>
             <td rowspan="3">
-                <?= $rasp_act1 ?  $rasp_act1->file->name : 'Файл не загружен' ?>
+                <?= $rasp_act1 ? Html::a($rasp_act1->file->name,['download','id'=>$rasp_act1->id])  : 'Файл не загружен' ?>
             </td>
         </tr>
         <tr>
@@ -129,7 +129,7 @@ $rasp_act_otch = StudentDocs::getDocByDescriptorName('rasp_act_otch',$model->id)
                     } ?>
                 </p></td>
             <td>
-                <?= $dogovor ?  $dogovor->file->name : 'Файл не загружен' ?>
+                <?= $dogovor ? Html::a($dogovor->file->name,['download','id'=>$dogovor->id])  : 'Файл не загружен' ?>
             </td>
             <td>
                 <?php
@@ -140,7 +140,7 @@ $rasp_act_otch = StudentDocs::getDocByDescriptorName('rasp_act_otch',$model->id)
                 ?>
             </td>
             <td>
-                <?= $rasp_act2 ?  $rasp_act2->file->name : 'Файл не загружен' ?>
+                <?= $rasp_act2 ? Html::a($rasp_act2->file->name,['download','id'=>$rasp_act2->id])  : 'Файл не загружен' ?>
             </td>
 
 
@@ -156,7 +156,7 @@ $rasp_act_otch = StudentDocs::getDocByDescriptorName('rasp_act_otch',$model->id)
                 ?>
             </td>
             <td>
-                <?= $rasp_act_otch ?  $rasp_act_otch->file->name : 'Файл не загружен' ?>
+                <?= $rasp_act_otch ? Html::a($rasp_act_otch->file->name,['download','id'=>$rasp_act_otch->id])  : 'Файл не загружен' ?>
             </td>
             <td>
                 <?php
@@ -167,7 +167,7 @@ $rasp_act_otch = StudentDocs::getDocByDescriptorName('rasp_act_otch',$model->id)
                 ?>
             </td>
             <td>
-                <?= $rasp_act3 ?  $rasp_act3->file->name : 'Файл не загружен' ?>
+                <?= $rasp_act3 ? Html::a($rasp_act3->file->name,['download','id'=>$rasp_act3->id])  : 'Файл не загружен' ?>
             </td>
 
 

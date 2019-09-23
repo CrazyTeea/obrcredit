@@ -5,6 +5,9 @@ namespace app\models\app\students;
 use crazyteea\beautyfiles\models\Descriptions;
 use crazyteea\beautyfiles\models\Files;
 use Yii;
+use yii\base\ErrorException;
+use yii\base\Exception;
+use yii\web\NotFoundHttpException;
 
 /**
  * This is the model class for table "student_docs".
@@ -16,12 +19,7 @@ use Yii;
  */
 class StudentDocs extends \yii\db\ActiveRecord
 {
-    public $rasp_act0,
-        $rasp_act1,
-        $rasp_act2,
-        $rasp_act3,
-        $dogovor,
-        $rasp_act_otch;
+
     /**
      * {@inheritdoc}
      */
@@ -36,7 +34,7 @@ class StudentDocs extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['rasp_act0','rasp_act1','rasp_act2','rasp_act3','dogovor','rasp_act_otch'],'file'],
+           // [['rasp_act0','rasp_act1','rasp_act2','rasp_act3','dogovor','rasp_act_otch'],'file'],
             [['id_file', 'id_descriptor','id_student'], 'integer'],
         ];
     }
@@ -68,5 +66,43 @@ class StudentDocs extends \yii\db\ActiveRecord
             return null;
         return self::findOne(['id_descriptor'=>$desc->id,'id_student'=>$id_student]);
 
+    }
+    public static function download($id){
+        $doc = self::findOne($id);
+        $student = Students::findOne($doc->id_student);
+
+        return $doc->file->downloadFile("/$student->id_org/$student->id/");
+    }
+
+    /**
+     * @param $model
+     * @param $path
+     * @param $descriptor
+     * @return bool
+     * @throws ErrorException
+     * @throws NotFoundHttpException
+     * @throws \yii\base\Exception
+     */
+    public static function addDoc($model, $path, $descriptor){
+        $doc = new StudentDocs();
+        $doc->id_student = $model->id;
+        $desc = Descriptions::findOne(['name'=>$descriptor]);
+        if ($desc) {
+           // var_dump($desc);exit();
+            $file = new Files();
+            $doc->id_descriptor = $desc->id;
+            if ($file->uploadFile($path,$model,$descriptor)) {
+                $doc->id_file=$file->id;
+                if ($doc->save())
+                    return true;
+                $docErr = serialize($doc->errors);
+                throw new Exception("Ошибка  {$docErr} ");
+            }
+
+            $modelErr = serialize($model->errors);
+            throw new Exception("Ошибка  {$modelErr}");
+
+        }
+        throw new NotFoundHttpException("Не найден десриптор файла: $descriptor");
     }
 }

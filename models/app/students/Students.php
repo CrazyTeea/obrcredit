@@ -23,6 +23,15 @@ use Yii;
  */
 class Students extends \yii\db\ActiveRecord
 {
+    public $rasp_act0,
+        $rasp_act1,
+        $rasp_act2,
+        $rasp_act3,
+        $dogovor,
+        $rasp_act_otch;
+    /**
+     * @var StudentDocs $docs
+     */
     public $docs;
     /**
      * {@inheritdoc}
@@ -38,6 +47,7 @@ class Students extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
+            [['rasp_act0','rasp_act1','rasp_act2','rasp_act3','dogovor','rasp_act_otch'],'file'],
             [['id_org', 'education_status', 'status', 'osnovanie', 'grace_period'], 'integer'],
             [['date_education_status', 'date_create', 'date_start_grace_period', 'date_end_grace_period'], 'safe'],
             [['name', 'code'], 'string', 'max' => 255],

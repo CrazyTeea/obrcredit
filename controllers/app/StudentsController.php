@@ -3,6 +3,7 @@
 namespace app\controllers\app;
 
 use app\models\app\Organizations;
+use app\models\app\students\StudentDocs;
 use app\models\User;
 use Yii;
 use app\models\app\students\Students;
@@ -68,11 +69,21 @@ class StudentsController extends AppController
             'model' => $this->findModel($id),
         ]);
     }
+    public function addDocs($model){
+        StudentDocs::addDoc($model,"/$model->id_org/$model->id",'rasp_act0');
+        StudentDocs::addDoc($model,"/$model->id_org/$model->id",'rasp_act1');
+        StudentDocs::addDoc($model,"/$model->id_org/$model->id",'rasp_act2');
+        StudentDocs::addDoc($model,"/$model->id_org/$model->id",'rasp_act3');
+        StudentDocs::addDoc($model,"/$model->id_org/$model->id",'dogovor');
+        StudentDocs::addDoc($model,"/$model->id_org/$model->id",'rasp_act_otch');
+    }
+
 
     /**
-     * Creates a new Students model.
-     * If creation is successful, the browser will be redirected to the 'view' page.
-     * @return mixed
+     * @return string|\yii\web\Response
+     * @throws NotFoundHttpException
+     * @throws \yii\base\ErrorException
+     * @throws \yii\base\Exception
      */
     public function actionCreate()
     {
@@ -84,8 +95,11 @@ class StudentsController extends AppController
             $model->date_create = date('Y-m-d');
             $model->date_education_status = date('Y-m-d');
             $model->id_org = Yii::$app->session['id_org'];
-            if ($model->save())
+            if ($model->save()) {
+                $this->addDocs($model);
+                StudentDocs::addDoc($model,"/$model->id_org/$model->id",'rasp_act_otch');
                 return $this->redirect(['view', 'id' => $model->id]);
+            }
         }
 
         return $this->render('create', [
@@ -94,13 +108,17 @@ class StudentsController extends AppController
            // 'id_org'=>Yii::$app->session['id_org']
         ]);
     }
+    public function actionDownload($id){
+        StudentDocs::download($id);
+    }
+
 
     /**
-     * Updates an existing Students model.
-     * If update is successful, the browser will be redirected to the 'view' page.
-     * @param integer $id
-     * @return mixed
-     * @throws NotFoundHttpException if the model cannot be found
+     * @param $id
+     * @return string|\yii\web\Response
+     * @throws NotFoundHttpException
+     * @throws \yii\base\ErrorException
+     * @throws \yii\base\Exception
      */
     public function actionUpdate($id)
     {
@@ -112,6 +130,7 @@ class StudentsController extends AppController
             if (User::$cans[0] || User::$cans[1])
                 $model->status=1;
             $model->date_education_status = date('Y-m-d');
+            $this->addDocs($model);
             if ($model->save())
                 return $this->redirect(['view', 'id' => $model->id]);
         }

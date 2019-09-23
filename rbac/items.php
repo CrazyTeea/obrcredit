@@ -66,4 +66,10 @@ return [
     '/app/*' => [
         'type' => 2,
     ],
+    '/beautyfiles/*' => [
+        'type' => 2,
+    ],
+    '/beautyfiles/default/index' => [
+        'type' => 2,
+    ],
 ];
