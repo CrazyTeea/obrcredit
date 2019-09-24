@@ -34,7 +34,7 @@ $this->params['breadcrumbs'][] = $this->title;
                 ['attribute'=>'education_status','content'=>function($model){
                     return $model->education_status ? 'Обучается' : 'Не обучается';
                 }],
-                'organization.short_name',
+                ['attribute'=>'organization.short_name','label'=>'Организация'],
                 'name',
                 'code',
                 'date_create:date',
