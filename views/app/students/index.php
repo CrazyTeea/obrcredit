@@ -72,14 +72,13 @@ $this->params['breadcrumbs'][] = $this->title;
             'organization.short_name',
             'code',
             ['attribute'=>'education_status','content'=>function($model){
-                $val = $model->education_status ? 'Обучается' : 'Не обучается';
-                return  "<span class='label label-info'> {$val}</span>";
+                //$val = $model->education_status ? 'Обучается' : 'Не обучается';
+                return $model->education_status ? "<span class='label label-info'> Обучается</span>" :"<span class='label label-danger'> Не обучается</span>";
             }],
             //'date_education_status',
             'date_create:date',
             ['attribute'=>'status','content'=>function($model){
-                $val = $model->status ? 'Действующий' : 'Не действующий';
-                return  "<span class='label label-info'> {$val}</span>";
+                return  $model->status ? "<span class='label label-info'> Действующий</span>" : "<span class='label label-danger'> Не действующий</span>";
             }],
             //'osnovanie',
             //'grace_period',
