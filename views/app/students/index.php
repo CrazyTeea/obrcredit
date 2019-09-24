@@ -37,7 +37,7 @@ $this->params['breadcrumbs'][] = $this->title;
                 ['attribute'=>'education_status','content'=>function($model){
                     return $model->education_status ? 'Обучается' : 'Не обучается';
                 }],
-                ['attribute'=>'date_education_status:date','label'=>'Дата изменения статуса обучающегося'],
+                ['attribute'=>'date_education_status','format'=>'date','label'=>'Дата изменения статуса обучающегося'],
                 ['attribute'=>'osnovanie','label'=>'Основание досрочного прекращения образовательных отношений','content'=>function($model){
                     return  Students::getOsnovanie()[$model->osnovanie ? $model->osnovanie : 0];
                 }],
@@ -49,7 +49,7 @@ $this->params['breadcrumbs'][] = $this->title;
                             Yii::$app->getFormatter()->asDate($model->date_start_grace_period).'-'.
                             Yii::$app->getFormatter()->asDate($model->date_end_grace_period):'';
                 }],
-                ['attribute'=>'date_create:date','label'=>'Дата добавления обучающегося'],
+                ['attribute'=>'date_create','format'=>'date','label'=>'Дата добавления обучающегося'],
                 ['attribute'=>'status','content'=>function($model){
                     return  $model->status ? 'Действующий' : 'Не действующий';
                 }
