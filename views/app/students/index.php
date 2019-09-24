@@ -1,5 +1,6 @@
 <?php
 
+use app\models\app\students\Students;
 use app\models\User;
 use kartik\export\ExportMenu;
 use yii\helpers\Html;
@@ -30,17 +31,22 @@ $this->params['breadcrumbs'][] = $this->title;
         <?= ExportMenu::widget(['dataProvider'=>$dataProvider,
             'columns' => [
                 ['class' => 'yii\grid\SerialColumn'],
-                'name',
-                'organization.short_name',
-                'code',
                 ['attribute'=>'education_status','content'=>function($model){
-                    $val = $model->education_status ? 'Обучается' : 'Не обучается';
-                    return  "<span class='label label-info'> {$val}</span>";
+                    return $model->education_status ? 'Обучается' : 'Не обучается';
                 }],
+                'organization.short_name',
+                'name',
+                'code',
                 'date_create:date',
+                'date_education_status:date',
+                ['attribute'=>'osnovanie','content'=>function($model){
+                    return  Students::getOsnovanie()[$model->osnovanie];
+                }],
+                ['attribute'=>'grace_period','content'=>function($model){
+                    return  Students::getGracePeriod()[$model->grace_period];
+                }],
                 ['attribute'=>'status','content'=>function($model){
-                    $val = $model->status ? 'Действующий' : 'Не действующий';
-                    return  "<span class='label label-info'> {$val}</span>";
+                    return  $model->status ? 'Действующий' : 'Не действующий';
                 }],
             ],
             ]) ?>
