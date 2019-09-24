@@ -40,10 +40,10 @@ $this->params['breadcrumbs'][] = $this->title;
                 'date_create:date',
                 'date_education_status:date',
                 ['attribute'=>'osnovanie','content'=>function($model){
-                    return  Students::getOsnovanie()[$model->osnovanie];
+                    return  Students::getOsnovanie()[$model->osnovanie ? $model->osnovanie : 0];
                 }],
                 ['attribute'=>'grace_period','content'=>function($model){
-                    return  Students::getGracePeriod()[$model->grace_period];
+                    return  Students::getGracePeriod()[$model->grace_period ? $model->grace_period : 0];
                 }],
                 ['attribute'=>'status','content'=>function($model){
                     return  $model->status ? 'Действующий' : 'Не действующий';
