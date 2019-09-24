@@ -16,7 +16,7 @@ Thumbs.db
 /vendor
 /runtime
 /node_modules
-/web/uploads
+web/uploads/*
 !web/uploads/templates
 
 # composer itself is not needed
