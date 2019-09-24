@@ -30,16 +30,22 @@ $rasp_act_otch = StudentDocs::getDocByDescriptorName('rasp_act_otch',$model->id)
 
     <h1><?= Html::encode($this->title) ?></h1>
 
-    <p>
-        <?= Html::a('Редактировать', ['update', 'id' => $model->id], ['class' => 'btn btn-primary']) ?>
+    <button class="btn btn-primary">
+
+        <?= Html::a('Редактировать', ['update', 'id' => $model->id]) ?>
+    </button>
+    <button class="btn btn-danger">
         <?= ($cans[0] or $cans[1]) ? Html::a('Удалить', ['delete', 'id' => $model->id], [
-            'class' => 'btn btn-danger',
             'data' => [
                 'confirm' => 'Вы уверены, что хотите удалить студента?',
                 'method' => 'post',
             ],
         ]) : '' ?>
-    </p>
+    </button>
+
+    <button class="btn btn-default">
+        <?= Html::a('Экспорт',['export','id'=>$model->id]) ?>
+    </button>
 
     <table class="table table-bordered">
         <thead>
@@ -94,9 +100,9 @@ $rasp_act_otch = StudentDocs::getDocByDescriptorName('rasp_act_otch',$model->id)
                 ?>
             </td>
             <td rowspan="5" style="text-align: center; vertical-align: middle;" ><p class="text-center">
-                <?= Yii::$app->getFormatter()->asDate($model->date_start_grace_period) ?>
-                -
-                <?= Yii::$app->getFormatter()->asDate($model->date_end_grace_period) ?>
+                    <?= Yii::$app->getFormatter()->asDate($model->date_start_grace_period) ?>
+                    -
+                    <?= Yii::$app->getFormatter()->asDate($model->date_end_grace_period) ?>
                 </p>
             </td>
             <td rowspan="3">

@@ -2,12 +2,15 @@
 
 namespace app\controllers\app;
 
+
 use app\models\app\Organizations;
 use app\models\app\students\StudentDocs;
 use app\models\User;
+use PhpOffice\PhpWord\TemplateProcessor;
 use Yii;
 use app\models\app\students\Students;
 use app\models\app\students\StudentsSearch;
+use yii\base\Model;
 use yii\helpers\ArrayHelper;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
@@ -54,6 +57,29 @@ class StudentsController extends AppController
             'searchModel' => $searchModel,
             'dataProvider' => $dataProvider,
         ]);
+    }
+    public function actionExport($id){
+        $student = Students::findOne($id);
+        $document = new TemplateProcessor('uploads/templates/export.docx');
+        $document->setValue('fio',$student->name);
+        $document->setValue('code',$student->code);
+        $document->setValue('e_status',$student->education_status ? '&#9745;' : '&#9744;');
+        $document->setValue('osnovanie1',$student->osnovanie == 1 ? '&#9745;' : '&#9744;');
+        $document->setValue('osnovanie2',$student->osnovanie == 2 ? '&#9745;' : '&#9744;');
+        $document->setValue('osnovanie3',$student->osnovanie == 3 ? '&#9745;' : '&#9744;');
+        $document->setValue('osnovanie4',$student->osnovanie == 4 ? '&#9745;' : '&#9744;');
+        $document->setValue('osnovanie5',$student->osnovanie == 5 ? '&#9745;' : '&#9744;');
+        $document->setValue('osnovanie6',$student->osnovanie == 6 ? '&#9745;' : '&#9744;');
+        $document->setValue('grace1',$student->grace_period == 1 ? '&#9745;' : '&#9744;');
+        $document->setValue('grace2',$student->grace_period == 2 ? '&#9745;' : '&#9744;');
+        $document->setValue('grace3',$student->grace_period == 3 ? '&#9745;' : '&#9744;');
+        $document->setValue('date_start_grace',$student->date_start_grace_period ? Yii::$app->getFormatter()->asDate($student->date_start_grace_period):'');
+        $document->setValue('date_end_grace',$student->date_end_grace_period ? Yii::$app->getFormatter()->asDate($student->date_end_grace_period):'');
+
+        $document->saveAs('uploads/temp.docx');
+        Yii::$app->response->sendFile('uploads/temp.docx')->send();
+        unlink('uploads/temp.docx');
+
     }
 
     /**
