@@ -30,29 +30,30 @@ $this->params['breadcrumbs'][] = $this->title;
 
         <?= ExportMenu::widget(['dataProvider'=>$dataProvider,
             'columns' => [
-                ['class' => 'yii\grid\SerialColumn'],
-                ['attribute'=>'education_status','content'=>function($model){
-                    return $model->education_status ? 'Обучается' : 'Не обучается';
-                }],
+                ['class' => 'yii\grid\SerialColumn','header'=>'№ п/п'],
                 ['attribute'=>'organization.short_name','label'=>'Организация'],
                 'name',
                 'code',
-                'date_create:date',
-                'date_education_status:date',
-                ['attribute'=>'osnovanie','content'=>function($model){
+                ['attribute'=>'education_status','content'=>function($model){
+                    return $model->education_status ? 'Обучается' : 'Не обучается';
+                }],
+                ['attribute'=>'date_education_status:date','label'=>'Дата изменения статуса обучающегося'],
+                ['attribute'=>'osnovanie','label'=>'Основание досрочного прекращения образовательных отношений','content'=>function($model){
                     return  Students::getOsnovanie()[$model->osnovanie ? $model->osnovanie : 0];
                 }],
-                ['attribute'=>'grace_period','content'=>function($model){
+                ['attribute'=>'grace_period','label'=>'Отсрочка льготного периода в связи с предоставлением академического права','content'=>function($model){
                     return  Students::getGracePeriod()[$model->grace_period ? $model->grace_period : 0];
                 }],
-                ['attribute'=>'date_start_grace_period','label'=>'Период','value'=>function($model){
+                ['attribute'=>'date_start_grace_period','label'=>'Срок действия академического права','value'=>function($model){
                     return $model->date_start_grace_period and $model->date_end_grace_period ?
                             Yii::$app->getFormatter()->asDate($model->date_start_grace_period).'-'.
                             Yii::$app->getFormatter()->asDate($model->date_end_grace_period):'';
                 }],
+                ['attribute'=>'date_create:date','label'=>'Дата добавления обучающегося'],
                 ['attribute'=>'status','content'=>function($model){
                     return  $model->status ? 'Действующий' : 'Не действующий';
-                }],
+                }
+                ],
             ],
             ]) ?>
 
