@@ -34,6 +34,7 @@ return [
             '/app/students/view',
             '/app/students/update',
             '/site/index',
+            '/app/students/download',
         ],
     ],
     '/app/students/*' => [
@@ -70,6 +71,9 @@ return [
         'type' => 2,
     ],
     '/beautyfiles/default/index' => [
+        'type' => 2,
+    ],
+    '/app/students/download' => [
         'type' => 2,
     ],
 ];
