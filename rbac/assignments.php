@@ -10,6 +10,6 @@ return [
         'podved',
     ],
     4 => [
-        'podved',
+        'admin',
     ],
 ];
