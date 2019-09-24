@@ -35,6 +35,11 @@ $this->params['breadcrumbs'][] = $this->title;
             ['attribute'=>'grace_period','content'=>function($model){
                 return  Students::getGracePeriod()[$model->grace_period ? $model->grace_period : 0];
             }],
+            ['attribute'=>'date_start_grace_period','value'=>function($model){
+                return $model->date_start_grace_period and $model->date_end_grace_period ?
+                        Yii::$app->getFormatter()->asDate($model->date_start_grace_period).'-'.
+                        Yii::$app->getFormatter()->asDate($model->date_end_grace_period):'';
+            }],
             ['attribute'=>'status','content'=>function($model){
                 return  $model->status ? 'Действующий' : 'Не действующий';
             }],
