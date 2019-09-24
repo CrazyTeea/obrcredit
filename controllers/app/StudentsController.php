@@ -60,7 +60,7 @@ class StudentsController extends AppController
     }
     public function actionExport($id){
         $student = Students::findOne($id);
-        $document = new TemplateProcessor('uploads/templates/export.docx');
+        $document = new TemplateProcessor('templates/export.docx');
         $document->setValue('fio',$student->name);
         $document->setValue('code',$student->code);
         $document->setValue('e_status',$student->education_status ? '&#9745;' : '&#9744;');
