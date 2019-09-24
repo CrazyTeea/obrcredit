@@ -31,7 +31,7 @@ $this->params['breadcrumbs'][] = $this->title;
         <?= ExportMenu::widget(['dataProvider'=>$dataProvider,
             'columns' => [
                 ['class' => 'yii\grid\SerialColumn','header'=>'№ п/п'],
-                ['attribute'=>'organization.short_name','label'=>'Организация'],
+                ['attribute'=>'organization.name','label'=>'Организация'],
                 'name',
                 'code',
                 ['attribute'=>'education_status','content'=>function($model){
