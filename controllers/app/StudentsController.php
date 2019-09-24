@@ -58,7 +58,7 @@ class StudentsController extends AppController
             'dataProvider' => $dataProvider,
         ]);
     }
-    public function actionExport($id){
+    public function actionExport($id = null){
         $student = Students::findOne($id);
         $document = new TemplateProcessor('templates/export.docx');
         $document->setValue('fio',$student->name);

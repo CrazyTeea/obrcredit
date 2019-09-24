@@ -2,9 +2,12 @@
 
 namespace app\controllers\app;
 
+use app\models\app\students\Students;
+use app\models\app\students\StudentsSearch;
 use Yii;
 use app\models\app\Organizations;
 use app\models\app\OrganizationsSearch;
+use yii\data\ActiveDataProvider;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
@@ -35,12 +38,15 @@ class OrganizationsController extends AppController
      */
     public function actionIndex()
     {
+
         $searchModel = new OrganizationsSearch();
         $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
+        $dataProviderStudent = new ActiveDataProvider(['query'=>Students::find()]);
 
         return $this->render('index', [
             'searchModel' => $searchModel,
             'dataProvider' => $dataProvider,
+            'dataProviderStudent'=>$dataProviderStudent
         ]);
     }
 
