@@ -31,11 +31,16 @@ AppAsset::register($this);
 <div class="wrap">
     <?php
     NavBar::begin([
-        'brandLabel' => 'Мониторинг образовательного кредитированеия',
+        'brandLabel' => 'Мониторинг образовательного кредитования',
         'brandUrl' => Url::toRoute(['site/index']),
+        'brandImage' => 'img/light-logo.svg',
         'options' => [
             'class' => 'navbar-inverse navbar-fixed-top',
         ],
+    ]);
+    echo Nav::widget([
+        'options' => ['class' => 'navbar-nav navbar-left'],
+        'items' => [['label'=>'Мониторинг образовательного кредитования','url'=>['index']]]
     ]);
     echo Nav::widget([
         'options' => ['class' => 'navbar-nav navbar-left'],

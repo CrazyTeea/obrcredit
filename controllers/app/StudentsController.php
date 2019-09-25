@@ -4,15 +4,13 @@ namespace app\controllers\app;
 
 
 use app\models\app\Organizations;
+use app\models\app\students\DatesEducationStatus;
 use app\models\app\students\StudentDocs;
 use app\models\User;
 use PhpOffice\PhpWord\TemplateProcessor;
 use Yii;
 use app\models\app\students\Students;
 use app\models\app\students\StudentsSearch;
-use yii\base\Model;
-use yii\helpers\ArrayHelper;
-use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
 
@@ -107,24 +105,21 @@ class StudentsController extends AppController
 
     /**
      * @return string|\yii\web\Response
-     * @throws NotFoundHttpException
-     * @throws \yii\base\ErrorException
-     * @throws \yii\base\Exception
      */
     public function actionCreate()
     {
         $model = new Students();
+        $modelD = new DatesEducationStatus();
         $orgs = Organizations::getOrgs();
 
         if ($model->load(Yii::$app->request->post())) {
             $model->status=0;
             $model->date_create = date('Y-m-d');
-            $model->date_education_status = date('Y-m-d');
             $model->id_org = Yii::$app->session['id_org'];
 
             if ($model->save()) {
                 $this->addDocs($model);
-                StudentDocs::addDoc($model,"/$model->id_org/$model->id",'rasp_act_otch');
+                $modelD->id_student = $model->id;
                 return $this->redirect(['view', 'id' => $model->id]);
             }
         }
@@ -132,7 +127,7 @@ class StudentsController extends AppController
         return $this->render('create', [
             'model' => $model,
             'orgs'=>$orgs,
-           // 'id_org'=>Yii::$app->session['id_org']
+            // 'id_org'=>Yii::$app->session['id_org']
         ]);
     }
     public function actionDownload($id){
@@ -144,30 +139,27 @@ class StudentsController extends AppController
      * @param $id
      * @return string|\yii\web\Response
      * @throws NotFoundHttpException
-     * @throws \yii\base\ErrorException
-     * @throws \yii\base\Exception
      */
     public function actionUpdate($id)
     {
         $model = $this->findModel($id);
-       // $orgs = ArrayHelper::map(Organizations::find()->select(['id','short_name'])->all(),'id','short_name');
         $orgs = Organizations::getOrgs();
 
         if ($model->load(Yii::$app->request->post())) {
-           // var_dump(Yii::$app->request->post());exit();
             if (User::$cans[0] || User::$cans[1])
                 $model->status=1;
-
-            $model->date_education_status = date('Y-m-d');
+            if (!$model->dateLastStatus)
+                $model->dateLastStatus = new DatesEducationStatus();
+            $model->dateLastStatus->id_student = $id;
+            $model->dateLastStatus->date_end = !$model->education_status ? date('Y-m-d') : null;
             $this->addDocs($model);
-            if ($model->save())
+            if ($model->save() and $model->dateLastStatus->save())
                 return $this->redirect(['view', 'id' => $model->id]);
         }
 
         return $this->render('update', [
             'model' => $model,
             'orgs'=>$orgs,
-           // 'id_org'=>Yii::$app->session['id_org']
         ]);
     }
 

@@ -21,12 +21,8 @@ $this->params['breadcrumbs'][] = $this->title;
     <h3><?= Html::encode($this->title) ?></h3>
 
     <?php if (User::$cans[0] || User::$cans[1]):?>
-
-        <button class="btn btn-success">
-            <?= Html::a('Добавить студента', ['create']) ?>
-        </button>
+            <?= Html::a('Добавить студента', ['create'],['class'=>'btn btn-success']) ?>
     <?php endif;?>
-
 
         <?= ExportMenu::widget(['dataProvider'=>$dataProvider,
             'columns' => [
@@ -37,7 +33,7 @@ $this->params['breadcrumbs'][] = $this->title;
                 ['attribute'=>'education_status','content'=>function($model){
                     return $model->education_status ? 'Обучается' : 'Не обучается';
                 }],
-                ['attribute'=>'date_education_status','format'=>'date','label'=>'Дата изменения статуса обучающегося'],
+                ['attribute'=>'date_last_status.updated_at','format'=>'date','label'=>'Дата изменения статуса обучающегося'],
                 ['attribute'=>'osnovanie','label'=>'Основание досрочного прекращения образовательных отношений','content'=>function($model){
                     return  Students::getOsnovanie()[$model->osnovanie ? $model->osnovanie : 0];
                 }],
@@ -76,7 +72,7 @@ $this->params['breadcrumbs'][] = $this->title;
                 //$val = $model->education_status ? 'Обучается' : 'Не обучается';
                 return $model->education_status ? "<span class='label label-info'> Обучается</span>" :"<span class='label label-danger'> Не обучается</span>";
             }],
-            //'date_education_status',
+           // 'dateLastStatus.updated_at:date',
             'date_create:date',
             ['attribute'=>'status','content'=>function($model){
                 return  $model->status ? "<span class='label label-info'> Действующий</span>" : "<span class='label label-danger'> Не действующий</span>";
