@@ -34,14 +34,16 @@ $rasp_act_otch = StudentDocs::getDocByDescriptorName('rasp_act_otch',$model->id)
 
         <?= Html::a('Редактировать', ['update', 'id' => $model->id]) ?>
     </button>
+    <?php if ($cans[0] or $cans[1]):?>
     <button class="btn btn-danger">
-        <?= ($cans[0] or $cans[1]) ? Html::a('Удалить', ['delete', 'id' => $model->id], [
+        <?=  Html::a('Удалить', ['delete', 'id' => $model->id], [
             'data' => [
                 'confirm' => 'Вы уверены, что хотите удалить студента?',
                 'method' => 'post',
             ],
-        ]) : '' ?>
+        ]) ?>
     </button>
+    <?php endif;?>
 
     <button class="btn btn-default">
         <?= Html::a('Экспорт',['export','id'=>$model->id]) ?>
