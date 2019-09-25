@@ -25,29 +25,30 @@ $rasp_act2 = StudentDocs::getDocByDescriptorName('rasp_act2',$model->id);
 $rasp_act3 = StudentDocs::getDocByDescriptorName('rasp_act3',$model->id);
 $dogovor = StudentDocs::getDocByDescriptorName('dogovor',$model->id);
 $rasp_act_otch = StudentDocs::getDocByDescriptorName('rasp_act_otch',$model->id);
+//var_dump($model->dateLastStatus->updated_at);
 ?>
+
 <div class="students-view">
 
     <h1><?= Html::encode($this->title) ?></h1>
 
-    <button class="btn btn-primary">
 
-        <?= Html::a('Редактировать', ['update', 'id' => $model->id]) ?>
-    </button>
+        <?= Html::a('Редактировать', ['update', 'id' => $model->id],['class'=>'btn btn-primary']) ?>
+
     <?php if ($cans[0] or $cans[1]):?>
-    <button class="btn btn-danger">
+
         <?=  Html::a('Удалить', ['delete', 'id' => $model->id], [
+                'class'=>'btn btn-danger',
             'data' => [
                 'confirm' => 'Вы уверены, что хотите удалить студента?',
                 'method' => 'post',
             ],
         ]) ?>
-    </button>
+
     <?php endif;?>
 
-    <button class="btn btn-default">
-        <?= Html::a('Экспорт',['export','id'=>$model->id]) ?>
-    </button>
+
+        <?= Html::a('Экспорт',['export','id'=>$model->id],['class'=>'btn btn-default']) ?>
 
     <table class="table table-bordered">
         <thead>
@@ -77,7 +78,7 @@ $rasp_act_otch = StudentDocs::getDocByDescriptorName('rasp_act_otch',$model->id)
         <tr>
             <td rowspan="5">
                 <?= $model->education_status ? 'Обучается' : 'Не обучается' ?> <br>
-                <?= Yii::$app->getFormatter()->asDate($model->date_education_status) ?> </td>
+                <?= ($model->dateLastStatus and $model->dateLastStatus->updated_at) ? Yii::$app->getFormatter()->asDate(strtotime($model->dateLastStatus->updated_at)) : date('now') ?> </td>
             <td rowspan="3"><p class="text-sm-center"> пункт 20 </p></td>
             <td rowspan="2">
                 <p class="text-sm-center">пункт 2 части 2 статьи 61 Федерального закона

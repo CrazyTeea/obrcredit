@@ -1,10 +1,8 @@
-button {
+a {
+  color: inherit;
   margin: 0 0 5px 0 !important;
-  a {
-    display: block;
-    color: inherit;
-  }
 }
+
 .toVisible{
   &:hover{
     background-color: #4cae4c !important;

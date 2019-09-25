@@ -13,13 +13,20 @@ use Yii;
  * @property int $id_org
  * @property string $code
  * @property int $education_status
- * @property string $date_education_status
  * @property string $date_create
  * @property int $status
  * @property int $osnovanie
  * @property int $grace_period
  * @property string $date_start_grace_period
  * @property string $date_end_grace_period
+ *
+ *
+ * @var StudentDocs $docs
+ *
+ * @property DatesEducationStatus $dateLastStatus
+ * @property DatesEducationStatus[] $dateStatuses
+ *
+ *
  */
 class Students extends \yii\db\ActiveRecord
 {
@@ -29,10 +36,8 @@ class Students extends \yii\db\ActiveRecord
         $rasp_act3,
         $dogovor,
         $rasp_act_otch;
-    /**
-     * @var StudentDocs $docs
-     */
-    public $docs;
+
+
     /**
      * {@inheritdoc}
      */
@@ -49,7 +54,7 @@ class Students extends \yii\db\ActiveRecord
         return [
             [['rasp_act0','rasp_act1','rasp_act2','rasp_act3','dogovor','rasp_act_otch'],'file'],
             [['id_org', 'education_status', 'status', 'osnovanie', 'grace_period'], 'integer'],
-            [['date_education_status', 'date_create', 'date_start_grace_period', 'date_end_grace_period'], 'safe'],
+            [[ 'date_create', 'date_start_grace_period', 'date_end_grace_period'], 'safe'],
             [['name', 'code'], 'string', 'max' => 255],
         ];
     }
@@ -95,6 +100,12 @@ class Students extends \yii\db\ActiveRecord
           'отпуск по беременности и родам',
           'отпуск по уходу за ребенком по достижении им 3-х лет',
         ];
+    }
+    public function getDateLastStatus(){
+        return $this->hasOne(DatesEducationStatus::className(),['id_student'=>'id'])->orderBy(['updated_at'=>SORT_DESC]);
+    }
+    public function getDateStatuses(){
+        return $this->hasMany(DatesEducationStatus::className(),['id_student'=>'id']);
     }
     public function getDocs()
     {

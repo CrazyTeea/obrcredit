@@ -13,6 +13,7 @@ use app\models\app\students\Students;
  */
 class StudentsSearch extends Students
 {
+    public $date_education_status;
     /**
      * {@inheritdoc}
      */
@@ -20,7 +21,7 @@ class StudentsSearch extends Students
     {
         return [
             [['id', 'id_org', 'education_status', 'status', 'osnovanie', 'grace_period'], 'integer'],
-            [['name', 'code', 'date_education_status', 'date_create', 'date_start_grace_period', 'date_end_grace_period'], 'safe'],
+            [['name', 'code', 'date_education_status','date_create', 'date_start_grace_period', 'date_end_grace_period'], 'safe'],
         ];
     }
 
@@ -42,7 +43,7 @@ class StudentsSearch extends Students
      */
     public function search($params)
     {
-        $query = Students::find();//->joinWith(['organization']);
+        $query = Students::find();
 
        /* if ( User::$cans[2])
             $query->andWhere(['id_org'=>User::findIdentity(Yii::$app->getUser()->getId())->id_org]);*/
@@ -66,7 +67,7 @@ class StudentsSearch extends Students
             'id' => $this->id,
             'id_org' => $this->id_org,
             'education_status' => $this->education_status,
-            'date_education_status' => $this->date_education_status,
+            'date_last_status.updated_at' => $this->date_education_status,
             'date_create' => $this->date_create,
             'status' => $this->status,
             'osnovanie' => $this->osnovanie,
