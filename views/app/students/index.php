@@ -33,7 +33,7 @@ $this->params['breadcrumbs'][] = $this->title;
                 ['attribute'=>'education_status','content'=>function($model){
                     return $model->education_status ? 'Обучается' : 'Не обучается';
                 }],
-                ['attribute'=>'date_last_status.updated_at','format'=>'date','label'=>'Дата изменения статуса обучающегося'],
+                ['attribute'=>'dateLastStatus.updated_at','format'=>'date','label'=>'Дата изменения статуса обучающегося'],
                 ['attribute'=>'osnovanie','label'=>'Основание досрочного прекращения образовательных отношений','content'=>function($model){
                     return  Students::getOsnovanie()[$model->osnovanie ? $model->osnovanie : 0];
                 }],
