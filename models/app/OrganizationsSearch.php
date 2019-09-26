@@ -49,7 +49,7 @@ class OrganizationsSearch extends Organizations
         $query->groupBy(['organizations.id']);
         $query->orderBy(['studentsCOUNT'=>SORT_DESC]);
 
-        // add conditions that should always apply here
+        // add conditions tha t should always apply here
 
         $dataProvider = new ActiveDataProvider([
             'query' => $query,

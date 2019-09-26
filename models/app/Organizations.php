@@ -10,6 +10,7 @@ use yii\helpers\ArrayHelper;
  * This is the model class for table "organizations".
  *
  * @property int $id
+ * @property int $system_status
  * @property string $name
  * @property string $short_name
  * @property string $full_name
@@ -35,6 +36,7 @@ class Organizations extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
+            [['system_status'],'integer'],
             [['name', 'short_name', 'full_name'], 'string', 'max' => 500],
         ];
     }
