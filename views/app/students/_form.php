@@ -17,11 +17,14 @@ $cans = Yii::$app->session['cans'];
     <?php $readonly =  $cans[2] ? 1 : null;
     $form = ActiveForm::begin(); ?>
     <div class="row">
-        <div class="col-md-6">
+        <div class="col-md-4">
             <?= $form->field($model,'name')->textInput(['readonly'=>$readonly]) ?>
         </div>
-        <div class="col-md-6">
+        <div class="col-md-4">
             <?= $form->field($model,'code')->textInput(['readonly'=>$readonly])?>
+        </div>
+        <div class="col-md-4">
+            <?= $form->field($model,'date_credit')->textInput(['readonly'=>$readonly])?>
         </div>
     </div>
     <div style="display: none">
