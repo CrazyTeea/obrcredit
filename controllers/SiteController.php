@@ -78,7 +78,12 @@ class SiteController extends Controller
      */
     public function actionIndex()
     {
-        if (!Yii::$app->getUser()->getIsGuest() and (User::$cans[0] || User::$cans[1]))
+        Yii::$app->session['cans'] = [
+            Yii::$app->getUser()->can('root'),
+            Yii::$app->getUser()->can('admin'),
+            Yii::$app->getUser()->can('podved')
+        ];
+        if (!Yii::$app->getUser()->getIsGuest() and ( Yii::$app->session['cans'][0] ||  Yii::$app->session['cans'][1]))
             return $this->redirect(['app/organizations']);
         return $this->redirect(['app/students']);
     }
@@ -99,7 +104,6 @@ class SiteController extends Controller
             return $this->redirect(['index']);
         }
 
-        $model->password = '';
         return $this->render('login', [
             'model' => $model,
         ]);

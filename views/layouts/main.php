@@ -40,7 +40,7 @@ AppAsset::register($this);
     ]);
     echo Nav::widget([
         'options' => ['class' => 'navbar-nav navbar-left'],
-        'items' => [['label'=>'Мониторинг образовательного кредитования','url'=>['index']]]
+        'items' => [['label'=>'Мониторинг образовательного кредитования','url'=>['site/index']]]
     ]);
     echo Nav::widget([
         'options' => ['class' => 'navbar-nav navbar-left'],
