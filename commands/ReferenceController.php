@@ -91,19 +91,24 @@ class ReferenceController extends Controller
             foreach ($data_reference AS $key=>$data){
                 $row_org = Organizations::findOne($data->getValue()->id);
                 if(empty($row_org)) {
+                    echo 'kek';
                     $row_org = new Organizations();
                     $row_org->id = $data->getValue()->id;
                 }
                 $row_org->full_name = htmlspecialchars_decode($data->getValue()->fullname);
                 $row_org->short_name =htmlspecialchars_decode( $data->getValue()->shot_name);
                 $row_org->name = htmlspecialchars_decode($data->getValue()->name);
-                $row_org->system_status = $data->getValue()->status_org==1 ? 1 : 0;
+                $row_org->system_status = ($data->getValue()->status_org==1) ? 1 : 0;
                 if(!$row_org->save())
                     var_dump($row_org->errors);
 
             }
+            return true;
         }
-        return true;
+        else
+            return false;
+
+
     }
 
 }

@@ -40,7 +40,7 @@ class OrganizationsSearch extends Organizations
      */
     public function search($params)
     {
-        $query = Organizations::find();//->select(['students.id','count(students.id)','short_name','organizations.name','full_name'])->joinWith(['students']);
+        $query = Organizations::find()->where(['system_status'=>1]);//->select(['students.id','count(students.id)','short_name','organizations.name','full_name'])->joinWith(['students']);
 
         $query->joinWith(['students'=>function($subquery){
             $subquery->onCondition(['students.status'=>1]);
