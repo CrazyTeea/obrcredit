@@ -81,5 +81,5 @@ module.exports = {
 };
 
 
-console.log(module.exports);
+//console.log(module.exports);
 //console.log(path.resolve(__dirname, '../web/build/'), '11111111');

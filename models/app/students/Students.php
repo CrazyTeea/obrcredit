@@ -19,6 +19,7 @@ use Yii;
  * @property int $grace_period
  * @property string $date_start_grace_period
  * @property string $date_end_grace_period
+ * @property string $date_credit
  *
  *
  * @var StudentDocs $docs
@@ -54,7 +55,7 @@ class Students extends \yii\db\ActiveRecord
         return [
             [['rasp_act0','rasp_act1','rasp_act2','rasp_act3','dogovor','rasp_act_otch'],'file'],
             [['id_org', 'education_status', 'status', 'osnovanie', 'grace_period'], 'integer'],
-            [[ 'date_create', 'date_start_grace_period', 'date_end_grace_period'], 'safe'],
+            [[ 'date_create', 'date_start_grace_period', 'date_end_grace_period','date_credit'], 'safe'],
             [['name', 'code'], 'string', 'max' => 255],
         ];
     }
@@ -66,10 +67,10 @@ class Students extends \yii\db\ActiveRecord
     {
         return [
             'id' => 'ID',
-            'name' => 'ФИО',
+            'name' => 'ФИО обучающегося',
             'id_org' => 'Id Org',
             'code' => 'Код направления',
-            'education_status' => ' Статус обучающегося',
+            'education_status' => 'Статус обучающегося',
             'date_education_status' => 'Дата изменения статуса',
             'date_create' => 'Дата добавления',
             'status' => 'Статус отчета',
@@ -77,6 +78,7 @@ class Students extends \yii\db\ActiveRecord
             'grace_period' => 'Отсрочка льготного периода',
             'date_start_grace_period' => 'Начало',
             'date_end_grace_period' => 'Конец',
+            'date_credit'=>'Дата заключения кредитного договора'
         ];
     }
     public function getOrganization(){

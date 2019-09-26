@@ -27,7 +27,7 @@ $this->params['breadcrumbs'][] = $this->title;
         <?= ExportMenu::widget(['dataProvider'=>$dataProvider,
             'columns' => [
                 ['class' => 'yii\grid\SerialColumn','header'=>'№ п/п'],
-                ['attribute'=>'organization.name','label'=>'Организация'],
+                ['attribute'=>'organization.name','label'=>'Наименование ООВО'],
                 'name',
                 'code',
                 ['attribute'=>'education_status','content'=>function($model){
@@ -65,24 +65,23 @@ $this->params['breadcrumbs'][] = $this->title;
             ['class' => 'yii\grid\SerialColumn'],
 
             //   'id',
-            'name',
-            'organization.short_name',
+            ['attribute'=>'name','header'=>'ФИО <br> обучающегося'],
+            ['attribute'=>'organization.short_name','header'=>'Наименование <br> ООВО'],
             'code',
-            ['attribute'=>'education_status','content'=>function($model){
+            ['attribute'=>'education_status','header'=>'Статус <br> обучающегося','content'=>function($model){
                 //$val = $model->education_status ? 'Обучается' : 'Не обучается';
                 return $model->education_status ? "<span class='label label-info'> Обучается</span>" :"<span class='label label-danger'> Не обучается</span>";
             }],
-           // 'dateLastStatus.updated_at:date',
-            'date_create:date',
-            ['attribute'=>'status','content'=>function($model){
-                return  $model->status ? "<span class='label label-info'> Действующий</span>" : "<span class='label label-danger'> Не действующий</span>";
-            }],
-            //'osnovanie',
-            //'grace_period',
-            //'date_start_grace_period',
-            //'date_end_grace_period',
+            ['attribute'=>'grace_period','value'=>function($model){return Students::getGracePeriod()[$model->grace_period ? $model->grace_period : 0];}
+            ,'header'=>'Отсрочка <br> льготного <br> периода'
+            ],
+            ['attribute'=>'date_start_grace_period','value'=>function($model){return ($model->date_start_grace_period and $model->date_end_grace_period)
+                ? Yii::$app->getFormatter()->asDate($model->date_start_grace_period).'-'.Yii::$app->getFormatter()->asDate($model->date_end_grace_period) : '';},
+                'header'=>'Срок действия <br>академического права',
+                ],
+            ['attribute'=>'date_credit','header'=>'Дата заключения <br> кредитного договора',],
+            ['attribute'=>'dateLastStatus.updated_at','header'=>'Дата <br> изменения <br> данных'],
 
-            //['class' => 'yii\grid\ActionColumn'],
         ],
         'rowOptions'=>function($model, $index, $attribute)
         {
