@@ -71,11 +71,12 @@ $this->params['breadcrumbs'][] = $this->title;
             //   'id',
             ['attribute'=>'name','header'=>'ФИО <br> обучающегося'],
             ['attribute'=>'organization.short_name','header'=>'Наименование <br> ООВО'],
-            'code',
+            ['attribute'=>'code','header'=>'Код <br> направления'],
             ['attribute'=>'education_status','header'=>'Статус <br> обучающегося','content'=>function($model){
                 //$val = $model->education_status ? 'Обучается' : 'Не обучается';
                 return $model->education_status ? "<span class='label label-info'> Обучается</span>" :"<span class='label label-danger'> Не обучается</span>";
             }],
+            ['attribute'=>'dateLastStatus.date_end','format'=>'date','header'=>'Дата <br> отчисления'],
             ['attribute'=>'grace_period','value'=>function($model){return Students::getGracePeriod()[$model->grace_period ? $model->grace_period : 0];}
             ,'header'=>'Отсрочка <br> льготного <br> периода'
             ],
