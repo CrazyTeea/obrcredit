@@ -43,7 +43,7 @@ class DatesEducationStatus extends \yii\db\ActiveRecord
             'id' => 'ID',
             'id_student' => 'Id Student',
             'date_start' => 'Date Start',
-            'date_end' => 'Date End',
+            'date_end' => 'Дата отчисления',
             'updated_at'=> 'Дата изменения данных'
         ];
     }
