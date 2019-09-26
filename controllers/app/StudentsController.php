@@ -127,6 +127,7 @@ class StudentsController extends AppController
             if ($model->save()) {
                 $this->addDocs($model);
                 $modelD->id_student = $model->id;
+                $modelD->save();
                 return $this->redirect(['view', 'id' => $model->id]);
             }
         }

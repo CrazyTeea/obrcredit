@@ -104,7 +104,8 @@ class Students extends \yii\db\ActiveRecord
         ];
     }
     public function getDateLastStatus(){
-        return $this->hasOne(DatesEducationStatus::className(),['id_student'=>'id'])->orderBy(['updated_at'=>SORT_DESC]);
+        $query = $this->hasOne(DatesEducationStatus::className(),['id_student'=>'id'])->orderBy(['updated_at'=>SORT_DESC]);
+        return ($query) ? $query : new DatesEducationStatus();
     }
     public function getDateStatuses(){
         return $this->hasMany(DatesEducationStatus::className(),['id_student'=>'id']);
