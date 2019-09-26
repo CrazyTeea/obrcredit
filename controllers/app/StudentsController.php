@@ -157,8 +157,6 @@ class StudentsController extends AppController
         if ($model->load(Yii::$app->request->post())) {
             if ($this->cans[0] || $this->cans[1])
                 $model->status=1;
-            if (!$model->dateLastStatus)
-                $model->dateLastStatus = new DatesEducationStatus();
             $model->dateLastStatus->id_student = $id;
             $model->dateLastStatus->date_end = !$model->education_status ? date('Y-m-d') : null;
             $this->addDocs($model);
