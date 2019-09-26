@@ -103,5 +103,7 @@ class ReferenceController extends Controller
 
             }
         }
+        return true;
     }
+
 }
