@@ -96,7 +96,7 @@ class ReferenceController extends Controller
                 $row_org->full_name = htmlspecialchars_decode($data->getValue()->fullname);
                 $row_org->short_name =htmlspecialchars_decode( $data->getValue()->shot_name);
                 $row_org->name = htmlspecialchars_decode($data->getValue()->name);
-                $row_org->system_status = $data->getValue()->status_org==3 ? 1 : 0;
+                $row_org->system_status = $data->getValue()->status_org==1 ? 1 : 0;
                 if(!$row_org->save()){
                     $err_data = serialize($row_org->errors);
                     $err++;
