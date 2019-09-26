@@ -47,8 +47,9 @@ $rasp_act_otch = StudentDocs::getDocByDescriptorName('rasp_act_otch',$model->id)
     <?php endif;?>
 
 
-        <?= Html::a('Экспорт',['export','id'=>$model->id],['class'=>'btn btn-default']) ?>
-
+        <!--<?= Html::a('Экспорт',['export','id'=>$model->id],['class'=>'btn btn-default']) ?>
+        -->
+    <?= Html::a('Вернуться к списку',['app/students'],['class'=>'btn btn-default']) ?>
     <table class="table table-bordered">
         <thead>
         <tr>

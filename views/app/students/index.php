@@ -1,12 +1,13 @@
 <?php
 
 use app\models\app\students\Students;
-use app\models\User;
 use kartik\export\ExportMenu;
 use yii\helpers\Html;
 use yii\grid\GridView;
 use yii\helpers\Url;
 use yii\widgets\Pjax;
+
+
 /* @var $this yii\web\View */
 /* @var $searchModel app\models\app\students\StudentsSearch */
 /* @var $dataProvider yii\data\ActiveDataProvider */
@@ -55,12 +56,15 @@ $this->params['breadcrumbs'][] = $this->title;
     <?php endif;?>
 
 
+
     <?php Pjax::begin(); ?>
     <?php // echo $this->render('_search', ['model' => $searchModel]); ?>
 
+    <div id="PrintThis">
     <?= GridView::widget([
         'dataProvider' => $dataProvider,
         'filterModel' => $searchModel,
+        //'options'=>['id'=>'PrintThis'],
         'columns' => [
             ['class' => 'yii\grid\SerialColumn'],
 
@@ -93,6 +97,7 @@ $this->params['breadcrumbs'][] = $this->title;
             ];
         },
     ]); ?>
+    </div>
 
     <?php Pjax::end(); ?>
 
