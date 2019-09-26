@@ -97,26 +97,10 @@ class ReferenceController extends Controller
                 $row_org->short_name =htmlspecialchars_decode( $data->getValue()->shot_name);
                 $row_org->name = htmlspecialchars_decode($data->getValue()->name);
                 $row_org->system_status = $data->getValue()->status_org==1 ? 1 : 0;
-                if(!$row_org->save()){
-                    $err_data = serialize($row_org->errors);
-                    $err++;
+                if(!$row_org->save())
+                    var_dump($row_org->errors);
 
-                    $this->error_message = "Не удалось внести данные по организациям. id {$data->getValue()->id} $err_data";
-                    var_dump($this->error_message);
-                    continue;
-                }
             }
-            if($err>0){
-                // echo serialize($this->error_message);
-
-                return false;
-            }else{
-                return true;
-            }
-
-        }else{
-            $this->error_message = "Не верный токен";
-            return false;
         }
     }
 }
