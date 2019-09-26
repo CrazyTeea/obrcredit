@@ -153,14 +153,24 @@ class StudentsController extends AppController
 
         $model = $this->findModel($id);
         $orgs = Organizations::getOrgs();
+        $modelDFlag = false;
 
         if ($model->load(Yii::$app->request->post())) {
             if ($this->cans[0] || $this->cans[1])
                 $model->status=1;
-            $model->dateLastStatus->id_student = $id;
-            $model->dateLastStatus->date_end = !$model->education_status ? date('Y-m-d') : null;
+            if (!$model->dateLastStatus){
+                $modelD = new DatesEducationStatus();
+                $modelD->id_student = $id;
+                $modelD->date_end = !$model->education_status ? date('Y-m-d') : null;
+                $modelDFlag = $modelD->save();
+            }
+            else {
+                $model->dateLastStatus->id_student = $id;
+                $model->dateLastStatus->date_end = !$model->education_status ? date('Y-m-d') : null;
+                $modelDFlag = $model->dateLastStatus->save();
+            }
             $this->addDocs($model);
-            if ($model->save() and $model->dateLastStatus->save())
+            if ($model->save() and $modelDFlag)
                 return $this->redirect(['view', 'id' => $model->id]);
         }
 
