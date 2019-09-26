@@ -40,7 +40,14 @@ class OrganizationsSearch extends Organizations
      */
     public function search($params)
     {
-        $query = Organizations::find();
+        $query = Organizations::find();//->select(['students.id','count(students.id)','short_name','organizations.name','full_name'])->joinWith(['students']);
+
+        $query->joinWith(['students'=>function($subquery){
+            $subquery->onCondition(['students.status'=>1]);
+        }]);
+        $query->select(['organizations.*','COUNT(students.id) AS studentsCOUNT']);
+        $query->groupBy(['organizations.id']);
+        $query->orderBy(['studentsCOUNT'=>SORT_DESC]);
 
         // add conditions that should always apply here
 
