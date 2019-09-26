@@ -90,9 +90,10 @@ class ReferenceController extends Controller
           //  $this->model_name = Organizations::className();
             foreach ($data_reference AS $key=>$data){
                 $row_org = Organizations::findOne($data->getValue()->id);
-                if(empty($row_org))
+                if(empty($row_org)) {
                     $row_org = new Organizations();
-                $row_org->id = $data->getValue()->id;
+                    $row_org->id = $data->getValue()->id;
+                }
                 $row_org->full_name = htmlspecialchars_decode($data->getValue()->fullname);
                 $row_org->short_name =htmlspecialchars_decode( $data->getValue()->shot_name);
                 $row_org->name = htmlspecialchars_decode($data->getValue()->name);
