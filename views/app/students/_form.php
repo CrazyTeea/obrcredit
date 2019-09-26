@@ -164,7 +164,8 @@ $cans = Yii::$app->session['cans'];
 
 
 
-    <div class="form-group">
+    <div class="form-group btn-group">
+        <?= Html::a('Назад',['view','id'=>$model->id],['class'=>'btn btn-primary'])?>
         <?= Html::submitButton($model->isNewRecord ? 'Добавить' : 'Сохранить', ['class' => 'btn btn-success']) ?>
     </div>
 

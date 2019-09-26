@@ -2,9 +2,14 @@ a {
   color: inherit;
   margin: 0 0 5px 0 !important;
 }
-
+#green{
+  background-color: #4cae4c;
+}
+#red{
+  background-color: #ff7777;
+}
 .toVisible{
   &:hover{
-    background-color: #4cae4c !important;
+    background-color: #8bb8df !important;
   }
 }

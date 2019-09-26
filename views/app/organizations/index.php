@@ -66,7 +66,8 @@ $this->params['breadcrumbs'][] = $this->title;
             return [
                 'onClick'=>"window.location.href='{$url}'",
                 'style'=>'cursor:pointer',
-                'class'=>'toVisible'
+                'class'=>'toVisible',
+                'id'=>$model->studentsCount ? 'green' : 'red'
             ];
         },
     ]); ?>
