@@ -9,7 +9,7 @@ use yii\widgets\ActiveForm;
 /* @var $this yii\web\View */
 /* @var $model app\models\app\students\Students */
 /* @var $form yii\widgets\ActiveForm */
-$cans = User::$cans;
+$cans = Yii::$app->session['cans'];
 ?>
 
 <div class="students-form">

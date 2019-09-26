@@ -19,6 +19,7 @@ use yii\filters\VerbFilter;
  */
 class StudentsController extends AppController
 {
+    private $cans;
     /**
      * {@inheritdoc}
      */
@@ -33,6 +34,12 @@ class StudentsController extends AppController
             ],
         ];
     }
+    public function beforeAction($action)
+    {
+
+        $this->cans = Yii::$app->session['cans'];
+        return parent::beforeAction($action);
+    }
 
     /**
      * Lists all Students models.
@@ -44,7 +51,7 @@ class StudentsController extends AppController
         $searchModel = new StudentsSearch();
         if (!empty($id))
             Yii::$app->session['id_org'] = $id;
-        if (!(User::$cans[0] || User::$cans[1]))
+        if (!($this->cans[0] || $this->cans[1]))
             Yii::$app->session['id_org'] = User::findIdentity(Yii::$app->user->id)->id_org ? User::findIdentity(Yii::$app->user->id)->id_org : 1;
         Yii::$app->session['short_name_org']=Organizations::findOne(Yii::$app->session['id_org'])->name;
 
@@ -142,11 +149,12 @@ class StudentsController extends AppController
      */
     public function actionUpdate($id)
     {
+
         $model = $this->findModel($id);
         $orgs = Organizations::getOrgs();
 
         if ($model->load(Yii::$app->request->post())) {
-            if (User::$cans[0] || User::$cans[1])
+            if ($this->cans[0] || $this->cans[1])
                 $model->status=1;
             if (!$model->dateLastStatus)
                 $model->dateLastStatus = new DatesEducationStatus();

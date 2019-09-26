@@ -11,19 +11,19 @@ use yii\widgets\Pjax;
 /* @var $searchModel app\models\app\students\StudentsSearch */
 /* @var $dataProvider yii\data\ActiveDataProvider */
 
-$this->title = "Студенты: ".Yii::$app->session['short_name_org'];
-if (User::$cans[0] || User::$cans[1])
+$this->title = "Обучающиеся: ".Yii::$app->session['short_name_org'];
+$cans = Yii::$app->session['cans'];
+if ($cans[0] || $cans[1])
     $this->params['breadcrumbs'][] = ['label'=>'Организации','url'=>['app/organizations']];
 $this->params['breadcrumbs'][] = $this->title;
+
 ?>
 <div class="students-index">
 
     <h3><?= Html::encode($this->title) ?></h3>
 
-    <?php if (User::$cans[0] || User::$cans[1]):?>
-            <?= Html::a('Добавить студента', ['create'],['class'=>'btn btn-success']) ?>
-    <?php endif;?>
-
+    <?php if ($cans[0] || $cans[1]):?>
+        <?= Html::a('Добавить студента', ['create'],['class'=>'btn btn-success']) ?>
         <?= ExportMenu::widget(['dataProvider'=>$dataProvider,
             'columns' => [
                 ['class' => 'yii\grid\SerialColumn','header'=>'№ п/п'],
@@ -51,8 +51,8 @@ $this->params['breadcrumbs'][] = $this->title;
                 }
                 ],
             ],
-            ]) ?>
-
+        ]) ?>
+    <?php endif;?>
 
 
     <?php Pjax::begin(); ?>

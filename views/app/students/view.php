@@ -10,13 +10,12 @@ use yii\widgets\DetailView;
 /* @var $model app\models\app\students\Students */
 
 $this->title = $model->name;
-if (User::$cans[0] || User::$cans[1])
+$cans = Yii::$app->session['cans'];
+if ($cans[0] || $cans[1])
     $this->params['breadcrumbs'][] = ['label' => 'Организация', 'url' => ['app/organizations/index']];
-$this->params['breadcrumbs'][] = ['label' => 'Студенты', 'url' => ['index']];
+$this->params['breadcrumbs'][] = ['label' => 'Обучающиеся', 'url' => ['index']];
 $this->params['breadcrumbs'][] = $this->title;
 \yii\web\YiiAsset::register($this);
-
-$cans = User::$cans;
 
 
 $rasp_act0 = StudentDocs::getDocByDescriptorName('rasp_act0',$model->id);

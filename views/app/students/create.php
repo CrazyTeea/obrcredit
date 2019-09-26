@@ -7,11 +7,11 @@ use yii\helpers\Html;
 /* @var $model app\models\app\students\Students */
 
 $this->title = 'Добавление студента';
-
-if (User::$cans[0] || User::$cans[1])
+$cans = Yii::$app->session['cans'];
+if ($cans[0] || $cans[1])
     $this->params['breadcrumbs'][] = ['label' => 'Организация', 'url' => ['app/organizations/index']];
 
-$this->params['breadcrumbs'][] = ['label' => 'Студенты', 'url' => ['index']];
+$this->params['breadcrumbs'][] = ['label' => 'Обучающиеся', 'url' => ['index']];
 $this->params['breadcrumbs'][] = $this->title;
 ?>
 <div class="students-create">
