@@ -27,6 +27,17 @@ $cans = Yii::$app->session['cans'];
             <?= $form->field($model,'date_credit')->textInput(['readonly'=>$readonly])?>
         </div>
     </div>
+    <div class="row">
+        <div class="col-md-4">
+            <?=$form->field($model,'number_pp_credit')->input('number',['readonly'=>$readonly])?>
+        </div>
+        <div class="col-md-4">
+            <?=$form->field($model,'bank')->textInput(['readonly'=>$readonly])?>
+        </div>
+        <div class="col-md-4">
+            <?=$form->field($model,'date_status')->input('date',['readonly'=>1])?>
+        </div>
+    </div>
     <div style="display: none">
         <?= $form->field($model,'osnovanie')->radio([
             'label'=>'s','value'=>0,'uncheck'=>null

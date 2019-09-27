@@ -21,29 +21,25 @@ $this->params['breadcrumbs'][] = $this->title;
     <?= ExportMenu::widget(['dataProvider'=>$dataProviderStudent,
         'columns' => [
             ['class' => 'yii\grid\SerialColumn','header'=>'№ п/п'],
-            ['attribute'=>'organization.name','label'=>'Организация'],
-            'name',
-            'code',
-            ['attribute'=>'education_status','content'=>function($model){
-                return $model->education_status ? 'Обучается' : 'Не обучается';
+            ['attribute'=>'name','header'=>'ФИО обучающегося'],
+            ['attribute'=>'organization.short_name','header'=>'Наименование ООВО'],
+            ['attribute'=>'code','header'=>'Код направления'],
+            ['attribute'=>'education_status','header'=>'Статус  обучающегося','content'=>function($model){
+                return $model->education_status ? "Обучается" :" Не обучается";
             }],
-            ['attribute'=>'dateLastStatus.updated_at','format'=>'date','label'=>'Дата изменения статуса обучающегося'],
-            ['attribute'=>'osnovanie','label'=>'Основание досрочного прекращения образовательных отношений','content'=>function($model){
-                return  Students::getOsnovanie()[$model->osnovanie ? $model->osnovanie : 0];
-            }],
-            ['attribute'=>'grace_period','label'=>'Отсрочка льготного периода в связи с предоставлением академического права','content'=>function($model){
-                return  Students::getGracePeriod()[$model->grace_period ? $model->grace_period : 0];
-            }],
-            ['attribute'=>'date_start_grace_period','label'=>'Срок действия академического права','value'=>function($model){
-                return $model->date_start_grace_period and $model->date_end_grace_period ?
-                        Yii::$app->getFormatter()->asDate($model->date_start_grace_period).'-'.
-                        Yii::$app->getFormatter()->asDate($model->date_end_grace_period):'';
-            }],
-            ['attribute'=>'date_create','format'=>'date','label'=>'Дата добавления обучающегося'],
-            ['attribute'=>'status','content'=>function($model){
-                return  $model->status ? 'Действующий' : 'Не действующий';
-            }
+            ['attribute'=>'dateLastStatus.date_end','format'=>'date','header'=>'Дата отчисления'],
+            ['attribute'=>'grace_period','value'=>function($model){return Students::getGracePeriod()[$model->grace_period ? $model->grace_period : 0];}
+                ,'header'=>'Отсрочка льготного периода'
             ],
+            ['attribute'=>'date_start_grace_period','value'=>function($model){return ($model->date_start_grace_period and $model->date_end_grace_period)
+                ? Yii::$app->getFormatter()->asDate($model->date_start_grace_period).'-'.Yii::$app->getFormatter()->asDate($model->date_end_grace_period) : '';},
+                'header'=>'Срок действия академического права',
+            ],
+            ['attribute'=>'date_credit','header'=>'Дата заключения кредитного договора',],
+            ['attribute'=>'dateLastStatus.updated_at','header'=>'Дата изменения данных'],
+            ['attribute'=>'number_pp_credit','header'=>'Номер ПП по образовательному кредиту'],
+            ['attribute'=>'bank','header'=>'Наименование банка или иной кредитной организации'],
+            ['attribute'=>'date_status','format'=>'date','header'=>'Дата утрерждения отчета'],
         ],
     ]) ?>
 
