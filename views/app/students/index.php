@@ -30,7 +30,7 @@ $this->params['breadcrumbs'][] = $this->title;
                 ['class' => 'yii\grid\SerialColumn','header'=>'№ п/п'],
                 ['attribute'=>'name','header'=>'ФИО обучающегося'],
                 ['attribute'=>'organization.short_name','header'=>'Наименование ООВО'],
-                ['attribute'=>'code','header'=>'Код направления'],
+                ['attribute'=>'code','header'=>'Код направления подготовки'],
                 ['attribute'=>'education_status','header'=>'Статус  обучающегося','content'=>function($model){
                     return $model->education_status ? "Обучается" :" Не обучается";
                 }],
@@ -67,7 +67,7 @@ $this->params['breadcrumbs'][] = $this->title;
             //   'id',
             ['attribute'=>'name','header'=>'ФИО <br> обучающегося'],
             ['attribute'=>'organization.short_name','header'=>'Наименование <br> ООВО'],
-            ['attribute'=>'code','header'=>'Код <br> направления'],
+            ['attribute'=>'code','header'=>'Код <br> направления <br> подготовки'],
             ['attribute'=>'education_status','header'=>'Статус <br> обучающегося','content'=>function($model){
                 //$val = $model->education_status ? 'Обучается' : 'Не обучается';
                 return $model->education_status ? "<span class='label label-info'> Обучается</span>" :"<span class='label label-danger'> Не <br>обучается</span>";
