@@ -37,8 +37,8 @@ $this->params['breadcrumbs'][] = $this->title;
             ],
             ['attribute'=>'date_credit','header'=>'Дата заключения кредитного договора',],
             ['attribute'=>'dateLastStatus.updated_at','header'=>'Дата изменения данных'],
-            ['attribute'=>'number_pp_credit','header'=>'Номер ПП по образовательному кредиту'],
-            ['attribute'=>'bank','header'=>'Наименование банка или иной кредитной организации'],
+            ['attribute'=>'numberPP.number','header'=>'Номер ПП по образовательному кредиту'],
+            ['attribute'=>'bank.name','header'=>'Наименование банка или иной кредитной организации'],
             ['attribute'=>'date_status','format'=>'date','header'=>'Дата утрерждения отчета'],
         ],
     ]) ?>

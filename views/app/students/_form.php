@@ -1,5 +1,7 @@
 <?php
 
+use app\models\app\Banks;
+use app\models\app\students\NumbersPp;
 use app\models\app\students\Students;
 use app\models\User;
 use kartik\select2\Select2;
@@ -29,10 +31,10 @@ $cans = Yii::$app->session['cans'];
     </div>
     <div class="row">
         <div class="col-md-4">
-            <?=$form->field($model,'number_pp_credit')->input('number',['readonly'=>$readonly])?>
+            <?=$form->field($model,'id_number_pp')->dropDownList( NumbersPp::getNumbersArray(),['readonly'=>$readonly])?>
         </div>
         <div class="col-md-4">
-            <?=$form->field($model,'bank')->textInput(['readonly'=>$readonly])?>
+            <?=$form->field($model,'id_bank')->dropDownList( Banks::getBanksArray(),['readonly'=>$readonly])?>
         </div>
         <div class="col-md-4">
             <?=$form->field($model,'date_status')->input('date',['readonly'=>1])?>
