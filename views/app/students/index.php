@@ -44,8 +44,8 @@ $this->params['breadcrumbs'][] = $this->title;
                 ],
                 ['attribute'=>'date_credit','header'=>'Дата заключения кредитного договора',],
                 ['attribute'=>'dateLastStatus.updated_at','header'=>'Дата изменения данных'],
-                ['attribute'=>'number_pp_credit','header'=>'Номер ПП по образовательному кредиту'],
-                ['attribute'=>'bank','header'=>'Наименование банка или иной кредитной организации'],
+                ['attribute'=>'numberPP.number','header'=>'Номер ПП по образовательному кредиту'],
+                ['attribute'=>'bank.name','header'=>'Наименование банка или иной кредитной организации'],
                 ['attribute'=>'date_status','format'=>'date','header'=>'Дата утрерждения отчета'],
             ],
         ]) ?>
@@ -82,8 +82,8 @@ $this->params['breadcrumbs'][] = $this->title;
                 ],
             ['attribute'=>'date_credit','header'=>'Дата <br> заключения <br> кредитного <br> договора',],
             ['attribute'=>'dateLastStatus.updated_at','header'=>'Дата <br> изменения <br> данных'],
-            ['attribute'=>'number_pp_credit','header'=>'Номер <br> ПП <br> по <br> образовательному <br>кредиту'],
-            ['attribute'=>'bank','header'=>'Наименование <br> банка <br>или<br> иной <br> кредитной <br>организации'],
+            ['attribute'=>'numberPP.number','header'=>'Номер <br> ПП <br> по <br> образовательному <br>кредиту'],
+            ['attribute'=>'bank.name','header'=>'Наименование <br> банка <br>или<br> иной <br> кредитной <br>организации'],
             ['attribute'=>'date_status','format'=>'date','header'=>'Дата <br> утрерждения <br> отчета'],
 
         ],

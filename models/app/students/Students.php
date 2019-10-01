@@ -2,6 +2,7 @@
 
 namespace app\models\app\students;
 
+use app\models\app\Banks;
 use app\models\app\Organizations;
 use Yii;
 
@@ -20,9 +21,9 @@ use Yii;
  * @property string $date_start_grace_period
  * @property string $date_end_grace_period
  * @property string $date_credit
- * @property int $number_pp_credit
+ * @property int $id_number_pp
  * @property string $date_status
- * @property string $bank
+ * @property int $id_bank
  *
  * @var StudentDocs $docs
  *
@@ -56,9 +57,9 @@ class Students extends \yii\db\ActiveRecord
     {
         return [
             [['rasp_act0','rasp_act1','rasp_act2','rasp_act3','dogovor','rasp_act_otch'],'file'],
-            [['id_org', 'education_status', 'status', 'osnovanie', 'grace_period','number_pp_credit'], 'integer'],
+            [['id_org', 'education_status', 'status', 'osnovanie', 'grace_period','id_number_pp','id_bank'], 'integer'],
             [[ 'date_create', 'date_start_grace_period', 'date_end_grace_period','date_credit','date_status'], 'safe'],
-            [['name', 'code','bank'], 'string', 'max' => 255],
+            [['name', 'code',], 'string', 'max' => 255],
         ];
     }
 
@@ -117,5 +118,12 @@ class Students extends \yii\db\ActiveRecord
     public function getDocs()
     {
         return $this->hasMany(StudentDocs::className(),['id_student'=>'id']);
+    }
+    public function getBank()
+    {
+        return $this->hasOne(Banks::className(),['id'=>'id_bank']);
+    }
+    public function getNumberPP(){
+        return $this->hasOne(NumbersPp::className(),['id'=>'id_number_pp']);
     }
 }
