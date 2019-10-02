@@ -3,6 +3,7 @@
 namespace app\models\app\students;
 
 
+use yii\db\ActiveRecord;
 use yii\helpers\ArrayHelper;
 
 /**
@@ -12,7 +13,7 @@ use yii\helpers\ArrayHelper;
  * @property string $number
  * @property int $system_status
  */
-class NumbersPp extends \yii\db\ActiveRecord
+class NumbersPp extends ActiveRecord
 {
     /**
      * {@inheritdoc}

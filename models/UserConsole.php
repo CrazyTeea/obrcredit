@@ -5,6 +5,7 @@ namespace app\models;
 use mdm\admin\components\Configs;
 use mdm\admin\components\UserStatus;
 use Yii;
+use yii\base\Exception;
 use yii\base\NotSupportedException;
 use yii\behaviors\TimestampBehavior;
 use yii\db\ActiveRecord;
@@ -167,7 +168,7 @@ class UserConsole extends ActiveRecord implements IdentityInterface
 
     /**
      * @param $password
-     * @throws \yii\base\Exception
+     * @throws Exception
      */
     public function setPassword($password)
     {

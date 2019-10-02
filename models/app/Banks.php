@@ -3,6 +3,7 @@
 namespace app\models\app;
 
 use Yii;
+use yii\db\ActiveRecord;
 use yii\helpers\ArrayHelper;
 
 /**
@@ -12,7 +13,7 @@ use yii\helpers\ArrayHelper;
  * @property string $name
  * @property int $system_status
  */
-class Banks extends \yii\db\ActiveRecord
+class Banks extends ActiveRecord
 {
     /**
      * {@inheritdoc}

@@ -7,6 +7,7 @@ use crazyteea\beautyfiles\models\Files;
 use Yii;
 use yii\base\ErrorException;
 use yii\base\Exception;
+use yii\db\ActiveRecord;
 use yii\web\NotFoundHttpException;
 
 /**
@@ -17,7 +18,7 @@ use yii\web\NotFoundHttpException;
  * @property int $id_descriptor
  * @property int $id_student
  */
-class StudentDocs extends \yii\db\ActiveRecord
+class StudentDocs extends ActiveRecord
 {
 
     /**
@@ -81,7 +82,7 @@ class StudentDocs extends \yii\db\ActiveRecord
      * @return bool
      * @throws ErrorException
      * @throws NotFoundHttpException
-     * @throws \yii\base\Exception
+     * @throws Exception
      */
     public static function addDoc($model, $path, $descriptor){
         $doc = new StudentDocs();

@@ -18,36 +18,38 @@ $cans = Yii::$app->session['cans'];
 
     <?php $readonly =  $cans[2] ? 1 : null;
     $form = ActiveForm::begin(); ?>
-    <div class="row">
-        <div class="col-md-4">
-            <?= $form->field($model,'name')->textInput(['readonly'=>$readonly]) ?>
+    <?php if ($cans[2]):?>
+        <div class="row">
+            <div class="col-md-4">
+                <?= $form->field($model,'name')->textInput(['readonly'=>$readonly]) ?>
+            </div>
+            <div class="col-md-4">
+                <?= $form->field($model,'code')->textInput(['readonly'=>$readonly])?>
+            </div>
+            <div class="col-md-4">
+                <?= $form->field($model,'date_credit')->textInput(['readonly'=>$readonly])?>
+            </div>
         </div>
-        <div class="col-md-4">
-            <?= $form->field($model,'code')->textInput(['readonly'=>$readonly])?>
+        <div class="row">
+            <div class="col-md-4">
+                <?=$form->field($model,'id_number_pp')->dropDownList( NumbersPp::getNumbersArray(),['readonly'=>$readonly])?>
+            </div>
+            <div class="col-md-4">
+                <?=$form->field($model,'id_bank')->dropDownList( Banks::getBanksArray(),['readonly'=>$readonly])?>
+            </div>
+            <div class="col-md-4">
+                <?=$form->field($model,'date_status')->input('date',['readonly'=>1])?>
+            </div>
         </div>
-        <div class="col-md-4">
-            <?= $form->field($model,'date_credit')->textInput(['readonly'=>$readonly])?>
+        <div style="display: none">
+            <?= $form->field($model,'osnovanie')->radio([
+                'label'=>'s','value'=>0,'uncheck'=>null
+            ])->label(false) ?>
+            <?= $form->field($model,'grace_period')->radio([
+                'label'=>'s','value'=>0,'uncheck'=>null
+            ])->label(false) ?>
         </div>
-    </div>
-    <div class="row">
-        <div class="col-md-4">
-            <?=$form->field($model,'id_number_pp')->dropDownList( NumbersPp::getNumbersArray(),['readonly'=>$readonly])?>
-        </div>
-        <div class="col-md-4">
-            <?=$form->field($model,'id_bank')->dropDownList( Banks::getBanksArray(),['readonly'=>$readonly])?>
-        </div>
-        <div class="col-md-4">
-            <?=$form->field($model,'date_status')->input('date',['readonly'=>1])?>
-        </div>
-    </div>
-    <div style="display: none">
-        <?= $form->field($model,'osnovanie')->radio([
-            'label'=>'s','value'=>0,'uncheck'=>null
-        ])->label(false) ?>
-        <?= $form->field($model,'grace_period')->radio([
-            'label'=>'s','value'=>0,'uncheck'=>null
-        ])->label(false) ?>
-    </div>
+    <?php endif;?>
 
 
 

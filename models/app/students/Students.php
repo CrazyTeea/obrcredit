@@ -5,6 +5,7 @@ namespace app\models\app\students;
 use app\models\app\Banks;
 use app\models\app\Organizations;
 use Yii;
+use yii\db\ActiveRecord;
 
 /**
  * This is the model class for table "students".
@@ -32,7 +33,7 @@ use Yii;
  *
  *
  */
-class Students extends \yii\db\ActiveRecord
+class Students extends ActiveRecord
 {
     public $rasp_act0,
         $rasp_act1,
