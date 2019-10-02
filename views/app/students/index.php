@@ -61,32 +61,7 @@ $this->params['breadcrumbs'][] = $this->title;
         'dataProvider' => $dataProvider,
         'filterModel' => $searchModel,
         //'options'=>['id'=>'PrintThis'],
-        'columns' => [
-            ['class' => 'yii\grid\SerialColumn'],
-
-            //   'id',
-            ['attribute'=>'name','header'=>'ФИО <br> обучающегося'],
-            ['attribute'=>'organization.short_name','header'=>'Наименование <br> ООВО'],
-            ['attribute'=>'code','header'=>'Код <br> направления <br> подготовки'],
-            ['attribute'=>'education_status','header'=>'Статус <br> обучающегося','content'=>function($model){
-                //$val = $model->education_status ? 'Обучается' : 'Не обучается';
-                return $model->education_status ? "<span class='label label-info'> Обучается</span>" :"<span class='label label-danger'> Не <br>обучается</span>";
-            }],
-            ['attribute'=>'dateLastStatus.date_end','format'=>'date','header'=>'Дата <br> отчисления'],
-            ['attribute'=>'grace_period','value'=>function($model){return Students::getGracePeriod()[$model->grace_period ? $model->grace_period : 0];}
-            ,'header'=>'Отсрочка <br> льготного <br> периода'
-            ],
-            ['attribute'=>'date_start_grace_period','value'=>function($model){return ($model->date_start_grace_period and $model->date_end_grace_period)
-                ? Yii::$app->getFormatter()->asDate($model->date_start_grace_period).'-'.Yii::$app->getFormatter()->asDate($model->date_end_grace_period) : '';},
-                'header'=>'Срок <br> действия <br>академического <br> права',
-                ],
-            ['attribute'=>'date_credit','header'=>'Дата <br> заключения <br> кредитного <br> договора',],
-            ['attribute'=>'dateLastStatus.updated_at','header'=>'Дата <br> изменения <br> данных'],
-            ['attribute'=>'numberPP.number','header'=>'Номер <br> ПП <br> по <br> образовательному <br>кредиту'],
-            ['attribute'=>'bank.name','header'=>'Наименование <br> банка <br>или<br> иной <br> кредитной <br>организации'],
-            ['attribute'=>'date_status','format'=>'date','header'=>'Дата <br> утрерждения <br> отчета'],
-
-        ],
+        'columns' => $columns,
         'rowOptions'=>function($model, $index, $attribute)
         {
             $url = Url::to(['view','id'=>$model->id]);
