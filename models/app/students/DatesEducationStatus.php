@@ -3,6 +3,7 @@
 namespace app\models\app\students;
 
 use Yii;
+use yii\db\ActiveRecord;
 
 /**
  * This is the model class for table "dates_education_status".
@@ -13,7 +14,7 @@ use Yii;
  * @property string $date_end
  * @property string $updated_at
  */
-class DatesEducationStatus extends \yii\db\ActiveRecord
+class DatesEducationStatus extends ActiveRecord
 {
     /**
      * {@inheritdoc}

@@ -4,6 +4,7 @@ use app\models\app\students\StudentDocs;
 use app\models\app\students\Students;
 use app\models\User;
 use yii\helpers\Html;
+use yii\web\YiiAsset;
 use yii\widgets\DetailView;
 
 /* @var $this yii\web\View */
@@ -15,7 +16,7 @@ if ($cans[0] || $cans[1])
     $this->params['breadcrumbs'][] = ['label' => 'Организация', 'url' => ['app/organizations/index']];
 $this->params['breadcrumbs'][] = ['label' => 'Обучающиеся', 'url' => ['index']];
 $this->params['breadcrumbs'][] = $this->title;
-\yii\web\YiiAsset::register($this);
+YiiAsset::register($this);
 
 
 $rasp_act0 = StudentDocs::getDocByDescriptorName('rasp_act0',$model->id);

@@ -8,11 +8,14 @@ use app\models\app\students\DatesEducationStatus;
 use app\models\app\students\StudentDocs;
 use app\models\User;
 use PhpOffice\PhpWord\TemplateProcessor;
+use Throwable;
 use Yii;
 use app\models\app\students\Students;
 use app\models\app\students\StudentsSearch;
+use yii\db\StaleObjectException;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
+use yii\web\Response;
 
 /**
  * StudentsController implements the CRUD actions for Students model.
@@ -111,7 +114,7 @@ class StudentsController extends AppController
 
 
     /**
-     * @return string|\yii\web\Response
+     * @return string|Response
      */
     public function actionCreate()
     {
@@ -145,7 +148,7 @@ class StudentsController extends AppController
 
     /**
      * @param $id
-     * @return string|\yii\web\Response
+     * @return string|Response
      * @throws NotFoundHttpException
      */
     public function actionUpdate($id)
@@ -183,10 +186,10 @@ class StudentsController extends AppController
 
     /**
      * @param $id
-     * @return \yii\web\Response
+     * @return Response
      * @throws NotFoundHttpException
-     * @throws \Throwable
-     * @throws \yii\db\StaleObjectException
+     * @throws Throwable
+     * @throws StaleObjectException
      */
     public function actionDelete($id)
     {

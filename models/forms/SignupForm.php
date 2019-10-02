@@ -6,6 +6,7 @@ namespace app\models\forms;
 
 use app\models\User;
 use Yii;
+use yii\base\Exception;
 use yii\base\Model;
 use yii\rbac\PhpManager;
 
@@ -39,7 +40,7 @@ class SignupForm extends Model
 
     /**
      * @return bool|null
-     * @throws \yii\base\Exception
+     * @throws Exception
      */
     public function signup()
     {

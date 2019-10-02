@@ -4,6 +4,7 @@ namespace app\models\app;
 
 use app\models\app\students\Students;
 use Yii;
+use yii\db\ActiveRecord;
 use yii\helpers\ArrayHelper;
 
 /**
@@ -15,7 +16,7 @@ use yii\helpers\ArrayHelper;
  * @property string $short_name
  * @property string $full_name
  */
-class Organizations extends \yii\db\ActiveRecord
+class Organizations extends ActiveRecord
 {
     public static function className()
     {
