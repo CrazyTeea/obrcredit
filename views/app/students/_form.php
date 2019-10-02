@@ -18,7 +18,7 @@ $cans = Yii::$app->session['cans'];
 
     <?php $readonly =  $cans[2] ? 1 : null;
     $form = ActiveForm::begin(); ?>
-    <?php if ($cans[2]):?>
+    <?php if (!$cans[2]):?>
         <div class="row">
             <div class="col-md-4">
                 <?= $form->field($model,'name')->textInput(['readonly'=>$readonly]) ?>
