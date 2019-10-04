@@ -33,7 +33,7 @@ $this->params['breadcrumbs'][] = $this->title;
             ['attribute'=>'name','header'=>'ФИО обучающегося'],
             ['attribute'=>'organization.short_name','header'=>'Наименование ООВО'],
             ['attribute'=>'code','header'=>'Код направления подготовки'],
-            ['attribute'=>'education_status','header'=>'Статус  обучающегося','content'=>function($model){
+            ['attribute'=>'education_status','header'=>'Статус обучающегося','content'=>function($model){
                 return $model->education_status ? "Обучается" :" Не обучается";
             }],
             ['attribute'=>'dateLastStatus.date_end','format'=>'date','header'=>'Дата отчисления'],
