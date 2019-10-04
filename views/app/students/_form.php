@@ -105,11 +105,11 @@ $cans = Yii::$app->session['cans'];
                 ])->label(false) ?>
 
             </td>
-            <td rowspan="5" style="text-align: center; vertical-align: middle;" >
+            <td rowspan="3" style="text-align: center; vertical-align: middle;" >
                 <p class="text-center">
-                    <?= $form->field($model,'date_start_grace_period')->input('date')?>
+                    <?= $form->field($model,'date_start_grace_period1')->input('date')?>
                     -
-                    <?= $form->field($model,'date_end_grace_period')->input('date')?>
+                    <?= $form->field($model,'date_end_grace_period1')->input('date')?>
                 </p>
             </td>
             <td rowspan="3">
@@ -150,6 +150,13 @@ $cans = Yii::$app->session['cans'];
                 ])->label(false) ?>
             </td>
             <td>
+                <p class="text-center">
+                    <?= $form->field($model,'date_start_grace_period2')->input('date')?>
+                    -
+                    <?= $form->field($model,'date_end_grace_period2')->input('date')?>
+                </p>
+            </td>
+            <td>
                 <?= $form->field($model,'rasp_act2')->fileInput()->label('ООВО загружает копию распорядительного акта образовательной организации')//$rasp_act2 ?  $rasp_act2->file->name : 'Файл не загружен' ?>
             </td>
 
@@ -169,6 +176,13 @@ $cans = Yii::$app->session['cans'];
                 <?= $form->field($model,'grace_period')->radio([
                     'label'=>'отпуск по уходу за ребенком по достижении им 3-х лет','value'=>3,'uncheck'=>null
                 ])->label(false) ?>
+            </td>
+            <td>
+                <p class="text-center">
+                    <?= $form->field($model,'date_start_grace_period3')->input('date')?>
+                    -
+                    <?= $form->field($model,'date_end_grace_period3')->input('date')?>
+                </p>
             </td>
             <td>
                 <?= $form->field($model,'rasp_act3')->fileInput()->label('ООВО загружает копию распорядительного акта образовательной организации')// $rasp_act3 ?  $rasp_act3->file->name : 'Файл не загружен' ?>
