@@ -35,6 +35,7 @@ return [
             '/app/students/update',
             '/site/index',
             '/app/students/download',
+            '/app/students/approve',
         ],
     ],
     '/app/students/*' => [
@@ -74,6 +75,9 @@ return [
         'type' => 2,
     ],
     '/app/students/download' => [
+        'type' => 2,
+    ],
+    '/app/students/approve' => [
         'type' => 2,
     ],
 ];

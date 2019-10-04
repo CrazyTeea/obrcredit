@@ -71,6 +71,7 @@ class StudentsController extends AppController
                 //$val = $model->education_status ? 'Обучается' : 'Не обучается';
                 $os = mb_substr(Students::getOsnovanie()[ $model->osnovanie ],0,50);
                 $data = "";
+                //sdfsdfdsw
                 switch ($model->osnovanie){
                     case 1:
                     case 2:
