@@ -83,5 +83,13 @@ $this->params['breadcrumbs'][] = $this->title;
     </div>
 
     <?php Pjax::end(); ?>
+    <div class="raw">
+        <div class="col-md-6"></div>
+        <div class="col-md-6 text-right">
+            <?= Html::a('Утвердить!',['approve'],['class'=>'btn btn-danger','data' => [
+                'confirm' => 'Вы уверены?',
+            ],]) ?>
+        </div>
+    </div>
 
 </div>

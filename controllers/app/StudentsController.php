@@ -107,6 +107,16 @@ class StudentsController extends AppController
             'columns' => $columns
         ]);
     }
+    public function actionApprove(){
+        $id_org = Yii::$app->getSession()['id_org'];
+        $students = Students::findAll(['id_org'=>$id_org]);
+        foreach ($students as $student){
+            $student->status = 2;
+            $student->date_status = date('Y-m-d');
+            $student->save();
+        }
+        return $this->redirect(['index']);
+    }
     public function actionExport($id = null){
         $student = Students::findOne($id);
         $document = new TemplateProcessor('templates/export.docx');
