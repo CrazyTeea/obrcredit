@@ -43,7 +43,7 @@ class StudentsSearch extends Students
      */
     public function search($params)
     {
-        $query = Students::find();
+        $query = Students::find()->joinWith(['organization','dateStatuses','numberPP','bank']);
 
        /* if ( User::$cans[2])
             $query->andWhere(['id_org'=>User::findIdentity(Yii::$app->getUser()->getId())->id_org]);*/
@@ -52,6 +52,38 @@ class StudentsSearch extends Students
 
         $dataProvider = new ActiveDataProvider([
             'query' => $query,
+        ]);
+        $dataProvider->setSort([
+                'attributes'=>[
+                    'name',
+                    'code',
+                    'education_status',
+                    'grace_period',
+                    'date_start_grace_period1',
+                    'date_create',
+                    'date_credit',
+                    'date_status',
+                    'bank'=>[
+                        'asc' => ['banks.name' => SORT_ASC],
+                        'desc' => ['banks.name' => SORT_DESC],
+                        'default' => SORT_DESC
+                    ],
+                    'numberPP'=>[
+                        'asc' => ['numbers_pp.number' => SORT_ASC],
+                        'desc' => ['numbers_pp.number' => SORT_DESC],
+                        'default' => SORT_DESC
+                    ],
+                    'organization'=>[
+                        'asc' => ['organizations.short_name' => SORT_ASC],
+                        'desc' => ['organizations.short_name' => SORT_DESC],
+                        'default' => SORT_DESC
+                    ],
+                    'dateLastStatus'=>[
+                        'asc' => ['dates_education_status.updated_at' => SORT_ASC],
+                        'desc' => ['dates_education_status.updated_at' => SORT_DESC],
+                        'default' => SORT_DESC
+                    ]
+                ]
         ]);
 
         $this->load($params);

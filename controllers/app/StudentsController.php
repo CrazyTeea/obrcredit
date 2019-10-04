@@ -64,18 +64,18 @@ class StudentsController extends AppController
 
         $columns = [
             ['class' => 'yii\grid\SerialColumn'],
-            ['attribute'=>'name','header'=>'ФИО <br> обучающегося'],
-            ['attribute'=>'organization.short_name','header'=>'Наименование <br> ООВО'],
-            ['attribute'=>'code','header'=>'Код <br> направления <br> подготовки'],
-            ['attribute'=>'education_status','header'=>'Статус <br> обучающегося','content'=>function($model){
+            ['attribute'=>'name','label'=>"ФИО <br> обучающегося",'encodeLabel'=>false],
+            ['attribute'=>'organization','value'=>'organization.short_name','label'=>'Наименование <br> ООВО','encodeLabel'=>false],
+            ['attribute'=>'code','label'=>'Код <br> направления <br> подготовки','encodeLabel'=>false],
+            ['attribute'=>'education_status','label'=>'Статус <br> обучающегося','encodeLabel'=>false,'content'=>function($model){
                 //$val = $model->education_status ? 'Обучается' : 'Не обучается';
                 return $model->education_status ? "<span class='label label-info'> Обучается</span>" :"<span class='label label-danger'> Не <br>обучается</span>";
             }],
-            ['attribute'=>'dateLastStatus.date_end','format'=>'date','header'=>'Дата <br> отчисления'],
-            ['attribute'=>'grace_period','value'=>function($model){return Students::getGracePeriod()[$model->grace_period ? $model->grace_period : 0];}
-                ,'header'=>'Отсрочка <br> льготного <br> периода'
+            ['attribute'=>'dateLastStatus','value'=>'dateLastStatus.date_end','format'=>'date','label'=>'Дата <br> отчисления','encodeLabel'=>false],
+            ['attribute'=>'grace_period','encodeLabel'=>false,'value'=>function($model){return Students::getGracePeriod()[$model->grace_period ? $model->grace_period : 0];}
+                ,'label'=>'Отсрочка <br> льготного <br> периода'
             ],
-            ['attribute'=>'date_start_grace_period1','value'=>
+            ['attribute'=>'date_start_grace_period1','encodeLabel'=>false,'value'=>
                 function($model){
                     if ($model->date_start_grace_period1 and $model->date_end_grace_period1 and $model->grace_period == 1)
                         return Yii::$app->getFormatter()->asDate($model->date_start_grace_period1).'-'.Yii::$app->getFormatter()->asDate($model->date_end_grace_period1);
@@ -85,17 +85,17 @@ class StudentsController extends AppController
                         return Yii::$app->getFormatter()->asDate($model->date_start_grace_period3).'-'.Yii::$app->getFormatter()->asDate($model->date_end_grace_period3);
                     return '';
                 } ,
-                'header'=>'Срок <br> действия <br>академического <br> права',
+                'label'=>'Срок <br> действия <br>академического <br> права',
             ],
-            ['attribute'=>'date_credit','header'=>'Дата <br> заключения <br> кредитного <br> договора',],
-            ['attribute'=>'dateLastStatus.updated_at','header'=>'Дата <br> изменения <br> данных'],
+            ['attribute'=>'date_credit','encodeLabel'=>false,'label'=>'Дата <br> заключения <br> кредитного <br> договора',],
+            ['attribute'=>'dateLastStatus','encodeLabel'=>false,'value'=>'dateLastStatus.updated_at','label'=>'Дата <br> изменения <br> данных'],
         ];
 
         if (!$this->cans[2]) {
             $columns = ArrayHelper::merge( $columns, [
-                ['attribute' => 'numberPP.number', 'header' => 'Номер <br> ПП <br> по <br> образовательному <br>кредиту'],
-                ['attribute' => 'bank.name', 'header' => 'Наименование <br> банка <br>или<br> иной <br> кредитной <br>организации'],
-                ['attribute' => 'date_status', 'format' => 'date', 'header' => 'Дата <br> утрерждения <br> отчета'],
+                ['attribute' => 'numberPP','value' => 'numberPP.number','encodeLabel'=>false, 'label' => 'Номер <br> ПП <br> по <br> образовательному <br>кредиту'],
+                ['attribute' => 'bank','value'=>'bank.name','encodeLabel'=>false, 'label' => 'Наименование <br> банка <br>или<br> иной <br> кредитной <br>организации'],
+                ['attribute' => 'date_status','encodeLabel'=>false, 'format' => 'date', 'label' => 'Дата <br> утрерждения <br> отчета'],
             ] );
         }
 
