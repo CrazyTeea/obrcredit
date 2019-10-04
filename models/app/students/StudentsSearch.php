@@ -72,8 +72,12 @@ class StudentsSearch extends Students
             'status' => $this->status,
             'osnovanie' => $this->osnovanie,
             'grace_period' => $this->grace_period,
-            'date_start_grace_period' => $this->date_start_grace_period,
-            'date_end_grace_period' => $this->date_end_grace_period,
+            'date_start_grace_period1' => $this->date_start_grace_period1,
+            'date_end_grace_period1' => $this->date_end_grace_period1,
+            'date_start_grace_period2' => $this->date_start_grace_period2,
+            'date_end_grace_period2' => $this->date_end_grace_period2,
+            'date_start_grace_period3' => $this->date_start_grace_period3,
+            'date_end_grace_period3' => $this->date_end_grace_period3,
         ]);
 
         $query->andFilterWhere(['like', 'name', $this->name])

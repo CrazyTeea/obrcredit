@@ -13,6 +13,7 @@ use Yii;
 use app\models\app\students\Students;
 use app\models\app\students\StudentsSearch;
 use yii\db\StaleObjectException;
+use yii\helpers\ArrayHelper;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
 use yii\web\Response;
@@ -61,10 +62,8 @@ class StudentsController extends AppController
         $searchModel->id_org = Yii::$app->session['id_org'];
         $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
 
-        $columns = (!$this->cans[2]) ? [
+        $columns = [
             ['class' => 'yii\grid\SerialColumn'],
-
-            //   'id',
             ['attribute'=>'name','header'=>'ФИО <br> обучающегося'],
             ['attribute'=>'organization.short_name','header'=>'Наименование <br> ООВО'],
             ['attribute'=>'code','header'=>'Код <br> направления <br> подготовки'],
@@ -76,42 +75,31 @@ class StudentsController extends AppController
             ['attribute'=>'grace_period','value'=>function($model){return Students::getGracePeriod()[$model->grace_period ? $model->grace_period : 0];}
                 ,'header'=>'Отсрочка <br> льготного <br> периода'
             ],
-            ['attribute'=>'date_start_grace_period','value'=>function($model){return ($model->date_start_grace_period and $model->date_end_grace_period)
-                ? Yii::$app->getFormatter()->asDate($model->date_start_grace_period).'-'.Yii::$app->getFormatter()->asDate($model->date_end_grace_period) : '';},
+            ['attribute'=>'date_start_grace_period1','value'=>
+                function($model){
+                    if ($model->date_start_grace_period1 and $model->date_end_grace_period1 and $model->grace_period == 1)
+                        return Yii::$app->getFormatter()->asDate($model->date_start_grace_period1).'-'.Yii::$app->getFormatter()->asDate($model->date_end_grace_period1);
+                    if ($model->date_start_grace_period2 and $model->date_end_grace_period2 and $model->grace_period == 2)
+                        return Yii::$app->getFormatter()->asDate($model->date_start_grace_period2).'-'.Yii::$app->getFormatter()->asDate($model->date_end_grace_period2);
+                    if ($model->date_start_grace_period3 and $model->date_end_grace_period3 and $model->grace_period == 3)
+                        return Yii::$app->getFormatter()->asDate($model->date_start_grace_period3).'-'.Yii::$app->getFormatter()->asDate($model->date_end_grace_period3);
+                    return '';
+                } ,
                 'header'=>'Срок <br> действия <br>академического <br> права',
             ],
             ['attribute'=>'date_credit','header'=>'Дата <br> заключения <br> кредитного <br> договора',],
             ['attribute'=>'dateLastStatus.updated_at','header'=>'Дата <br> изменения <br> данных'],
-            ['attribute'=>'numberPP.number','header'=>'Номер <br> ПП <br> по <br> образовательному <br>кредиту'],
-            ['attribute'=>'bank.name','header'=>'Наименование <br> банка <br>или<br> иной <br> кредитной <br>организации'],
-            ['attribute'=>'date_status','format'=>'date','header'=>'Дата <br> утрерждения <br> отчета'],
-
-        ] : [
-            ['class' => 'yii\grid\SerialColumn'],
-
-            //   'id',
-            ['attribute'=>'name','header'=>'ФИО <br> обучающегося'],
-            ['attribute'=>'organization.short_name','header'=>'Наименование <br> ООВО'],
-            ['attribute'=>'code','header'=>'Код <br> направления <br> подготовки'],
-            ['attribute'=>'education_status','header'=>'Статус <br> обучающегося','content'=>function($model){
-                //$val = $model->education_status ? 'Обучается' : 'Не обучается';
-                return $model->education_status ? "<span class='label label-info'> Обучается</span>" :"<span class='label label-danger'> Не <br>обучается</span>";
-            }],
-            ['attribute'=>'dateLastStatus.date_end','format'=>'date','header'=>'Дата <br> отчисления'],
-            ['attribute'=>'grace_period','value'=>function($model){return Students::getGracePeriod()[$model->grace_period ? $model->grace_period : 0];}
-                ,'header'=>'Отсрочка <br> льготного <br> периода'
-            ],
-            ['attribute'=>'date_start_grace_period','value'=>function($model){return ($model->date_start_grace_period and $model->date_end_grace_period)
-                ? Yii::$app->getFormatter()->asDate($model->date_start_grace_period).'-'.Yii::$app->getFormatter()->asDate($model->date_end_grace_period) : '';},
-                'header'=>'Срок <br> действия <br>академического <br> права',
-            ],
-            ['attribute'=>'date_credit','header'=>'Дата <br> заключения <br> кредитного <br> договора',],
-            ['attribute'=>'dateLastStatus.updated_at','header'=>'Дата <br> изменения <br> данных'],
-           // ['attribute'=>'numberPP.number','header'=>'Номер <br> ПП <br> по <br> образовательному <br>кредиту'],
-          //  ['attribute'=>'bank.name','header'=>'Наименование <br> банка <br>или<br> иной <br> кредитной <br>организации'],
-          //  ['attribute'=>'date_status','format'=>'date','header'=>'Дата <br> утрерждения <br> отчета'],
-
         ];
+
+        if (!$this->cans[2]) {
+            $columns = ArrayHelper::merge( $columns, [
+                ['attribute' => 'numberPP.number', 'header' => 'Номер <br> ПП <br> по <br> образовательному <br>кредиту'],
+                ['attribute' => 'bank.name', 'header' => 'Наименование <br> банка <br>или<br> иной <br> кредитной <br>организации'],
+                ['attribute' => 'date_status', 'format' => 'date', 'header' => 'Дата <br> утрерждения <br> отчета'],
+            ] );
+        }
+
+
 
         return $this->render('index', [
             'searchModel' => $searchModel,
