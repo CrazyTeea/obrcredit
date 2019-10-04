@@ -69,13 +69,58 @@ class StudentsController extends AppController
             ['attribute'=>'code','label'=>'Код <br> направления <br> подготовки','encodeLabel'=>false],
             ['attribute'=>'education_status','label'=>'Статус <br> обучающегося','encodeLabel'=>false,'content'=>function($model){
                 //$val = $model->education_status ? 'Обучается' : 'Не обучается';
-                return $model->education_status ? "<span class='label label-info'> Обучается</span>" :"<span class='label label-danger'> Не <br>обучается</span>";
+                $os = mb_substr(Students::getOsnovanie()[ $model->osnovanie ],0,50);
+                $data = "";
+                switch ($model->osnovanie){
+                    case 1:
+                    case 2:
+                    case 3:{
+                        $data = "(Пункт 20 $os)";
+                        break;
+                    }
+                    case 4:
+                    case 5:{
+                        $data = "(Пункт 21 $os)";
+                        break;
+                    }
+                    case 6:{
+                        $data = "(Пункт 22 $os)";
+                        break;
+                    }
+                    default:{$data = ""; break;}
+                }
+                return $model->education_status ? "<span class='label label-info'> Обучается</span>" :Yii::$app->getFormatter()->asDate($model->dateLastStatus->date_end).$data;
             }],
-            ['attribute'=>'dateLastStatus','value'=>'dateLastStatus.date_end','format'=>'date','label'=>'Дата <br> отчисления','encodeLabel'=>false],
-            ['attribute'=>'grace_period','encodeLabel'=>false,'value'=>function($model){return Students::getGracePeriod()[$model->grace_period ? $model->grace_period : 0];}
-                ,'label'=>'Отсрочка <br> льготного <br> периода'
+           // ['attribute'=>'dateLastStatus','value'=>'dateLastStatus.date_end','format'=>'date','label'=>'Дата <br> отчисления','encodeLabel'=>false],
+            ['attribute'=>'grace_period','encodeLabel'=>false,'value'=>
+                function($model){
+                    $data = "";
+                    switch ($model->grace_period){
+                        case 1:{
+                            $date = ($model->date_start_grace_period1 and $model->date_end_grace_period1 ) ?
+                                Yii::$app->getFormatter()->asDate($model->date_start_grace_period1).'-'.Yii::$app->getFormatter()->asDate($model->date_end_grace_period1) : '';
+                            $data = Students::getGracePeriod()[1] . "($date)";
+                            break;
+                        }
+                        case 2:{
+                            $date = ($model->date_start_grace_period2 and $model->date_end_grace_period2 ) ?
+                                Yii::$app->getFormatter()->asDate($model->date_start_grace_period2).'-'.Yii::$app->getFormatter()->asDate($model->date_end_grace_period2) : '';
+                            $data = Students::getGracePeriod()[2] . "($date)";
+                            break;
+                        }
+                        case 3:{
+                            $date = ($model->date_start_grace_period3 and $model->date_end_grace_period3 ) ?
+                                Yii::$app->getFormatter()->asDate($model->date_start_grace_period3).'-'.Yii::$app->getFormatter()->asDate($model->date_end_grace_period3) : '';
+                            $data = Students::getGracePeriod()[3] . "($date)";
+                            break;
+                        }
+                        default: {$data = ''; break;}
+                    }
+                    return $data;
+                }
+                ,'label'=>'Пролонгация<br>льготного<br>периода'
             ],
-            ['attribute'=>'date_start_grace_period1','encodeLabel'=>false,'value'=>
+            /*['attribute'=>'date_start_grace_period1','encodeLabel'=>false,'value'=>
                 function($model){
                     if ($model->date_start_grace_period1 and $model->date_end_grace_period1 and $model->grace_period == 1)
                         return Yii::$app->getFormatter()->asDate($model->date_start_grace_period1).'-'.Yii::$app->getFormatter()->asDate($model->date_end_grace_period1);
@@ -86,7 +131,7 @@ class StudentsController extends AppController
                     return '';
                 } ,
                 'label'=>'Срок <br> действия <br>академического <br> права',
-            ],
+            ],*/
             ['attribute'=>'date_credit','encodeLabel'=>false,'label'=>'Дата <br> заключения <br> кредитного <br> договора',],
             ['attribute'=>'dateLastStatus','encodeLabel'=>false,'value'=>'dateLastStatus.updated_at','label'=>'Дата <br> изменения <br> данных'],
         ];
