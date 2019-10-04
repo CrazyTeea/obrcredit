@@ -83,7 +83,7 @@ $this->params['breadcrumbs'][] = $this->title;
     </div>
 
     <?php Pjax::end(); ?>
-    <?php if ($cans[2]):?>
+    <?php if ($cans[2] || $cans[0]):?>
         <div class="raw">
             <div class="col-md-6"></div>
             <div class="col-md-6 text-right">
