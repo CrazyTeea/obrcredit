@@ -103,10 +103,10 @@ $rasp_act_otch = StudentDocs::getDocByDescriptorName('rasp_act_otch',$model->id)
                 else echo "<p class='text-sm-center'> &#9744; $k</p>";
                 ?>
             </td>
-            <td rowspan="5" style="text-align: center; vertical-align: middle;" ><p class="text-center">
-                    <?= Yii::$app->getFormatter()->asDate($model->date_start_grace_period) ?>
+            <td rowspan="3" style="text-align: center; vertical-align: middle;" ><p class="text-center">
+                    <?= Yii::$app->getFormatter()->asDate($model->date_start_grace_period1) ?>
                     -
-                    <?= Yii::$app->getFormatter()->asDate($model->date_end_grace_period) ?>
+                    <?= Yii::$app->getFormatter()->asDate($model->date_end_grace_period1) ?>
                 </p>
             </td>
             <td rowspan="3">
@@ -149,6 +149,12 @@ $rasp_act_otch = StudentDocs::getDocByDescriptorName('rasp_act_otch',$model->id)
                 else echo "<p class='text-sm-center'> &#9744; $k</p>";
                 ?>
             </td>
+            <td  style="text-align: center; vertical-align: middle;" ><p class="text-center">
+                    <?= Yii::$app->getFormatter()->asDate($model->date_start_grace_period2) ?>
+                    -
+                    <?= Yii::$app->getFormatter()->asDate($model->date_end_grace_period2) ?>
+                </p>
+            </td>
             <td>
                 <?= $rasp_act2 ? Html::a($rasp_act2->file->name,['download','id'=>$rasp_act2->id])  : 'Файл не загружен' ?>
             </td>
@@ -175,6 +181,12 @@ $rasp_act_otch = StudentDocs::getDocByDescriptorName('rasp_act_otch',$model->id)
                     echo "<p class='text-sm-center' > &#9745; {$k} </p>";
                 else echo "<p class='text-sm-center'> &#9744; $k</p>";
                 ?>
+            </td>
+            <td  style="text-align: center; vertical-align: middle;" ><p class="text-center">
+                    <?= Yii::$app->getFormatter()->asDate($model->date_start_grace_period3) ?>
+                    -
+                    <?= Yii::$app->getFormatter()->asDate($model->date_end_grace_period3) ?>
+                </p>
             </td>
             <td>
                 <?= $rasp_act3 ? Html::a($rasp_act3->file->name,['download','id'=>$rasp_act3->id])  : 'Файл не загружен' ?>

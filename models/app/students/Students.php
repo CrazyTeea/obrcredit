@@ -19,8 +19,12 @@ use yii\db\ActiveRecord;
  * @property int $status
  * @property int $osnovanie
  * @property int $grace_period
- * @property string $date_start_grace_period
- * @property string $date_end_grace_period
+ * @property string $date_start_grace_period1
+ * @property string $date_end_grace_period1
+ * @property string $date_start_grace_period2
+ * @property string $date_end_grace_period2
+ * @property string $date_start_grace_period3
+ * @property string $date_end_grace_period3
  * @property string $date_credit
  * @property int $id_number_pp
  * @property string $date_status
@@ -59,7 +63,11 @@ class Students extends ActiveRecord
         return [
             [['rasp_act0','rasp_act1','rasp_act2','rasp_act3','dogovor','rasp_act_otch'],'file'],
             [['id_org', 'education_status', 'status', 'osnovanie', 'grace_period','id_number_pp','id_bank'], 'integer'],
-            [[ 'date_create', 'date_start_grace_period', 'date_end_grace_period','date_credit','date_status'], 'safe'],
+            [[ 'date_create',
+                'date_start_grace_period1', 'date_end_grace_period1',
+                'date_start_grace_period2', 'date_end_grace_period2',
+                'date_start_grace_period3', 'date_end_grace_period3',
+                'date_credit','date_status'], 'safe'],
             [['name', 'code',], 'string', 'max' => 255],
         ];
     }
@@ -80,8 +88,12 @@ class Students extends ActiveRecord
             'status' => 'Статус отчета',
             'osnovanie' => 'Основание',
             'grace_period' => 'Отсрочка льготного периода',
-            'date_start_grace_period' => 'Начало',
-            'date_end_grace_period' => 'Конец',
+            'date_start_grace_period1' => 'Начало',
+            'date_end_grace_period1' => 'Конец',
+            'date_start_grace_period2' => 'Начало',
+            'date_end_grace_period2' => 'Конец',
+            'date_start_grace_period3' => 'Начало',
+            'date_end_grace_period3' => 'Конец',
             'date_credit'=>'Дата заключения кредитного договора',
             'id_number_pp'=>'Номер ПП по образовательному кредиту',
             'id_bank'=>'Наименование банка или иной кредитной организации',
