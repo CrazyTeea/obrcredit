@@ -90,7 +90,7 @@ class StudentsController extends AppController
                     }
                     default:{$data = ""; break;}
                 }
-                return $model->education_status ? "<span class='label label-info'> Обучается</span>" :Yii::$app->getFormatter()->asDate($model->dateLastStatus->date_end ? $model->dateLastStatus->date_end : null).$data;
+                return $model->education_status ? "<span class='label label-info'> Обучается</span>" :Yii::$app->getFormatter()->asDate(!empty($model->dateLastStatus->date_end) ? $model->dateLastStatus->date_end : null).$data;
             }],
            // ['attribute'=>'dateLastStatus','value'=>'dateLastStatus.date_end','format'=>'date','label'=>'Дата <br> отчисления','encodeLabel'=>false],
             ['attribute'=>'grace_period','encodeLabel'=>false,'value'=>
