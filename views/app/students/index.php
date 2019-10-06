@@ -18,6 +18,13 @@ if ($cans[0] || $cans[1])
     $this->params['breadcrumbs'][] = ['label'=>'Организации','url'=>['app/organizations']];
 $this->params['breadcrumbs'][] = $this->title;
 
+$isApprove = false;
+    foreach ($dataProvider->getModels() as $student)
+        if ($student->status != 2){
+            $isApprove = true;
+            break;
+        }
+
 ?>
 <div class="students-index">
 
@@ -82,7 +89,7 @@ $this->params['breadcrumbs'][] = $this->title;
     </div>
 
     <?php Pjax::end(); ?>
-    <?php if ($cans[2] || $cans[0]):?>
+    <?php if (($cans[2] || $cans[0]) and $isApprove):?>
         <div class="raw">
             <div class="col-md-6"></div>
             <div class="col-md-6 text-right">

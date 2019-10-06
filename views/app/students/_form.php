@@ -27,7 +27,7 @@ $cans = Yii::$app->session['cans'];
                 <?= $form->field($model,'code')->textInput(['readonly'=>$readonly])?>
             </div>
             <div class="col-md-4">
-                <?= $form->field($model,'date_credit')->textInput(['readonly'=>$readonly])?>
+                <?= $form->field($model,'date_credit')->input('date',['readonly'=>$readonly])?>
             </div>
         </div>
         <div class="row">

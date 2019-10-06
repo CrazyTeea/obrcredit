@@ -26,15 +26,16 @@ $rasp_act3 = StudentDocs::getDocByDescriptorName('rasp_act3',$model->id);
 $dogovor = StudentDocs::getDocByDescriptorName('dogovor',$model->id);
 $rasp_act_otch = StudentDocs::getDocByDescriptorName('rasp_act_otch',$model->id);
 //var_dump($model->dateLastStatus->updated_at);
+$canUpdate = ($cans[0] || $model->status != 2) ? 1 : 0;
 ?>
 
 <div class="students-view">
 
     <h1><?= Html::encode($this->title) ?></h1>
 
-
+    <?php if ($canUpdate):?>
         <?= Html::a('Редактировать', ['update', 'id' => $model->id],['class'=>'btn btn-primary']) ?>
-
+    <?php endif;?>
     <?php if ($cans[0] or $cans[1]):?>
 
         <?=  Html::a('Удалить', ['delete', 'id' => $model->id], [
