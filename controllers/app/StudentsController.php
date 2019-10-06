@@ -69,7 +69,7 @@ class StudentsController extends AppController
             ['attribute'=>'code','label'=>'Код <br> направления <br> подготовки','encodeLabel'=>false],
             ['attribute'=>'education_status','label'=>'Статус <br> обучающегося','encodeLabel'=>false,'content'=>function($model){
                 //$val = $model->education_status ? 'Обучается' : 'Не обучается';
-                $os = mb_substr(Students::getOsnovanie()[ $model->osnovanie ],0,50);
+                $os = mb_substr(Students::getOsnovanie()[ !empty($model->osnovanie) ? $model->osnovanie : 0  ],0,50);
                 $data = "";
                 //sdfsdfdsw
                 switch ($model->osnovanie){
