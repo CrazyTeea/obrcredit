@@ -69,7 +69,7 @@ class StudentsController extends AppController
             ['attribute'=>'code','label'=>'Код <br> направления <br> подготовки','encodeLabel'=>false],
             ['attribute'=>'education_status','label'=>'Статус <br> обучающегося','encodeLabel'=>false,'content'=>function($model){
                 //$val = $model->education_status ? 'Обучается' : 'Не обучается';
-                $os = mb_substr(Students::getOsnovanie()[ $model->osnovanie ],0,50);
+                $os = mb_substr(Students::getOsnovanie()[ !empty($model->osnovanie) ? $model->osnovanie : 0  ],0,50);
                 $data = "";
                 //sdfsdfdsw
                 switch ($model->osnovanie){
@@ -90,7 +90,7 @@ class StudentsController extends AppController
                     }
                     default:{$data = ""; break;}
                 }
-                return $model->education_status ? "<span class='label label-info'> Обучается</span>" :Yii::$app->getFormatter()->asDate($model->dateLastStatus->date_end).$data;
+                return $model->education_status ? "<span class='label label-info'> Обучается</span>" :Yii::$app->getFormatter()->asDate(!empty($model->dateLastStatus->date_end) ? $model->dateLastStatus->date_end : null).$data;
             }],
            // ['attribute'=>'dateLastStatus','value'=>'dateLastStatus.date_end','format'=>'date','label'=>'Дата <br> отчисления','encodeLabel'=>false],
             ['attribute'=>'grace_period','encodeLabel'=>false,'value'=>
