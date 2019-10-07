@@ -112,7 +112,7 @@ class StudentsSearch extends Students
             'date_end_grace_period3' => $this->date_end_grace_period3,
         ]);
 
-        $query->andFilterWhere(['like', 'name', $this->name])
+        $query->andFilterWhere(['like', 'students.name', $this->name])
             ->andFilterWhere(['like', 'code', $this->code]);
 
         return $dataProvider;
