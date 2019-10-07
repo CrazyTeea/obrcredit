@@ -4,7 +4,10 @@
 namespace app\commands;
 
 
+use app\models\app\Banks;
 use app\models\app\Organizations;
+use app\models\app\students\NumbersPp;
+use app\models\app\students\Students;
 use app\models\UserConsole as User;
 use Lcobucci\JWT\Builder;
 use Lcobucci\JWT\Parser;
@@ -113,6 +116,28 @@ class ReferenceController extends Controller
             return false;
 
 
+    }
+    public function actionAddStudents(){
+        $csv = Yii::getAlias('@webroot')."/toParse/students.csv";
+        $csv = fopen($csv,'r');
+        $r=0;
+        while (($row = fgetcsv($csv,1000,';')) != false){
+            $r++;
+            if ($r==1)
+                continue;
+            var_dump(explode(' ',$row[4])[1]);
+            $bank = Banks::find()->where(['like','name',explode(' ',$row[4])[1]])->one();
+            $number = NumbersPp::find()->where(['like','number',$row[5]])->one();
+            $student = new Students();
+            $student->status = 1;
+            $student->name = $row[1];
+            $student->code = $row[2];
+            $student->date_credit = $row[3];
+            $student->id_org = $row[0];
+            $student->id_bank = $bank ? $bank->id : 0;
+            $student->id_number_pp = $number ? $number->id : 0;
+            $student->save();
+        }
     }
 
 }
