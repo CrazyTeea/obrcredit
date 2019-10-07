@@ -64,7 +64,7 @@ $this->params['breadcrumbs'][] = $this->title;
             <?=Html::submitButton('Отфильровать(зеленые/красные)',['class'=>'btn btn-success'])?>
         </div>
     </div>
-    <?php ActiveForm::end()?>
+    <?php  ActiveForm::end()?>
 
 
 
@@ -88,7 +88,7 @@ $this->params['breadcrumbs'][] = $this->title;
                 'onClick'=>"window.location.href='{$url}'",
                 'style'=>'cursor:pointer',
                 'class'=>'toVisible',
-                'id'=> $searchModel->isColored ? $model->studentsCount ? 'green' : 'red' : ''
+                'id'=> $searchModel->isColored ? $model->studentsCount  ? 'red' : 'green' : ''
             ];
         },
     ]); ?>
