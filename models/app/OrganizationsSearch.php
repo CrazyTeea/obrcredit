@@ -70,7 +70,7 @@ class OrganizationsSearch extends Organizations
 
         if ($this->isColored) {
             $query->joinWith(['students' => function ($subquery) {
-                $subquery->onCondition(['students.status' => 1]);
+                $subquery->onCondition(['students.status' => 2]);
             }]);
             $query->select(['organizations.*', 'COUNT(students.id) AS studentsCOUNT']);
             $query->groupBy(['organizations.id']);

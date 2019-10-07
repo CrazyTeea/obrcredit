@@ -98,6 +98,12 @@ $isApprove = false;
                 ],]) ?>
             </div>
         </div>
+    <?php else:?>
+        <div class="alert alert-warning">
+            <p>
+                Данные утверждены и не подлежат редактированию
+            </p>
+        </div>
     <?php endif;?>
 
 </div>
