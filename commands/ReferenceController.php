@@ -166,7 +166,11 @@ class ReferenceController extends Controller
             $r++;
             if ($r==1)
                 continue;
+            $user = User::findOne(['username'=>$row[7]]);
+             if ($user)
+                 continue;
             $user = new User();
+
             $user->status = 10;
             $login = $user->email = $user->username = $row[7];
             $password = Yii::$app->security->generateRandomString(6);
