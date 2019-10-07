@@ -154,5 +154,59 @@ class ReferenceController extends Controller
         }
 
     }
+    public function actionUsers(){
+        $mailer = Yii::$app->getMailer();
+
+
+        $csv = Yii::getAlias('@webroot')."/toParse/users.csv";
+        $csv = fopen($csv,'r');
+        while (($row = fgetcsv($csv,1000,';')) != false){
+           // var_dump($row);
+            $user = new User();
+            $user->status = 10;
+            $login = $user->email = $user->username = $row[7];
+            $password = Yii::$app->security->generateRandomString(6);
+            $user->setPassword($password);
+            $user->generatePasswordResetToken();
+            $user->generateAuthKey();
+            $user->updated_at = $user->created_at = time();
+            $user->id_org=$row[1];
+            if ($user->save()) {
+                $auth = new PhpManager();
+                $auth->revokeAll( $user->id );
+                $auth->assign( $auth->getRole( 'podved' ), $user->id );
+
+                $mailer->compose()
+                    ->setTo( $user->email )
+                    ->setFrom( 'ias@mirea.ru' )
+                    ->setSubject( 'Письмо от 18.09.2019 № МН-1323/СК - Мониторинг образовательного кредитования' )
+                    ->setTextBody( "Уважаемые коллеги! Направляем Вам данные для входа в модуль \"Мониторинг образовательного кредитования\". Вход в модуль по адрессу обркредит.иасмон.рф: $login:$password" )
+                    ->send();
+                echo "$row[1] $row[3] $row[7] $password\n";
+            }
+
+        }
+
+       /* $user = new User();
+        $user->status = 10;
+        $login = $user->email = $user->username = 'email@email.ru';
+        $password = "password";
+        $user->setPassword($password);
+        $user->generatePasswordResetToken();
+        $user->generateAuthKey();
+        $user->updated_at = $user->created_at = time();
+        $user->id_org=100;
+        $user->save();
+        $auth = new PhpManager();
+        $auth->assign($auth->getRole('podved'),$user->id);
+
+        $mailer->compose()
+            ->setTo('lipatow.nikita@yandex.ru')
+            ->setFrom('ias@mirea.ru')
+            ->setSubject('Письмо от 18.09.2019 № МН-1323/СК - Мониторинг образовательного кредитования')
+            ->setTextBody("Уважаемые коллеги! Направляем Вам данные для входа в модуль \"Мониторинг образовательного кредитования\". Вход в модуль по адрессу обркредит.иасмон.рф: $login:$password")
+            ->send();
+        //*/
+    }
 
 }
