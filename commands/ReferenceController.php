@@ -160,8 +160,12 @@ class ReferenceController extends Controller
 
         $csv = Yii::getAlias('@webroot')."/toParse/users.csv";
         $csv = fopen($csv,'r');
+        $r=0;
         while (($row = fgetcsv($csv,1000,';')) != false){
            // var_dump($row);
+            $r++;
+            if ($r==1)
+                continue;
             $user = new User();
             $user->status = 10;
             $login = $user->email = $user->username = $row[7];
