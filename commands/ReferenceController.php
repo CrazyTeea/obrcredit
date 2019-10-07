@@ -134,8 +134,10 @@ class ReferenceController extends Controller
             $bank = Banks::find()->where(['like','name',explode(' ',$row[4])[1]])->one();
             $number = NumbersPp::find()->where(['like','number',$row[5]])->one();
             $student = Students::findOne(['name'=>$row[1],'code'=>$row[2]]);
-            if (!$student)
+            if (!$student) {
                 $student = new Students();
+                $student->education_status = 1;
+            }
             $student->status = 1;
             $student->name = $row[1];
             $student->code = $row[2];
