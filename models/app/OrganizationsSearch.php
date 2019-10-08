@@ -81,7 +81,7 @@ class OrganizationsSearch extends Organizations
             'id' => $this->id,
         ]);
 
-        $query->andFilterWhere(['like', 'name', $this->name])
+        $query->andFilterWhere(['like', 'organizations.name', $this->name])
             ->andFilterWhere(['like', 'short_name', $this->short_name])
             ->andFilterWhere(['like', 'full_name', $this->full_name]);
 
