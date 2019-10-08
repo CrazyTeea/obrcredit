@@ -129,7 +129,7 @@ class OrganizationsController extends AppController
             $exportColumns = ArrayHelper::merge( $exportColumns, [
                 ['attribute' => 'numberPP','value' => 'numberPP.number', 'label' => 'Номер ПП по образовательному кредиту'],
                 ['attribute' => 'bank','value'=>'bank.name', 'label' => 'Наименование банка или иной кредитной организации'],
-                ['attribute' => 'date_status', 'format' => 'date', 'label' => 'Дата утрерждения отчета'],
+                ['attribute' => 'date_status', 'format' => 'date', 'label' => 'Дата утверждения отчета'],
             ] );
         }
 
