@@ -85,7 +85,11 @@ class OrganizationsController extends AppController
                     }
                     default:{$data = ""; break;}
                 }
-                return $model->education_status ? "Обучается" : (isset($model->dateLastStatus) and isset($model->dateLastStatus->date_end)) ? Yii::$app->getFormatter()->asDate( !empty($model->dateLastStatus->date_end) ?  $model->dateLastStatus->date_end : null).$data : '';
+                $date = null;
+                if (isset($model->dateLastStatus) and isset($model->dateLastStatus->date_end))
+                    $date = Yii::$app->getFormatter()->asDate($model->dateLastStatus->date_end);
+
+                return $model->education_status ? "Обучается" : ($date) ? $date.$data : '';
             }],
             ['attribute'=>'grace_period','value'=>
                 function($model){
