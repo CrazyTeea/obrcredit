@@ -92,7 +92,13 @@ class StudentsController extends AppController
                     }
                     default:{$data = ""; break;}
                 }
-                return $model->education_status ? "Обучается" : (isset($model->dateLastStatus) and isset($model->dateLastStatus->date_end)) ? Yii::$app->getFormatter()->asDate( !empty($model->dateLastStatus->date_end) ?  $model->dateLastStatus->date_end : null).$data : '';
+                $date = null;
+                if (isset($model->dateLastStatus) and isset($model->dateLastStatus->date_end))
+                    $date = Yii::$app->getFormatter()->asDate($model->dateLastStatus->date_end);
+
+                $dta = ($date) ? "$date $data" : '';
+
+                return $model->education_status ? "Обучается" : $dta;
             }],
             ['attribute'=>'grace_period','value'=>
                 function($model){
@@ -131,7 +137,7 @@ class StudentsController extends AppController
             ['attribute'=>'name','label'=>"ФИО <br> обучающегося",'encodeLabel'=>false],
             ['attribute'=>'organization','value'=>'organization.short_name','label'=>'Наименование <br> ООВО','encodeLabel'=>false],
             ['attribute'=>'code','label'=>'Код <br> направления <br> подготовки','encodeLabel'=>false],
-            ['attribute'=>'education_status','label'=>'Статус <br> обучающегося','encodeLabel'=>false,'content'=>function($model){
+            ['attribute'=>'education_status','format'=>'raw','label'=>'Статус <br> обучающегося','encodeLabel'=>false,'content'=>function($model){
                 $os = mb_substr(Students::getOsnovanie()[ !empty($model->osnovanie) ? $model->osnovanie : 0  ],0,50);
                 $data = "";
                 switch ($model->osnovanie){
@@ -152,12 +158,16 @@ class StudentsController extends AppController
                     }
                     default:{$data = ""; break;}
                 }
+
                 $date = null;
                 if (isset($model->dateLastStatus) and isset($model->dateLastStatus->date_end))
                     $date = Yii::$app->getFormatter()->asDate($model->dateLastStatus->date_end);
 
-                return $model->education_status ? "Обучается" : ($date) ? $date.$data : '';
-            }],
+                $dta = ($date) ? "$date $data" : '';
+
+                return  ($model->education_status) ? "<span class='label label-info'> Обучается</span>" : $dta;
+            }
+            ],
             ['attribute'=>'grace_period','encodeLabel'=>false,'value'=>
                 function($model){
                     $data = "";
