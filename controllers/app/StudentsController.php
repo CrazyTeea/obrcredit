@@ -92,7 +92,7 @@ class StudentsController extends AppController
                     }
                     default:{$data = ""; break;}
                 }
-                return $model->education_status ? "Обучается" : (!empty($model->dateLastStatus) and !empty($model->dateLastStatus->date_end)) ? Yii::$app->getFormatter()->asDate( $model->dateLastStatus->date_end ).$data : '';
+                return $model->education_status ? "Обучается" : ($model->dateLastStatus and $model->dateLastStatus->date_end) ? Yii::$app->getFormatter()->asDate( $model->dateLastStatus->date_end ).$data : '';
             }],
             ['attribute'=>'grace_period','value'=>
                 function($model){
