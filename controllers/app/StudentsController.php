@@ -204,14 +204,14 @@ class StudentsController extends AppController
             $columns = ArrayHelper::merge( $columns, [
                 ['attribute' => 'numberPP','value' => 'numberPP.number','encodeLabel'=>false, 'label' => 'Номер <br> ПП <br> по <br> образовательному <br>кредиту'],
                 ['attribute' => 'bank','value'=>'bank.name','encodeLabel'=>false, 'label' => 'Наименование <br> банка <br>или<br> иной <br> кредитной <br>организации'],
-                ['attribute' => 'date_status','encodeLabel'=>false, 'format' => 'date', 'label' => 'Дата <br> утрерждения <br> отчета'],
+                ['attribute' => 'date_status','encodeLabel'=>false, 'format' => 'date', 'label' => 'Дата <br> утверждения <br> отчета'],
             ] );
         }
         if (!$this->cans[2]) {
             $exportColumns = ArrayHelper::merge( $exportColumns, [
                 ['attribute' => 'numberPP','value' => 'numberPP.number', 'label' => 'Номер ПП по образовательному кредиту'],
                 ['attribute' => 'bank','value'=>'bank.name', 'label' => 'Наименование банка или иной кредитной организации'],
-                ['attribute' => 'date_status', 'format' => 'date', 'label' => 'Дата утрерждения отчета'],
+                ['attribute' => 'date_status', 'format' => 'date', 'label' => 'Дата утверждения отчета'],
             ] );
         }
 

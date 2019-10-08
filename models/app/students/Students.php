@@ -97,7 +97,7 @@ class Students extends ActiveRecord
             'date_credit'=>'Дата заключения кредитного договора',
             'id_number_pp'=>'Номер ПП по образовательному кредиту',
             'id_bank'=>'Наименование банка или иной кредитной организации',
-            'date_status'=>'Дата утрерждения отчета'
+            'date_status'=>'Дата утверждения отчета'
         ];
     }
     public function getOrganization(){
