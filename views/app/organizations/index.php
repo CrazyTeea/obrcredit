@@ -18,24 +18,29 @@ $this->params['breadcrumbs'][] = $this->title;
 <div class="organizations-index">
 
     <h1><?= Html::encode($this->title) ?></h1>
-    <?php $form = ActiveForm::begin(['method'=>'get'])?>
+
+
+
+
     <div class="row">
         <div class="col-md-4">
-            <?= ExportMenu::widget(['dataProvider'=>$dataProviderStudent,
-                'columns' =>$exportColumns,
-            ]) ?>
+            <?= ExportMenu::widget(
+                [
+                    'dataProvider'=>$dataProviderStudent,
+                    'emptyCell'=>' ',
+                    'columns' =>$exportColumns,
+                ]) ?>
         </div>
+        <?php $form = ActiveForm::begin(['method'=>'get'])?>
         <div class="col-md-4">
-
             <?=$form->field($searchModel,'isColored')->checkbox(); ?>
-
-
         </div>
         <div class="col-md-4">
             <?=Html::submitButton('Отфильровать(зеленые/красные)',['class'=>'btn btn-success'])?>
         </div>
+        <?php  ActiveForm::end()?>
     </div>
-    <?php  ActiveForm::end()?>
+
 
 
 
@@ -47,6 +52,7 @@ $this->params['breadcrumbs'][] = $this->title;
     <?= GridView::widget([
         'dataProvider' => $dataProvider,
         'filterModel' => $searchModel,
+        'emptyCell'=>' ',
         'columns' => [
             ['class' => 'yii\grid\SerialColumn'],
             'name',
