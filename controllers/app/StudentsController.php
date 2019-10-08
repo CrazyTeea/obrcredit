@@ -152,7 +152,7 @@ class StudentsController extends AppController
                     }
                     default:{$data = ""; break;}
                 }
-                return $model->education_status ? "<span class='label label-info'> Обучается</span>" : (isset($model->dateLastStatus) and isset($model->dateLastStatus->date_end)) ? Yii::$app->getFormatter()->asDate($model->dateLastStatus->date_end ).$data : '';
+                return $model->education_status ? "<span class='label label-info'> Обучается</span>" : (isset($model->dateLastStatus) and isset($model->dateLastStatus->date_end)) ? Yii::$app->getFormatter()->asDate( !empty($model->dateLastStatus->date_end) ?  $model->dateLastStatus->date_end : null).$data : '';
             }],
             ['attribute'=>'grace_period','encodeLabel'=>false,'value'=>
                 function($model){
