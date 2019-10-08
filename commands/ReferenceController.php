@@ -117,41 +117,32 @@ class ReferenceController extends Controller
 
 
     }
-    public function actionAddStudents(){
-        $csv = Yii::getAlias('@webroot')."/toParse/students.csv";
+    public function actionAddStudents($file,$nameId,$codeId,$dCreditId,$orgId,$numPP,$bankId){
+
+
+        $csv = Yii::getAlias('@webroot')."/toParse/$file.csv";
         $csv = fopen($csv,'r');
-        $r=0;
-        $orgs = Organizations::findAll(['system_status'=>1]);
-        foreach ($orgs as $org) {
-            $org->system_status = 0;
-            $org->save();
-        }
+
         while (($row = fgetcsv($csv,1000,';')) != false){
-            $r++;
-            if ($r==1)
-                continue;
-            var_dump(explode(' ',$row[4])[1]);
-            $bank = Banks::find()->where(['like','name',explode(' ',$row[4])[1]])->one();
-            $number = NumbersPp::find()->where(['like','number',$row[5]])->one();
-            $student = Students::findOne(['name'=>$row[1],'code'=>$row[2]]);
+
+           echo "name => $row[$nameId] code=> $row[$codeId] dateCredit=>$row[$dCreditId] org=>$row[$orgId]\n";
+            $bank = Banks::find()->where(['like','name',explode(' ',$row[$bankId])[1]])->one();
+            $number = NumbersPp::find()->where(['like','number',$row[$numPP]])->one();
+            $student = Students::findOne(['name'=>$row[$nameId],'code'=>$row[$codeId]]);
             if (!$student) {
                 $student = new Students();
                 $student->education_status = 1;
             }
             $student->status = 1;
-            $student->name = $row[1];
-            $student->code = $row[2];
-            $student->date_credit = $row[3];
-            $student->id_org = $row[0];
+            $student->name = $row[$nameId];
+            $student->code = $row[$codeId];
+            $student->date_credit = $row[$dCreditId];
+            $student->id_org = $row[$orgId];
             $student->id_bank = $bank ? $bank->id : 0;
             $student->id_number_pp = $number ? $number->id : 0;
-            $org = Organizations::findOne(['id'=>$student->id_org]);
-            if (!$org)
-                continue;
-            $org->system_status = 1;
-            $org->save();
             $student->save();
         }
+        return "success!";
 
     }
     public function actionUsers(){
