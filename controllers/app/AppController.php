@@ -7,6 +7,7 @@ use yii\web\Controller;
 
 abstract class AppController extends Controller
 {
+    protected $cans;
 
     public function __construct($id, $module, $config = [])
     {
