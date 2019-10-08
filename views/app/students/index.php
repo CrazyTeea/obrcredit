@@ -45,7 +45,7 @@ $isApprove = false;
     <?php Pjax::begin(); ?>
     <?php // echo $this->render('_search', ['model' => $searchModel]); ?>
 
-    <div id="PrintThis">
+
     <?= GridView::widget([
         'dataProvider' => $dataProvider,
         'filterModel' => $searchModel,
@@ -61,7 +61,7 @@ $isApprove = false;
             ];
         },
     ]); ?>
-    </div>
+
 
     <?php Pjax::end(); ?>
     <?php if (($cans[2] || $cans[0]) and $isApprove):?>
