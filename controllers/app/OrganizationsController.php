@@ -3,12 +3,13 @@
 namespace app\controllers\app;
 
 use app\models\app\students\Students;
-use app\models\app\students\StudentsSearch;
+
 use Yii;
 use app\models\app\Organizations;
 use app\models\app\OrganizationsSearch;
 use yii\data\ActiveDataProvider;
-use yii\web\Controller;
+use yii\helpers\ArrayHelper;
+
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
 
@@ -17,6 +18,7 @@ use yii\filters\VerbFilter;
  */
 class OrganizationsController extends AppController
 {
+
     /**
      * {@inheritdoc}
      */
@@ -33,6 +35,18 @@ class OrganizationsController extends AppController
     }
 
     /**
+     * @param $action
+     * @return bool
+     * @throws \yii\web\BadRequestHttpException
+     */
+    public function beforeAction( $action)
+    {
+
+        $this->cans = Yii::$app->session['cans'];
+        return parent::beforeAction($action);
+    }
+
+    /**
      * Lists all Organizations models.
      * @return mixed
      */
@@ -41,12 +55,85 @@ class OrganizationsController extends AppController
 
         $searchModel = new OrganizationsSearch();
         $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
-        $dataProviderStudent = new ActiveDataProvider(['query'=>Students::find()]);
+
+        $studentsExport = Students::find();
+        $exportProvider = new ActiveDataProvider(['query'=>$studentsExport,'pagination'=>false]);
+
+        $exportColumns = [
+            ['class' => 'yii\grid\SerialColumn'],
+            ['attribute'=>'name','label'=>"ФИО обучающегося"],
+            ['attribute'=>'organization','value'=>'organization.short_name','label'=>'Наименование ООВО'],
+            ['attribute'=>'code','label'=>'Код направления подготовки'],
+            ['attribute'=>'education_status','label'=>'Статус обучающегося','content'=>function($model){
+                $os = mb_substr(Students::getOsnovanie()[ !empty($model->osnovanie) ? $model->osnovanie : 0  ],0,50);
+                $data = "";
+                switch ($model->osnovanie){
+                    case 1:
+                    case 2:
+                    case 3:{
+                        $data = "(Пункт 20 $os)";
+                        break;
+                    }
+                    case 4:
+                    case 5:{
+                        $data = "(Пункт 21 $os)";
+                        break;
+                    }
+                    case 6:{
+                        $data = "(Пункт 22 $os)";
+                        break;
+                    }
+                    default:{$data = ""; break;}
+                }
+                return $model->education_status ? "Обучается" :Yii::$app->getFormatter()->asDate(!empty($model->dateLastStatus->date_end) ? $model->dateLastStatus->date_end : null).$data;
+            }],
+            ['attribute'=>'grace_period','value'=>
+                function($model){
+                    $data = "";
+                    switch ($model->grace_period){
+                        case 1:{
+                            $date = ($model->date_start_grace_period1 and $model->date_end_grace_period1 ) ?
+                                Yii::$app->getFormatter()->asDate($model->date_start_grace_period1).'-'.Yii::$app->getFormatter()->asDate($model->date_end_grace_period1) : '';
+                            $data = Students::getGracePeriod()[1] . "($date)";
+                            break;
+                        }
+                        case 2:{
+                            $date = ($model->date_start_grace_period2 and $model->date_end_grace_period2 ) ?
+                                Yii::$app->getFormatter()->asDate($model->date_start_grace_period2).'-'.Yii::$app->getFormatter()->asDate($model->date_end_grace_period2) : '';
+                            $data = Students::getGracePeriod()[2] . "($date)";
+                            break;
+                        }
+                        case 3:{
+                            $date = ($model->date_start_grace_period3 and $model->date_end_grace_period3 ) ?
+                                Yii::$app->getFormatter()->asDate($model->date_start_grace_period3).'-'.Yii::$app->getFormatter()->asDate($model->date_end_grace_period3) : '';
+                            $data = Students::getGracePeriod()[3] . "($date)";
+                            break;
+                        }
+                        default: {$data = ''; break;}
+                    }
+                    return $data;
+                }
+                ,'label'=>'Пролонгация льготного периода'
+            ],
+            ['attribute'=>'date_credit','label'=>'Дата заключения кредитного договора',],
+            ['attribute'=>'dateLastStatus','value'=>'dateLastStatus.updated_at','label'=>'Дата изменения данных'],
+        ];
+
+        if (!$this->cans[2]) {
+            $columns = ArrayHelper::merge( $exportColumns, [
+                ['attribute' => 'numberPP','value' => 'numberPP.number', 'label' => 'Номер ПП по образовательному кредиту'],
+                ['attribute' => 'bank','value'=>'bank.name', 'label' => 'Наименование банка или иной кредитной организации'],
+                ['attribute' => 'date_status', 'format' => 'date', 'label' => 'Дата утрерждения отчета'],
+            ] );
+        }
+
+
 
         return $this->render('index', [
             'searchModel' => $searchModel,
             'dataProvider' => $dataProvider,
-            'dataProviderStudent'=>$dataProviderStudent
+            'dataProviderStudent'=>$exportProvider,
+            'exportColumns'=>$exportColumns
         ]);
     }
 
