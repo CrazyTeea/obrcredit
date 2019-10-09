@@ -180,6 +180,7 @@ class ReferenceController extends Controller
                 $auth->revokeAll( $user->id );
                 $auth->assign( $auth->getRole( 'podved' ), $user->id );
 
+
                 $mailer->compose()
                     ->setTo( $user->email )
                     ->setFrom( 'ias@mirea.ru' )
