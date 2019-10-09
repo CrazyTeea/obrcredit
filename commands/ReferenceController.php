@@ -140,36 +140,41 @@ class ReferenceController extends Controller
             $student->id_org = $row[$orgId];
             $student->id_bank = $bank ? $bank->id : 0;
             $student->id_number_pp = $number ? $number->id : 0;
-            $student->save();
+            $student->date_create = date('Y-m-d');
+            if ($student->save()){
+                $org = Organizations::findOne($student->id_org);
+                if ($org){
+                    $org->system_status = 1;
+                    $org->save();
+                }
+            }
         }
         return "success!";
 
     }
-    public function actionUsers(){
+    public function actionUsers($file,$orgId,$emailId){
         $mailer = Yii::$app->getMailer();
 
 
-        $csv = Yii::getAlias('@webroot')."/toParse/users.csv";
+        $csv = Yii::getAlias('@webroot')."/toParse/$file.csv";
         $csv = fopen($csv,'r');
-        $r=0;
+
         while (($row = fgetcsv($csv,1000,';')) != false){
-           // var_dump($row);
-            $r++;
-            if ($r==1)
-                continue;
-            $user = User::findOne(['username'=>$row[7]]);
+
+
+            $user = User::findOne(['username'=>$row[$emailId]]);
              if ($user)
                  continue;
             $user = new User();
 
             $user->status = 10;
-            $login = $user->email = $user->username = $row[7];
+            $login = $user->email = $user->username = $row[$emailId];
             $password = Yii::$app->security->generateRandomString(6);
             $user->setPassword($password);
             $user->generatePasswordResetToken();
             $user->generateAuthKey();
             $user->updated_at = $user->created_at = time();
-            $user->id_org=$row[1];
+            $user->id_org=$row[$orgId];
             if ($user->save()) {
                 $auth = new PhpManager();
                 $auth->revokeAll( $user->id );
@@ -179,8 +184,9 @@ class ReferenceController extends Controller
                     ->setTo( $user->email )
                     ->setFrom( 'ias@mirea.ru' )
                     ->setSubject( 'Письмо от 18.09.2019 № МН-1323/СК - Мониторинг образовательного кредитования' )
-                    ->setTextBody( "Уважаемые коллеги! Направляем Вам данные для входа в модуль \"Мониторинг образовательного кредитования\". Вход в модуль по адрессу обркредит.иасмон.рф: $login:$password" )
-                    ->send();
+                    ->setTextBody( "Уважаемые коллеги! Направляем Вам данные для входа в модуль \"Мониторинг образовательного кредитования\".\n Вход в модуль по адрессу обркредит.иасмон.рф:\n
+                    Логин: $login  \n Пароль: $password \n" );
+                    //->send();
                 echo "$row[1] $row[3] $row[7] $password\n";
             }
 
