@@ -127,7 +127,9 @@ class ReferenceController extends Controller
 
            echo "name => $row[$nameId] code=> $row[$codeId] dateCredit=>$row[$dCreditId] org=>$row[$orgId]\n";
             $bank = Banks::find()->where(['like','name',explode(' ',$row[$bankId])[1]])->one();
+
             $number = NumbersPp::find()->where(['like','number',$row[$numPP]])->one();
+
             $student = Students::findOne(['name'=>$row[$nameId],'code'=>$row[$codeId]]);
 
             if (!$student) {
@@ -135,12 +137,13 @@ class ReferenceController extends Controller
                 $student->education_status = 1;
                 $student->date_create = date('Y-m-d');
             }
+           // echo "st1";
             $student->status = 1;
             $student->name = $row[$nameId];
             $student->code = $row[$codeId];
             $student->date_credit = $row[$dCreditId];
             $student->id_org = $row[$orgId];
-            $students = Students::findAll(['org_id'=>$student->id_org]);
+            $students = Students::findAll(['id_org'=>$student->id_org]);
             foreach ($students as $st){
                 $st->status = 1;
                 $st->save();
