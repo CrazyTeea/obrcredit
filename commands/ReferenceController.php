@@ -127,20 +127,30 @@ class ReferenceController extends Controller
 
            echo "name => $row[$nameId] code=> $row[$codeId] dateCredit=>$row[$dCreditId] org=>$row[$orgId]\n";
             $bank = Banks::find()->where(['like','name',explode(' ',$row[$bankId])[1]])->one();
+
             $number = NumbersPp::find()->where(['like','number',$row[$numPP]])->one();
+
             $student = Students::findOne(['name'=>$row[$nameId],'code'=>$row[$codeId]]);
+
             if (!$student) {
                 $student = new Students();
                 $student->education_status = 1;
+                $student->date_create = date('Y-m-d');
             }
+           // echo "st1";
             $student->status = 1;
             $student->name = $row[$nameId];
             $student->code = $row[$codeId];
             $student->date_credit = $row[$dCreditId];
             $student->id_org = $row[$orgId];
+            $students = Students::findAll(['id_org'=>$student->id_org]);
+            foreach ($students as $st){
+                $st->status = 1;
+                $st->save();
+            }
             $student->id_bank = $bank ? $bank->id : 0;
             $student->id_number_pp = $number ? $number->id : 0;
-            $student->date_create = date('Y-m-d');
+
             if ($student->save()){
                 $org = Organizations::findOne($student->id_org);
                 if ($org){
