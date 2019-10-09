@@ -180,13 +180,14 @@ class ReferenceController extends Controller
                 $auth->revokeAll( $user->id );
                 $auth->assign( $auth->getRole( 'podved' ), $user->id );
 
+
                 $mailer->compose()
                     ->setTo( $user->email )
                     ->setFrom( 'ias@mirea.ru' )
                     ->setSubject( 'Письмо от 18.09.2019 № МН-1323/СК - Мониторинг образовательного кредитования' )
                     ->setTextBody( "Уважаемые коллеги! Направляем Вам данные для входа в модуль \"Мониторинг образовательного кредитования\".\n Вход в модуль по адрессу обркредит.иасмон.рф:\n
-                    Логин: $login  \n Пароль: $password \n" );
-                    //->send();
+                    Логин: $login  \n Пароль: $password \n" )
+                    ->send();
                 echo "$row[1] $row[3] $row[7] $password\n";
             }
 
