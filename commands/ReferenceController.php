@@ -246,8 +246,10 @@ class ReferenceController extends Controller
         
         ";
         $mailer = Yii::$app->getMailer();
-        foreach ($users as $user)
+        foreach ($users as $i =>$user)
         {
+            if ($i<113)
+                continue;
             try {
                 $mailer->compose()
                     ->setTo( $user->email )
