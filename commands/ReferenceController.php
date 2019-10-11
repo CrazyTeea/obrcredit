@@ -248,12 +248,17 @@ class ReferenceController extends Controller
         $mailer = Yii::$app->getMailer();
         foreach ($users as $user)
         {
-            $mailer->compose()
-                ->setTo( $user->email )
-                ->setFrom( 'ias@mirea.ru' )
-                ->setSubject( 'Мониторинг образовательного кредитования' )
-                ->setTextBody( $email )
-                ->send();
+            try {
+                $mailer->compose()
+                    ->setTo( $user->email )
+                    ->setFrom( 'ias@mirea.ru' )
+                    ->setSubject( 'Мониторинг образовательного кредитования' )
+                    ->setTextBody( $email )
+                    ->send();
+            }
+            catch (\Exception $e) {
+                echo $e->getMessage();
+            }
         }
     }
 
