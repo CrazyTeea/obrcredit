@@ -162,7 +162,7 @@ class ReferenceController extends Controller
         return "success!";
 
     }
-    public function actionUsers($file,$orgId,$emailId){
+    public function actionUsers($file,$orgId,$emailId,$nameID){
         $mailer = Yii::$app->getMailer();
 
 
@@ -175,31 +175,34 @@ class ReferenceController extends Controller
             $user = User::findOne(['username'=>$row[$emailId]]);
              if ($user)
                  continue;
-            $user = new User();
+             try {
+                 $user = new User();
 
-            $user->status = 10;
-            $login = $user->email = $user->username = $row[$emailId];
-            $password = Yii::$app->security->generateRandomString(6);
-            $user->setPassword($password);
-            $user->generatePasswordResetToken();
-            $user->generateAuthKey();
-            $user->updated_at = $user->created_at = time();
-            $user->id_org=$row[$orgId];
-            if ($user->save()) {
-                $auth = new PhpManager();
-                $auth->revokeAll( $user->id );
-                $auth->assign( $auth->getRole( 'podved' ), $user->id );
+                 $user->status = 10;
+                 $login = $user->email = $user->username = $row[ $emailId ];
+                 $password = Yii::$app->security->generateRandomString( 6 );
+                 $user->setPassword( $password );
+                 $user->generatePasswordResetToken();
+                 $user->generateAuthKey();
+                 $user->updated_at = $user->created_at = time();
+                 $user->id_org = $row[ $orgId ];
+                 $user->name = $row[$nameID];
+                 if ( $user->save() ) {
+                     $auth = new PhpManager();
+                     $auth->revokeAll( $user->id );
+                     $auth->assign( $auth->getRole( 'podved' ), $user->id );
 
 
-                $mailer->compose()
-                    ->setTo( $user->email )
-                    ->setFrom( 'ias@mirea.ru' )
-                    ->setSubject( 'Письмо от 18.09.2019 № МН-1323/СК - Мониторинг образовательного кредитования' )
-                    ->setTextBody( "Уважаемые коллеги! Направляем Вам данные для входа в модуль \"Мониторинг образовательного кредитования\".\n Вход в модуль по адрессу обркредит.иасмон.рф:\n
+                     $mailer->compose()
+                         ->setTo( $user->email )
+                         ->setFrom( 'ias@mirea.ru' )
+                         ->setSubject( 'Письмо от 18.09.2019 № МН-1323/СК - Мониторинг образовательного кредитования' )
+                         ->setTextBody( "Уважаемые коллеги! Направляем Вам данные для входа в модуль \"Мониторинг образовательного кредитования\".\n Вход в модуль по адрессу обркредит.иасмон.рф:\n
                     Логин: $login  \n Пароль: $password \n" )
-                    ->send();
-                echo "$row[1] $row[3] $row[7] $password\n";
-            }
+                         ->send();
+                     echo "$row[1] $row[3] $row[7] $password\n";
+                 }
+             }catch (\Exception $e){echo $e->getMessage(); echo "\n$user->email";}
 
         }
 
