@@ -58,7 +58,7 @@ $cans = Yii::$app->session['cans'];
     <table class="table table-bordered">
         <thead>
         <tr>
-            <th colspan="4"><p class="text-center ">Статус обучаещегося</p></th>
+            <th colspan="4"><p class="text-center ">Статус обучающегося</p></th>
             <th colspan="3"><p class="text-center">Пролонгация льготного периода пользования <br> образовательным кредитом</p></th>
         </tr>
         <tr>
