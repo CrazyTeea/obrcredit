@@ -183,7 +183,7 @@ class ReferenceController extends Controller
                  $user->generateAuthKey();
                  $user->updated_at = $user->created_at = time();
                  $user->id_org = preg_replace('/\s/', '', $row[ $orgId ]);
-                 $user->name =preg_replace('/\s/', '',  $row[$nameID]);
+                 $user->name =$row[$nameID];
                  if ( $user->save() ) {
                      $auth = new PhpManager();
                      $auth->revokeAll( $user->id );
