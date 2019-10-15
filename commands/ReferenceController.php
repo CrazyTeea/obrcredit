@@ -168,22 +168,22 @@ class ReferenceController extends Controller
 
         while (($row = fgetcsv($csv,1000,';')) != false){
 
-
-            $user = User::findOne(['username'=>$row[$emailId]]);
+            $email = preg_replace('/\s/', '', $row[ $emailId ]);
+            $user = User::findOne(['username'=>$email]);
              if ($user)
                  continue;
              try {
                  $user = new User();
 
                  $user->status = 10;
-                 $login = $user->email = $user->username = $row[ $emailId ];
+                 $login = $user->email = $user->username = $email;
                  $password = Yii::$app->security->generateRandomString( 6 );
                  $user->setPassword( $password );
                  $user->generatePasswordResetToken();
                  $user->generateAuthKey();
                  $user->updated_at = $user->created_at = time();
-                 $user->id_org = $row[ $orgId ];
-                 $user->name = $row[$nameID];
+                 $user->id_org = preg_replace('/\s/', '', $row[ $orgId ]);
+                 $user->name =preg_replace('/\s/', '',  $row[$nameID]);
                  if ( $user->save() ) {
                      $auth = new PhpManager();
                      $auth->revokeAll( $user->id );
@@ -197,7 +197,7 @@ class ReferenceController extends Controller
                          ->setTextBody( "Уважаемые коллеги! Направляем Вам данные для входа в модуль \"Мониторинг образовательного кредитования\".\n Вход в модуль по адрессу обркредит.иасмон.рф:\n
                     Логин: $login  \n Пароль: $password \n" )
                          ->send();
-                     echo "$row[1] $row[3] $row[7] $password\n";
+                     echo "$row[$orgId] $row[$nameID] $row[$emailId] $password\n";
                  }
              }catch (\Exception $e){echo $e->getMessage(); echo "\n$user->email";}
 
