@@ -79,7 +79,7 @@ $canUpdate = ($cans[0] || $model->status != 2) ? 1 : 0;
         <tr>
             <td rowspan="5">
                 <?= $model->education_status ? 'Обучается' : 'Не обучается' ?> <br>
-                <?= ($model->dateLastStatus and $model->dateLastStatus->updated_at) ? Yii::$app->getFormatter()->asDate(strtotime($model->dateLastStatus->updated_at)) : date('now') ?> </td>
+                <?= ($model->dateLastStatus and $model->dateLastStatus->updated_at) ? Yii::$app->getFormatter()->asDate(strtotime($model->dateLastStatus->updated_at)) : date('d-M-Y') ?> </td>
             <td rowspan="3"><p class="text-sm-center"> пункт 20 </p></td>
             <td rowspan="2">
                 <p class="text-sm-center">пункт 2 части 2 статьи 61 Федерального закона
