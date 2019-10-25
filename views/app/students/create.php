@@ -8,6 +8,7 @@ use yii\helpers\Html;
 
 $this->title = 'Добавление студента';
 $cans = Yii::$app->session['cans'];
+$this->params[ 'breadcrumbs' ][] = ['label' => 'ОбрКредит', 'url' => ['/']];
 if ($cans[0] || $cans[1])
     $this->params['breadcrumbs'][] = ['label' => 'Организация', 'url' => ['app/organizations/index']];
 

@@ -78,14 +78,13 @@ class SiteController extends Controller
      */
     public function actionIndex()
     {
+
         Yii::$app->session['cans'] = [
             Yii::$app->getUser()->can('root'),
             Yii::$app->getUser()->can('admin'),
             Yii::$app->getUser()->can('podved')
         ];
-        if (!Yii::$app->getUser()->getIsGuest() and ( Yii::$app->session['cans'][0] ||  Yii::$app->session['cans'][1]))
-            return $this->redirect(['app/organizations']);
-        return $this->redirect(['app/students']);
+        return $this->redirect(['app/main']);
     }
 
     /**

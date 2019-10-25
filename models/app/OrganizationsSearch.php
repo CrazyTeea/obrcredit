@@ -13,13 +13,14 @@ use yii\helpers\ArrayHelper;
 class OrganizationsSearch extends Organizations
 {
     public $isColored;
+    public $id_bank;
     /**
      * {@inheritdoc}
      */
     public function rules()
     {
         return [
-            [['id'], 'integer'],
+            [['id','id_bank'], 'integer'],
             [['isColored'],'integer'],
             [['name', 'short_name', 'full_name'], 'safe'],
         ];
@@ -50,6 +51,9 @@ class OrganizationsSearch extends Organizations
         $query = Organizations::find()->where(['system_status'=>1]);//->select(['students.id','count(students.id)','short_name','organizations.name','full_name'])->joinWith(['students']);
 
 
+        if (!empty($this->id_bank)){
+            $query->joinWith(['students as st'])->andWhere(['st.id_bank'=>$this->id_bank]);
+        }
 
         // add conditions tha t should always apply here
 
@@ -70,7 +74,9 @@ class OrganizationsSearch extends Organizations
 
         if ($this->isColored) {
             $query->joinWith(['students' => function ($subquery) {
+
                 $subquery->onCondition(['students.status' => 2]);
+
             }]);
             $query->select(['organizations.*', 'COUNT(students.id) AS studentsCOUNT']);
             $query->groupBy(['organizations.id']);

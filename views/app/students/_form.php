@@ -59,7 +59,7 @@ $cans = Yii::$app->session['cans'];
         <thead>
         <tr>
             <th colspan="4"><p class="text-center ">Статус обучающегося</p></th>
-            <th colspan="3"><p class="text-center">Пролонгация льготного периода пользования <br> образовательным кредитом</p></th>
+            <th colspan="4"><p class="text-center">Пролонгация льготного периода пользования <br> образовательным кредитом</p></th>
         </tr>
         <tr>
             <td rowspan='2'><p class="text-sm-center">Продолжает <br> обучаться </p></td>
@@ -71,6 +71,7 @@ $cans = Yii::$app->session['cans'];
             <td rowspan='2'><p class="text-sm-center">Подтверждение
                     срока окончания академического права
                 </p></td>
+            <td rowspan="2"><p class="text-sm-center">Переведен на бюджет</p></td>
         </tr>
         <tr>
             <td>Пункты постановления <br> Правительства РФ <br> от 26.02.2018 г. № 197</td>
@@ -115,6 +116,10 @@ $cans = Yii::$app->session['cans'];
             <td rowspan="3">
                 <?= $form->field($model,'rasp_act1')->fileInput() ->label('ООВО загружает копию распорядительного акта образовательной организации')//$rasp_act1 ?  $rasp_act1->file->name : 'Файл не загружен' ?>
             </td>
+            <td rowspan="6">
+                <?= $form->field($model,'perevod')->checkbox()->label('Перевод на бюджет') ?>
+                <?= $form->field($model,'rasp_act1')->fileInput() ->label('акт')?>
+            </td>
         </tr>
         <tr>
         </tr>
@@ -124,8 +129,6 @@ $cans = Yii::$app->session['cans'];
                     'label'=> 'отчислен по инициативе обучающегося или родителей (законных представителей) несовершеннолетнего обучающегося',
                     'value'=>3,'uncheck'=>null])->label(false) ?>
             </td>
-
-
         </tr>
         <tr>
             <td><p class="text-sm-center"> пункт 21 </p></td>
