@@ -7,16 +7,23 @@ $this->params[ 'breadcrumbs' ][] = ['label' => 'ОбрКредит', 'url' => ['
 $this->params['breadcrumbs'][] = $this->title;
 $yearStart = 2018;
 $yearEnd = 2021;
+$curYear = date('Y');
 ?>
-<div class="row ">
+<h2 > Обучающиеся по государственной поддержке образовательного кредитования</h2>
+<div class="row">
     <?php for ($i = $yearStart;$i<=$yearEnd;$i++):?>
-        <a href="<?=Url::toRoute(['month','year'=>$i])?>">
+        <?php if ($i <= $curYear):?>
+            <a href="<?=Url::toRoute(['month','year'=>$i])?>">
+        <?php else:?>
+                <a href="" id="no">
+        <?php endif;?>
             <div class="col-sm-6 col-md-3 ">
                 <div class="thumbnail ">
                     <div class="caption">
                         <h5><?="$i год"?></h5>
+                        <hr>
                         <p>
-                            <span >Студентов</span>
+                            <span >Всего обучающихся:</span>
                             <span id="count" class="badge alert-info"><?=$studentsByYear[$i]['studentsCount']?></span>
                         </p>
                         <p>

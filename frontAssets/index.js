@@ -3,10 +3,8 @@ import Router from "./src/Router";
 import students from "./src/routes/students";
 
 $(()=>{
+    $('[data-toggle="tooltip"]').tooltip();
     Router('students').then(()=>{
-       // $('[data-toggle="tooltip"]').tooltip();
         students();
-    }).catch(e=>{
-        console.log(e);
-    });
+    }).catch(e=>{});
 });

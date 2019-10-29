@@ -1,11 +1,6 @@
 import Router from "../Router";
 
 export default ()=>{
-    Router('index').then(()=>{
-
-    }).catch(e=>{
-        console.log("index не найден");
-    });
     function disable(e_status){
 
         let elements = document.getElementsByTagName('input');
@@ -30,7 +25,5 @@ export default ()=>{
         e_status.onchange = e=>{
             disable(e_status);
         };
-    }).catch(e=>{
-        console.log(e);
-    });
+    }).catch(e=>{});
 }

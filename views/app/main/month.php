@@ -17,20 +17,26 @@ $cans = Yii::$app->session['cans'];
  * @var array $studentsByMonth
  * @var array $banks
  */
+$year = Yii::$app->session['year'];
+$startMonth = 1;
+$endMonth = 12;
+if ($year == 2018)
+    $startMonth = 10;
+
 
 ?>
 
-
+<h2>Обучающиеся по государственной поддержке образовательного кредитования за <?=$year?> год</h2>
 
 <div class="row">
 
     <div class="panel panel-default">
         <div class="panel-body">
-            <?php for ($i = 1;$i<=12;$i++):?>
-                <div class="col-sm-6 col-md-3">
+            <?php for ($i = $startMonth;$i<=$endMonth;$i++):?>
+                <div class="col-sm-6 col-md-4">
                     <div class="thumbnail">
                         <div class="caption">
-                            <h5><?php
+                            <h2><?php
 
                                 $arr = [
                                     'Январь',
@@ -48,14 +54,17 @@ $cans = Yii::$app->session['cans'];
                                 ];
 
                                 $m = DateTime::createFromFormat('!m',$i);
-                                echo $arr[$m->format('n')-1]?></h5>
+                                echo $arr[$m->format('n')-1]?></h2>
+                            <hr>
+                            <?php if($year != 2018):?>
                             <p>
                                 <!-- Button trigger modal -->
-                                <button type="button" class="btn btn-info" data-toggle="modal" data-target="#myModal<?=$i?>197">
-                                    П/П 197
+                                <button type="button" class="btn btn-info btn-block btn-lg" data-toggle="modal" data-target="#myModal<?=$i?>197">
+                                    Постановление <br>правительства №197 <br>
+                                    <span class="text text-info" style="font-size: 16px;"> <i> кол-во обучающихся: <?=$studentsByMonth[$i][197]['students']?> </i> </span>
                                 </button>
-                                <span id="count" class="badge alert-success"><?=$studentsByMonth[$i][197]['students']?></span>
 
+                            </p>
                             <div class="modal fade" id="myModal<?=$i?>197" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
                                 <div class="modal-dialog modal-sm" role="document">
                                     <div class="modal-content">
@@ -66,23 +75,24 @@ $cans = Yii::$app->session['cans'];
                                         <div class="modal-body">
                                             <?php foreach ($studentsByMonth[$i][197]['bank'] as $item ): ?>
                                                 <?php if ($cans[0] || $cans[1]):?>
-                                                    <?= Html::a($banks[$item],['app/organizations/by-bank','id'=>$item],['class'=>'btn btn-primary']) ?>
+                                                    <?= Html::a($banks[$item],['app/organizations/by-bank','id'=>$item],['class'=>'btn btn-primary btn-block']) ?>
                                                 <?php else:?>
-                                                    <?= Html::a($banks[$item],['app/students/by-bank','id'=>$item],['class'=>'btn btn-primary']) ?>
+                                                    <?= Html::a($banks[$item],['app/students/by-bank','id'=>$item],['class'=>'btn btn-primary btn-block']) ?>
                                                 <?php endif;?>
-                                                <br>
+
                                             <?php endforeach;?>
                                         </div>
                                     </div>
                                 </div>
                             </div>
-                            </p>
+                            <?php endif;?>
+
 
                             <p>
-                                <button type="button" class="btn btn-info" data-toggle="modal" data-target="#myModal<?=$i?>699">
-                                    П/П 699
+                                <button type="button" class="btn btn-info btn-block btn-lg" data-toggle="modal" data-target="#myModal<?=$i?>699">
+                                    Постановление <br> правительства № 699 <br>
+                                    <span class="text text-info" style="font-size: 16px;"> <i> кол-во обучающихся: <?=$studentsByMonth[$i][699]['students']?> </i> </span>
                                 </button>
-                                <span id="count" class="badge alert-success"><?=$studentsByMonth[$i][699]['students']?></span>
                             <div class="modal fade" id="myModal<?=$i?>699" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
                                 <div class="modal-dialog modal-sm" role="document">
                                     <div class="modal-content">
@@ -92,8 +102,11 @@ $cans = Yii::$app->session['cans'];
                                         </div>
                                         <div class="modal-body">
                                             <?php foreach ($studentsByMonth[$i][699]['bank'] as $item ): ?>
-                                                <?= Html::a($banks[$item],['app/organizations/by-bank','id'=>$item],['class'=>'btn btn-primary']) ?>
-                                                <br>
+                                                <?php if ($cans[0] || $cans[1]):?>
+                                                    <?= Html::a($banks[$item],['app/organizations/by-bank','id'=>$item],['class'=>'btn btn-primary btn-block']) ?>
+                                                <?php else:?>
+                                                    <?= Html::a($banks[$item],['app/students/by-bank','id'=>$item],['class'=>'btn btn-primary btn-block']) ?>
+                                                <?php endif;?>
                                             <?php endforeach;?>
                                         </div>
 
@@ -103,10 +116,10 @@ $cans = Yii::$app->session['cans'];
                             </p>
                             <p>
                                 <!-- Button trigger modal -->
-                                <button type="button" class="btn btn-info" data-toggle="modal" data-target="#myModal<?=$i?>1026">
-                                    П/П 1026
+                                <button type="button" class="btn btn-info btn-block btn-lg" data-toggle="modal" data-target="#myModal<?=$i?>1026">
+                                    Постановление <br> правительства № 1026<br>
+                                    <span class="text text-info" style="font-size: 16px;"> <i> кол-во обучающихся: <?=$studentsByMonth[$i][1026]['students']?> </i> </span>
                                 </button>
-                                <span id="count" class="badge alert-success"><?=$studentsByMonth[$i][1026]['students']?></span>
                             <div class="modal fade" id="myModal<?=$i?>1026" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
                                 <div class="modal-dialog modal-sm" role="document">
                                     <div class="modal-content">
@@ -116,8 +129,11 @@ $cans = Yii::$app->session['cans'];
                                         </div>
                                         <div class="modal-body">
                                             <?php foreach ($studentsByMonth[$i][1026]['bank'] as $item ): ?>
-                                                <?= Html::a($banks[$item],['app/organizations/by-bank','id'=>$item],['class'=>'btn  btn-primary']) ?>
-                                                <br>
+                                                <?php if ($cans[0] || $cans[1]):?>
+                                                    <?= Html::a($banks[$item],['app/organizations/by-bank','id'=>$item],['class'=>'btn btn-primary btn-block']) ?>
+                                                <?php else:?>
+                                                    <?= Html::a($banks[$item],['app/students/by-bank','id'=>$item],['class'=>'btn btn-primary btn-block']) ?>
+                                                <?php endif;?>
                                             <?php endforeach;?>
                                         </div>
                                     </div>
