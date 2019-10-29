@@ -15,9 +15,9 @@ $cans = Yii::$app->session['cans'];
 ?>
 
 <div class="students-form">
-
     <?php $readonly =  $cans[2] ? 1 : null;
     $form = ActiveForm::begin(); ?>
+    <?=$form->errorSummary($model)?>
     <?php if (!$cans[2]):?>
         <div class="row">
             <div class="col-md-4">
@@ -117,7 +117,7 @@ $cans = Yii::$app->session['cans'];
                 <?= $form->field($model,'rasp_act1')->fileInput() ->label('ООВО загружает копию распорядительного акта образовательной организации')//$rasp_act1 ?  $rasp_act1->file->name : 'Файл не загружен' ?>
             </td>
             <td rowspan="6">
-                <?= $form->field($model,'perevod')->checkbox()->label('Перевод на бюджет') ?>
+                <?= $form->field($model,'perevod')->checkbox([],false)->label('Перевод на бюджет') ?>
                 <?= $form->field($model,'rasp_act1')->fileInput() ->label('акт')?>
             </td>
         </tr>

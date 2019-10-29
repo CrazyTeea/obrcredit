@@ -26,11 +26,8 @@ $this->params['breadcrumbs'][] = $this->title;
 
     <h1><?= Html::encode($this->title) ?></h1>
 
-
-
-
     <div class="row">
-        <div class="col-md-4">
+        <div class="col-md-3">
             <?= ExportMenu::widget(
                 [
                     'dataProvider'=>$dataProviderStudent,
@@ -38,14 +35,25 @@ $this->params['breadcrumbs'][] = $this->title;
                     'columns' =>$exportColumns,
                 ]) ?>
         </div>
+
         <?php $form = ActiveForm::begin(['method'=>'get'])?>
-        <div class="col-md-4">
+        <div class="col-md-3">
             <?=$form->field($searchModel,'isColored')->checkbox(); ?>
+
         </div>
-        <div class="col-md-4">
+
+        <div class="col-md-3">
             <?=Html::submitButton('Отфильровать(зеленые/красные)',['class'=>'btn btn-success'])?>
         </div>
         <?php  ActiveForm::end()?>
+        <div class="col-md-3">
+            <?= ExportMenu::widget(
+                [
+                    'dataProvider'=>$clrPr,
+                    'emptyCell'=>' ',
+                    'columns' =>['id','name'],
+                ]) ?>
+        </div>
     </div>
 
 

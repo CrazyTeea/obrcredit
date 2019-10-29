@@ -60,11 +60,11 @@ class StudentsController extends AppController
             Yii::$app->session['id_org'] = User::findIdentity(Yii::$app->user->id)->id_org ? User::findIdentity(Yii::$app->user->id)->id_org : 1;
         if(Yii::$app->session['id_org'])
             Yii::$app->session['short_name_org']=Organizations::findOne(Yii::$app->session['id_org'])->name;
-
+        $searchModel->id_bank = Yii::$app->session['id_bank'];
         $searchModel->id_org = Yii::$app->session['id_org'];
         $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
 
-        $studentsExport = Students::find()->where(['id_org'=>$searchModel->id_org]);
+        $studentsExport = Students::find()->where(['id_org'=>$searchModel->id_org,'id_bank'=>$searchModel->id_bank]);
         $exportProvider = new ActiveDataProvider(['query'=>$studentsExport,'pagination'=>false]);
 
         $exportColumns = [

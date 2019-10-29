@@ -6,6 +6,8 @@ use app\models\app\Banks;
 use app\models\app\Organizations;
 use Yii;
 use yii\db\ActiveRecord;
+use yii\helpers\ArrayHelper;
+use yii\helpers\Json;
 
 /**
  * This is the model class for table "students".
@@ -64,7 +66,13 @@ class Students extends ActiveRecord
     {
         return [
             [['rasp_act0','rasp_act1','rasp_act2','rasp_act3','rasp_act4','dogovor','rasp_act_otch'],'file'],
-            [['id_org', 'education_status', 'status', 'osnovanie', 'grace_period','id_number_pp','id_bank'], 'integer'],
+            [['rasp_act4'],'file','skipOnEmpty'=>false,'when'=>function($model)
+            {
+                if ($model->perevod)
+                    return true;
+                return false;
+            },'uploadRequired'=>'При переводе на бюджет требуется загрузить файл'],
+            [['id_org', 'education_status', 'status', 'osnovanie', 'grace_period','id_number_pp','id_bank','perevod'], 'integer'],
             [[ 'date_create',
                 'date_start_grace_period1', 'date_end_grace_period1',
                 'date_start_grace_period2', 'date_end_grace_period2',

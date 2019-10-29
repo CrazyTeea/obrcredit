@@ -24,7 +24,7 @@ if ($year and $bank){
 }
 
 if ($cans[0] || $cans[1])
-    $this->params['breadcrumbs'][] = ['label'=>'Организации','url'=>['app/organizations']];
+    $this->params['breadcrumbs'][] = ['label'=>'Организации','url'=>['app/organizations/by-bank','id'=>Yii::$app->session['id_bank']]];
 $this->params['breadcrumbs'][] = $this->title;
 
 $isApprove = false;
@@ -76,7 +76,7 @@ $isApprove = false;
         <div class="raw">
             <div class="col-md-6"></div>
             <div class="col-md-6 text-right">
-                <?= Html::a('Утвердить!',['approve'],['class'=>'btn btn-danger','data' => [
+                <?= Html::a('Утвердить за месяц',['approve'],['class'=>'btn btn-danger','data' => [
                     'confirm' => 'Вы уверены?',
                 ],]) ?>
             </div>
