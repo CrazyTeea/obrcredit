@@ -36,6 +36,8 @@ return [
             '/site/index',
             '/app/students/download',
             '/app/students/approve',
+            '/app/main/*',
+            '/app/students/by-bank',
         ],
     ],
     '/app/students/*' => [
@@ -78,6 +80,18 @@ return [
         'type' => 2,
     ],
     '/app/students/approve' => [
+        'type' => 2,
+    ],
+    '/app/main/*' => [
+        'type' => 2,
+    ],
+    '/app/main/index' => [
+        'type' => 2,
+    ],
+    '/app/main/month' => [
+        'type' => 2,
+    ],
+    '/app/students/by-bank' => [
         'type' => 2,
     ],
 ];

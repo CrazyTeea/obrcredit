@@ -42,6 +42,7 @@ $config = [
            'site/about',
             'site/login',
             'site/logout',
+            'debug/*'
         ]
     ],
     'components' => [

@@ -13,6 +13,13 @@ use yii\widgets\Pjax;
 /* @var $dataProviderStudent yii\data\ActiveDataProvider */
 
 $this->title = 'Организации';
+$year = Yii::$app->session['year'];
+$this->params[ 'breadcrumbs' ][] = ['label' => 'ОбрКредит', 'url' => ['/']];
+if ($year){
+    $this->params['breadcrumbs'][] = ['label'=>'Выбор года','url'=>['app/main']];
+    $this->params['breadcrumbs'][] = ['label'=>'Выбор месяца','url'=>['app/main/month','year'=>$year]];
+}
+
 $this->params['breadcrumbs'][] = $this->title;
 ?>
 <div class="organizations-index">

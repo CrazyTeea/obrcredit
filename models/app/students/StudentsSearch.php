@@ -44,6 +44,8 @@ class StudentsSearch extends Students
     public function search($params)
     {
         $query = Students::find()->joinWith(['organization','dateStatuses','numberPP','bank']);
+        if (!empty($this->id_bank))
+            $query->where(['id_bank'=>$this->id_bank]);
 
        /* if ( User::$cans[2])
             $query->andWhere(['id_org'=>User::findIdentity(Yii::$app->getUser()->getId())->id_org]);*/

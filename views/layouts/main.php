@@ -14,6 +14,10 @@ use yii\widgets\Breadcrumbs;
 use app\assets\AppAsset;
 
 AppAsset::register($this);
+
+
+
+
 ?>
 <?php $this->beginPage() ?>
 <!DOCTYPE html>
@@ -69,10 +73,12 @@ AppAsset::register($this);
     ?>
 
     <div class="container">
+
         <?= Breadcrumbs::widget([
-            'homeLink' => false,
+            'homeLink' => ['label'=>'Главная','url'=>'https://xn--80apneeq.xn--p1ai/?index.php'],
             'links' => isset($this->params['breadcrumbs']) ? $this->params['breadcrumbs'] : [],
         ]) ?>
+
         <?= Alert::widget() ?>
         <?= $content ?>
     </div>

@@ -12,6 +12,14 @@ use yii\widgets\DetailView;
 
 $this->title = $model->name;
 $cans = Yii::$app->session['cans'];
+$year = Yii::$app->session['year'];
+$bank = Yii::$app->session['bank'];
+$this->params[ 'breadcrumbs' ][] = ['label' => 'ОбрКредит', 'url' => ['/']];
+if ($year and $bank){
+    $this->params['breadcrumbs'][] = ['label'=>'Выбор года','url'=>['app/main']];
+    $this->params['breadcrumbs'][] = ['label'=>'Выбор месяца','url'=>['app/main/month','year'=>$year]];
+}
+
 if ($cans[0] || $cans[1])
     $this->params['breadcrumbs'][] = ['label' => 'Организация', 'url' => ['app/organizations/index']];
 $this->params['breadcrumbs'][] = ['label' => 'Обучающиеся', 'url' => ['index']];
@@ -23,6 +31,7 @@ $rasp_act0 = StudentDocs::getDocByDescriptorName('rasp_act0',$model->id);
 $rasp_act1 = StudentDocs::getDocByDescriptorName('rasp_act1',$model->id);
 $rasp_act2 = StudentDocs::getDocByDescriptorName('rasp_act2',$model->id);
 $rasp_act3 = StudentDocs::getDocByDescriptorName('rasp_act3',$model->id);
+$rasp_act4 = StudentDocs::getDocByDescriptorName('rasp_act4',$model->id);
 $dogovor = StudentDocs::getDocByDescriptorName('dogovor',$model->id);
 $rasp_act_otch = StudentDocs::getDocByDescriptorName('rasp_act_otch',$model->id);
 //var_dump($model->dateLastStatus->updated_at);
@@ -56,7 +65,7 @@ $canUpdate = ($cans[0] || $model->status != 2) ? 1 : 0;
         <thead>
         <tr>
             <th colspan="4"><p class="text-center ">Статус обучающегося</p></th>
-            <th colspan="3"><p class="text-center">Пролонгация льготного периода пользования <br> образовательным кредитом</p></th>
+            <th colspan="4"><p class="text-center">Пролонгация льготного периода пользования <br> образовательным кредитом</p></th>
         </tr>
         <tr>
             <td rowspan='2'><p class="text-sm-center">Продолжает <br> обучаться </p></td>
@@ -68,6 +77,7 @@ $canUpdate = ($cans[0] || $model->status != 2) ? 1 : 0;
             <td rowspan='2'><p class="text-sm-center">Подтверждение
                     срока окончания академического права
                 </p></td>
+            <td rowspan="2"><p class="text-sm-center">Переведен на бюджет</p></td>
         </tr>
         <tr>
             <td>Пункты постановления <br> Правительства РФ <br> от 26.02.2018 г. № 197</td>
@@ -111,6 +121,14 @@ $canUpdate = ($cans[0] || $model->status != 2) ? 1 : 0;
             </td>
             <td rowspan="3">
                 <?= $rasp_act1 ? Html::a($rasp_act1->file->name,['download','id'=>$rasp_act1->id])  : 'Файл не загружен' ?>
+            </td>
+            <td rowspan="6">
+                <?php
+                if ($model->perevod)
+                    echo "<p class='text-sm-center' > &#9745; Переведен </p>";
+                else echo "<p class='text-sm-center'> &#9744; Переведен</p>";
+                ?>
+                <?= $rasp_act1 ? Html::a($rasp_act4->file->name,['download','id'=>$rasp_act4->id])  : 'Файл не загружен' ?>
             </td>
         </tr>
         <tr>
@@ -182,7 +200,8 @@ $canUpdate = ($cans[0] || $model->status != 2) ? 1 : 0;
                 else echo "<p class='text-sm-center'> &#9744; $k</p>";
                 ?>
             </td>
-            <td  style="text-align: center; vertical-align: middle;" ><p class="text-center">
+            <td  style="text-align: center; vertical-align: middle;">
+                <p class="text-center">
                     <?= Yii::$app->getFormatter()->asDate($model->date_start_grace_period3) ?>
                     -
                     <?= Yii::$app->getFormatter()->asDate($model->date_end_grace_period3) ?>
@@ -191,8 +210,6 @@ $canUpdate = ($cans[0] || $model->status != 2) ? 1 : 0;
             <td>
                 <?= $rasp_act3 ? Html::a($rasp_act3->file->name,['download','id'=>$rasp_act3->id])  : 'Файл не загружен' ?>
             </td>
-
-
         </tr>
         </tbody>
     </table>

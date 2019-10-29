@@ -29,6 +29,7 @@ use yii\db\ActiveRecord;
  * @property int $id_number_pp
  * @property string $date_status
  * @property int $id_bank
+ * @property int $perevod
  *
  * @var StudentDocs $docs
  *
@@ -43,6 +44,7 @@ class Students extends ActiveRecord
         $rasp_act1,
         $rasp_act2,
         $rasp_act3,
+        $rasp_act4,
         $dogovor,
         $rasp_act_otch;
 
@@ -61,7 +63,7 @@ class Students extends ActiveRecord
     public function rules()
     {
         return [
-            [['rasp_act0','rasp_act1','rasp_act2','rasp_act3','dogovor','rasp_act_otch'],'file'],
+            [['rasp_act0','rasp_act1','rasp_act2','rasp_act3','rasp_act4','dogovor','rasp_act_otch'],'file'],
             [['id_org', 'education_status', 'status', 'osnovanie', 'grace_period','id_number_pp','id_bank'], 'integer'],
             [[ 'date_create',
                 'date_start_grace_period1', 'date_end_grace_period1',
