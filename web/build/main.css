@@ -35,6 +35,9 @@ a {
 .row .panel .panel-body .col-sm-6 .thumbnail .caption button{
               background:linear-gradient(180deg, #4393D8 0%, rgba(50, 147, 230, 0.458333) 99.99%, rgba(35, 146, 241, 0) 100%);
             }
+.row .panel .panel-body .col-sm-6 .thumbnail .caption h2{
+              text-align: unset;
+            }
 .row .panel .panel-body .col-sm-6 .thumbnail p #count {
               float: right;
             }

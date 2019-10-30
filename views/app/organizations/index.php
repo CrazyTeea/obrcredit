@@ -47,12 +47,14 @@ $this->params['breadcrumbs'][] = $this->title;
         </div>
         <?php  ActiveForm::end()?>
         <div class="col-md-3">
+            <label for="kartik-export"> Выгрузка красных
             <?= ExportMenu::widget(
                 [
                     'dataProvider'=>$clrPr,
                     'emptyCell'=>' ',
                     'columns' =>['id','name'],
                 ]) ?>
+            </label>
         </div>
     </div>
 

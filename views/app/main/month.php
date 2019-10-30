@@ -1,5 +1,6 @@
 <?php
 
+use kartik\export\ExportMenu;
 use yii\bootstrap\Html;
 use yii\helpers\Url;
 
@@ -36,25 +37,33 @@ if ($year == 2018)
                 <div class="col-sm-6 col-md-4">
                     <div class="thumbnail">
                         <div class="caption">
-                            <h2><?php
+                            <div class="row">
+                                <div class="col-md-6"><?=ExportMenu::widget(['dataProvider'=>$studentsByMonth[$i]['exportPr'],'columns'=>$exportColumns]) ?></div>
+                                <div class="col-md-6">
+                                    <h2><?php
 
-                                $arr = [
-                                    'Январь',
-                                    'Февраль',
-                                    'Март',
-                                    'Апрель',
-                                    'Май',
-                                    'Июнь',
-                                    'Июль',
-                                    'Август',
-                                    'Сентябрь',
-                                    'Октябрь',
-                                    'Ноябрь',
-                                    'Декабрь'
-                                ];
+                                        $arr = [
+                                            'Январь',
+                                            'Февраль',
+                                            'Март',
+                                            'Апрель',
+                                            'Май',
+                                            'Июнь',
+                                            'Июль',
+                                            'Август',
+                                            'Сентябрь',
+                                            'Октябрь',
+                                            'Ноябрь',
+                                            'Декабрь'
+                                        ];
 
-                                $m = DateTime::createFromFormat('!m',$i);
-                                echo $arr[$m->format('n')-1]?></h2>
+                                        $m = DateTime::createFromFormat('!m',$i);
+                                        echo $arr[$m->format('n')-1]?>
+                                    </h2>
+                                </div>
+                            </div>
+
+
                             <hr>
                             <?php if($year != 2018):?>
                             <p>
