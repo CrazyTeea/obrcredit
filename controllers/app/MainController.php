@@ -113,9 +113,13 @@ class MainController extends AppController
                 $s1026 = Students::find()->where( ['YEAR(date_start)' => $year, 'MONTH(date_start)' => $i, 'id_number_pp' => 3] )->select( ['id_bank'] );
             }
             $studentsByMonth[$i]['exportPr'] = new ActiveDataProvider(['query'=>Students::find()->where(['YEAR(date_start)' => $year, 'MONTH(date_start)' => $i])]);
-            $studentsByMonth[$i][197]['students'] = $s197->count();
-            $studentsByMonth[$i][699]['students'] = $s699->count();
-            $studentsByMonth[$i][1026]['students'] = $s1026->count();
+            $studentsByMonth[$i][197]['students']['count'] = $s197->count();
+            $studentsByMonth[$i][699]['students']['count'] = $s699->count();
+            $studentsByMonth[$i][1026]['students']['count'] = $s1026->count();
+
+            $studentsByMonth[$i][197]['students']['notApproved'] = $s197->andWhere(['status'=>1])->count();
+            $studentsByMonth[$i][699]['students']['notApproved'] = $s699->andWhere(['status'=>1])->count();
+            $studentsByMonth[$i][1026]['students']['notApproved'] = $s1026->andWhere(['status'=>1])->count();
 
             $studentsByMonth[$i][197]['bank'] =  $s197->groupBy('id_bank')->column();
             $studentsByMonth[$i][699]['bank'] =  $s699->groupBy('id_bank')->column();

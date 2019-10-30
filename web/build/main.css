@@ -3,10 +3,11 @@ a {
   margin: 0 0 5px 0 !important;
 }
 #green{
-  background-color: #4cae4c;
+  background: linear-gradient(180deg, #62DF00 0%, #22A61F 99.96%, #3A9D0C 99.97%);
 }
 #red{
-  background-color: #ff7777;
+  background: linear-gradient(180deg, #EE0808 0%, #B21C1C 100%);
+
 }
 .toVisible:hover{
     background-color: #8bb8df !important;
@@ -32,9 +33,6 @@ a {
           box-shadow: 2px 2px 20px rgba(0, 0, 0, 0.2);
           border-radius: 15px;
         }
-.row .panel .panel-body .col-sm-6 .thumbnail .caption button{
-              background:linear-gradient(180deg, #4393D8 0%, rgba(50, 147, 230, 0.458333) 99.99%, rgba(35, 146, 241, 0) 100%);
-            }
 .row .panel .panel-body .col-sm-6 .thumbnail .caption h2{
               text-align: unset;
             }

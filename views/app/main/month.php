@@ -68,9 +68,9 @@ if ($year == 2018)
                             <?php if($year != 2018):?>
                             <p>
                                 <!-- Button trigger modal -->
-                                <button type="button" class="btn btn-info btn-block btn-lg" data-toggle="modal" data-target="#myModal<?=$i?>197">
+                                <button id="<?= ($studentsByMonth[$i][197]['students']['notApproved'])? 'red' : 'green' ?>" type="button" class="btn btn-info btn-block btn-lg" data-toggle="modal" data-target="#myModal<?=$i?>197">
                                     Постановление <br>правительства №197 <br>
-                                    <span class="text text-info" style="font-size: 16px;"> <i> кол-во обучающихся: <?=$studentsByMonth[$i][197]['students']?> </i> </span>
+                                    <span class="text " style="font-size: 16px;"> <i> кол-во обучающихся: <?=$studentsByMonth[$i][197]['students']['count']?> </i> </span>
                                 </button>
 
                             </p>
@@ -98,9 +98,9 @@ if ($year == 2018)
 
 
                             <p>
-                                <button type="button" class="btn btn-info btn-block btn-lg" data-toggle="modal" data-target="#myModal<?=$i?>699">
+                                <button id="<?= ($studentsByMonth[$i][699]['students']['notApproved'])? 'red' : 'green' ?>" type="button" class="btn btn-info btn-block btn-lg" data-toggle="modal" data-target="#myModal<?=$i?>699">
                                     Постановление <br> правительства № 699 <br>
-                                    <span class="text text-info" style="font-size: 16px;"> <i> кол-во обучающихся: <?=$studentsByMonth[$i][699]['students']?> </i> </span>
+                                    <span class="text " style="font-size: 16px;"> <i> кол-во обучающихся: <?=$studentsByMonth[$i][699]['students']['count']?> </i> </span>
                                 </button>
                             <div class="modal fade" id="myModal<?=$i?>699" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
                                 <div class="modal-dialog modal-sm" role="document">
@@ -125,9 +125,9 @@ if ($year == 2018)
                             </p>
                             <p>
                                 <!-- Button trigger modal -->
-                                <button type="button" class="btn btn-info btn-block btn-lg" data-toggle="modal" data-target="#myModal<?=$i?>1026">
+                                <button id="<?= ($studentsByMonth[$i][1026]['students']['notApproved'])? 'red' : 'green' ?>" type="button" class="btn btn-info btn-block btn-lg" data-toggle="modal" data-target="#myModal<?=$i?>1026">
                                     Постановление <br> правительства № 1026<br>
-                                    <span class="text text-info" style="font-size: 16px;"> <i> кол-во обучающихся: <?=$studentsByMonth[$i][1026]['students']?> </i> </span>
+                                    <span class="text" style="font-size: 16px;"> <i> кол-во обучающихся: <?=$studentsByMonth[$i][1026]['students']['count']?> </i> </span>
                                 </button>
                             <div class="modal fade" id="myModal<?=$i?>1026" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
                                 <div class="modal-dialog modal-sm" role="document">
