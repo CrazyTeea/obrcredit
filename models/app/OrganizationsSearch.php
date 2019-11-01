@@ -15,13 +15,14 @@ class OrganizationsSearch extends Organizations
     public $isColored;
     public $id_bank;
     public $month;
+    public $nPP;
     /**
      * {@inheritdoc}
      */
     public function rules()
     {
         return [
-            [['id','id_bank'], 'integer'],
+            [['id','id_bank','month','nPP'], 'integer'],
             [['isColored'],'integer'],
             [['name', 'short_name', 'full_name'], 'safe'],
         ];
@@ -49,15 +50,9 @@ class OrganizationsSearch extends Organizations
      */
     public function search($params)
     {
-        $query = Organizations::find()->where(['system_status'=>1]);//->select(['students.id','count(students.id)','short_name','organizations.name','full_name'])->joinWith(['students']);
+        $query = Organizations::find()->joinWith(['students as st'])->where(['system_status'=>1]);//->select(['students.id','count(students.id)','short_name','organizations.name','full_name'])->joinWith(['students']);
 
 
-        if (!empty($this->id_bank)){
-            $query->joinWith(['students as st'])->andWhere(['st.id_bank'=>$this->id_bank]);
-        }
-        if (!empty($this->month)){
-            $query->andWhere(['MONTH(st.date_start)'=>$this->month]);
-        }
 
         // add conditions tha t should always apply here
 
@@ -68,13 +63,16 @@ class OrganizationsSearch extends Organizations
             ]
         ]);
 
+
         $this->load($params);
 
         if (!$this->validate()) {
+
             // uncomment the following line if you do not want to return any records when validation fails
             // $query->where('0=1');
             return $dataProvider;
         }
+
 
         if ($this->isColored) {
             $query->joinWith(['students' => function ($subquery) {
@@ -85,13 +83,15 @@ class OrganizationsSearch extends Organizations
             $query->orderBy(['studentsCOUNT' => SORT_DESC]);
         }
         // grid filtering conditions
-        $query->andFilterWhere([
-            'id' => $this->id,
-        ]);
+        $query->andFilterWhere(['id' => $this->id,]);
+        $query->andFilterWhere(['st.id_bank'=>$this->id_bank,]);
+        $query->andFilterWhere(['st.id_number_pp'=>$this->nPP,]);
+        $query->andFilterWhere(['MONTH(st.date_start)'=>$this->month]);
 
         $query->andFilterWhere(['like', 'organizations.name', $this->name])
             ->andFilterWhere(['like', 'short_name', $this->short_name])
             ->andFilterWhere(['like', 'full_name', $this->full_name]);
+        $query->groupBy(['id']);
 
         return $dataProvider;
     }

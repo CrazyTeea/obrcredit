@@ -65,7 +65,7 @@ $this->params['breadcrumbs'][] = $this->title;
 
 
 
-    <?php Pjax::begin(); ?>
+    <?php Pjax::begin(['id'=>'sdfsd']); ?>
     <?php // echo $this->render('_search', ['model' => $searchModel]); ?>
 
     <?= GridView::widget([

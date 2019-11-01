@@ -159,28 +159,30 @@ class OrganizationsController extends AppController
     }
 
 
-    public function actionByBank($id,$m){
+    public function actionByBank($id_bank,$month,$nPP){
 
-        Yii::$app->session['bank'] = $id;
+        Yii::$app->session['bank'] = $id_bank;
 
         $searchModel = new OrganizationsSearch();
-        $searchModel->month = $m;
-        Yii::$app->session['month'] = $m;
-        $searchModel->id_bank = $id;
-        Yii::$app->session['id_bank'] = $id;
+        $searchModel->month = $month;
+        Yii::$app->session['month'] = $month;
+        $searchModel->id_bank = $id_bank;
+        Yii::$app->session['id_bank'] = $id_bank;
+        Yii::$app->session['nPP'] = $nPP;
+        $searchModel->nPP=$nPP;
 
         $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
 
         $modelColored = Organizations::find();
 
-        $modelColored->joinWith(['students as st'])->andWhere(['st.id_bank'=>$id,'st.status'=>1]);
+        $modelColored->joinWith(['students as st'])->andWhere(['st.id_bank'=>$id_bank,'st.status'=>1,'MONTH(st.date_start)'=>$month]);
 
         $modelColored->groupBy(['organizations.id']);
         //$modelColored->orderBy(['studentsCOUNT' => SORT_DESC]);
 
         $dataProviderColored  = new ActiveDataProvider(['query'=>$modelColored,'pagination'=>false]);
 
-        $studentsExport = Students::find()->where(['id_bank'=>$id]);
+        $studentsExport = Students::find()->where(['id_bank'=>$id_bank]);
         $exportProvider = new ActiveDataProvider(['query'=>$studentsExport,'pagination'=>false]);
 
         $exportColumns = [
@@ -256,6 +258,7 @@ class OrganizationsController extends AppController
                 ['attribute' => 'date_status', 'format' => 'date', 'label' => 'Дата утверждения отчета'],
             ] );
         }
+
 
         return $this->render('index', [
             'searchModel' => $searchModel,
