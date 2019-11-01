@@ -228,10 +228,12 @@ class StudentsController extends AppController
     }
 
 
-    public function actionByBank($id = null)
+    public function actionByBank($id = null,$m = null)
     {
         $searchModel = new StudentsSearch();
         $searchModel->id_bank = $id;
+        Yii::$app->session['month'] = $m;
+        $searchModel->month = $m;
 
         if (!($this->cans[0] || $this->cans[1]))
             Yii::$app->session['id_org'] = User::findIdentity(Yii::$app->user->id)->id_org ? User::findIdentity(Yii::$app->user->id)->id_org : 1;

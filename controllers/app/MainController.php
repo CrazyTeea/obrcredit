@@ -103,7 +103,7 @@ class MainController extends AppController
         }
         for ($i = 1;$i<=12;$i++){
             if (!($this->cans[0] || $this->cans[1])) {
-                $s197 = Students::find()->where( ['YEAR(date_start)' => $year, 'MONTH(date_start)' => $i, 'id_number_pp' => 1, 'id_org'=>Yii::$app->session['id_org']] )->select( ['id_bank'] );
+                $s197 = Students::find()->where( ['YEAR(date_start)' => $year, 'MONTH(date_start)' => $i, 'id_number_pp' => 1, 'id_org'=>Yii::$app->session['id_org']] )->select(['id_bank'] );
                 $s699 = Students::find()->where( ['YEAR(date_start)' => $year, 'MONTH(date_start)' => $i, 'id_number_pp' => 2, 'id_org'=>Yii::$app->session['id_org']] )->select( ['id_bank'] );
                 $s1026 = Students::find()->where( ['YEAR(date_start)' => $year, 'MONTH(date_start)' => $i, 'id_number_pp' => 3, 'id_org'=>Yii::$app->session['id_org']] )->select( ['id_bank'] );
             }
@@ -117,13 +117,15 @@ class MainController extends AppController
             $studentsByMonth[$i][699]['students']['count'] = $s699->count();
             $studentsByMonth[$i][1026]['students']['count'] = $s1026->count();
 
+            $studentsByMonth[$i][197]['bank'] = $s197->groupBy(['id_bank'])->column() ;
+            $studentsByMonth[$i][699]['bank'] =  $s699->groupBy(['id_bank'])->column();
+            $studentsByMonth[$i][1026]['bank'] = $s1026->groupBy(['id_bank'])->column();
+
             $studentsByMonth[$i][197]['students']['notApproved'] = $s197->andWhere(['status'=>1])->count();
             $studentsByMonth[$i][699]['students']['notApproved'] = $s699->andWhere(['status'=>1])->count();
             $studentsByMonth[$i][1026]['students']['notApproved'] = $s1026->andWhere(['status'=>1])->count();
 
-            $studentsByMonth[$i][197]['bank'] =  $s197->groupBy('id_bank')->column();
-            $studentsByMonth[$i][699]['bank'] =  $s699->groupBy('id_bank')->column();
-            $studentsByMonth[$i][1026]['bank'] = $s1026->groupBy('id_bank')->column();
+
         }
         $banks = Banks::find()->select('name')->column();
 

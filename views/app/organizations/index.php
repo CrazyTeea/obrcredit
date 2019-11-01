@@ -28,13 +28,13 @@ $this->params['breadcrumbs'][] = $this->title;
 
     <div class="row">
         <div class="col-md-3">
-            <?/*= ExportMenu::widget(
+            <?= ExportMenu::widget(
                 [
                         'pjaxContainerId'=>'ex',
                     'dataProvider'=>$dataProviderStudent,
                     'emptyCell'=>' ',
                     'columns' =>$exportColumns,
-                ]) */?>
+                ]) ?>
         </div>
 
         <?php $form = ActiveForm::begin(['method'=>'get'])?>
