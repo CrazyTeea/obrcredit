@@ -15,6 +15,7 @@ $cans = Yii::$app->session['cans'];
 ?>
 
 <div class="students-form">
+    <?php var_dump(Yii::$app->session['id_org'])?>
     <?php $readonly =  $cans[2] ? 1 : null;
     $form = ActiveForm::begin(); ?>
     <?=$form->errorSummary($model)?>

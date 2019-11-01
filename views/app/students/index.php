@@ -40,7 +40,7 @@ $isApprove = false;
     <h3><?= Html::encode($this->title) ?></h3>
 
     <?php if ($cans[0] || $cans[1]):?>
-        <?= Html::a('Добавить студента', ['create'],['class'=>'btn btn-success']) ?>
+        <?= Html::a('Добавить студента', ['create','id'=>Yii::$app->session[ 'id_org' ]],['class'=>'btn btn-success']) ?>
     <?php endif;?>
 
     <?= ExportMenu::widget(
