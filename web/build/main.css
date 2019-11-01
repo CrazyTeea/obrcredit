@@ -36,6 +36,14 @@ a {
 .row .panel .panel-body .col-sm-6 .thumbnail .caption h2{
               text-align: unset;
             }
+.row .panel .panel-body .col-sm-6 .thumbnail p #red{
+              background: #FFA3A3;
+              border: 1px solid #E09C9C;
+            }
+.row .panel .panel-body .col-sm-6 .thumbnail p #green{
+              background: #A3FFC2;
+              border: 1px solid rgba(81, 216, 78, 0.5);
+            }
 .row .panel .panel-body .col-sm-6 .thumbnail p #count {
               float: right;
             }
