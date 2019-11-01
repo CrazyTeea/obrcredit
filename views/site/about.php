@@ -20,6 +20,7 @@ $this->params['breadcrumbs'][] = ['label' => 'Все заявления', 'url'=
     <p>8(964)527-30-83</p>
     <p><a href="mailto:ias@mirea.ru">ias@mirea.ru</a></p>
     <!--
+    ..
     <h5>Инструкция</h5>
     <?= Html::a('Инструкция',Yii::getAlias('@web').'/downloads/manual.pdf')?>
     <br>
