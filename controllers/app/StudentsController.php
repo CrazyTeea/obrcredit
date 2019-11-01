@@ -467,7 +467,7 @@ class StudentsController extends AppController
     /**
      * @return string|Response
      */
-    public function actionCreate()
+    public function actionCreate($id)
     {
         $model = new Students();
         $modelD = new DatesEducationStatus();
@@ -476,7 +476,7 @@ class StudentsController extends AppController
         if ($model->load(Yii::$app->request->post())) {
             $model->status=0;
             $model->date_create = date('Y-m-d');
-            $model->id_org = Yii::$app->session['id_org'];
+            $model->id_org = $id;
 
             if ($model->save()) {
                 $this->addDocs($model);
