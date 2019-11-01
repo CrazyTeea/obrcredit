@@ -11,7 +11,7 @@ $this->params[ 'breadcrumbs' ][] = ['label' => 'ОбрКредит', 'url' => ['
 $cans = Yii::$app->session['cans'];
 if ($cans[0] || $cans[1])
     $this->params['breadcrumbs'][] = ['label' => 'Организация', 'url' => ['app/organizations/index']];
-$this->params['breadcrumbs'][] = ['label' => 'Обучающиеся', 'url' => ['index']];
+$this->params['breadcrumbs'][] = ['label' => 'Обучающиеся', 'url' => ['index','id'=>$model->id_org]];
 $this->params['breadcrumbs'][] = ['label' => $model->name, 'url' => ['view', 'id' => $model->id]];
 $this->params['breadcrumbs'][] = 'Update';
 ?>
