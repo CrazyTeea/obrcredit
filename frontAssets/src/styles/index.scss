@@ -38,6 +38,14 @@ a {
           box-shadow: 2px 2px 20px rgba(0, 0, 0, 0.2);
           border-radius: 15px;
           p {
+            #red{
+              background: #FFA3A3;
+              border: 1px solid #E09C9C;
+            }
+            #green{
+              background: #A3FFC2;
+              border: 1px solid rgba(81, 216, 78, 0.5);
+            }
             #count {
               float: right;
             }
