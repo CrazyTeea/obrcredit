@@ -12,7 +12,7 @@ $this->params[ 'breadcrumbs' ][] = ['label' => 'ОбрКредит', 'url' => ['
 if ($cans[0] || $cans[1])
     $this->params['breadcrumbs'][] = ['label' => 'Организация', 'url' => ['app/organizations/index']];
 
-$this->params['breadcrumbs'][] = ['label' => 'Обучающиеся', 'url' => ['index']];
+$this->params['breadcrumbs'][] = ['label' => 'Обучающиеся', 'url' => ['index','id'=>Yii::$app->session['id_org']]];
 $this->params['breadcrumbs'][] = $this->title;
 ?>
 <div class="students-create">

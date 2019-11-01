@@ -469,6 +469,7 @@ class StudentsController extends AppController
      */
     public function actionCreate($id)
     {
+        Yii::$app->session['id_org'] = $id;
         $model = new Students();
         $modelD = new DatesEducationStatus();
         $orgs = Organizations::getOrgs();
