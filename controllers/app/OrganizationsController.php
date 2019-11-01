@@ -163,9 +163,9 @@ class OrganizationsController extends AppController
 
         Yii::$app->session['bank'] = $id;
 
-
-
         $searchModel = new OrganizationsSearch();
+        $searchModel->month = $m;
+        Yii::$app->session['month'] = $m;
         $searchModel->id_bank = $id;
         Yii::$app->session['id_bank'] = $id;
 
