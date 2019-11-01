@@ -24,7 +24,7 @@ if ($year and $bank){
 }
 
 if ($cans[0] || $cans[1])
-    $this->params['breadcrumbs'][] = ['label'=>'Организации','url'=>['app/organizations/by-bank','id'=>Yii::$app->session['id_bank']]];
+    $this->params['breadcrumbs'][] = ['label'=>'Организации','url'=>['app/organizations/by-bank','id_bank'=>Yii::$app->session['id_bank'],'month'=>Yii::$app->session['month'],'nPP'=>Yii::$app->session['nPP']]];
 $this->params['breadcrumbs'][] = $this->title;
 
 $isApprove = false;
