@@ -2,6 +2,9 @@
 
 namespace app\controllers;
 
+use app\models\forms\ChangePasswordForm;
+use app\models\forms\SignupForm;
+use app\models\User;
 use Yii;
 use yii\filters\AccessControl;
 use yii\web\Controller;
@@ -53,6 +56,20 @@ class SiteController extends Controller
             ],
         ];
     }
+    public function actionChangePassword()
+    {
+        $model = new ChangePasswordForm();
+        $success = -1;
+        if ( $model->load(Yii::$app->request->post()))
+        {
+            if ($model->change_password()) {
+                $success = 1;
+            }
+            else $success = 0;
+        }
+        echo $success;
+        return $this->render('change_password',compact('model','success'));
+    }
 
     /**
      * Displays homepage.
@@ -61,7 +78,13 @@ class SiteController extends Controller
      */
     public function actionIndex()
     {
-        return $this->render('index');
+
+        Yii::$app->session['cans'] = [
+            Yii::$app->getUser()->can('root'),
+            Yii::$app->getUser()->can('admin'),
+            Yii::$app->getUser()->can('podved')
+        ];
+        return $this->redirect(['app/main']);
     }
 
     /**
@@ -77,13 +100,19 @@ class SiteController extends Controller
 
         $model = new LoginForm();
         if ($model->load(Yii::$app->request->post()) && $model->login()) {
-            return $this->goBack();
+            return $this->redirect(['index']);
         }
 
-        $model->password = '';
         return $this->render('login', [
             'model' => $model,
         ]);
+
+    }
+    public function actionSignup(){
+        $new_user = new SignupForm();
+        if ($new_user->load(Yii::$app->request->post()) and $new_user->signup())
+            return $this->redirect(['site/signup']);
+        return $this->render('signup',compact('new_user'));
     }
 
     /**
@@ -98,23 +127,6 @@ class SiteController extends Controller
         return $this->goHome();
     }
 
-    /**
-     * Displays contact page.
-     *
-     * @return Response|string
-     */
-    public function actionContact()
-    {
-        $model = new ContactForm();
-        if ($model->load(Yii::$app->request->post()) && $model->contact(Yii::$app->params['adminEmail'])) {
-            Yii::$app->session->setFlash('contactFormSubmitted');
-
-            return $this->refresh();
-        }
-        return $this->render('contact', [
-            'model' => $model,
-        ]);
-    }
 
     /**
      * Displays about page.

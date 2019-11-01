@@ -5,6 +5,7 @@ namespace app\models;
 use mdm\admin\components\Configs;
 use mdm\admin\components\UserStatus;
 use Yii;
+use yii\base\Exception;
 use yii\base\NotSupportedException;
 use yii\behaviors\TimestampBehavior;
 use yii\db\ActiveRecord;
@@ -14,7 +15,9 @@ use yii\web\IdentityInterface;
  * User model
  *
  * @property integer $id
+ * @property integer $id_org
  * @property string $username
+ * @property string $name
  * @property string $password_hash
  * @property string $password_reset_token
  * @property string $email
@@ -30,6 +33,11 @@ class User extends ActiveRecord implements IdentityInterface
 {
     const STATUS_INACTIVE = 0;
     const STATUS_ACTIVE = 10;
+
+    public function __construct($config = [])
+    {
+        parent::__construct($config);
+    }
 
     /**
      * @inheritdoc
@@ -158,7 +166,7 @@ class User extends ActiveRecord implements IdentityInterface
 
     /**
      * @param $password
-     * @throws \yii\base\Exception
+     * @throws Exception
      */
     public function setPassword($password)
     {

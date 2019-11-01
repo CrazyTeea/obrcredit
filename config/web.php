@@ -1,5 +1,9 @@
 <?php
 
+
+use crazyteea\beautyfiles\Module;
+use yii\grid\GridView;
+
 $params = require __DIR__ . '/params.php';
 $db = require __DIR__ . '/db.php';
 
@@ -8,11 +12,16 @@ $config = [
     'basePath' => dirname(__DIR__),
     'bootstrap' => ['log'],
     'language'=>'ru-RU',
+    //'defaultRoute'=>'app/students/index',
+    'homeUrl'=>['app/students/index'],
     'aliases' => [
         '@bower' => '@vendor/bower-asset',
         '@npm'   => '@vendor/npm-asset',
     ],
     'modules'=>[
+        'gridview'=>[
+            'class' => 'kartik\grid\Module'
+        ],
         'admin'=>[
             'class'=>'mdm\admin\Module',
             'layout' => 'left-menu',
@@ -22,15 +31,25 @@ $config = [
                     'class' => 'mdm\admin\controllers\AssignmentController',
                 ],
             ],
+        ],
+        'beautyfiles'=>[
+            'class'=>'crazyteea\beautyfiles\Module'
         ]
     ],
     'as access' => [
         'class' => 'mdm\admin\components\AccessControl',
         'allowActions' => [
-           'site/*',
+           'site/about',
+            'site/login',
+            'site/logout',
+            'debug/*'
         ]
     ],
     'components' => [
+        'assetManager' => [
+            'class' => 'yii\web\AssetManager',
+            'appendTimestamp' => true,
+        ],
         'authManager' => [
             'class' => 'yii\rbac\PhpManager', // or use 'yii\rbac\DbManager'
         ],
@@ -43,7 +62,7 @@ $config = [
         ],
         'user' => [
             'identityClass' => 'app\models\User',
-            'enableAutoLogin' => true,
+            'enableAutoLogin' => false,
         ],
         'errorHandler' => [
             'errorAction' => 'site/error',

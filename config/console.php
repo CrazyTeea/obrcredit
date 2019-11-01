@@ -12,8 +12,21 @@ $config = [
         '@bower' => '@vendor/bower-asset',
         '@npm'   => '@vendor/npm-asset',
         '@tests' => '@app/tests',
+        '@webroot' => '@app/web'
     ],
     'components' => [
+        'mailer'=>[
+          'class'=>'yii\swiftmailer\Mailer',
+            //'useFileTransfer'=>false,
+            'transport'=>[
+                'class' => 'Swift_SmtpTransport',
+                'host' => 'smtp.mirea.ru',
+                'username' => 'ias@mirea.ru',
+                'password' => 'IAS1456981',
+                'port' => '25',
+                'encryption' => 'tls',
+            ],
+        ],
         'cache' => [
             'class' => 'yii\caching\FileCache',
         ],
