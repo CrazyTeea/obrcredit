@@ -232,6 +232,8 @@ class StudentsController extends AppController
     {
         $searchModel = new StudentsSearch();
         $searchModel->id_bank = $id;
+
+
         Yii::$app->session['month'] = $m;
         $searchModel->month = $m;
 
@@ -242,7 +244,7 @@ class StudentsController extends AppController
         $searchModel->id_org = Yii::$app->session['id_org'];
         $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
 
-        $studentsExport = Students::find()->where(['id_org'=>$searchModel->id_org]);
+        $studentsExport = Students::find()->where(['id_org'=>$searchModel->id_org,'MONTH(date_start)'=>$m,'YEAR(date_start)'=>Yii::$app->session['year']]);
         $exportProvider = new ActiveDataProvider(['query'=>$studentsExport,'pagination'=>false]);
 
         $exportColumns = [
