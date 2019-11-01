@@ -112,7 +112,9 @@ class MainController extends AppController
                 $s699 = Students::find()->where( ['YEAR(date_start)' => $year, 'MONTH(date_start)' => $i, 'id_number_pp' => 2] )->select( ['id_bank'] );
                 $s1026 = Students::find()->where( ['YEAR(date_start)' => $year, 'MONTH(date_start)' => $i, 'id_number_pp' => 3] )->select( ['id_bank'] );
             }
-            $studentsByMonth[$i]['exportPr'] = new ActiveDataProvider(['query'=>Students::find()->where(['YEAR(date_start)' => $year, 'MONTH(date_start)' => $i])]);
+            $studentsByMonth[$i]['exportPr'] = (!$this->cans[2]) ?
+                new ActiveDataProvider(['query'=>Students::find()->where(['YEAR(date_start)' => $year, 'MONTH(date_start)' => $i])])
+                : new ActiveDataProvider(['query'=>Students::find()->where(['YEAR(date_start)' => $year, 'MONTH(date_start)' => $i,'id_org'=>Yii::$app->session['id_org']])]);
             $studentsByMonth[$i][197]['students']['count'] = $s197->count();
             $studentsByMonth[$i][699]['students']['count'] = $s699->count();
             $studentsByMonth[$i][1026]['students']['count'] = $s1026->count();
