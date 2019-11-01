@@ -14,13 +14,14 @@ use app\models\app\students\Students;
 class StudentsSearch extends Students
 {
     public $date_education_status;
+    public $month;
     /**
      * {@inheritdoc}
      */
     public function rules()
     {
         return [
-            [['id', 'id_org', 'education_status', 'status', 'osnovanie', 'grace_period'], 'integer'],
+            [['month','id', 'id_org', 'education_status', 'status', 'osnovanie', 'grace_period'], 'integer'],
             [['name', 'code', 'date_education_status','date_create', 'date_start_grace_period', 'date_end_grace_period'], 'safe'],
         ];
     }
@@ -46,6 +47,8 @@ class StudentsSearch extends Students
         $query = Students::find()->joinWith(['organization','dateStatuses','numberPP','bank']);
         if (!empty($this->id_bank))
             $query->where(['id_bank'=>$this->id_bank]);
+        if (!empty($this->month))
+            $query->andWhere(['MONTH(students.date_start)'=>$this->month]);
 
        /* if ( User::$cans[2])
             $query->andWhere(['id_org'=>User::findIdentity(Yii::$app->getUser()->getId())->id_org]);*/

@@ -84,9 +84,9 @@ if ($year == 2018)
                                         <div class="modal-body">
                                             <?php foreach ($studentsByMonth[$i][197]['bank'] as $item ): ?>
                                                 <?php if ($cans[0] || $cans[1]):?>
-                                                    <?= Html::a($banks[$item-1],['app/organizations/by-bank','id'=>$item],['class'=>'btn btn-primary btn-block']) ?>
+                                                    <?= Html::a($banks[$item-1],['app/organizations/by-bank','id'=>$item,'m'=>$i],['class'=>'btn btn-primary btn-block']) ?>
                                                 <?php else:?>
-                                                    <?= Html::a($banks[$item-1],['app/students/by-bank','id'=>$item],['class'=>'btn btn-primary btn-block']) ?>
+                                                    <?= Html::a($banks[$item-1],['app/students/by-bank','id'=>$item,'m'=>$i],['class'=>'btn btn-primary btn-block']) ?>
                                                 <?php endif;?>
 
                                             <?php endforeach;?>
@@ -102,6 +102,7 @@ if ($year == 2018)
                                     Постановление <br> правительства № 699 <br>
                                     <span class="text " style="font-size: 16px;"> <i> кол-во обучающихся: <?=$studentsByMonth[$i][699]['students']['count']?> </i> </span>
                                 </button>
+
                             <div class="modal fade" id="myModal<?=$i?>699" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
                                 <div class="modal-dialog modal-sm" role="document">
                                     <div class="modal-content">
@@ -110,11 +111,12 @@ if ($year == 2018)
                                             <h4 class="modal-title" id="myModalLabel">Банки</h4>
                                         </div>
                                         <div class="modal-body">
-                                            <?php foreach ($studentsByMonth[$i][699]['bank'] as $item ): ?>
+
+                                            <?php  foreach ($studentsByMonth[$i][699]['bank'] as $item ): ?>
                                                 <?php if ($cans[0] || $cans[1]):?>
-                                                    <?= Html::a($banks[$item-1],['app/organizations/by-bank','id'=>$item],['class'=>'btn btn-primary btn-block']) ?>
+                                                    <?= Html::a($banks[$item-1],['app/organizations/by-bank','id'=>$item,'m'=>$i],['class'=>'btn btn-primary btn-block']) ?>
                                                 <?php else:?>
-                                                    <?= Html::a($banks[$item-1],['app/students/by-bank','id'=>$item],['class'=>'btn btn-primary btn-block']) ?>
+                                                    <?= Html::a($banks[$item-1],['app/students/by-bank','id'=>$item,'m'=>$i],['class'=>'btn btn-primary btn-block']) ?>
                                                 <?php endif;?>
                                             <?php endforeach;?>
                                         </div>
@@ -139,9 +141,9 @@ if ($year == 2018)
                                         <div class="modal-body">
                                             <?php foreach ($studentsByMonth[$i][1026]['bank'] as $item ): ?>
                                                 <?php if ($cans[0] || $cans[1]):?>
-                                                    <?= Html::a($banks[$item-1],['app/organizations/by-bank','id'=>$item],['class'=>'btn btn-primary btn-block']) ?>
+                                                    <?= Html::a($banks[$item-1],['app/organizations/by-bank','id'=>$item,'m'=>$i],['class'=>'btn btn-primary btn-block']) ?>
                                                 <?php else:?>
-                                                    <?= Html::a($banks[$item-1],['app/students/by-bank','id'=>$item],['class'=>'btn btn-primary btn-block']) ?>
+                                                    <?= Html::a($banks[$item-1],['app/students/by-bank','id'=>$item,'m'=>$i],['class'=>'btn btn-primary btn-block']) ?>
                                                 <?php endif;?>
                                             <?php endforeach;?>
                                         </div>

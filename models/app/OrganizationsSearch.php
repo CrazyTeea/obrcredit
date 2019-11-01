@@ -14,6 +14,7 @@ class OrganizationsSearch extends Organizations
 {
     public $isColored;
     public $id_bank;
+    public $month;
     /**
      * {@inheritdoc}
      */
@@ -53,6 +54,9 @@ class OrganizationsSearch extends Organizations
 
         if (!empty($this->id_bank)){
             $query->joinWith(['students as st'])->andWhere(['st.id_bank'=>$this->id_bank]);
+        }
+        if (!empty($this->month)){
+            $query->andWhere(['MONTH(st.date_start)'=>$this->month]);
         }
 
         // add conditions tha t should always apply here

@@ -159,7 +159,7 @@ class OrganizationsController extends AppController
     }
 
 
-    public function actionByBank($id){
+    public function actionByBank($id,$m){
 
         Yii::$app->session['bank'] = $id;
 
