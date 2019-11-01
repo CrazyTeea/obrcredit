@@ -32,6 +32,7 @@ use yii\helpers\Json;
  * @property string $date_status
  * @property int $id_bank
  * @property int $perevod
+ * @property string $date_start
  *
  * @var StudentDocs $docs
  *
@@ -73,7 +74,7 @@ class Students extends ActiveRecord
                 return false;
             },'uploadRequired'=>'При переводе на бюджет требуется загрузить файл'],
             [['id_org', 'education_status', 'status', 'osnovanie', 'grace_period','id_number_pp','id_bank','perevod'], 'integer'],
-            [[ 'date_create',
+            [[ 'date_create','date_start',
                 'date_start_grace_period1', 'date_end_grace_period1',
                 'date_start_grace_period2', 'date_end_grace_period2',
                 'date_start_grace_period3', 'date_end_grace_period3',

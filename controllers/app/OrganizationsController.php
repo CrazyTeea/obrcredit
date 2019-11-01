@@ -168,16 +168,15 @@ class OrganizationsController extends AppController
         $searchModel = new OrganizationsSearch();
         $searchModel->id_bank = $id;
         Yii::$app->session['id_bank'] = $id;
+
         $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
 
         $modelColored = Organizations::find();
 
-        $modelColored->joinWith(['students' => function ($subquery) {
-            $subquery->onCondition(['students.status' => 1]);
-        }]);
-        $modelColored->select(['organizations.*', 'COUNT(students.id) AS studentsCOUNT']);
+        $modelColored->joinWith(['students as st'])->andWhere(['st.id_bank'=>$id,'st.status'=>1]);
+
         $modelColored->groupBy(['organizations.id']);
-        $modelColored->orderBy(['studentsCOUNT' => SORT_DESC]);
+        //$modelColored->orderBy(['studentsCOUNT' => SORT_DESC]);
 
         $dataProviderColored  = new ActiveDataProvider(['query'=>$modelColored,'pagination'=>false]);
 

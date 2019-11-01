@@ -103,7 +103,7 @@ $canUpdate = ($cans[0] || $model->status != 2) ? 1 : 0;
                 </p>
             </td>
             <td rowspan="3">
-                <?= $rasp_act0 ? Html::a($rasp_act0->file->name,['download','id'=>$rasp_act0->id])  : 'Файл не загружен' ?>
+                <?= $rasp_act0 and $rasp_act0->file ? Html::a($rasp_act0->file->name,['download','id'=>$rasp_act0->id])  : 'Файл не загружен' ?>
             </td>
             <td rowspan="3">
                 <?php
@@ -120,7 +120,7 @@ $canUpdate = ($cans[0] || $model->status != 2) ? 1 : 0;
                 </p>
             </td>
             <td rowspan="3">
-                <?= $rasp_act1 ? Html::a($rasp_act1->file->name,['download','id'=>$rasp_act1->id])  : 'Файл не загружен' ?>
+                <?= $rasp_act1 and $rasp_act1->file? Html::a($rasp_act1->file->name,['download','id'=>$rasp_act1->id])  : 'Файл не загружен' ?>
             </td>
             <td rowspan="6">
                 <?php
@@ -128,7 +128,7 @@ $canUpdate = ($cans[0] || $model->status != 2) ? 1 : 0;
                     echo "<p class='text-sm-center' > &#9745; Переведен </p>";
                 else echo "<p class='text-sm-center'> &#9744; Переведен</p>";
                 ?>
-                <?= $rasp_act1 ? Html::a($rasp_act4->file->name,['download','id'=>$rasp_act4->id])  : 'Файл не загружен' ?>
+                <?= $rasp_act4 and $rasp_act4->file ? Html::a($rasp_act4->file->name,['download','id'=>$rasp_act4->id])  : 'Файл не загружен' ?>
             </td>
         </tr>
         <tr>
@@ -157,7 +157,7 @@ $canUpdate = ($cans[0] || $model->status != 2) ? 1 : 0;
                     } ?>
                 </p></td>
             <td>
-                <?= $dogovor ? Html::a($dogovor->file->name,['download','id'=>$dogovor->id])  : 'Файл не загружен' ?>
+                <?= $dogovor and $dogovor->file ? Html::a($dogovor->file->name,['download','id'=>$dogovor->id])  : 'Файл не загружен' ?>
             </td>
             <td>
                 <?php
@@ -174,7 +174,7 @@ $canUpdate = ($cans[0] || $model->status != 2) ? 1 : 0;
                 </p>
             </td>
             <td>
-                <?= $rasp_act2 ? Html::a($rasp_act2->file->name,['download','id'=>$rasp_act2->id])  : 'Файл не загружен' ?>
+                <?= $rasp_act2 and $rasp_act2->file ? Html::a($rasp_act2->file->name,['download','id'=>$rasp_act2->id])  : 'Файл не загружен' ?>
             </td>
 
 
@@ -190,7 +190,7 @@ $canUpdate = ($cans[0] || $model->status != 2) ? 1 : 0;
                 ?>
             </td>
             <td>
-                <?= $rasp_act_otch ? Html::a($rasp_act_otch->file->name,['download','id'=>$rasp_act_otch->id])  : 'Файл не загружен' ?>
+                <?= $rasp_act_otch and $rasp_act_otch->file ? Html::a($rasp_act_otch->file->name,['download','id'=>$rasp_act_otch->id])  : 'Файл не загружен' ?>
             </td>
             <td>
                 <?php
@@ -208,7 +208,7 @@ $canUpdate = ($cans[0] || $model->status != 2) ? 1 : 0;
                 </p>
             </td>
             <td>
-                <?= $rasp_act3 ? Html::a($rasp_act3->file->name,['download','id'=>$rasp_act3->id])  : 'Файл не загружен' ?>
+                <?= $rasp_act3  and $rasp_act3->file? Html::a($rasp_act3->file->name,['download','id'=>$rasp_act3->id])  : 'Файл не загружен' ?>
             </td>
         </tr>
         </tbody>

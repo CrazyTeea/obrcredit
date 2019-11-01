@@ -36,43 +36,6 @@ class ReferenceController extends Controller
 
         return ExitCode::OK;
     }
-    public function actionAddStartUsers(){
-        $admin = (User::findOne(['username'=>'admin@admin.ru'])) ? User::findOne(['username'=>'admin@admin.ru']) : new User();
-        $root = (User::findOne(['username'=>'root@admin.ru'])) ? User::findOne(['username'=>'root@admin.ru']) : new User();
-        $user = (User::findOne(['username'=>'user@admin.ru'])) ? User::findOne(['username'=>'user@admin.ru']) : new User();
-        $root->email = $root->username = 'root@admin.ru';
-        $admin->username = $admin->email = 'admin@admin.ru';
-        $user->username = $user->email = 'user@admin.ru';
-        $user->status= $admin->status=$root->status = User::STATUS_ACTIVE;
-        $user->updated_at=$user->created_at=
-        $admin->updated_at=$admin->created_at=
-        $root->updated_at=$root->created_at=time();
-        $user->id_org = 100;
-        $root->setPassword('password');
-        $admin->setPassword('password');
-        $user->setPassword('password');
-        $root->generateAuthKey();
-        $admin->generateAuthKey();
-        $user->generateAuthKey();
-        echo 'root=>'.$root->save();
-        echo 'admin=>'.$admin->save();
-        echo 'user=>'.$user->save();
-
-        $pm = new PhpManager();
-
-        $rootr = $pm->getRole('root');
-        $adminr = $pm->getRole('admin');
-        $userr= $pm->getRole('podved');
-        $pm->revokeAll($root->id);
-        $pm->revokeAll($admin->id);
-        $pm->revokeAll($user->id);
-        $pm->assign($rootr,$root->id);
-        $pm->assign($adminr,$admin->id);
-        $pm->assign($userr,$user->id);
-
-
-    }
-
 
     public function actionOrganization()
     {
@@ -114,47 +77,32 @@ class ReferenceController extends Controller
 
 
     }
-    public function actionAddStudents($file,$nameId,$codeId,$dCreditId,$orgId,$numPP,$bankId){
-
+    public function actionStudents($file,$nameId,$codeId,$dCreditId,$orgId,$numPP,$bankId,$dStart){
 
         $csv = Yii::getAlias('@webroot')."/toParse/$file.csv";
         $csv = fopen($csv,'r');
 
         while (($row = fgetcsv($csv,1000,';')) != false){
-
-           echo "name => $row[$nameId] code=> $row[$codeId] dateCredit=>$row[$dCreditId] org=>$row[$orgId]\n";
-            $bank = Banks::find()->where(['like','name',explode(' ',$row[$bankId])[1]])->one();
-
-            $number = NumbersPp::find()->where(['like','number',$row[$numPP]])->one();
-
-            $student = Students::findOne(['name'=>$row[$nameId],'code'=>$row[$codeId]]);
-
-            if (!$student) {
+            $student = Students::findOne(['name'=>$row[$nameId],'code'=>$row[$codeId],'date_credit'=>$row[$dCreditId]]);
+            if ($student){
+                $student->date_start = $row[$dStart];
+            }else {
                 $student = new Students();
-                $student->education_status = 1;
-                $student->date_create = date('Y-m-d');
+                $student->name = $row[$nameId];
+                $student->code = $row[$codeId];
+                $student->date_credit = $row[$dCreditId];
+                $org  = Organizations::findOne($row[$orgId]);
+                if ($org)
+                    $student->id_org = $row[$orgId];
             }
-           // echo "st1";
-            $student->status = 1;
-            $student->name = $row[$nameId];
-            $student->code = $row[$codeId];
-            $student->date_credit = $row[$dCreditId];
-            $student->id_org = $row[$orgId];
-            $students = Students::findAll(['id_org'=>$student->id_org]);
-            foreach ($students as $st){
-                $st->status = 1;
-                $st->save();
-            }
-            $student->id_bank = $bank ? $bank->id : 0;
-            $student->id_number_pp = $number ? $number->id : 0;
+            $n = NumbersPp::findOne(['number'=>$row[$numPP]]);
+            $b = Banks::findOne(['name'=>$row[$bankId]]);
+            if ($n)
+                $student->id_number_pp = $n->id;
+            if ($b)
+                $student->id_bank = $b->id;
 
-            if ($student->save()){
-                $org = Organizations::findOne($student->id_org);
-                if ($org){
-                    $org->system_status = 1;
-                    $org->save();
-                }
-            }
+            $student->save();
         }
         return "success!";
 
