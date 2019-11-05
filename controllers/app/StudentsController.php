@@ -415,7 +415,7 @@ class StudentsController extends AppController
             $student->date_status = date('Y-m-d');
             $student->save();
         }
-        return $this->redirect(['index']);
+        return $this->redirect(['by-bank','id'=>Yii::$app->getSession()['id_bank'],'m'=>Yii::$app->getSession()['month']]);
     }
     public function actionExport($id = null){
         $student = Students::findOne($id);
