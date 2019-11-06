@@ -96,7 +96,7 @@ class ReferenceController extends Controller
 
         echo "Вы уверене? \n ";
         $key = readline();
-        if (!($key == "yes" || $key == "y" || $key == "Y")){
+        if (!($key === "yes" || $key === "y" || $key === "Y")){
          exit(0);
         }
 
