@@ -16,6 +16,7 @@ use Lcobucci\JWT\Signer\Hmac\Sha256;
 use Yii;
 use yii\console\Controller;
 use yii\console\ExitCode;
+use yii\helpers\Console;
 use yii\rbac\PhpManager;
 
 class ReferenceController extends Controller
@@ -77,7 +78,31 @@ class ReferenceController extends Controller
     public function actionStudents($file,$nameId,$codeId,$dCreditId,$orgId,$numPP,$bankId,$dStart){
 
         $csv = Yii::getAlias('@webroot')."/toParse/$file.csv";
+        if (!$csv)
+            exit("Файл не найден");
         $csv = fopen($csv,'r');
+
+
+        while (($row = fgetcsv($csv,1000,';')) != false){
+            echo "
+            Организация->$row[$orgId] 
+            ФИО->$row[$nameId] 
+            КОД->$row[$codeId] 
+            Дата кредита->$row[$dCreditId] 
+            номер пп->$row[$numPP] 
+            нмоер банка->$row[$bankId] 
+            дата начала обуч->$row[$dStart]  \n";
+        }
+
+        echo "Вы уверене? \n ";
+        $key = readline();
+        if (!($key == "yes" || $key == "y" || $key == "Y")){
+         exit(0);
+        }
+
+
+
+
 
         while (($row = fgetcsv($csv,1000,';')) != false){
             $student = Students::findOne(['name'=>$row[$nameId],'code'=>$row[$codeId],'date_credit'=>$row[$dCreditId]]);
