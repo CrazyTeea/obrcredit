@@ -94,6 +94,8 @@ class ReferenceController extends Controller
             дата начала обуч->$row[$dStart]  \n";
         }
 
+
+        $csv = fopen($csv,'r');
         echo "Вы уверене? \n ";
         $key = readline();
         if (!($key === "yes" || $key === "y" || $key === "Y")){
@@ -136,6 +138,7 @@ class ReferenceController extends Controller
                 echo serialize($student->errors);
 
         }
+        fclose($csv);
         echo "success!";
     }
     public function actionUsers($file,$orgId,$emailId,$nameID){
