@@ -117,6 +117,7 @@ class ReferenceController extends Controller
                 $student->code = $row[$codeId];
                 $student->date_credit = $row[$dCreditId];
                 $student->id_org = $row[$orgId];
+                // sdfgf
 
             $n = NumbersPp::findOne($row[$numPP]);
             $b = Banks::findOne($row[$bankId]);
