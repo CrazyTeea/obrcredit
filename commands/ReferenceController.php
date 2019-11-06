@@ -77,11 +77,11 @@ class ReferenceController extends Controller
     }
     public function actionStudents($file,$nameId,$codeId,$dCreditId,$orgId,$numPP,$bankId,$dStart){
 
-        $csv = Yii::getAlias('@webroot')."/toParse/$file.csv";
-        if (!$csv)
-            exit("Файл не найден");
-        $csv = fopen($csv,'r');
+        $csvP = Yii::getAlias('@webroot')."/toParse/$file.csv";
 
+        $csv = fopen($csvP,'r');
+        if (!$csvP)
+            exit("Файл не найден");
 
         while (($row = fgetcsv($csv,1000,';')) != false){
             echo "
@@ -95,7 +95,7 @@ class ReferenceController extends Controller
         }
 
         fclose($csv);
-        $csv = fopen($csv,'r');
+        $csv = fopen($csvP,'r');
         echo "Вы уверене? \n ";
         $key = readline();
         if (!($key === "yes" || $key === "y" || $key === "Y")){
