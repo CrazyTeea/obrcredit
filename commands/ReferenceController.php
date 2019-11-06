@@ -129,13 +129,13 @@ class ReferenceController extends Controller
             if (!$student->save())
                 echo serialize($student->errors);
             echo "
-            Организация->$row[$orgId]
-            ФИО->$row[$nameId]
-            КОД->$row[$codeId]
-            Дата кредита->$row[$dCreditId]
-            номер пп->$row[$numPP]
-            нмоер банка->$row[$bankId]
-            дата начала обуч->$row[$dStart]  \n";
+            Организация-$student->id_org
+            ФИО->$student->name
+            КОД->$student->code
+            Дата кредита-> $student->date_credit
+            номер пп-> $student->id_number_pp
+            нмоер банка->$student->id_bank
+            дата начала обуч-> $student->date_start  \n";
 
         }
         fclose($csv);
