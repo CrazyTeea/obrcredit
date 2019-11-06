@@ -141,7 +141,7 @@ if ($year == 2018)
                                         <div class="modal-body">
                                             <?php foreach ($studentsByMonth[$i][1026]['bank'] as $item ): ?>
                                                 <?php if ($cans[0] || $cans[1]):?>
-                                                    <?= Html::a($banks[$item-1],['app/organizations/by-bank','id_bank'=>$item,'month'=>$i,'nPP'=>2,['class'=>'btn btn-primary btn-block']) ?>
+                                                    <?= Html::a($banks[$item-1],['app/organizations/by-bank','id_bank'=>$item,'month'=>$i,'nPP'=>2],['class'=>'btn btn-primary btn-block']) ?>
                                                 <?php else:?>
                                                     <?= Html::a($banks[$item-1],['app/students/by-bank','id'=>$item,'m'=>$i,'nPP'=>2],['class'=>'btn btn-primary btn-block']) ?>
                                                 <?php endif;?>
