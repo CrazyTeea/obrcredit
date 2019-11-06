@@ -94,7 +94,7 @@ class ReferenceController extends Controller
             дата начала обуч->$row[$dStart]  \n";
         }
 
-
+        fclose($csv);
         $csv = fopen($csv,'r');
         echo "Вы уверене? \n ";
         $key = readline();
