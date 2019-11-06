@@ -126,9 +126,8 @@ class ReferenceController extends Controller
             if ($b)
                 $student->id_bank = $b->id;
 
-            if (!$student->save())
-                echo serialize($student->errors);
-            echo "
+            if ($student->save()) {
+                echo "
             Организация-$student->id_org
             ФИО->$student->name
             КОД->$student->code
@@ -136,6 +135,7 @@ class ReferenceController extends Controller
             номер пп-> $student->id_number_pp
             нмоер банка->$student->id_bank
             дата начала обуч-> $student->date_start  \n";
+            }
 
         }
         fclose($csv);
