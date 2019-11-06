@@ -109,16 +109,16 @@ class ReferenceController extends Controller
 
 
             $student = Students::findOne(['name'=>$row[$nameId],'code'=>$row[$codeId],'date_credit'=>$row[$dCreditId]]);
-            if (!$student){
+            if (!$student) {
                 $student = new Students();
+            }
                 $student->date_start = $row[$dStart];
                 $student->name = $row[$nameId];
                 $student->code = $row[$codeId];
                 $student->date_credit = $row[$dCreditId];
-                $org  = Organizations::findOne($row[$orgId]);
-                if ($org)
-                    $student->id_org = $row[$orgId];
-            }
+                $student->id_org = $row[$orgId];
+                // sdfgf
+
             $n = NumbersPp::findOne($row[$numPP]);
             $b = Banks::findOne($row[$bankId]);
             if ($n)
