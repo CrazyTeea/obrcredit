@@ -40,8 +40,7 @@ class ReferenceController extends Controller
     public function actionOrganization()
     {
         echo "Выполняется синхронизация организаций\n";
-        $err = 0;
-        $err_data = null;
+
         $signer = new Sha256();
         $key = new Key(self::$jwt_key);
         $token = (new Builder())->withClaim('reference', 'organization')
@@ -53,7 +52,6 @@ class ReferenceController extends Controller
         if($token->verify($signer, self::$jwt_key)) {
 
             $data_reference = $token->getClaims();
-          //  $this->model_name = Organizations::className();
             foreach ($data_reference AS $key=>$data){
                 $row_org = Organizations::findOne($data->getValue()->id);
                 if(empty($row_org)) {
@@ -62,12 +60,11 @@ class ReferenceController extends Controller
                     $row_org->id = $data->getValue()->id;
                 }
                 $row_org->full_name = htmlspecialchars_decode($data->getValue()->fullname);
-                $row_org->short_name =htmlspecialchars_decode( $data->getValue()->shot_name);
+                $row_org->short_name =htmlspecialchars_decode($data->getValue()->shot_name);
                 $row_org->name = htmlspecialchars_decode($data->getValue()->name);
                 $student = Students::findOne(['id_org'=>$row_org->id]);
                 $row_org->system_status = ($student) ? 1 : 0;
-                if(!$row_org->save())
-                    var_dump($row_org->errors);
+                $row_org->save();
 
             }
             return true;
@@ -102,7 +99,9 @@ class ReferenceController extends Controller
             if ($b)
                 $student->id_bank = $b->id;
 
-            $student->save();
+            if ($student->save())
+                echo serialize($student->errors);
+
         }
         return "success!";
 
