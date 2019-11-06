@@ -105,21 +105,13 @@ class ReferenceController extends Controller
 
 
         while (($row = fgetcsv($csv,1000,';')) != false){
-            echo "
-            Организация->$row[$orgId]
-            ФИО->$row[$nameId]
-            КОД->$row[$codeId]
-            Дата кредита->$row[$dCreditId]
-            номер пп->$row[$numPP]
-            нмоер банка->$row[$bankId]
-            дата начала обуч->$row[$dStart]  \n";
+
 
 
             $student = Students::findOne(['name'=>$row[$nameId],'code'=>$row[$codeId],'date_credit'=>$row[$dCreditId]]);
-            if ($student){
-                $student->date_start = $row[$dStart];
-            }else {
+            if (!$student){
                 $student = new Students();
+                $student->date_start = $row[$dStart];
                 $student->name = $row[$nameId];
                 $student->code = $row[$codeId];
                 $student->date_credit = $row[$dCreditId];
@@ -136,6 +128,14 @@ class ReferenceController extends Controller
 
             if (!$student->save())
                 echo serialize($student->errors);
+            echo "
+            Организация-$student->id_org
+            ФИО->$student->name
+            КОД->$student->code
+            Дата кредита-> $student->date_credit
+            номер пп-> $student->id_number_pp
+            нмоер банка->$student->id_bank
+            дата начала обуч-> $student->date_start  \n";
 
         }
         fclose($csv);
