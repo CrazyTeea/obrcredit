@@ -83,7 +83,7 @@ class ReferenceController extends Controller
         $csv = fopen($csv,'r');
 
 
-        /*while (($row = fgetcsv($csv,1000,';')) != false){
+        while (($row = fgetcsv($csv,1000,';')) != false){
             echo "
             Организация->$row[$orgId]
             ФИО->$row[$nameId]
@@ -95,16 +95,24 @@ class ReferenceController extends Controller
         }
 
         echo "Вы уверене? \n ";
-        /*$key = readline();
+        $key = readline();
         if (!($key === "yes" || $key === "y" || $key === "Y")){
          exit(0);
-        }*/
-
-
-
+        }
+        echo "fdsfsd";
 
 
         while (($row = fgetcsv($csv,1000,';')) != false){
+            echo "
+            Организация->$row[$orgId]
+            ФИО->$row[$nameId]
+            КОД->$row[$codeId]
+            Дата кредита->$row[$dCreditId]
+            номер пп->$row[$numPP]
+            нмоер банка->$row[$bankId]
+            дата начала обуч->$row[$dStart]  \n";
+
+
             $student = Students::findOne(['name'=>$row[$nameId],'code'=>$row[$codeId],'date_credit'=>$row[$dCreditId]]);
             if ($student){
                 $student->date_start = $row[$dStart];
@@ -117,19 +125,18 @@ class ReferenceController extends Controller
                 if ($org)
                     $student->id_org = $row[$orgId];
             }
-            $n = NumbersPp::findOne(['number'=>$row[$numPP]]);
-            $b = Banks::findOne(['name'=>$row[$bankId]]);
+            $n = NumbersPp::findOne($row[$numPP]);
+            $b = Banks::findOne($row[$bankId]);
             if ($n)
                 $student->id_number_pp = $n->id;
             if ($b)
                 $student->id_bank = $b->id;
 
-            if ($student->save())
+            if (!$student->save())
                 echo serialize($student->errors);
 
         }
-        return "success!";
-
+        echo "success!";
     }
     public function actionUsers($file,$orgId,$emailId,$nameID){
         $mailer = Yii::$app->getMailer();
