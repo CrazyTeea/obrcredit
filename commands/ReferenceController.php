@@ -120,6 +120,7 @@ class ReferenceController extends Controller
                 $student->id_org = $row[$orgId];
                 $student->status = 1;
 
+
                 // sdfgf
 
             $n = NumbersPp::findOne($row[$numPP]);
@@ -130,6 +131,11 @@ class ReferenceController extends Controller
                 $student->id_bank = $b->id;
 
             if ($student->save()) {
+                $org = Organizations::findOne($student->id_org);
+                if ($org){
+                    $org->system_status=1;
+                    $org->save();
+                }
                 echo "
             Организация-$student->id_org
             ФИО->$student->name
