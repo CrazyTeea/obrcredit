@@ -103,6 +103,16 @@ class ReferenceController extends Controller
 
 
         while (($row = fgetcsv($csv,1000,';')) != false){
+            echo "
+            Организация->$row[$orgId]
+            ФИО->$row[$nameId]
+            КОД->$row[$codeId]
+            Дата кредита->$row[$dCreditId]
+            номер пп->$row[$numPP]
+            нмоер банка->$row[$bankId]
+            дата начала обуч->$row[$dStart]  \n";
+
+
             $student = Students::findOne(['name'=>$row[$nameId],'code'=>$row[$codeId],'date_credit'=>$row[$dCreditId]]);
             if ($student){
                 $student->date_start = $row[$dStart];
