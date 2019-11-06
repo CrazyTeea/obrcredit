@@ -83,14 +83,14 @@ class ReferenceController extends Controller
         $csv = fopen($csv,'r');
 
 
-        while (($row = fgetcsv($csv,1000,';')) != false){
+        /*while (($row = fgetcsv($csv,1000,';')) != false){
             echo "
-            Организация->$row[$orgId] 
-            ФИО->$row[$nameId] 
-            КОД->$row[$codeId] 
-            Дата кредита->$row[$dCreditId] 
-            номер пп->$row[$numPP] 
-            нмоер банка->$row[$bankId] 
+            Организация->$row[$orgId]
+            ФИО->$row[$nameId]
+            КОД->$row[$codeId]
+            Дата кредита->$row[$dCreditId]
+            номер пп->$row[$numPP]
+            нмоер банка->$row[$bankId]
             дата начала обуч->$row[$dStart]  \n";
         }
 
