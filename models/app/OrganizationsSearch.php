@@ -78,7 +78,7 @@ class OrganizationsSearch extends Organizations
         if ($this->isColored) {
             $query->joinWith(['students' => function ($subquery) {
                 $subquery->onCondition(['students.id_bank'=>Yii::$app->session['id_bank'],
-                    'students.status'=>1,
+                    'students.status'=>2,
                     'MONTH(students.date_start)'=>Yii::$app->session['month'],
                     'students.id_number_pp'=>Yii::$app->session['nPP']]);
             }]);
