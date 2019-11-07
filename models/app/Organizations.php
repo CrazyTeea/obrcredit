@@ -18,6 +18,8 @@ use yii\helpers\ArrayHelper;
  */
 class Organizations extends ActiveRecord
 {
+    public $cS;
+
     public static function className()
     {
         return get_called_class();
@@ -57,9 +59,7 @@ class Organizations extends ActiveRecord
     public function getStudents(){
         return $this->hasMany(Students::className(),['id_org'=>'id']);
     }
-    public function getStudentsCount(){
-        return $this->hasMany(Students::className(),['id_org'=>'id'])->where(['status'=>1])->count();
-    }
+
     public static function getOrgs(){
         return ArrayHelper::map(self::find()->select(['id','short_name'])->all(),'id','short_name');
     }

@@ -5,7 +5,6 @@ namespace app\models\app;
 use Yii;
 use yii\base\Model;
 use yii\data\ActiveDataProvider;
-use app\models\app\Organizations;
 use yii\helpers\ArrayHelper;
 
 /**
@@ -51,8 +50,22 @@ class OrganizationsSearch extends Organizations
      */
     public function search($params)
     {
-        $query = Organizations::find()->joinWith(['students as st'])->where(['system_status'=>1]);//->select(['students.id','count(students.id)','short_name','organizations.name','full_name'])->joinWith(['students']);
 
+        $query = Organizations::find()->where(['system_status'=>1]);
+        if ($this->isColored){
+            $query->select(['organizations.*','COUNT(s.id) as cS'])->joinWith(['students s'=>function($q){
+                return $q->andOnCondition([
+                    's.status'=>1,
+                    's.id_bank'=>Yii::$app->session['id_bank'],
+                    'MONTH(s.date_start)'=>Yii::$app->session['month'],
+                    's.id_number_pp'=>Yii::$app->session['nPP']]);
+            }]);
+        }
+        else{
+            $query->joinWith(['students s'])
+                ->andWhere(['s.id_bank'=>$this->id_bank,'s.id_number_pp'=>$this->nPP,'MONTH(s.date_start)'=>$this->month]);
+
+        }
 
 
         // add conditions tha t should always apply here
@@ -60,7 +73,7 @@ class OrganizationsSearch extends Organizations
         $dataProvider = new ActiveDataProvider([
             'query' => $query,
             'pagination'=>[
-                'pageSize'=>50
+                'pageSize'=>25
             ]
         ]);
 
@@ -75,23 +88,9 @@ class OrganizationsSearch extends Organizations
         }
 
 
-        if ($this->isColored) {
-            $query->joinWith(['students' => function ($subquery) {
-                $subquery->onCondition(['students.id_bank'=>Yii::$app->session['id_bank'],
-                    'students.status'=>2,
-                    'MONTH(students.date_start)'=>Yii::$app->session['month'],
-                    'students.id_number_pp'=>Yii::$app->session['nPP']]);
-            }]);
-            $query->select(['organizations.*', 'COUNT(students.id) AS studentsCOUNT']);
-            $query->groupBy(['organizations.id']);
-            $query->orderBy(['studentsCOUNT' => SORT_DESC]);
-        }
-        else{
-            $query->andFilterWhere(['st.id_bank'=>$this->id_bank,]);
-            $query->andFilterWhere(['st.id_number_pp'=>$this->nPP,]);
-            $query->andFilterWhere(['MONTH(st.date_start)'=>$this->month]);
-        }
-        // grid filtering conditions
+
+
+       //grid filtering conditions
         $query->andFilterWhere(['id' => $this->id,]);
 
 
