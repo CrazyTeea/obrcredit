@@ -2,6 +2,7 @@
 
 namespace app\models\app;
 
+use Yii;
 use yii\base\Model;
 use yii\data\ActiveDataProvider;
 use app\models\app\Organizations;
@@ -76,7 +77,10 @@ class OrganizationsSearch extends Organizations
 
         if ($this->isColored) {
             $query->joinWith(['students' => function ($subquery) {
-                $subquery->onCondition(['students.status' => 2]);
+                $subquery->onCondition(['students.id_bank'=>Yii::$app->session['id_bank'],
+                    'students.status'=>1,
+                    'MONTH(students.date_start)'=>Yii::$app->session['month'],
+                    'students.id_number_pp'=>Yii::$app->session['nPP']]);
             }]);
             $query->select(['organizations.*', 'COUNT(students.id) AS studentsCOUNT']);
             $query->groupBy(['organizations.id']);
