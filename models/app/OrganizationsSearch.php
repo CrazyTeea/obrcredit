@@ -86,11 +86,14 @@ class OrganizationsSearch extends Organizations
             $query->groupBy(['organizations.id']);
             $query->orderBy(['studentsCOUNT' => SORT_DESC]);
         }
+        else{
+            $query->andFilterWhere(['st.id_bank'=>$this->id_bank,]);
+            $query->andFilterWhere(['st.id_number_pp'=>$this->nPP,]);
+            $query->andFilterWhere(['MONTH(st.date_start)'=>$this->month]);
+        }
         // grid filtering conditions
         $query->andFilterWhere(['id' => $this->id,]);
-        $query->andFilterWhere(['st.id_bank'=>$this->id_bank,]);
-        $query->andFilterWhere(['st.id_number_pp'=>$this->nPP,]);
-        $query->andFilterWhere(['MONTH(st.date_start)'=>$this->month]);
+
 
         $query->andFilterWhere(['like', 'organizations.name', $this->name])
             ->andFilterWhere(['like', 'short_name', $this->short_name])
