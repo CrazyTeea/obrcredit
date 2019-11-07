@@ -60,6 +60,7 @@ class OrganizationsSearch extends Organizations
                     'MONTH(s.date_start)'=>Yii::$app->session['month'],
                     's.id_number_pp'=>Yii::$app->session['nPP']]);
             }]);
+            $query->orderBy(['cS'=>SORT_DESC]);
         }
         else{
             $query->joinWith(['students s'])
