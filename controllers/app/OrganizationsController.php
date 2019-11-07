@@ -175,7 +175,7 @@ class OrganizationsController extends AppController
 
         $modelColored = Organizations::find();
 
-        $modelColored->joinWith(['students as st'])->andWhere(['st.id_bank'=>$id_bank,'st.status'=>1,'MONTH(st.date_start)'=>$month]);
+        $modelColored->joinWith(['students as st'])->andWhere(['st.id_bank'=>$id_bank,'st.status'=>1,'MONTH(st.date_start)'=>$month,'st.id_number_pp'=>$nPP]);
 
         $modelColored->groupBy(['organizations.id']);
         //$modelColored->orderBy(['studentsCOUNT' => SORT_DESC]);
