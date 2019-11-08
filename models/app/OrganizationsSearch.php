@@ -51,7 +51,8 @@ class OrganizationsSearch extends Organizations
      */
     public function search($params)
     {
-        $query = Organizations::find()->joinWith(['students as st'])->where(['system_status'=>1]);//->select(['students.id','count(students.id)','short_name','organizations.name','full_name'])->joinWith(['students']);
+        $query = Organizations::find()->where(['system_status'=>1]);//->select(['students.id','count(students.id)','short_name','organizations.name','full_name'])->joinWith(['students']);
+
 
 
 
@@ -61,8 +62,9 @@ class OrganizationsSearch extends Organizations
             'query' => $query,
             'pagination'=>[
                 'pageSize'=>50
-            ]
+            ],
         ]);
+
 
 
         $this->load($params);
@@ -73,24 +75,29 @@ class OrganizationsSearch extends Organizations
             // $query->where('0=1');
             return $dataProvider;
         }
-
-
         if ($this->isColored) {
+
             $query->joinWith(['students' => function ($subquery) {
-                $subquery->onCondition(['students.id_bank'=>Yii::$app->session['id_bank'],
-                    'students.status'=>2,
+                $subquery->onCondition([
+                    'students.id_bank'=>Yii::$app->session['id_bank'],
+                    'students.status'=>1,
                     'MONTH(students.date_start)'=>Yii::$app->session['month'],
-                    'students.id_number_pp'=>Yii::$app->session['nPP']]);
+                    'students.id_number_pp'=>Yii::$app->session['nPP']
+                ]);
             }]);
             $query->select(['organizations.*', 'COUNT(students.id) AS studentsCOUNT']);
+            $query->orderBy(['studentsCOUNT'=>SORT_DESC]);
             $query->groupBy(['organizations.id']);
-            $query->orderBy(['studentsCOUNT' => SORT_DESC]);
+
+            //$dataProvider->sort->defaultOrder = ['studentsCOUNT'=>SORT_DESC];
         }
-        else{
-            $query->andFilterWhere(['st.id_bank'=>$this->id_bank,]);
-            $query->andFilterWhere(['st.id_number_pp'=>$this->nPP,]);
-            $query->andFilterWhere(['MONTH(st.date_start)'=>$this->month]);
-        }
+
+
+
+        //$query->andFilterWhere(['st.id_bank'=>$this->id_bank,]);
+    //    $query->andFilterWhere(['st.id_number_pp'=>$this->nPP,]);
+       // $query->andFilterWhere(['MONTH(st.date_start)'=>$this->month]);
+
         // grid filtering conditions
         $query->andFilterWhere(['id' => $this->id,]);
 
@@ -99,6 +106,7 @@ class OrganizationsSearch extends Organizations
             ->andFilterWhere(['like', 'short_name', $this->short_name])
             ->andFilterWhere(['like', 'full_name', $this->full_name]);
         $query->groupBy(['id']);
+        //$query->groupBy(['organizations.id']);
 
         return $dataProvider;
     }

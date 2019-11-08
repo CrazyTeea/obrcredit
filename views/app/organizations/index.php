@@ -74,6 +74,7 @@ $this->params['breadcrumbs'][] = $this->title;
         'emptyCell'=>' ',
         'columns' => [
             ['class' => 'yii\grid\SerialColumn'],
+            'studentsCount',
             'name',
             'short_name',
             'full_name',
@@ -84,7 +85,7 @@ $this->params['breadcrumbs'][] = $this->title;
                 'onClick'=>"window.location.href='{$url}'",
                 'style'=>'cursor:pointer',
                 'class'=>'toVisible',
-                'id'=> $searchModel->isColored ? $model->studentsCount  ? 'red' : 'green' : ''
+                'id'=> $searchModel->isColored ? $model->studentsCount!=0  ? 'red' : 'green' : ''
             ];
         },
     ]); ?>
