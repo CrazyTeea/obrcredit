@@ -4,32 +4,32 @@
 namespace app\commands;
 
 
-use app\models\app\Banks;
 use app\models\app\Organizations;
-use app\models\app\students\NumbersPp;
 use app\models\app\students\Students;
 use app\models\UserConsole as User;
+use Exception;
 use Lcobucci\JWT\Builder;
 use Lcobucci\JWT\Parser;
-use Lcobucci\JWT\Signer\Key;
 use Lcobucci\JWT\Signer\Hmac\Sha256;
+use Lcobucci\JWT\Signer\Key;
 use Yii;
 use yii\console\Controller;
 use yii\console\ExitCode;
-use yii\helpers\Console;
 use yii\rbac\PhpManager;
 
 class ReferenceController extends Controller
 {
     static $jwt_key = 'example_key233';
     public $error_message;
-    public function actionIndex(){
+
+    public function actionIndex()
+    {
         $transaction = Yii::$app->db->beginTransaction();
 
-        if( $this->actionOrganization()){
+        if ( $this->actionOrganization() ) {
             $transaction->commit();
             echo "success\n";
-        }else{
+        } else {
             $transaction->rollBack();
             echo "not success\n";
             exit;
@@ -43,47 +43,48 @@ class ReferenceController extends Controller
         echo "Выполняется синхронизация организаций\n";
 
         $signer = new Sha256();
-        $key = new Key(self::$jwt_key);
-        $token = (new Builder())->withClaim('reference', 'organization')
-           // ->sign($signer, self::$jwt_key)
-            ->getToken($signer,$key);
-        $response_token = file_get_contents("http://api.xn--80apneeq.xn--p1ai/api.php?option=reference_api&action=get_reference&module=constructor&reference_token=$token");
+        $key = new Key( self::$jwt_key );
+        $token = ( new Builder() )->withClaim( 'reference', 'organization' )
+            // ->sign($signer, self::$jwt_key)
+            ->getToken( $signer, $key );
+        $response_token = file_get_contents( "http://api.xn--80apneeq.xn--p1ai/api.php?option=reference_api&action=get_reference&module=constructor&reference_token=$token" );
         $signer = new Sha256();
-        $token = (new Parser())->parse($response_token);
-        if($token->verify($signer, self::$jwt_key)) {
+        $token = ( new Parser() )->parse( $response_token );
+        if ( $token->verify( $signer, self::$jwt_key ) ) {
 
             $data_reference = $token->getClaims();
-            foreach ($data_reference AS $key=>$data){
-                $row_org = Organizations::findOne($data->getValue()->id);
-                if(empty($row_org)) {
+            foreach ($data_reference AS $key => $data) {
+                $row_org = Organizations::findOne( $data->getValue()->id );
+                if ( empty( $row_org ) ) {
                     echo 'kek';
                     $row_org = new Organizations();
                     $row_org->id = $data->getValue()->id;
                 }
-                $row_org->full_name = htmlspecialchars_decode($data->getValue()->fullname);
-                $row_org->short_name =htmlspecialchars_decode($data->getValue()->shot_name);
-                $row_org->name = htmlspecialchars_decode($data->getValue()->name);
-                $student = Students::findOne(['id_org'=>$row_org->id]);
-                $row_org->system_status = ($student) ? 1 : 0;
+                $row_org->full_name = htmlspecialchars_decode( $data->getValue()->fullname );
+                $row_org->short_name = htmlspecialchars_decode( $data->getValue()->shot_name );
+                $row_org->name = htmlspecialchars_decode( $data->getValue()->name );
+                $student = Students::findOne( ['id_org' => $row_org->id] );
+                $row_org->system_status = ( $student ) ? 1 : 0;
                 $row_org->save();
 
             }
             return true;
-        }
-        else
+        } else
             return false;
 
 
     }
-    public function actionStudents($file,$nameId,$codeId,$dCreditId,$orgId,$numPP,$bankId,$dStart){
 
-        $csvP = Yii::getAlias('@webroot')."/toParse/$file.csv";
+    public function actionStudents( $file, $nameId, $codeId, $dCreditId, $orgId, $numPP, $bankId, $dStart )
+    {
 
-        $csv = fopen($csvP,'r');
-        if (!$csvP)
-            exit("Файл не найден");
+        $csvP = Yii::getAlias( '@webroot' ) . "/toParse/$file.csv";
 
-        while (($row = fgetcsv($csv,1000,';')) != false){
+        $csv = fopen( $csvP, 'r' );
+        if ( !$csvP )
+            exit( "Файл не найден" );
+
+        while (( $row = fgetcsv( $csv, 1000, ';' ) ) != false) {
             echo "
             Организация->$row[$orgId]
             ФИО->$row[$nameId]
@@ -94,34 +95,34 @@ class ReferenceController extends Controller
             дата начала обуч->$row[$dStart]  \n";
         }
 
-        fclose($csv);
-        $csv = fopen($csvP,'r');
+        fclose( $csv );
+        $csv = fopen( $csvP, 'r' );
         echo "Вы уверене? \n ";
         $key = readline();
-        if (!($key === "yes" || $key === "y" || $key === "Y")){
-         exit(0);
+        if ( !( $key === "yes" || $key === "y" || $key === "Y" ) ) {
+            exit( 0 );
         }
         echo "fdsfsd";
 
 
-        while (($row = fgetcsv($csv,1000,';')) != false){
+        while (( $row = fgetcsv( $csv, 1000, ';' ) ) != false) {
 
             $student = new Students();
-            $student->education_status=1;
-            $student->date_start = $row[$dStart];
-            $student->name = $row[$nameId];
-            $student->code = $row[$codeId];
-            $student->date_credit = $row[$dCreditId];
-            $student->id_org = $row[$orgId];
-            $student->date_create = date("Y-m-d");
+            $student->education_status = 1;
+            $student->date_start = $row[ $dStart ];
+            $student->name = $row[ $nameId ];
+            $student->code = $row[ $codeId ];
+            $student->date_credit = $row[ $dCreditId ];
+            $student->id_org = $row[ $orgId ];
+            $student->date_create = date( "Y-m-d" );
             $student->status = 1;
-            $student->id_number_pp = $row[$numPP];
-            $student->id_bank = $row[$bankId];
+            $student->id_number_pp = $row[ $numPP ];
+            $student->id_bank = $row[ $bankId ];
 
-            if ($student->save()) {
-                $org = Organizations::findOne($student->id_org);
-                if ($org){
-                    $org->system_status=1;
+            if ( $student->save() ) {
+                $org = Organizations::findOne( $student->id_org );
+                if ( $org ) {
+                    $org->system_status = 1;
                     $org->save();
                 }
                 echo "
@@ -135,75 +136,82 @@ class ReferenceController extends Controller
             }
 
         }
-        fclose($csv);
+        fclose( $csv );
         echo "success!";
     }
-    public function actionUsers($file,$orgId,$emailId,$nameID){
+
+    public function actionUsers( $file, $orgId, $emailId, $nameID )
+    {
         $mailer = Yii::$app->getMailer();
 
 
-        $csv = Yii::getAlias('@webroot')."/toParse/$file.csv";
-        $csv = fopen($csv,'r');
+        $csv = Yii::getAlias( '@webroot' ) . "/toParse/$file.csv";
+        $csv = fopen( $csv, 'r' );
 
-        while (($row = fgetcsv($csv,1000,';')) != false){
+        while (( $row = fgetcsv( $csv, 1000, ';' ) ) != false) {
 
-            $email = preg_replace('/\s/', '', $row[ $emailId ]);
-            $user = User::findOne(['username'=>$email]);
-             if ($user)
-                 continue;
-             try {
-                 $user = new User();
+            $email = preg_replace( '/\s/', '', $row[ $emailId ] );
+            $user = User::findOne( ['username' => $email] );
+            if ( $user )
+                continue;
+            try {
+                $user = new User();
 
-                 $user->status = 10;
-                 $login = $user->email = $user->username = $email;
-                 $password = Yii::$app->security->generateRandomString( 6 );
-                 $user->setPassword( $password );
-                 $user->generatePasswordResetToken();
-                 $user->generateAuthKey();
-                 $user->updated_at = $user->created_at = time();
-                 $user->id_org = preg_replace('/\s/', '', $row[ $orgId ]);
-                 $user->name =$row[$nameID];
-                 if ( $user->save() ) {
-                     $auth = new PhpManager();
-                     $auth->revokeAll( $user->id );
-                     $auth->assign( $auth->getRole( 'podved' ), $user->id );
+                $user->status = 10;
+                $login = $user->email = $user->username = $email;
+                $password = Yii::$app->security->generateRandomString( 6 );
+                $user->setPassword( $password );
+                $user->generatePasswordResetToken();
+                $user->generateAuthKey();
+                $user->updated_at = $user->created_at = time();
+                $user->id_org = preg_replace( '/\s/', '', $row[ $orgId ] );
+                $user->name = $row[ $nameID ];
+                if ( $user->save() ) {
+                    $auth = new PhpManager();
+                    $auth->revokeAll( $user->id );
+                    $auth->assign( $auth->getRole( 'podved' ), $user->id );
 
 
-                     $mailer->compose()
-                         ->setTo( $user->email )
-                         ->setFrom( 'ias@mirea.ru' )
-                         ->setSubject( 'Письмо от 18.09.2019 № МН-1323/СК - Мониторинг образовательного кредитования' )
-                         ->setTextBody( "Уважаемые коллеги! Направляем Вам данные для входа в модуль \"Мониторинг образовательного кредитования\".\n Вход в модуль по адрессу обркредит.иасмон.рф:\n
+                    $mailer->compose()
+                        ->setTo( $user->email )
+                        ->setFrom( 'ias@mirea.ru' )
+                        ->setSubject( 'Письмо от 18.09.2019 № МН-1323/СК - Мониторинг образовательного кредитования' )
+                        ->setTextBody( "Уважаемые коллеги! Направляем Вам данные для входа в модуль \"Мониторинг образовательного кредитования\".\n Вход в модуль по адрессу обркредит.иасмон.рф:\n
                     Логин: $login  \n Пароль: $password \n" )
-                         ->send();
-                     echo "$row[$orgId] $row[$nameID] $row[$emailId] $password\n";
-                 }
-             }catch (\Exception $e){echo $e->getMessage(); echo "\n$user->email";}
+                        ->send();
+                    echo "$row[$orgId] $row[$nameID] $row[$emailId] $password\n";
+                }
+            } catch (Exception $e) {
+                echo $e->getMessage();
+                echo "\n$user->email";
+            }
 
         }
 
-       /* $user = new User();
-        $user->status = 10;
-        $login = $user->email = $user->username = 'email@email.ru';
-        $password = "password";
-        $user->setPassword($password);
-        $user->generatePasswordResetToken();
-        $user->generateAuthKey();
-        $user->updated_at = $user->created_at = time();
-        $user->id_org=100;
-        $user->save();
-        $auth = new PhpManager();
-        $auth->assign($auth->getRole('podved'),$user->id);
+        /* $user = new User();
+         $user->status = 10;
+         $login = $user->email = $user->username = 'email@email.ru';
+         $password = "password";
+         $user->setPassword($password);
+         $user->generatePasswordResetToken();
+         $user->generateAuthKey();
+         $user->updated_at = $user->created_at = time();
+         $user->id_org=100;
+         $user->save();
+         $auth = new PhpManager();
+         $auth->assign($auth->getRole('podved'),$user->id);
 
-        $mailer->compose()
-            ->setTo('lipatow.nikita@yandex.ru')
-            ->setFrom('ias@mirea.ru')
-            ->setSubject('Письмо от 18.09.2019 № МН-1323/СК - Мониторинг образовательного кредитования')
-            ->setTextBody("Уважаемые коллеги! Направляем Вам данные для входа в модуль \"Мониторинг образовательного кредитования\". Вход в модуль по адрессу обркредит.иасмон.рф: $login:$password")
-            ->send();
-        //*/
+         $mailer->compose()
+             ->setTo('lipatow.nikita@yandex.ru')
+             ->setFrom('ias@mirea.ru')
+             ->setSubject('Письмо от 18.09.2019 № МН-1323/СК - Мониторинг образовательного кредитования')
+             ->setTextBody("Уважаемые коллеги! Направляем Вам данные для входа в модуль \"Мониторинг образовательного кредитования\". Вход в модуль по адрессу обркредит.иасмон.рф: $login:$password")
+             ->send();
+         //*/
     }
-    public function actionEmail(){
+
+    public function actionEmail()
+    {
         $users = User::find()->all();
         $email = "
         Предоставление образовательных кредитов банками и иными кредитными организациями для обучающихся осуществляется с учетом выполнения требований, указанных в пункте 4 Постановления, исполнение которых обеспечивает предоставление субсидии банку и иной кредитной организации.
@@ -225,9 +233,8 @@ class ReferenceController extends Controller
         
         ";
         $mailer = Yii::$app->getMailer();
-        foreach ($users as $i =>$user)
-        {
-            if ($i<113)
+        foreach ($users as $i => $user) {
+            if ( $i < 113 )
                 continue;
             try {
                 $mailer->compose()
@@ -236,8 +243,7 @@ class ReferenceController extends Controller
                     ->setSubject( 'Мониторинг образовательного кредитования' )
                     ->setTextBody( $email )
                     ->send();
-            }
-            catch (\Exception $e) {
+            } catch (Exception $e) {
                 echo $e->getMessage();
             }
         }
