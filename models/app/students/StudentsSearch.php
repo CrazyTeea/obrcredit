@@ -15,6 +15,7 @@ class StudentsSearch extends Students
 {
     public $date_education_status;
     public $month;
+    public $org;
     /**
      * {@inheritdoc}
      */
@@ -22,7 +23,7 @@ class StudentsSearch extends Students
     {
         return [
             [['month','id', 'id_org', 'education_status', 'status', 'osnovanie', 'grace_period'], 'integer'],
-            [['name', 'code', 'date_education_status','date_create', 'date_start_grace_period', 'date_end_grace_period'], 'safe'],
+            [['name', 'code', 'date_education_status','date_create', 'date_start_grace_period', 'date_end_grace_period','org'], 'safe'],
         ];
     }
 
@@ -40,15 +41,18 @@ class StudentsSearch extends Students
      *
      * @param array $params
      *
+     * @param bool $all
      * @return ActiveDataProvider
      */
-    public function search($params)
+    public function search($params,$all = false)
     {
         $query = Students::find()->joinWith(['organization','dateStatuses','numberPP','bank']);
-        if (!empty($this->id_bank))
-            $query->where(['id_bank'=>$this->id_bank]);
-        if (!empty($this->month))
-            $query->andWhere(['MONTH(students.date_start)'=>$this->month]);
+        if (!$all) {
+            if ( !empty( $this->id_bank ) )
+                $query->where( ['id_bank' => $this->id_bank] );
+            if ( !empty( $this->month ) )
+                $query->andWhere( ['MONTH(students.date_start)' => $this->month] );
+        }
 
        /* if ( User::$cans[2])
             $query->andWhere(['id_org'=>User::findIdentity(Yii::$app->getUser()->getId())->id_org]);*/
@@ -57,6 +61,9 @@ class StudentsSearch extends Students
 
         $dataProvider = new ActiveDataProvider([
             'query' => $query,
+            'pagination'=>[
+                'pageSize' => 25
+            ]
         ]);
         $dataProvider->setSort([
                 'attributes'=>[

@@ -18,7 +18,7 @@ abstract class AppController extends Controller
                 Yii::$app->getUser()->can('admin'),
                 Yii::$app->getUser()->can('podved')
             ];
-        if (!Yii::$app->user->getIsGuest()) {
+        if (!Yii::$app->user->isGuest) {
             Yii::$app->session[ 'id_org' ] = User::findOne( Yii::$app->user->id )->id_org;
         }
         $this->cans = Yii::$app->session['cans'];

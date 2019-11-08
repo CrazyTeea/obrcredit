@@ -76,7 +76,7 @@ $isApprove = false;
         <div class="raw">
             <div class="col-md-6"></div>
             <div class="col-md-6 text-right">
-                <?= Html::a('Утвердить за месяц',['approve'],['class'=>'btn btn-danger','data' => [
+                <?= Html::a('Подтвердить за месяц',['approve'],['class'=>'btn btn-danger','data' => [
                     'confirm' => 'Вы уверены?',
                 ],]) ?>
             </div>

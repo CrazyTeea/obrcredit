@@ -38,6 +38,7 @@ return [
             '/app/students/approve',
             '/app/main/*',
             '/app/students/by-bank',
+            '/app/students/all',
         ],
     ],
     '/app/students/*' => [
@@ -92,6 +93,9 @@ return [
         'type' => 2,
     ],
     '/app/students/by-bank' => [
+        'type' => 2,
+    ],
+    '/app/students/all' => [
         'type' => 2,
     ],
 ];
