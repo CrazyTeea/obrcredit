@@ -113,14 +113,10 @@ class ReferenceController extends Controller
             $student->code = $row[$codeId];
             $student->date_credit = $row[$dCreditId];
             $student->id_org = $row[$orgId];
+            $student->date_create = date("Y-m-d");
             $student->status = 1;
-
-            $n = NumbersPp::findOne($row[$numPP]);
-            $b = Banks::findOne($row[$bankId]);
-            if ($n)
-                $student->id_number_pp = $n->id;
-            if ($b)
-                $student->id_bank = $b->id;
+            $student->id_number_pp = $row[$numPP];
+            $student->id_bank = $row[$bankId];
 
             if ($student->save()) {
                 $org = Organizations::findOne($student->id_org);
