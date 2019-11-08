@@ -21,8 +21,12 @@ if ($year){
 }
 
 $this->params['breadcrumbs'][] = $this->title;
+var_dump(Yii::$app->session['id_bank']);
+var_dump(Yii::$app->session['month']);
+var_dump(Yii::$app->session['nPP']);
 ?>
 <div class="organizations-index">
+
 
     <h1><?= Html::encode($this->title) ?></h1>
 
@@ -77,7 +81,6 @@ $this->params['breadcrumbs'][] = $this->title;
             'name',
             'short_name',
             'full_name',
-
         ],
         'rowOptions'=>function($model, $index, $attribute) use ($searchModel) {
             $url = Url::to(['app/students/index','id'=>$model->id]);
@@ -85,7 +88,7 @@ $this->params['breadcrumbs'][] = $this->title;
                 'onClick'=>"window.location.href='{$url}'",
                 'style'=>'cursor:pointer',
                 'class'=>'toVisible',
-                'id'=> $searchModel->isColored ? $model->cS  ? 'red' : 'green' : ''
+                'id'=> $searchModel->isColored ? $model->student_status == 1  ? 'red' : 'green' : ''
             ];
         },
     ]); ?>

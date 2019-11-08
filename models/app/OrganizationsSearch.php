@@ -53,14 +53,13 @@ class OrganizationsSearch extends Organizations
 
         $query = Organizations::find()->where(['system_status'=>1]);
         if ($this->isColored){
-            $query->select(['organizations.*','COUNT(s.id) as cS'])->joinWith(['students s'=>function($q){
-                return $q->andOnCondition([
-                    's.status'=>1,
+            $query->select(['organizations.*', 's.status as student_status'])->joinWith(['students s'=>function($q){
+                 $q->andWhere([
                     's.id_bank'=>Yii::$app->session['id_bank'],
                     'MONTH(s.date_start)'=>Yii::$app->session['month'],
                     's.id_number_pp'=>Yii::$app->session['nPP']]);
             }]);
-            $query->orderBy(['cS'=>SORT_DESC]);
+            $query->orderBy(['student_status'=>SORT_ASC]);
         }
         else{
             $query->joinWith(['students s'])
