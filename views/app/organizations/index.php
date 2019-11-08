@@ -66,7 +66,7 @@ $this->params['breadcrumbs'][] = $this->title;
 
 
     <?php Pjax::begin(['id'=>'sdfsd']); ?>
-    <?php // echo $this->render('_search', ['model' => $searchModel]); ?>
+    <?php  // echo $this->render('_search', ['model' => $searchModel]); ?>
 
     <?= GridView::widget([
         'dataProvider' => $dataProvider,
@@ -74,10 +74,10 @@ $this->params['breadcrumbs'][] = $this->title;
         'emptyCell'=>' ',
         'columns' => [
             ['class' => 'yii\grid\SerialColumn'],
-            'studentsCount',
             'name',
             'short_name',
             'full_name',
+
         ],
         'rowOptions'=>function($model, $index, $attribute) use ($searchModel) {
             $url = Url::to(['app/students/index','id'=>$model->id]);
@@ -85,7 +85,7 @@ $this->params['breadcrumbs'][] = $this->title;
                 'onClick'=>"window.location.href='{$url}'",
                 'style'=>'cursor:pointer',
                 'class'=>'toVisible',
-                'id'=> $searchModel->isColored ? $model->studentsCount!=0  ? 'red' : 'green' : ''
+                'id'=> $searchModel->isColored ? $model->cS  ? 'red' : 'green' : ''
             ];
         },
     ]); ?>
