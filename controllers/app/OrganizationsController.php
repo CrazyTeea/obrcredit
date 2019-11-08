@@ -172,7 +172,7 @@ class OrganizationsController extends AppController
         $searchModel->nPP=$nPP;
         if (key_exists('OrganizationsSearch',Yii::$app->request->queryParams)){
             if (key_exists('isColored',Yii::$app->request->queryParams['OrganizationsSearch'])){
-                $searchModel->isColored = 1;
+                $searchModel->isColored = Yii::$app->request->queryParams['OrganizationsSearch']['isColored'];
             }
         }
 

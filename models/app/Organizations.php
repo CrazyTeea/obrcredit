@@ -18,7 +18,7 @@ use yii\helpers\ArrayHelper;
  */
 class Organizations extends ActiveRecord
 {
-    public $cS;
+    public $student_status;
 
     public static function className()
     {
