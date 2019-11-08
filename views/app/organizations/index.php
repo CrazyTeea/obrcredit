@@ -21,9 +21,7 @@ if ($year){
 }
 
 $this->params['breadcrumbs'][] = $this->title;
-var_dump(Yii::$app->session['id_bank']);
-var_dump(Yii::$app->session['month']);
-var_dump(Yii::$app->session['nPP']);
+
 ?>
 <div class="organizations-index">
 
