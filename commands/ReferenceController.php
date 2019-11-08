@@ -113,6 +113,7 @@ class ReferenceController extends Controller
             $student->code = $row[$codeId];
             $student->date_credit = $row[$dCreditId];
             $student->id_org = $row[$orgId];
+            $student->date_credit = date("Y-m-d");
             $student->status = 1;
 
             $n = NumbersPp::findOne($row[$numPP]);
