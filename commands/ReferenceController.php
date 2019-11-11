@@ -56,7 +56,6 @@ class ReferenceController extends Controller
             foreach ($data_reference AS $key => $data) {
                 $row_org = Organizations::findOne( $data->getValue()->id );
                 if ( empty( $row_org ) ) {
-                    echo 'kek';
                     $row_org = new Organizations();
                     $row_org->id = $data->getValue()->id;
                 }
