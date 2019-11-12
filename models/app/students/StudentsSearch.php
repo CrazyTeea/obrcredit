@@ -52,6 +52,9 @@ class StudentsSearch extends Students
                 $query->where( ['id_bank' => $this->id_bank] );
             if ( !empty( $this->month ) )
                 $query->andWhere( ['MONTH(students.date_start)' => $this->month] );
+            if (!empty($this->id_number_pp)){
+                $query->andWhere(['id_number_pp'=>$this->id_number_pp]);
+            }
         }
 
        /* if ( User::$cans[2])
