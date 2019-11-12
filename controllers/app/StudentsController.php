@@ -280,7 +280,7 @@ class StudentsController extends AppController
 
         if ( !( $this->cans[ 0 ] || $this->cans[ 1 ] ) )
             Yii::$app->session[ 'id_org' ] = User::findIdentity( Yii::$app->user->id )->id_org ? User::findIdentity( Yii::$app->user->id )->id_org : 1;
-        Yii::$app->session[ 'short_name_org' ] = Organizations::findOne( Yii::$app->session[ 'id_org' ] )->name;
+        Yii::$app->session[ 'short_name_org' ] = ($org = Organizations::findOne( Yii::$app->session[ 'id_org' ] )) ? $org->name : '';
 
         $searchModel->id_org = Yii::$app->session[ 'id_org' ];
         $dataProvider = $searchModel->search( Yii::$app->request->queryParams );
@@ -579,6 +579,7 @@ class StudentsController extends AppController
         StudentDocs::addDoc( $model, "/$model->id_org/$model->id", 'rasp_act1' );
         StudentDocs::addDoc( $model, "/$model->id_org/$model->id", 'rasp_act2' );
         StudentDocs::addDoc( $model, "/$model->id_org/$model->id", 'rasp_act3' );
+        StudentDocs::addDoc( $model, "/$model->id_org/$model->id", 'rasp_act4' );
         StudentDocs::addDoc( $model, "/$model->id_org/$model->id", 'dogovor' );
         StudentDocs::addDoc( $model, "/$model->id_org/$model->id", 'rasp_act_otch' );
     }

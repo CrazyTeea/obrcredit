@@ -119,7 +119,7 @@ $cans = Yii::$app->session['cans'];
             </td>
             <td rowspan="6">
                 <?= $form->field($model,'perevod')->checkbox([],false)->label('Перевод на бюджет') ?>
-                <?= $form->field($model,'rasp_act1')->fileInput() ->label('акт')?>
+                <?= $form->field($model,'rasp_act4')->fileInput() ->label('акт')?>
             </td>
         </tr>
         <tr>
