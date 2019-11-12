@@ -15,9 +15,11 @@ $cans = Yii::$app->session['cans'];
 ?>
 
 <div class="students-form">
-    <?php var_dump(Yii::$app->session['id_org'])?>
     <?php $readonly =  $cans[2] ? 1 : null;
-    $form = ActiveForm::begin(); ?>
+    $form = ActiveForm::begin();
+   //$form->enableClientValidation=false;
+
+    ?>
     <?=$form->errorSummary($model)?>
     <?php if (!$cans[2]):?>
         <div class="row">
@@ -118,8 +120,11 @@ $cans = Yii::$app->session['cans'];
                 <?= $form->field($model,'rasp_act1')->fileInput() ->label('ООВО загружает копию распорядительного акта образовательной организации')//$rasp_act1 ?  $rasp_act1->file->name : 'Файл не загружен' ?>
             </td>
             <td rowspan="6">
-                <?= $form->field($model,'perevod')->checkbox([],false)->label('Перевод на бюджет') ?>
-                <?= $form->field($model,'rasp_act4')->fileInput() ->label('акт')?>
+                <?php var_dump($model->perevod)?>
+
+                <?= $form->field($model,'perevod',['enableClientValidation' => false])->checkbox([],false)->label('Перевод на бюджет') ?>
+
+                <?= $form->field($model,'rasp_act4',['enableClientValidation' => false])->fileInput() ->label('акт')?>
             </td>
         </tr>
         <tr>
