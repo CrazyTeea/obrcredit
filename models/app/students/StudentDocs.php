@@ -67,6 +67,7 @@ class StudentDocs extends ActiveRecord
             return null;
         return self::findOne(['id_descriptor'=>$desc->id,'id_student'=>$id_student]);
 
+
     }
     public static function download($id){
         $doc = self::findOne($id);
