@@ -471,7 +471,9 @@ class StudentsController extends AppController
     public function actionApprove()
     {
         $id_org = Yii::$app->getSession()[ 'id_org' ];
-        $students = Students::findAll( ['id_org' => $id_org] );
+        $month = Yii::$app->getSession()['month'];
+        $year = Yii::$app->getSession()['year'];
+        $students = Students::findAll( ['id_org' => $id_org,'MONTH(date_start)'=>$month,'YEAR(date_start)'=>$year] );
         foreach ($students as $student) {
             $student->status = 2;
             $student->date_status = date( 'Y-m-d' );
