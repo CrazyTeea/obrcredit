@@ -481,10 +481,11 @@ class StudentsController extends AppController
         $month = Yii::$app->getSession()['month'];
         $year = Yii::$app->getSession()['year'];
         $students = Students::find()->where( ['id_org' => $id_org,'MONTH(date_start)'=>$month,'YEAR(date_start)'=>$year] )->all();
+
         foreach ($students as $student) {
             $student->status = 2;
             $student->date_status = date( 'Y-m-d' );
-            $student->save();
+            $student->save(false);
         }
         return $this->redirect( ['by-bank', 'id' => Yii::$app->getSession()[ 'id_bank' ], 'm' => Yii::$app->getSession()[ 'month' ]] );
     }
