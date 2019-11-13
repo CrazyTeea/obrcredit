@@ -66,34 +66,36 @@ if ($year == 2018)
 
                             <hr>
                             <?php if($year != 2018):?>
-                            <p>
-                                <!-- Button trigger modal -->
-                                <button id="<?= ($studentsByMonth[$i][197]['students']['notApproved'])? 'red' : 'green' ?>" type="button" class="btn btn-block btn-lg" data-toggle="modal" data-target="#myModal<?=$i?>197">
-                                    Постановление <br>правительства №197 <br>
-                                    <span class="text " style="font-size: 16px;"> <i> кол-во обучающихся: <?=$studentsByMonth[$i][197]['students']['count']?> </i> </span>
-                                </button>
+                                <?php if (!in_array($i,[1,2,3,4,5,6,7])):?>
+                                    <p>
+                                        <!-- Button trigger modal -->
+                                        <button id="<?= ($studentsByMonth[$i][197]['students']['notApproved'])? 'red' : 'green' ?>" type="button" class="btn btn-block btn-lg" data-toggle="modal" data-target="#myModal<?=$i?>197">
+                                            Постановление <br>правительства №197 <br>
+                                            <span class="text " style="font-size: 16px;"> <i> кол-во обучающихся: <?=$studentsByMonth[$i][197]['students']['count']?> </i> </span>
+                                        </button>
 
-                            </p>
-                            <div class="modal fade" id="myModal<?=$i?>197" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
-                                <div class="modal-dialog modal-sm" role="document">
-                                    <div class="modal-content">
-                                        <div class="modal-header">
-                                            <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-                                            <h4 class="modal-title" id="myModalLabel">Банки</h4>
-                                        </div>
-                                        <div class="modal-body">
-                                            <?php foreach ($studentsByMonth[$i][197]['bank'] as $item ): ?>
-                                                <?php if ($cans[0] || $cans[1]):?>
-                                                    <?= Html::a($banks[$item-1],['app/organizations/by-bank','id_bank'=>$item,'month'=>$i,'nPP'=>1],['class'=>'btn btn-primary btn-block']) ?>
-                                                <?php else:?>
-                                                    <?= Html::a($banks[$item-1],['app/students/by-bank','id'=>$item,'m'=>$i,'nPP'=>1],['class'=>'btn btn-primary btn-block']) ?>
-                                                <?php endif;?>
+                                    </p>
+                                    <div class="modal fade" id="myModal<?=$i?>197" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+                                        <div class="modal-dialog modal-sm" role="document">
+                                            <div class="modal-content">
+                                                <div class="modal-header">
+                                                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                                                    <h4 class="modal-title" id="myModalLabel">Банки</h4>
+                                                </div>
+                                                <div class="modal-body">
+                                                    <?php foreach ($studentsByMonth[$i][197]['bank'] as $item ): ?>
+                                                        <?php if ($cans[0] || $cans[1]):?>
+                                                            <?= Html::a($banks[$item-1],['app/organizations/by-bank','id_bank'=>$item,'month'=>$i,'nPP'=>1],['class'=>'btn btn-primary btn-block']) ?>
+                                                        <?php else:?>
+                                                            <?= Html::a($banks[$item-1],['app/students/by-bank','id'=>$item,'m'=>$i,'nPP'=>1],['class'=>'btn btn-primary btn-block']) ?>
+                                                        <?php endif;?>
 
-                                            <?php endforeach;?>
+                                                    <?php endforeach;?>
+                                                </div>
+                                            </div>
                                         </div>
                                     </div>
-                                </div>
-                            </div>
+                                <?php endif;?>
                             <?php endif;?>
 
 
