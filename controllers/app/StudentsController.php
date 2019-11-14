@@ -283,12 +283,13 @@ class StudentsController extends AppController
 
 
 
-    public function actionByBank( $id, $nPP )
+    public function actionByBank( $id, $nPP,$month )
     {
         if (!Yii::$app->session->has('year'))
             return $this->redirect(['app/main/index']);
-        if (!Yii::$app->session->has('month'))
-            return $this->redirect(['app/main/month']);
+
+        Yii::$app->session->set('month',$month);
+
         $searchModel = new StudentsSearch();
         $searchModel->id_bank = $id;
 

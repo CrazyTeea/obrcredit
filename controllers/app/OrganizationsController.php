@@ -159,12 +159,24 @@ class OrganizationsController extends AppController
     }
 
 
-    public function actionByBank($id_bank,$month,$nPP){
+    /**
+     * @param null $id_bank
+     * @param null $month
+     * @param null $nPP
+     * @return string|\yii\web\Response
+     */
+    public function actionByBank( $id_bank=null, $month = null, $nPP=null){
+
+        if (is_null($id_bank) || is_null($month) || is_null($nPP))
+            return $this->redirect(['app/main/index']);
+        if (!Yii::$app->session->has('year'))
+            return $this->redirect(['app/main/index']);
 
         Yii::$app->session['bank'] = $id_bank;
 
         $searchModel = new OrganizationsSearch();
         $searchModel->month = $month;
+        $searchModel->year = Yii::$app->session->get('year');
         Yii::$app->session['month'] = $month;
         $searchModel->id_bank = $id_bank;
         Yii::$app->session['id_bank'] = $id_bank;
