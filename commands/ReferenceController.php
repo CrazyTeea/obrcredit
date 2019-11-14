@@ -83,7 +83,8 @@ class ReferenceController extends Controller
         if ( !$csvP )
             exit( "Файл не найден" );
 
-        while (( $row = fgetcsv( $csv, 1000, ';' ) ) != false) {
+         $row = fgetcsv( $csv, 1000, ';' ) ;
+
             echo "
             Организация->$row[$orgId]
             ФИО->$row[$nameId]
@@ -92,7 +93,7 @@ class ReferenceController extends Controller
             номер пп->$row[$numPP]
             нмоер банка->$row[$bankId]
             дата начала обуч->$row[$dStart]  \n";
-        }
+
 
         fclose( $csv );
         $csv = fopen( $csvP, 'r' );
