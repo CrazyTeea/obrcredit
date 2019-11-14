@@ -15,6 +15,7 @@ class OrganizationsSearch extends Organizations
     public $isColored;
     public $id_bank;
     public $month;
+    public $year;
     public $nPP;
     /**
      * {@inheritdoc}
@@ -57,13 +58,15 @@ class OrganizationsSearch extends Organizations
                  $q->andWhere([
                     's.id_bank'=>Yii::$app->session['id_bank'],
                     'MONTH(s.date_start)'=>Yii::$app->session['month'],
+                     'YEAR(s.date_start)'=>Yii::$app->session['year'],
+
                     's.id_number_pp'=>Yii::$app->session['nPP']]);
             }]);
             $query->orderBy(['student_status'=>SORT_ASC]);
         }
         else{
             $query->joinWith(['students s'])
-                ->andWhere(['s.id_bank'=>$this->id_bank,'s.id_number_pp'=>$this->nPP,'MONTH(s.date_start)'=>$this->month]);
+                ->andWhere(['s.id_bank'=>$this->id_bank,'s.id_number_pp'=>$this->nPP,'MONTH(s.date_start)'=>$this->month,'YEAR(s.date_start)'=>$this->year]);
 
         }
 
