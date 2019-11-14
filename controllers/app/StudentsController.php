@@ -269,23 +269,39 @@ class StudentsController extends AppController
 
 
 
-    public function actionByBank( $id = null, $m = null )
+    public function actionByBank( $id, $nPP )
     {
+        if (!Yii::$app->session->has('year'))
+            return $this->redirect(['app/main/index']);
+        if (!Yii::$app->session->has('month'))
+            return $this->redirect(['app/main/month']);
         $searchModel = new StudentsSearch();
         $searchModel->id_bank = $id;
 
+        Yii::$app->session['nPP'] = $nPP;
 
-        Yii::$app->session[ 'month' ] = $m;
-        $searchModel->month = $m;
+        $searchModel->month = Yii::$app->session->get('month');
+        $searchModel->year = Yii::$app->session->get('year');
+        $searchModel->id_number_pp = $nPP;
 
         if ( !( $this->cans[ 0 ] || $this->cans[ 1 ] ) )
             Yii::$app->session[ 'id_org' ] = User::findIdentity( Yii::$app->user->id )->id_org ? User::findIdentity( Yii::$app->user->id )->id_org : 1;
         Yii::$app->session[ 'short_name_org' ] = ($org = Organizations::findOne( Yii::$app->session[ 'id_org' ] )) ? $org->name : '';
 
         $searchModel->id_org = Yii::$app->session[ 'id_org' ];
+
         $dataProvider = $searchModel->search( Yii::$app->request->queryParams );
 
-        $studentsExport = Students::find()->where( ['id_org' => $searchModel->id_org, 'MONTH(date_start)' => $m, 'YEAR(date_start)' => Yii::$app->session[ 'year' ]] );
+        $isApprove = Students::find()->where([
+            'id_bank'=>$searchModel->id_bank,
+            'MONTH(date_start)'=>$searchModel->month,
+            'YEAR(date_start)'=>$searchModel->year,
+            'id_number_pp'=>$searchModel->id_number_pp,
+            'id_org'=>$searchModel->id_org,
+            'status'=>1
+        ])->all();
+
+        $studentsExport = Students::find()->where( ['id_org' => $searchModel->id_org, 'MONTH(date_start)' => $searchModel->month, 'YEAR(date_start)' => Yii::$app->session[ 'year' ]] );
         $exportProvider = new ActiveDataProvider( ['query' => $studentsExport, 'pagination' => false] );
 
         $exportColumns = [
@@ -456,8 +472,6 @@ class StudentsController extends AppController
                 ['attribute' => 'bank', 'value' => 'bank.name', 'encodeLabel' => false, 'label' => 'Наименование <br> банка <br>или<br> иной <br> кредитной <br>организации'],
                 ['attribute' => 'date_status', 'encodeLabel' => false, 'format' => 'date', 'label' => 'Дата <br> утверждения <br> отчета'],
             ] );
-        }
-        if ( !$this->cans[ 2 ] ) {
             $exportColumns = ArrayHelper::merge( $exportColumns, [
                 ['attribute' => 'numberPP', 'value' => 'numberPP.number', 'label' => 'Номер ПП по образовательному кредиту'],
                 ['attribute' => 'bank', 'value' => 'bank.name', 'label' => 'Наименование банка или иной кредитной организации'],
@@ -472,6 +486,7 @@ class StudentsController extends AppController
             'columns' => $columns,
             'exportColumns' => $exportColumns,
             'exportProvider' => $exportProvider,
+            'isApprove'=>$isApprove
         ] );
     }
 

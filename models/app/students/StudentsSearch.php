@@ -15,6 +15,7 @@ class StudentsSearch extends Students
 {
     public $date_education_status;
     public $month;
+    public $year;
     public $org;
     /**
      * {@inheritdoc}
@@ -22,7 +23,7 @@ class StudentsSearch extends Students
     public function rules()
     {
         return [
-            [['month','id', 'id_org', 'education_status', 'status', 'osnovanie', 'grace_period'], 'integer'],
+            [['month','id', 'id_org', 'education_status', 'status', 'osnovanie', 'grace_period','year'], 'integer'],
             [['name', 'code', 'date_education_status','date_create', 'date_start_grace_period', 'date_end_grace_period','org'], 'safe'],
         ];
     }
@@ -52,6 +53,8 @@ class StudentsSearch extends Students
                 $query->where( ['id_bank' => $this->id_bank] );
             if ( !empty( $this->month ) )
                 $query->andWhere( ['MONTH(students.date_start)' => $this->month] );
+            if ( !empty( $this->year ) )
+                $query->andWhere( ['YEAR(students.date_start)' => $this->year] );
             if (!empty($this->id_number_pp)){
                 $query->andWhere(['id_number_pp'=>$this->id_number_pp]);
             }
