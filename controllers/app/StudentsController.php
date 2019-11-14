@@ -292,6 +292,7 @@ class StudentsController extends AppController
 
         $searchModel = new StudentsSearch();
         $searchModel->id_bank = $id;
+        Yii::$app->session->set('id_bank',$searchModel->id_bank);
 
         Yii::$app->session['nPP'] = $nPP;
 
@@ -517,7 +518,7 @@ class StudentsController extends AppController
             $student->date_status = date( 'Y-m-d' );
             $student->save(false);
         }
-        return $this->redirect( ['by-bank', 'id' => Yii::$app->getSession()[ 'id_bank' ], 'm' => Yii::$app->getSession()[ 'month' ]] );
+        return $this->redirect( ['by-bank', 'id' => Yii::$app->getSession()[ 'id_bank' ], 'month' => Yii::$app->getSession()[ 'month' ], 'nPP'=>Yii::$app->session->get('nPP')] );
     }
 
     public function actionExport( $id = null )
