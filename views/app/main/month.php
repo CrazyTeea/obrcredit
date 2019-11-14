@@ -91,7 +91,7 @@ if ($year == 2018)
                                                         <?php if ($cans[0] || $cans[1]):?>
                                                             <?= Html::a($banks[$item-1],['app/organizations/by-bank','id_bank'=>$item,'month'=>$i,'nPP'=>1],['class'=>'btn btn-primary btn-block']) ?>
                                                         <?php else:?>
-                                                            <?= Html::a($banks[$item-1],['app/students/by-bank','id'=>$item,'nPP'=>1],['class'=>'btn btn-primary btn-block']) ?>
+                                                            <?= Html::a($banks[$item-1],['app/students/by-bank','id'=>$item,'nPP'=>1,'month'=>$i],['class'=>'btn btn-primary btn-block']) ?>
                                                         <?php endif;?>
 
                                                     <?php endforeach;?>
@@ -122,7 +122,7 @@ if ($year == 2018)
                                                 <?php if ($cans[0] || $cans[1]):?>
                                                     <?= Html::a($banks[$item-1],['app/organizations/by-bank','id_bank'=>$item,'month'=>$i,'nPP'=>3],['class'=>'btn btn-primary btn-block']) ?>
                                                 <?php else:?>
-                                                    <?= Html::a($banks[$item-1],['app/students/by-bank','id'=>$item,'nPP'=>3],['class'=>'btn btn-primary btn-block']) ?>
+                                                    <?= Html::a($banks[$item-1],['app/students/by-bank','id'=>$item,'nPP'=>3,'month'=>$i],['class'=>'btn btn-primary btn-block']) ?>
                                                 <?php endif;?>
                                             <?php endforeach;?>
                                         </div>
@@ -150,7 +150,7 @@ if ($year == 2018)
                                                 <?php if ($cans[0] || $cans[1]):?>
                                                     <?= Html::a($banks[$item-1],['app/organizations/by-bank','id_bank'=>$item,'month'=>$i,'nPP'=>2],['class'=>'btn btn-primary btn-block']) ?>
                                                 <?php else:?>
-                                                    <?= Html::a($banks[$item-1],['app/students/by-bank','id'=>$item,'nPP'=>2],['class'=>'btn btn-primary btn-block']) ?>
+                                                    <?= Html::a($banks[$item-1],['app/students/by-bank','id'=>$item,'nPP'=>2,'month'=>$i],['class'=>'btn btn-primary btn-block']) ?>
                                                 <?php endif;?>
                                             <?php endforeach;?>
                                         </div>
