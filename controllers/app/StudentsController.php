@@ -75,6 +75,19 @@ class StudentsController extends AppController
         $searchModel->id_org = Yii::$app->session[ 'id_org' ];
         $searchModel->id_number_pp = Yii::$app->session[ 'nPP' ];
         $searchModel->month = Yii::$app->session['month'];
+        $searchModel->year = Yii::$app->session['year'];
+
+        $isApprove = Students::find()->where([
+            'id_bank'=>$searchModel->id_bank,
+            'MONTH(date_start)'=>$searchModel->month,
+            'YEAR(date_start)'=>$searchModel->year,
+            'id_number_pp'=>$searchModel->id_number_pp,
+            'id_org'=>$searchModel->id_org,
+            'status'=>1
+        ])->all();
+
+
+
         $dataProvider = $searchModel->search( Yii::$app->request->queryParams );
 
         $studentsExport = Students::find()->where( ['id_org' => $searchModel->id_org, 'id_bank' => $searchModel->id_bank] );
@@ -264,6 +277,7 @@ class StudentsController extends AppController
             'columns' => $columns,
             'exportColumns' => $exportColumns,
             'exportProvider' => $exportProvider,
+            'isApprove'=>$isApprove
         ] );
     }
 
