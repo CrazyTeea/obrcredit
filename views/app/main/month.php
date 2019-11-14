@@ -30,7 +30,11 @@ if ($year == 2018)
 <h2>Обучающиеся по государственной поддержке образовательного кредитования за <?=$year?> год</h2>
 
 <div class="row">
-
+    <!--
+    <pre>
+    <?php var_dump($studentsByMonth);?>
+</pre>
+-->
     <div class="panel panel-default">
         <div class="panel-body">
             <?php for ($i = $startMonth;$i<=$endMonth;$i++):?>
@@ -69,7 +73,7 @@ if ($year == 2018)
                                 <?php if (!in_array($i,[1,2,3,4,5,6,7])):?>
                                     <p>
                                         <!-- Button trigger modal -->
-                                        <button id="<?= ($studentsByMonth[$i][197]['students']['notApproved'])? 'red' : 'green' ?>" type="button" class="btn btn-block btn-lg" data-toggle="modal" data-target="#myModal<?=$i?>197">
+                                        <button id="<?= ($studentsByMonth[$i][197]['students']['notApproved'])? 'red' :  'green'  ?>" type="button" class="btn btn-block btn-lg" data-toggle="modal" data-target="#myModal<?=$i?>197">
                                             Постановление <br>правительства №197 <br>
                                             <span class="text " style="font-size: 16px;"> <i> кол-во обучающихся: <?=$studentsByMonth[$i][197]['students']['count']?> </i> </span>
                                         </button>
@@ -100,7 +104,7 @@ if ($year == 2018)
 
 
                             <p>
-                                <button id="<?= ($studentsByMonth[$i][699]['students']['notApproved'])? 'red' : 'green' ?>" type="button" class="btn btn-block btn-lg" data-toggle="modal" data-target="#myModal<?=$i?>699">
+                                <button id="<?= ($studentsByMonth[$i][699]['students']['notApproved'])? 'red' :  'green' ?>" type="button" class="btn btn-block btn-lg" data-toggle="modal" data-target="#myModal<?=$i?>699">
                                     Постановление <br> правительства № 699 <br>
                                     <span class="text " style="font-size: 16px;"> <i> кол-во обучающихся: <?=$studentsByMonth[$i][699]['students']['count']?> </i> </span>
                                 </button>
@@ -129,7 +133,7 @@ if ($year == 2018)
 
                             <p>
                                 <!-- Button trigger modal -->
-                                <button id="<?= ($studentsByMonth[$i][1026]['students']['notApproved'])? 'red' : 'green' ?>" type="button" class="btn  btn-block btn-lg" data-toggle="modal" data-target="#myModal<?=$i?>1026">
+                                <button id="<?= ($studentsByMonth[$i][1026]['students']['notApproved'])? 'red' : 'green'  ?>" type="button" class="btn  btn-block btn-lg" data-toggle="modal" data-target="#myModal<?=$i?>1026">
                                     Постановление <br> правительства № 1026<br>
                                     <span class="text" style="font-size: 16px;"> <i> кол-во обучающихся: <?=$studentsByMonth[$i][1026]['students']['count']?> </i> </span>
                                 </button>

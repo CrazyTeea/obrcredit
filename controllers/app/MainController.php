@@ -27,8 +27,13 @@ class MainController extends AppController
         }
         return $this->render('index',compact('studentsByYear'));
     }
-    public function actionMonth($year){
+    public function actionMonth($year = null){
+        if (is_null($year))
+            return $this->redirect(['index']);
+
         Yii::$app->session['year']=$year;
+
+
         $exportColumns = [
             ['class' => 'yii\grid\SerialColumn'],
             ['attribute'=>'name','label'=>"ФИО обучающегося"],
@@ -115,36 +120,30 @@ class MainController extends AppController
             $studentsByMonth[$i]['exportPr'] = (!$this->cans[2]) ?
                 new ActiveDataProvider(['query'=>Students::find()->where(['YEAR(date_start)' => $year, 'MONTH(date_start)' => $i])])
                 : new ActiveDataProvider(['query'=>Students::find()->where(['YEAR(date_start)' => $year, 'MONTH(date_start)' => $i,'id_org'=>Yii::$app->session['id_org']])]);
+
+            $wBank197 = clone $s197;
+            $wBank699 = clone $s699;
+            $wBank1026 =clone $s1026;
+
+            $snA197 = clone $s197;
+            $snA699 = clone $s699;
+            $snA1026 = clone $s1026;
+
+
             $studentsByMonth[$i][197]['students']['count'] = $s197->count();
             $studentsByMonth[$i][699]['students']['count'] = $s699->count();
             $studentsByMonth[$i][1026]['students']['count'] = $s1026->count();
-            if (!($this->cans[0] || $this->cans[1])) {
-                $s197 = Students::find()->where( ['YEAR(date_start)' => $year, 'MONTH(date_start)' => $i, 'id_number_pp' => 1, 'id_org'=>Yii::$app->session['id_org']] )->select(['id_bank'] );
-                $s699 = Students::find()->where( ['YEAR(date_start)' => $year, 'MONTH(date_start)' => $i, 'id_number_pp' => 3, 'id_org'=>Yii::$app->session['id_org']] )->select( ['id_bank'] );
-                $s1026 = Students::find()->where( ['YEAR(date_start)' => $year, 'MONTH(date_start)' => $i, 'id_number_pp' => 2, 'id_org'=>Yii::$app->session['id_org']] )->select( ['id_bank'] );
-            }
-            else{
-                $s197 = Students::find()->where( ['YEAR(date_start)' => $year, 'MONTH(date_start)' => $i, 'id_number_pp' => 1] )->select( ['id_bank'] );
-                $s699 = Students::find()->where( ['YEAR(date_start)' => $year, 'MONTH(date_start)' => $i, 'id_number_pp' => 3] )->select( ['id_bank'] );
-                $s1026 = Students::find()->where( ['YEAR(date_start)' => $year, 'MONTH(date_start)' => $i, 'id_number_pp' => 2] )->select( ['id_bank'] );
-            }
 
-            $studentsByMonth[$i][197]['bank'] = $s197->groupBy(['id_bank'])->column() ;
-            $studentsByMonth[$i][699]['bank'] =  $s699->groupBy(['id_bank'])->column();
-            $studentsByMonth[$i][1026]['bank'] = $s1026->groupBy(['id_bank'])->column();
-            if (!($this->cans[0] || $this->cans[1])) {
-                $s197 = Students::find()->where( ['YEAR(date_start)' => $year, 'MONTH(date_start)' => $i, 'id_number_pp' => 1, 'id_org'=>Yii::$app->session['id_org']] )->select(['id_bank'] );
-                $s699 = Students::find()->where( ['YEAR(date_start)' => $year, 'MONTH(date_start)' => $i, 'id_number_pp' => 3, 'id_org'=>Yii::$app->session['id_org']] )->select( ['id_bank'] );
-                $s1026 = Students::find()->where( ['YEAR(date_start)' => $year, 'MONTH(date_start)' => $i, 'id_number_pp' => 2, 'id_org'=>Yii::$app->session['id_org']] )->select( ['id_bank'] );
-            }
-            else{
-                $s197 = Students::find()->where( ['YEAR(date_start)' => $year, 'MONTH(date_start)' => $i, 'id_number_pp' => 1] )->select( ['id_bank'] );
-                $s699 = Students::find()->where( ['YEAR(date_start)' => $year, 'MONTH(date_start)' => $i, 'id_number_pp' => 3] )->select( ['id_bank'] );
-                $s1026 = Students::find()->where( ['YEAR(date_start)' => $year, 'MONTH(date_start)' => $i, 'id_number_pp' => 2] )->select( ['id_bank'] );
-            }
-            $studentsByMonth[$i][197]['students']['notApproved'] = $s197->andWhere(['status'=>1])->count();
-            $studentsByMonth[$i][699]['students']['notApproved'] = $s699->andWhere(['status'=>1])->count();
-            $studentsByMonth[$i][1026]['students']['notApproved'] = $s1026->andWhere(['status'=>1])->count();
+
+            $studentsByMonth[$i][197]['bank'] = $wBank197->groupBy(['id_bank'])->column() ;
+            $studentsByMonth[$i][699]['bank'] =  $wBank699->groupBy(['id_bank'])->column();
+            $studentsByMonth[$i][1026]['bank'] = $wBank1026->groupBy(['id_bank'])->column();
+
+            $studentsByMonth[$i][197]['students']['notApproved'] = $snA197->andWhere(['status'=>1])->count();
+            $studentsByMonth[$i][699]['students']['notApproved'] = $snA699->andWhere(['status'=>1])->count();
+            $studentsByMonth[$i][1026]['students']['notApproved'] = $snA1026->andWhere(['status'=>1])->count();
+
+
 
 
         }
