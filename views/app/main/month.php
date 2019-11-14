@@ -87,7 +87,7 @@ if ($year == 2018)
                                                         <?php if ($cans[0] || $cans[1]):?>
                                                             <?= Html::a($banks[$item-1],['app/organizations/by-bank','id_bank'=>$item,'month'=>$i,'nPP'=>1],['class'=>'btn btn-primary btn-block']) ?>
                                                         <?php else:?>
-                                                            <?= Html::a($banks[$item-1],['app/students/by-bank','id'=>$item,'m'=>$i,'nPP'=>1],['class'=>'btn btn-primary btn-block']) ?>
+                                                            <?= Html::a($banks[$item-1],['app/students/by-bank','id'=>$item,'nPP'=>1],['class'=>'btn btn-primary btn-block']) ?>
                                                         <?php endif;?>
 
                                                     <?php endforeach;?>
@@ -104,7 +104,7 @@ if ($year == 2018)
                                     Постановление <br> правительства № 699 <br>
                                     <span class="text " style="font-size: 16px;"> <i> кол-во обучающихся: <?=$studentsByMonth[$i][699]['students']['count']?> </i> </span>
                                 </button>
-
+                            </p>
                             <div class="modal fade" id="myModal<?=$i?>699" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
                                 <div class="modal-dialog modal-sm" role="document">
                                     <div class="modal-content">
@@ -118,7 +118,7 @@ if ($year == 2018)
                                                 <?php if ($cans[0] || $cans[1]):?>
                                                     <?= Html::a($banks[$item-1],['app/organizations/by-bank','id_bank'=>$item,'month'=>$i,'nPP'=>3],['class'=>'btn btn-primary btn-block']) ?>
                                                 <?php else:?>
-                                                    <?= Html::a($banks[$item-1],['app/students/by-bank','id'=>$item,'m'=>$i,'nPP'=>3],['class'=>'btn btn-primary btn-block']) ?>
+                                                    <?= Html::a($banks[$item-1],['app/students/by-bank','id'=>$item,'nPP'=>3],['class'=>'btn btn-primary btn-block']) ?>
                                                 <?php endif;?>
                                             <?php endforeach;?>
                                         </div>
@@ -126,13 +126,14 @@ if ($year == 2018)
                                     </div>
                                 </div>
                             </div>
-                            </p>
+
                             <p>
                                 <!-- Button trigger modal -->
                                 <button id="<?= ($studentsByMonth[$i][1026]['students']['notApproved'])? 'red' : 'green' ?>" type="button" class="btn  btn-block btn-lg" data-toggle="modal" data-target="#myModal<?=$i?>1026">
                                     Постановление <br> правительства № 1026<br>
                                     <span class="text" style="font-size: 16px;"> <i> кол-во обучающихся: <?=$studentsByMonth[$i][1026]['students']['count']?> </i> </span>
                                 </button>
+                            </p>
                             <div class="modal fade" id="myModal<?=$i?>1026" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
                                 <div class="modal-dialog modal-sm" role="document">
                                     <div class="modal-content">
@@ -145,14 +146,14 @@ if ($year == 2018)
                                                 <?php if ($cans[0] || $cans[1]):?>
                                                     <?= Html::a($banks[$item-1],['app/organizations/by-bank','id_bank'=>$item,'month'=>$i,'nPP'=>2],['class'=>'btn btn-primary btn-block']) ?>
                                                 <?php else:?>
-                                                    <?= Html::a($banks[$item-1],['app/students/by-bank','id'=>$item,'m'=>$i,'nPP'=>2],['class'=>'btn btn-primary btn-block']) ?>
+                                                    <?= Html::a($banks[$item-1],['app/students/by-bank','id'=>$item,'nPP'=>2],['class'=>'btn btn-primary btn-block']) ?>
                                                 <?php endif;?>
                                             <?php endforeach;?>
                                         </div>
                                     </div>
                                 </div>
                             </div>
-                            </p>
+
                         </div>
                     </div>
                 </div>

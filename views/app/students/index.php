@@ -27,12 +27,12 @@ if ($cans[0] || $cans[1])
     $this->params['breadcrumbs'][] = ['label'=>'Организации','url'=>['app/organizations/by-bank','id_bank'=>Yii::$app->session['id_bank'],'month'=>Yii::$app->session['month'],'nPP'=>Yii::$app->session['nPP']]];
 $this->params['breadcrumbs'][] = $this->title;
 
-$isApprove = false;
+/*$isApprove = false;
     foreach ($dataProvider->getModels() as $student)
         if ($student->status != 2){
             $isApprove = true;
             break;
-        }
+        }*/
 
 ?>
 <div class="students-index">
@@ -40,7 +40,7 @@ $isApprove = false;
 
     <h3><?= Html::encode($this->title) ?></h3>
 
-    <?php if ($cans[0] || $cans[1]):?>
+    <?php  if ($cans[0] || $cans[1]):?>
         <?= Html::a('Добавить студента', ['create','id'=>Yii::$app->session[ 'id_org' ]],['class'=>'btn btn-success']) ?>
     <?php endif;?>
 
@@ -70,9 +70,6 @@ $isApprove = false;
             ];
         },
     ]); ?>
-
-
-    <?php Pjax::end(); ?>
     <?php if (($cans[2] || $cans[0]) and $isApprove):?>
         <div class="raw">
             <div class="col-md-6"></div>
@@ -90,6 +87,9 @@ $isApprove = false;
             </p>
         </div>
     <?php endif;?>
+
+    <?php Pjax::end(); ?>
+
 
 
 </div>
