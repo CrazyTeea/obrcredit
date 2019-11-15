@@ -24,15 +24,15 @@ $curYear = date('Y');
                         <hr>
                         <p>
                             <span >Всего обучающихся:</span>
-                            <span id="count" class="badge alert-info"><?=$studentsByYear[$i]['studentsCount']?></span>
+                            <span id="count" class="badge alert-info"><?=0//$studentsByYear[$i]['studentsCount']?></span>
                         </p>
                         <p>
                             <span >Утвержденные</span>
-                            <span id="count" class="badge alert-success"><?=$studentsByYear[$i]['studentsApprovedCount']?></span>
+                            <span id="count" class="badge alert-success"><?=0//$studentsByYear[$i]['studentsApprovedCount']?></span>
                         </p>
                         <p>
                             <span >Неутвержденные</span>
-                            <span id="count" class="badge alert-danger"><?=$studentsByYear[$i]['studentsUnapprovedCount']?></span>
+                            <span id="count" class="badge alert-danger"><?=0//$studentsByYear[$i]['studentsUnapprovedCount']?></span>
                         </p>
                     </div>
                 </div>
