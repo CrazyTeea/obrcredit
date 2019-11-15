@@ -195,14 +195,24 @@ class OrganizationsController extends AppController
 
         $modelColored = Organizations::find();
 
-        $modelColored->joinWith(['students st'])->where(['st.id_bank'=>$id_bank,'st.status'=>1,'MONTH(st.date_start)'=>$month,'st.id_number_pp'=>$nPP]);
+        $modelColored->joinWith(['students st'])->where([
+            'st.id_bank'=>$id_bank,'st.status'=>1,
+            'MONTH(st.date_start)'=>$month,
+            'YEAR(st.date_start)'=>$searchModel->year,
+            'st.id_number_pp'=>$nPP
+        ]);
 
         $modelColored->groupBy(['organizations.id']);
         //$modelColored->orderBy(['studentsCOUNT' => SORT_DESC]);
 
         $dataProviderColored  = new ActiveDataProvider(['query'=>$modelColored,'pagination'=>false]);
 
-        $studentsExport = Students::find()->where(['id_bank'=>$id_bank]);
+        $studentsExport =  Students::find()->where([
+            'id_bank'=>$id_bank,
+            'MONTH(date_start)'=>$month,
+            'YEAR(date_start)'=>$searchModel->year,
+            'id_number_pp'=>$nPP]);
+
         $exportProvider = new ActiveDataProvider(['query'=>$studentsExport,'pagination'=>false]);
 
         $exportColumns = [
