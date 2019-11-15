@@ -66,6 +66,7 @@ $canUpdate = ($cans[0] || $model->status != 2) ? 1 : 0;
         <tr>
             <th colspan="4"><p class="text-center ">Статус обучающегося</p></th>
             <th colspan="4"><p class="text-center">Пролонгация льготного периода пользования <br> образовательным кредитом</p></th>
+            <th ><p class="text-center">Выпускник (завершено обучение в образовательной организации)</p></th>
         </tr>
         <tr>
             <td rowspan='2'><p class="text-sm-center">Продолжает <br> обучаться </p></td>
@@ -78,6 +79,7 @@ $canUpdate = ($cans[0] || $model->status != 2) ? 1 : 0;
                     срока окончания академического права
                 </p></td>
             <td rowspan="2"><p class="text-sm-center">Переведен на бюджет</p></td>
+            <td rowspan="3"></td>
         </tr>
         <tr>
             <td>Пункты постановления <br> Правительства РФ <br> от 26.02.2018 г. № 197</td>
@@ -129,6 +131,14 @@ $canUpdate = ($cans[0] || $model->status != 2) ? 1 : 0;
                 else echo "<p class='text-sm-center'> &#9744; Переведен</p>";
                 ?>
                 <?= ($rasp_act4 and $rasp_act4->file) ? Html::a($rasp_act4->file->name,['download','id'=>$rasp_act4->id])  : 'Файл не загружен' ?>
+            </td>
+            <td rowspan="6" style="text-align: center;">
+                <?php
+                if ($model->isEnder)
+                    echo "<p class='text-sm-center' > &#9745; Выпускник </p>";
+                else echo "<p class='text-sm-center'> &#9744; Выпускник</p>";
+                ?>
+                <?=Yii::$app->formatter->asDate($model->date_ender) ?>
             </td>
         </tr>
         <tr>

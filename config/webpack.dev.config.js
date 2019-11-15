@@ -55,13 +55,14 @@ module.exports = {
         ],
     },
     devServer: {
-        disableHostCheck: true,
+
+        disableHostCheck: false,
         port: 5000,
         hot:true,
         liveReload: true,
         proxy: {
-            '**': {
-                target: 'http://127.0.0.1/',
+            '/': {
+                target: 'http://localhost/',
             },
         },
     },
