@@ -90,7 +90,13 @@ class StudentsController extends AppController
 
         $dataProvider = $searchModel->search( Yii::$app->request->queryParams );
 
-        $studentsExport = Students::find()->where( ['id_org' => $searchModel->id_org, 'id_bank' => $searchModel->id_bank] );
+        $studentsExport = Students::find()->where( [
+            'id_bank'=>$searchModel->id_bank,
+            'MONTH(date_start)'=>$searchModel->month,
+            'YEAR(date_start)'=>$searchModel->year,
+            'id_number_pp'=>$searchModel->id_number_pp,
+            'id_org'=>$searchModel->id_org,
+            ] );
         $exportProvider = new ActiveDataProvider( ['query' => $studentsExport, 'pagination' => false] );
 
         $exportColumns = [
@@ -98,6 +104,12 @@ class StudentsController extends AppController
             ['attribute' => 'name', 'label' => "ФИО обучающегося"],
             ['attribute' => 'organization', 'value' => 'organization.short_name', 'label' => 'Наименование ООВО'],
             ['attribute' => 'code', 'label' => 'Код направления подготовки'],
+            ['attribute' => 'isEnder', 'label' => 'Выпускник (завершено обучение в образовательной организации)',
+                'value'=>
+                    function($model){
+                        return $model->isEnder ? 'Выпускник '.Yii::$app->getFormatter()->asDate($model->date_ender):'';
+                    }
+            ],
             ['attribute' => 'education_status', 'label' => 'Статус обучающегося', 'content' => function ( $model ) {
                 $os = mb_substr( Students::getOsnovanie()[ !empty( $model->osnovanie ) ? $model->osnovanie : 0 ], 0, 50 );
                 $data = "";
@@ -179,6 +191,10 @@ class StudentsController extends AppController
             ['attribute' => 'organization', 'value' => 'organization.short_name', 'label' => 'Наименование <br> ООВО', 'encodeLabel' => false],
             ['attribute' => 'code', 'label' => 'Код <br> направления <br> подготовки', 'encodeLabel' => false],
             ['attribute' => 'education_status', 'format' => 'raw', 'label' => 'Статус <br> обучающегося', 'encodeLabel' => false, 'content' => function ( $model ) {
+
+                if ($model->isEnder)
+                    return "<span class='label label-danger'>Выпускник</span><br>".Yii::$app->getFormatter()->asDate($model->date_ender);
+
                 $os = mb_substr( Students::getOsnovanie()[ !empty( $model->osnovanie ) ? $model->osnovanie : 0 ], 0, 50 );
                 $data = "";
                 switch ( $model->osnovanie ) {
@@ -261,8 +277,7 @@ class StudentsController extends AppController
                 ['attribute' => 'bank', 'value' => 'bank.name', 'encodeLabel' => false, 'label' => 'Наименование <br> банка <br>или<br> иной <br> кредитной <br>организации'],
                 ['attribute' => 'date_status', 'encodeLabel' => false, 'format' => 'date', 'label' => 'Дата <br> утверждения <br> отчета'],
             ] );
-        }
-        if ( !$this->cans[ 2 ] ) {
+
             $exportColumns = ArrayHelper::merge( $exportColumns, [
                 ['attribute' => 'numberPP', 'value' => 'numberPP.number', 'label' => 'Номер ПП по образовательному кредиту'],
                 ['attribute' => 'bank', 'value' => 'bank.name', 'label' => 'Наименование банка или иной кредитной организации'],

@@ -33,6 +33,8 @@ use yii\helpers\Json;
  * @property int $id_bank
  * @property int $perevod
  * @property string $date_start
+ * @property string $date_ender
+ * @property boolean $isEnder
  *
  * @var StudentDocs $docs
  *
@@ -80,6 +82,10 @@ class Students extends ActiveRecord
                 'date_start_grace_period3', 'date_end_grace_period3',
                 'date_credit','date_status'], 'safe'],
             [['name', 'code',], 'string', 'max' => 255],
+            [['isEnder'],'boolean'],
+            [['date_ender'],'required','when'=>function($model){
+                return $model->isEnder ? true : false;
+            }]
         ];
     }
 
@@ -108,7 +114,9 @@ class Students extends ActiveRecord
             'date_credit'=>'Дата заключения кредитного договора',
             'id_number_pp'=>'Номер ПП по образовательному кредиту',
             'id_bank'=>'Наименование банка или иной кредитной организации',
-            'date_status'=>'Дата утверждения отчета'
+            'date_status'=>'Дата утверждения отчета',
+            'isEnder'=>'Выпускник',
+            'date_ender'=>'Дата выпуска'
         ];
     }
     public function getOrganization(){
