@@ -16,13 +16,13 @@ class MainController extends AppController
         $studentsByYear = null;
         for ($i = 2018;$i<=2021;$i++){
             if (!($this->cans[0] || $this->cans[1])) {
-                $studentsByYear[$i]['studentsCount']=Students::find()->where(['YEAR(date_start)'=>$i, 'id_org'=>Yii::$app->session['id_org']])->count();
-                $studentsByYear[$i]['studentsApprovedCount'] = Students::find()->where(['status'=>2,'YEAR(date_start)'=>$i, 'id_org'=>Yii::$app->session['id_org']])->count();
-                $studentsByYear[$i]['studentsUnapprovedCount'] = Students::find()->where(['status'=>1,'YEAR(date_start)'=>$i, 'id_org'=>Yii::$app->session['id_org']])->count();
+                $studentsByYear[$i]['studentsCount']=Students::find()->where(['YEAR(date_start)'=>$i, 'id_org'=>Yii::$app->session['id_org']])->groupBy(['name'])->count();
+                $studentsByYear[$i]['studentsApprovedCount'] = Students::find()->where(['status'=>2,'YEAR(date_start)'=>$i, 'id_org'=>Yii::$app->session['id_org']])->groupBy(['name'])->count();
+                $studentsByYear[$i]['studentsUnapprovedCount'] = Students::find()->where(['status'=>1,'YEAR(date_start)'=>$i, 'id_org'=>Yii::$app->session['id_org']])->groupBy(['name'])->count();
             }else {
-                $studentsByYear[ $i ][ 'studentsCount' ] = Students::find()->where( ['YEAR(date_start)' => $i] )->count();
-                $studentsByYear[ $i ][ 'studentsApprovedCount' ] = Students::find()->where( ['status' => 2, 'YEAR(date_start)' => $i] )->count();
-                $studentsByYear[ $i ][ 'studentsUnapprovedCount' ] = Students::find()->where( ['status' => 1, 'YEAR(date_start)' => $i] )->count();
+                $studentsByYear[ $i ][ 'studentsCount' ] = Students::find()->where( ['YEAR(date_start)' => $i] )->groupBy(['name'])->count();
+                $studentsByYear[ $i ][ 'studentsApprovedCount' ] = Students::find()->where( ['status' => 2, 'YEAR(date_start)' => $i] )->groupBy(['name'])->count();
+                $studentsByYear[ $i ][ 'studentsUnapprovedCount' ] = Students::find()->where( ['status' => 1, 'YEAR(date_start)' => $i] )->groupBy(['name'])->count();
             }
         }
         return $this->render('index',compact('studentsByYear'));
@@ -130,9 +130,9 @@ class MainController extends AppController
             $snA1026 = clone $s1026;
 
 
-            $studentsByMonth[$i][197]['students']['count'] = $s197->count();
-            $studentsByMonth[$i][699]['students']['count'] = $s699->count();
-            $studentsByMonth[$i][1026]['students']['count'] = $s1026->count();
+            $studentsByMonth[$i][197]['students']['count'] = $s197->groupBy(['name'])->count();
+            $studentsByMonth[$i][699]['students']['count'] = $s699->groupBy(['name'])->count();
+            $studentsByMonth[$i][1026]['students']['count'] = $s1026->groupBy(['name'])->count();
 
 
             $studentsByMonth[$i][197]['bank'] = $wBank197->groupBy(['id_bank'])->column() ;
