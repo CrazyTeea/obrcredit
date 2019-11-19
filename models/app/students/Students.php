@@ -85,7 +85,8 @@ class Students extends ActiveRecord
             [['isEnder'],'boolean'],
             [['date_ender'],'required','when'=>function($model){
                 return $model->isEnder ? true : false;
-            }]
+            }],
+            [['date_start'],'required']
         ];
     }
 
@@ -116,7 +117,8 @@ class Students extends ActiveRecord
             'id_bank'=>'Наименование банка или иной кредитной организации',
             'date_status'=>'Дата утверждения отчета',
             'isEnder'=>'Выпускник',
-            'date_ender'=>'Дата выпуска'
+            'date_ender'=>'Дата выпуска',
+            'date_start'=>'Месяц(дата)'
         ];
     }
     public function getOrganization(){

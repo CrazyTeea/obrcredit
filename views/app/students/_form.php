@@ -34,14 +34,17 @@ $cans = Yii::$app->session['cans'];
             </div>
         </div>
         <div class="row">
-            <div class="col-md-4">
+            <div class="col-md-3">
                 <?=$form->field($model,'id_number_pp')->dropDownList( NumbersPp::getNumbersArray(),['readonly'=>$readonly])?>
             </div>
-            <div class="col-md-4">
+            <div class="col-md-3">
                 <?=$form->field($model,'id_bank')->dropDownList( Banks::getBanksArray(),['readonly'=>$readonly])?>
             </div>
-            <div class="col-md-4">
+            <div class="col-md-3">
                 <?=$form->field($model,'date_status')->input('date',['readonly'=>1])?>
+            </div>
+            <div class="col-md-3">
+                <?=$form->field($model,'date_start')->input('date',['readonly'=>$readonly])?>
             </div>
         </div>
         <div style="display: none">
