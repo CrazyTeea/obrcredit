@@ -36,6 +36,7 @@ $this->params['breadcrumbs'][] = $this->title;
                     'dataProvider'=>$dataProviderStudent,
                     'emptyCell'=>' ',
                     'columns' =>$exportColumns,
+                    'batchSize'=>10,'target'=>'_blank'
                 ]) ?>
         </div>
 
