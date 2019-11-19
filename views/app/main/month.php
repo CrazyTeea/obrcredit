@@ -42,7 +42,7 @@ if ($year == 2018)
                     <div class="thumbnail">
                         <div class="caption">
                             <div class="row">
-                                <div class="col-md-6"><?=ExportMenu::widget(['dataProvider'=>$studentsByMonth[$i]['exportPr'],'columns'=>$exportColumns]) ?></div>
+                                <div class="col-md-6"><?=ExportMenu::widget(['dataProvider'=>$studentsByMonth[$i]['exportPr'],'columns'=>$exportColumns,'batchSize'=>10,'target'=>'_blank']) ?></div>
                                 <div class="col-md-6">
                                     <h2><?php
 

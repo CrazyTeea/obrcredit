@@ -48,6 +48,7 @@ $this->params['breadcrumbs'][] = $this->title;
         [
             'dataProvider'=>$exportProvider,
             'columns' => $exportColumns
+            ,'batchSize'=>10,'target'=>'_blank'
         ]
     ) ?>
 
