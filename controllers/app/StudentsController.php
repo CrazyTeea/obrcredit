@@ -527,7 +527,7 @@ class StudentsController extends AppController
         $id_org = Yii::$app->getSession()[ 'id_org' ];
         $month = Yii::$app->getSession()['month'];
         $year = Yii::$app->getSession()['year'];
-        $students = Students::find()->where( ['id_org' => $id_org,'MONTH(date_start)'=>$month,'YEAR(date_start)'=>$year,'nPP'=>$nPP] )->all();
+        $students = Students::find()->where( ['id_org' => $id_org,'MONTH(date_start)'=>$month,'YEAR(date_start)'=>$year,'id_number_pp'=>$nPP] )->all();
 
         foreach ($students as $student) {
             $student->status = 2;
