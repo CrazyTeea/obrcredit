@@ -23,7 +23,8 @@
         "kartik-v/yii2-widget-select2": "^2.1",
         "kartik-v/yii2-export": "^1.4",
         "crazyteea/yii2-beautyfiles": "dev-master",
-        "phpoffice/phpword": "^0.16.0"
+        "phpoffice/phpword": "^0.16.0",
+        "phpnt/yii2-export": "^0.0.7"
     },
     "require-dev": {
         "yiisoft/yii2-debug": "~2.1.0",
