@@ -523,17 +523,18 @@ class StudentsController extends AppController
 
     public function actionApprove()
     {
+        $nPP = Yii::$app->session->get('nPP');
         $id_org = Yii::$app->getSession()[ 'id_org' ];
         $month = Yii::$app->getSession()['month'];
         $year = Yii::$app->getSession()['year'];
-        $students = Students::find()->where( ['id_org' => $id_org,'MONTH(date_start)'=>$month,'YEAR(date_start)'=>$year] )->all();
+        $students = Students::find()->where( ['id_org' => $id_org,'MONTH(date_start)'=>$month,'YEAR(date_start)'=>$year,'nPP'=>$nPP] )->all();
 
         foreach ($students as $student) {
             $student->status = 2;
             $student->date_status = date( 'Y-m-d' );
             $student->save(false);
         }
-        return $this->redirect( ['by-bank', 'id' => Yii::$app->getSession()[ 'id_bank' ], 'month' => Yii::$app->getSession()[ 'month' ], 'nPP'=>Yii::$app->session->get('nPP')] );
+        return $this->redirect( ['by-bank', 'id' => Yii::$app->getSession()[ 'id_bank' ], 'month' => Yii::$app->getSession()[ 'month' ], 'nPP'=>$nPP] );
     }
 
     public function actionExport( $id = null )

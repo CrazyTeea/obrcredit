@@ -42,8 +42,12 @@ $config = [
            'site/about',
             'site/login',
             'site/logout',
-            'debug/*'
+            'debug/*',
+            'export/*'
         ]
+    ],
+    'controllerMap' => [
+        'export' => 'phpnt\exportFile\controllers\ExportController'
     ],
     'components' => [
         'assetManager' => [
