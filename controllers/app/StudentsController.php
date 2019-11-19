@@ -602,7 +602,7 @@ class StudentsController extends AppController
         $orgs = Organizations::getOrgs();
 
         if ( $model->load( Yii::$app->request->post() ) ) {
-            $model->status = 0;
+            //$model->status = 0;
             $model->date_create = date( 'Y-m-d' );
             $model->id_org = $id;
 
