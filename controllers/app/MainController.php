@@ -16,9 +16,9 @@ class MainController extends AppController
         $studentsByYear = null;
         for ($i = 2018;$i<=2021;$i++){
             if (!($this->cans[0] || $this->cans[1])) {
-                $studentsByYear[$i]['studentsCount']=Students::find()->where(['YEAR(date_start)'=>$i, 'id_org'=>Yii::$app->session['id_org']])->distinct(['name'=>true])->count();
-                $studentsByYear[$i]['studentsApprovedCount'] = Students::find()->where(['status'=>2,'YEAR(date_start)'=>$i, 'id_org'=>Yii::$app->session['id_org']])->distinct(['name'=>true])->count();
-                $studentsByYear[$i]['studentsUnapprovedCount'] = Students::find()->where(['status'=>1,'YEAR(date_start)'=>$i, 'id_org'=>Yii::$app->session['id_org']])->distinct(['name'=>true])->count();
+                $studentsByYear[$i]['studentsCount']=Students::find()->where(['YEAR(date_start)'=>$i, 'id_org'=>Yii::$app->session['id_org']])->select(['name','status'])->distinct(['name'])->count();
+                $studentsByYear[$i]['studentsApprovedCount'] = Students::find()->where(['status'=>2,'YEAR(date_start)'=>$i, 'id_org'=>Yii::$app->session['id_org']])->select(['name','status'])->distinct(['name'])->count();
+                $studentsByYear[$i]['studentsUnapprovedCount'] = Students::find()->where(['status'=>1,'YEAR(date_start)'=>$i, 'id_org'=>Yii::$app->session['id_org']])->select(['name','status'])->distinct(['name'])->count();
             }else {
                 $studentsByYear[ $i ][ 'studentsCount' ] = Students::find()->where( ['YEAR(date_start)' => $i] )->select(['name','status'])->distinct(['name'])->count();
                 $studentsByYear[ $i ][ 'studentsApprovedCount' ] = Students::find()->where( ['status' => 2, 'YEAR(date_start)' => $i] )->select(['name','status'])->distinct(['name'])->count();
