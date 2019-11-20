@@ -11,9 +11,10 @@ use yii\widgets\DetailView;
 /* @var $model app\models\app\students\Students */
 
 $this->title = $model->name;
-$cans = Yii::$app->session['cans'];
-$year = Yii::$app->session['year'];
-$bank = Yii::$app->session['bank'];
+$cans = Yii::$app->session->get('cans');
+$month = Yii::$app->session->get('month');
+$year = Yii::$app->session->get('year');
+$bank = Yii::$app->session->get('id_bank');
 $this->params[ 'breadcrumbs' ][] = ['label' => 'ОбрКредит', 'url' => ['/']];
 if ($year and $bank){
     $this->params['breadcrumbs'][] = ['label'=>'Выбор года','url'=>['app/main']];
@@ -21,8 +22,8 @@ if ($year and $bank){
 }
 
 if ($cans[0] || $cans[1])
-    $this->params['breadcrumbs'][] = ['label' => 'Организация', 'url' => ['app/organizations/index']];
-$this->params['breadcrumbs'][] = ['label' => 'Обучающиеся', 'url' => ['index']];
+    $this->params['breadcrumbs'][] = ['label' => 'Организация', 'url' => ['app/organizations/by-bank','id_bank'=>$bank,'month'=>$month,'nPP'=>Yii::$app->session['nPP']]];
+$this->params['breadcrumbs'][] = ['label' => 'Обучающиеся', 'url' => ['by-bank','id'=>$model->id_bank,'nPP'=>$model->id_number_pp,'month'=>$month]];
 $this->params['breadcrumbs'][] = $this->title;
 YiiAsset::register($this);
 
@@ -60,7 +61,7 @@ $canUpdate = ($cans[0] || $model->status != 2) ? 1 : 0;
 
         <!--<?= Html::a('Экспорт',['export','id'=>$model->id],['class'=>'btn btn-default']) ?>
         -->
-    <?= Html::a('Вернуться к списку',['app/students'],['class'=>'btn btn-default']) ?>
+    <?= Html::a('Вернуться к списку',['app/students/by-bank','id'=>$model->id_bank,'nPP'=>$model->id_number_pp,'month'=>$month],['class'=>'btn btn-default']) ?>
     <table class="table table-bordered">
         <thead>
         <tr>

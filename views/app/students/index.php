@@ -16,7 +16,7 @@ use yii\widgets\Pjax;
 $this->title = "Обучающиеся: ".Yii::$app->session['short_name_org'];
 $cans = Yii::$app->session['cans'];
 $year = Yii::$app->session['year'];
-$bank = Yii::$app->session['bank'];
+$bank = Yii::$app->session['id_bank'];
 $this->params[ 'breadcrumbs' ][] = ['label' => 'ОбрКредит', 'url' => ['/']];
 if ($year and $bank){
     $this->params['breadcrumbs'][] = ['label'=>'Выбор года','url'=>['app/main']];
