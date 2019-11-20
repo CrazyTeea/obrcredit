@@ -172,8 +172,6 @@ class OrganizationsController extends AppController
         if (!Yii::$app->session->has('year'))
             return $this->redirect(['app/main/index']);
 
-        Yii::$app->session['bank'] = $id_bank;
-
         $searchModel = new OrganizationsSearch();
         $searchModel->month = $month;
         $searchModel->year = Yii::$app->session->get('year');

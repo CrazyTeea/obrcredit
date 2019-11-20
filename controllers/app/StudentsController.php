@@ -309,7 +309,7 @@ class StudentsController extends AppController
         $searchModel->id_bank = $id;
         Yii::$app->session->set('id_bank',$searchModel->id_bank);
 
-        Yii::$app->session['nPP'] = $nPP;
+        Yii::$app->session->set('nPP',$nPP);
 
         $searchModel->month = Yii::$app->session->get('month');
         $searchModel->year = Yii::$app->session->get('year');
@@ -319,7 +319,7 @@ class StudentsController extends AppController
             Yii::$app->session[ 'id_org' ] = User::findIdentity( Yii::$app->user->id )->id_org ? User::findIdentity( Yii::$app->user->id )->id_org : 1;
         Yii::$app->session[ 'short_name_org' ] = ($org = Organizations::findOne( Yii::$app->session[ 'id_org' ] )) ? $org->name : '';
 
-        $searchModel->id_org = Yii::$app->session[ 'id_org' ];
+        $searchModel->id_org = Yii::$app->session->get('id_org');
 
         $dataProvider = $searchModel->search( Yii::$app->request->queryParams );
 
