@@ -81,107 +81,109 @@ function getBanks(int $year,int $month,int $nPP, array $students){
         <div class="panel-body">
 
             <?php for ($month = 1;$month<=12;$month++):?>
-                <div class="col-sm-6 col-md-4">
-                    <div class="thumbnail">
-                        <div class="caption">
-                            <div class="row">
-                                <div class="col-md-6"></div>
-                                <div class="col-md-6"><?=getMonth($month)?></div>
-                            </div>
-                            <hr>
-                            <p>
-                                <?php $student197 = getStudentByMonthYearAndNpp($year,$month,1,$studentsByMonth);?>
-                                <button id="<?=($student197 and $student197->status==1) ? 'red' :  'green'  ?>" type="button" class="btn btn-block btn-lg" data-toggle="modal" data-target="#myModal<?=$month?>197">
-                                    Постановление <br>правительства №197 <br>
-                                    <span class="text " style="font-size: 16px;"> <i> кол-во обучающихся: <?=$student197 ? getCountStudents($year,$month,1,$studentsByMonth) : 0?> </i> </span>
-                                </button>
-                            </p>
-                            <p>
-                                <?php $student699 = getStudentByMonthYearAndNpp($year,$month,3,$studentsByMonth);?>
-                                <button id="<?=($student699 and $student699->status==1) ? 'red' :  'green'  ?>" type="button" class="btn btn-block btn-lg" data-toggle="modal" data-target="#myModal<?=$month?>699">
-                                    Постановление <br>правительства №699 <br>
-                                    <span class="text " style="font-size: 16px;"> <i> кол-во обучающихся: <?=$student699 ? getCountStudents($year,$month,3,$studentsByMonth) : 0?> </i> </span>
-                                </button>
-                            </p>
-                            <p>
-                                <?php $student1026 = getStudentByMonthYearAndNpp($year,$month,2,$studentsByMonth);?>
-                                <button id="<?=($student1026 and $student1026->status==1) ? 'red' :  'green'  ?>" type="button" class="btn btn-block btn-lg" data-toggle="modal" data-target="#myModal<?=$month?>1026">
-                                    Постановление <br>правительства №1026 <br>
-                                    <span class="text " style="font-size: 16px;"> <i> кол-во обучающихся: <?=$student1026 ? getCountStudents($year,$month,2,$studentsByMonth) : 0?> </i> </span>
-                                </button>
-                            </p>
+                <?php $student197 = getStudentByMonthYearAndNpp($year,$month,1,$studentsByMonth);?>
+                <?php $student699 = getStudentByMonthYearAndNpp($year,$month,3,$studentsByMonth);?>
+                <?php $student1026 = getStudentByMonthYearAndNpp($year,$month,2,$studentsByMonth);?>
+                <?php if ($student1026 || $student197 || $student699):?>
+                    <div class="col-sm-6 col-md-4">
+                        <div class="thumbnail">
+                            <div class="caption">
+                                <div class="row">
+                                    <div class="col-md-6"><?=ExportMenu::widget(['dataProvider'=>$exportQuery[$month],'columns'=>$exportColumns,'timeout'=>300])?></div>
+                                    <div class="col-md-6"><h2><?=getMonth($month)?></h2></div>
+                                </div>
+                                <hr>
 
-                            <div class="modal fade" id="myModal<?=$month?>197" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
-                                <div class="modal-dialog modal-sm" role="document">
-                                    <div class="modal-content">
-                                        <div class="modal-header">
-                                            <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-                                            <h4 class="modal-title" id="myModalLabel">Банки</h4>
-                                        </div>
-                                        <div class="modal-body">
+                                <?php if ($student197):?>
+                                    <p>
 
-                                            <?php if ($student197):?>
-                                                <?php foreach (getBanks($year,$month,1,$studentsByMonth) as $bank):?>
-                                                    <?php if ($cans[0] || $cans[1]):?>
-                                                        <?= Html::a($bank['name'],['app/organizations/by-bank','id_bank'=>$bank['id'],'month'=>$month,'nPP'=>1],['class'=>'btn btn-primary btn-block']) ?>
-                                                    <?php else:?>
-                                                        <?= Html::a($bank['name'],['app/students/by-bank','id'=>$bank['id'],'nPP'=>1,'month'=>$month],['class'=>'btn btn-primary btn-block']) ?>
-                                                    <?php endif;?>
-                                                <?php endforeach;?>
-                                            <?php endif;?>
+                                        <button id="<?=($student197 and $student197->status==1) ? 'red' :  'green'  ?>" type="button" class="btn btn-block btn-lg" data-toggle="modal" data-target="#myModal<?=$month?>197">
+                                            Постановление <br>правительства №197 <br>
+                                            <span class="text " style="font-size: 16px;"> <i> кол-во обучающихся: <?=getCountStudents($year,$month,1,$studentsByMonth)?> </i> </span>
+                                        </button>
+                                    </p>
+                                    <div class="modal fade" id="myModal<?=$month?>197" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+                                        <div class="modal-dialog modal-sm" role="document">
+                                            <div class="modal-content">
+                                                <div class="modal-header">
+                                                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                                                    <h4 class="modal-title" id="myModalLabel">Банки</h4>
+                                                </div>
+                                                <div class="modal-body">
+                                                    <?php foreach (getBanks($year,$month,1,$studentsByMonth) as $bank):?>
+                                                        <?php if ($cans[0] || $cans[1]):?>
+                                                            <?= Html::a($bank['name'],['app/organizations/by-bank','id_bank'=>$bank['id'],'month'=>$month,'nPP'=>1],['class'=>'btn btn-primary btn-block']) ?>
+                                                        <?php else:?>
+                                                            <?= Html::a($bank['name'],['app/students/by-bank','id'=>$bank['id'],'nPP'=>1,'month'=>$month],['class'=>'btn btn-primary btn-block']) ?>
+                                                        <?php endif;?>
+                                                    <?php endforeach;?>
+                                                </div>
+                                            </div>
                                         </div>
                                     </div>
-                                </div>
-                            </div>
-                            <div class="modal fade" id="myModal<?=$month?>699" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
-                                <div class="modal-dialog modal-sm" role="document">
-                                    <div class="modal-content">
-                                        <div class="modal-header">
-                                            <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-                                            <h4 class="modal-title" id="myModalLabel">Банки</h4>
-                                        </div>
-                                        <div class="modal-body">
+                                <?php endif;?>
+                                <?php if ($student699):?>
+                                    <p>
 
-                                            <?php if ($student699):?>
-                                                <?php foreach (getBanks($year,$month,3,$studentsByMonth) as $bank):?>
-                                                    <?php if ($cans[0] || $cans[1]):?>
-                                                        <?= Html::a($bank['name'],['app/organizations/by-bank','id_bank'=>$bank['id'],'month'=>$month,'nPP'=>3],['class'=>'btn btn-primary btn-block']) ?>
-                                                    <?php else:?>
-                                                        <?= Html::a($bank['name'],['app/students/by-bank','id'=>$bank['id'],'nPP'=>3,'month'=>$month],['class'=>'btn btn-primary btn-block']) ?>
-                                                    <?php endif;?>
-                                                <?php endforeach;?>
-                                            <?php endif;?>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="modal fade" id="myModal<?=$month?>1026" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
-                                <div class="modal-dialog modal-sm" role="document">
-                                    <div class="modal-content">
-                                        <div class="modal-header">
-                                            <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-                                            <h4 class="modal-title" id="myModalLabel">Банки</h4>
-                                        </div>
-                                        <div class="modal-body">
-
-                                            <?php if ($student1026):?>
-                                                <?php foreach (getBanks($year,$month,2,$studentsByMonth) as $bank):?>
-                                                    <?php if ($cans[0] || $cans[1]):?>
-                                                        <?= Html::a($bank['name'],['app/organizations/by-bank','id_bank'=>$bank['id'],'month'=>$month,'nPP'=>2],['class'=>'btn btn-primary btn-block']) ?>
-                                                    <?php else:?>
-                                                        <?= Html::a($bank['name'],['app/students/by-bank','id'=>$bank['id'],'nPP'=>2,'month'=>$month],['class'=>'btn btn-primary btn-block']) ?>
-                                                    <?php endif;?>
-                                                <?php endforeach;?>
-                                            <?php endif;?>
+                                        <button id="<?=($student699 and $student699->status==1) ? 'red' :  'green'  ?>" type="button" class="btn btn-block btn-lg" data-toggle="modal" data-target="#myModal<?=$month?>699">
+                                            Постановление <br>правительства №699 <br>
+                                            <span class="text " style="font-size: 16px;"> <i> кол-во обучающихся: <?= getCountStudents($year,$month,3,$studentsByMonth)?> </i> </span>
+                                        </button>
+                                    </p>
+                                    <div class="modal fade" id="myModal<?=$month?>699" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+                                        <div class="modal-dialog modal-sm" role="document">
+                                            <div class="modal-content">
+                                                <div class="modal-header">
+                                                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                                                    <h4 class="modal-title" id="myModalLabel">Банки</h4>
+                                                </div>
+                                                <div class="modal-body">
+                                                    <?php foreach (getBanks($year,$month,3,$studentsByMonth) as $bank):?>
+                                                        <?php if ($cans[0] || $cans[1]):?>
+                                                            <?= Html::a($bank['name'],['app/organizations/by-bank','id_bank'=>$bank['id'],'month'=>$month,'nPP'=>3],['class'=>'btn btn-primary btn-block']) ?>
+                                                        <?php else:?>
+                                                            <?= Html::a($bank['name'],['app/students/by-bank','id'=>$bank['id'],'nPP'=>3,'month'=>$month],['class'=>'btn btn-primary btn-block']) ?>
+                                                        <?php endif;?>
+                                                    <?php endforeach;?>
+                                                </div>
+                                            </div>
                                         </div>
                                     </div>
-                                </div>
+                                <?php endif;?>
+                                <?php if ($student1026):?>
+                                    <p>
+
+                                        <button id="<?=($student1026 and $student1026->status==1) ? 'red' :  'green'  ?>" type="button" class="btn btn-block btn-lg" data-toggle="modal" data-target="#myModal<?=$month?>1026">
+                                            Постановление <br>правительства №1026 <br>
+                                            <span class="text " style="font-size: 16px;"> <i> кол-во обучающихся: <?= getCountStudents($year,$month,2,$studentsByMonth)?> </i> </span>
+                                        </button>
+                                    </p>
+                                    <div class="modal fade" id="myModal<?=$month?>1026" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+                                        <div class="modal-dialog modal-sm" role="document">
+                                            <div class="modal-content">
+                                                <div class="modal-header">
+                                                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                                                    <h4 class="modal-title" id="myModalLabel">Банки</h4>
+                                                </div>
+                                                <div class="modal-body">
+                                                    <?php foreach (getBanks($year,$month,2,$studentsByMonth) as $bank):?>
+                                                        <?php if ($cans[0] || $cans[1]):?>
+                                                            <?= Html::a($bank['name'],['app/organizations/by-bank','id_bank'=>$bank['id'],'month'=>$month,'nPP'=>2],['class'=>'btn btn-primary btn-block']) ?>
+                                                        <?php else:?>
+                                                            <?= Html::a($bank['name'],['app/students/by-bank','id'=>$bank['id'],'nPP'=>2,'month'=>$month],['class'=>'btn btn-primary btn-block']) ?>
+                                                        <?php endif;?>
+                                                    <?php endforeach;?>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                <?php endif;?>
+
+
                             </div>
-
-
                         </div>
                     </div>
-                </div>
+                <?php endif;?>
             <?php endfor;?>
             <?php /*?>
             <?php foreach($studentsByMonth as $studentByMonth):?>

@@ -113,6 +113,13 @@ class MainController extends AppController
                 '(SELECT * FROM `students` WHERE status != 0  GROUP BY name , YEAR(date_start) , MONTH(date_start) , id_number_pp)'])->joinWith(['numberPP','bank'])
             ->groupBy(['year' , 'month' , 'id_number_pp', 'id_bank'])
             ->orderBy(['year'=>SORT_ASC , 'month' =>SORT_ASC, 'id_number_pp'=>SORT_ASC])->all();
+        $exportQuery = [];
+        for ($i=1;$i<=12;$i++){
+            $exportQuery[$i] = ($this->cans[2]) ?
+                new ActiveDataProvider([ 'query'=>Students::find()->where(['MONTH(date_start)'=>$i,'YEAR(date_start)'=>$year,'id_org'=>Yii::$app->session[ 'id_org' ]])])
+                :
+                new ActiveDataProvider([ 'query'=>Students::find()->where(['MONTH(date_start)'=>$i,'YEAR(date_start)'=>$year])]);
+        }
 
         /*for ($i = 1;$i<=12;$i++){
             if (!($this->cans[0] || $this->cans[1])) {
@@ -155,8 +162,7 @@ class MainController extends AppController
 
 
         }*/
-        $banks = Banks::find()->select('name')->column();
 
-        return $this->render('month',compact('studentsByMonth','banks','exportColumns'));
+        return $this->render('month',compact('studentsByMonth','exportQuery','exportColumns'));
     }
 }
