@@ -1,5 +1,6 @@
 <?php
 
+use app\models\app\students\DatesEducationStatus;
 use yii\db\Migration;
 
 /**
@@ -12,7 +13,7 @@ class m191115_134552_change_e_status extends Migration
      */
     public function safeUp()
     {
-        $this->alterColumn(\app\models\app\students\DatesEducationStatus::tableName(),'date_start',$this->date()->defaultValue(null));
+        $this->alterColumn( DatesEducationStatus::tableName(),'date_start',$this->date()->defaultValue(null));
     }
 
     /**

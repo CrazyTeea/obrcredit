@@ -4,14 +4,18 @@ namespace app\controllers\app;
 
 use app\models\app\students\Students;
 
+use Throwable;
 use Yii;
 use app\models\app\Organizations;
 use app\models\app\OrganizationsSearch;
 use yii\data\ActiveDataProvider;
+use yii\db\StaleObjectException;
 use yii\helpers\ArrayHelper;
 
+use yii\web\BadRequestHttpException;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
+use yii\web\Response;
 
 /**
  * OrganizationsController implements the CRUD actions for Organizations model.
@@ -37,7 +41,7 @@ class OrganizationsController extends AppController
     /**
      * @param $action
      * @return bool
-     * @throws \yii\web\BadRequestHttpException
+     * @throws BadRequestHttpException
      */
     public function beforeAction( $action)
     {
@@ -163,7 +167,7 @@ class OrganizationsController extends AppController
      * @param null $id_bank
      * @param null $month
      * @param null $nPP
-     * @return string|\yii\web\Response
+     * @return string|Response
      */
     public function actionByBank( $id_bank=null, $month = null, $nPP=null){
 
@@ -355,8 +359,8 @@ class OrganizationsController extends AppController
      * @param integer $id
      * @return mixed
      * @throws NotFoundHttpException if the model cannot be found
-     * @throws \Throwable
-     * @throws \yii\db\StaleObjectException
+     * @throws Throwable
+     * @throws StaleObjectException
      */
     public function actionDelete($id)
     {

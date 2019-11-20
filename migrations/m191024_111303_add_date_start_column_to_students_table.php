@@ -1,5 +1,6 @@
 <?php
 
+use app\models\app\students\Students;
 use yii\db\Migration;
 
 /**
@@ -12,7 +13,7 @@ class m191024_111303_add_date_start_column_to_students_table extends Migration
      */
     public function safeUp()
     {
-        $this->addColumn(\app\models\app\students\Students::tableName(),'date_start',$this->date());
+        $this->addColumn( Students::tableName(),'date_start',$this->date());
     }
 
     /**

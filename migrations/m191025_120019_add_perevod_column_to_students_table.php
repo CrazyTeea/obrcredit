@@ -1,5 +1,6 @@
 <?php
 
+use app\models\app\students\Students;
 use yii\db\Migration;
 
 /**
@@ -12,7 +13,7 @@ class m191025_120019_add_perevod_column_to_students_table extends Migration
      */
     public function safeUp()
     {
-        $this->addColumn(\app\models\app\students\Students::tableName(),'perevod',$this->integer());
+        $this->addColumn( Students::tableName(),'perevod',$this->integer());
     }
 
     /**

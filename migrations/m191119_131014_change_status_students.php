@@ -1,5 +1,6 @@
 <?php
 
+use app\models\app\students\Students;
 use yii\db\Migration;
 
 /**
@@ -12,7 +13,7 @@ class m191119_131014_change_status_students extends Migration
      */
     public function safeUp()
     {
-        $this->alterColumn(\app\models\app\students\Students::tableName(),'status',$this->integer()->defaultValue(1));
+        $this->alterColumn( Students::tableName(),'status',$this->integer()->defaultValue(1));
     }
 
     /**

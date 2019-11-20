@@ -1,5 +1,6 @@
 <?php
 
+use app\models\app\Organizations;
 use yii\db\Migration;
 
 /**
@@ -12,7 +13,7 @@ class m191115_072316_add_addr_column extends Migration
      */
     public function safeUp()
     {
-        $this->addColumn(\app\models\app\Organizations::tableName(),'addr',$this->text());
+        $this->addColumn( Organizations::tableName(),'addr',$this->text());
     }
 
     /**
