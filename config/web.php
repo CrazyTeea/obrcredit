@@ -10,7 +10,7 @@ $db = require __DIR__ . '/db.php';
 $config = [
     'id' => 'basic',
     'basePath' => dirname(__DIR__),
-    'bootstrap' => ['log'],
+    'bootstrap' => ['log',],
     'language'=>'ru-RU',
     //'defaultRoute'=>'app/students/index',
     'homeUrl'=>['app/students/index'],
@@ -18,7 +18,9 @@ $config = [
         '@bower' => '@vendor/bower-asset',
         '@npm'   => '@vendor/npm-asset',
     ],
+
     'modules'=>[
+
         'gridview'=>[
             'class' => 'kartik\grid\Module'
         ],
@@ -39,16 +41,19 @@ $config = [
     'as access' => [
         'class' => 'mdm\admin\components\AccessControl',
         'allowActions' => [
-           'site/about',
+            'site/about',
             'site/login',
             'site/logout',
             'debug/*',
-            'export/*'
-        ]
+            'export/*',
+        ],
     ],
+
     'controllerMap' => [
         'export' => 'phpnt\exportFile\controllers\ExportController'
     ],
+
+
     'components' => [
         'assetManager' => [
             'class' => 'yii\web\AssetManager',
@@ -88,14 +93,17 @@ $config = [
             ],
         ],
         'db' => $db,
-        /*
-        'urlManager' => [
+
+
+     /*   'urlManager' => [
             'enablePrettyUrl' => true,
             'showScriptName' => false,
             'rules' => [
+
             ],
+
         ],
-        */
+       */
     ],
     'params' => $params,
 ];

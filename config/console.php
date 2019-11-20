@@ -14,7 +14,9 @@ $config = [
         '@tests' => '@app/tests',
         '@webroot' => '@app/web'
     ],
+
     'components' => [
+
         'mailer'=>[
           'class'=>'yii\swiftmailer\Mailer',
             //'useFileTransfer'=>false,
