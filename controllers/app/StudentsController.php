@@ -663,8 +663,26 @@ class StudentsController extends AppController
                 $modelDFlag = $model->dateLastStatus->save();
             }
             $this->addDocs( $model );
-            if ( $model->save() and $modelDFlag )
+            if ( $model->save() and $modelDFlag ) {
+                $sts = Students::findAll(['name'=>$model->name,'code'=>$model->code]);
+                if ($sts){
+                    foreach ($sts as $st){
+                        $st->education_status = $model->education_status;
+                        $st->osnovanie = $model->osnovanie;
+                        $st->grace_period = $model->grace_period;
+                        $st->date_start_grace_period1 = $model->date_start_grace_period1;
+                        $st->date_start_grace_period2 =$model->date_start_grace_period2;
+                        $st->date_end_grace_period2 =$model->date_end_grace_period2;
+                        $st->date_start_grace_period3 = $model->date_start_grace_period3 ;
+                        $st->date_end_grace_period3 =$model->date_end_grace_period3;
+                        $st->perevod = $model->perevod;
+                        $st->isEnder = $model->isEnder;
+                        $st->date_ender = $model->date_ender;
+                        $st->save(false);
+                    }
+                }
                 return $this->redirect( ['view', 'id' => $model->id] );
+            }
         }
 
         return $this->render( 'update', [
