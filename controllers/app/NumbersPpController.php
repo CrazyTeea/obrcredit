@@ -2,9 +2,11 @@
 
 namespace app\controllers\app;
 
+use Throwable;
 use Yii;
 use app\models\app\students\NumbersPp;
 use app\models\app\students\NumbersPpSearch;
+use yii\db\StaleObjectException;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
@@ -101,8 +103,8 @@ class NumbersPpController extends AppController
      * @param integer $id
      * @return mixed
      * @throws NotFoundHttpException if the model cannot be found
-     * @throws \Throwable
-     * @throws \yii\db\StaleObjectException
+     * @throws Throwable
+     * @throws StaleObjectException
      */
     public function actionDelete($id)
     {

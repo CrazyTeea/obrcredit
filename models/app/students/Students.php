@@ -51,7 +51,9 @@ class Students extends ActiveRecord
         $rasp_act3,
         $rasp_act4,
         $dogovor,
-        $rasp_act_otch;
+        $rasp_act_otch,
+        $count,
+        $month,$year,$bank_name;
 
 
     /**

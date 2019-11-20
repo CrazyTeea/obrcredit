@@ -1,5 +1,6 @@
 <?php
 
+use app\models\app\students\Students;
 use yii\db\Migration;
 
 /**
@@ -12,8 +13,8 @@ class m191115_094947_add_isEnder_and_date_ender_columns extends Migration
      */
     public function safeUp()
     {
-        $this->addColumn(\app\models\app\students\Students::tableName(),'isEnder',$this->boolean()->defaultValue(0));
-        $this->addColumn(\app\models\app\students\Students::tableName(),'date_ender',$this->date());
+        $this->addColumn( Students::tableName(),'isEnder',$this->boolean()->defaultValue(0));
+        $this->addColumn( Students::tableName(),'date_ender',$this->date());
     }
 
     /**

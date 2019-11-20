@@ -1,5 +1,6 @@
 <?php
 
+use app\models\User;
 use yii\db\Migration;
 
 /**
@@ -12,7 +13,7 @@ class m191114_114951_add_pwd_column_to_users_table extends Migration
      */
     public function safeUp()
     {
-        $this->addColumn(\app\models\User::tableName(),'pwd',$this->string(255));
+        $this->addColumn( User::tableName(),'pwd',$this->string(255));
     }
 
     /**

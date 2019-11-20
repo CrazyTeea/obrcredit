@@ -106,7 +106,15 @@ class MainController extends AppController
                 ['attribute' => 'date_status', 'format' => 'date', 'label' => 'Дата утверждения отчета'],
             ] );
         }
-        for ($i = 1;$i<=12;$i++){
+
+
+        $studentsByMonth = Students::find()
+            ->select(['YEAR(date_start) year','MONTH(date_start) month','MIN(status) status', 'numbers_pp.id id_number_pp','banks.id id_bank','banks.name bank_name', 'COUNT(t1.id) count'])->from(['t1'=>
+                '(SELECT * FROM `students` WHERE status != 0 AND YEAR(date_start) = 2019 GROUP BY name , YEAR(date_start) , MONTH(date_start) , id_number_pp)'])->joinWith(['numberPP','bank'])
+            ->groupBy(['year' , 'month' , 'id_number_pp', 'id_bank'])
+            ->orderBy(['year'=>SORT_ASC , 'month' =>SORT_ASC, 'id_number_pp'=>SORT_ASC])->all();
+
+        /*for ($i = 1;$i<=12;$i++){
             if (!($this->cans[0] || $this->cans[1])) {
                 $s197 = Students::find()->where( ['YEAR(date_start)' => $year, 'MONTH(date_start)' => $i, 'id_number_pp' => 1, 'id_org'=>Yii::$app->session['id_org']] )->select(['id_bank'] );
                 $s699 = Students::find()->where( ['YEAR(date_start)' => $year, 'MONTH(date_start)' => $i, 'id_number_pp' => 3, 'id_org'=>Yii::$app->session['id_org']] )->select( ['id_bank'] );
@@ -146,7 +154,7 @@ class MainController extends AppController
 
 
 
-        }
+        }*/
         $banks = Banks::find()->select('name')->column();
 
         return $this->render('month',compact('studentsByMonth','banks','exportColumns'));
