@@ -665,7 +665,7 @@ class StudentsController extends AppController
             }
             $this->addDocs( $model );
             if ( $model->save() and $modelDFlag ) {
-                $sts = Students::findAll(['name'=>$model->name,'code'=>$model->code]);
+                /*$sts = Students::findAll(['name'=>$model->name,'code'=>$model->code]);
                 if ($sts){
                     foreach ($sts as $st){
                         $st->education_status = $model->education_status;
@@ -681,7 +681,7 @@ class StudentsController extends AppController
                         $st->date_ender = $model->date_ender;
                         $st->save(false);
                     }
-                }
+                }*/
                 return $this->redirect( ['view', 'id' => $model->id] );
             }
         }
