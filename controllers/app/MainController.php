@@ -108,7 +108,7 @@ class MainController extends AppController
             ] );
         }
         else{
-            $orgSelect = "id_org=$id_org";
+            $orgSelect = "and id_org=$id_org";
         }
 
         $studentsByMonth = Students::find()
