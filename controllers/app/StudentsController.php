@@ -691,7 +691,7 @@ class StudentsController extends AppController
 
                                 if (!$st->dateLastStatus){
                                     $date = new DatesEducationStatus();
-                                    $date->id = $st->id;
+                                    $date->id_student = $st->id;
                                     $date->date_end = date('Y-m-d');
                                     $date->save(false);
                                 }
