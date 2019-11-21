@@ -665,6 +665,42 @@ class StudentsController extends AppController
             }
             $this->addDocs( $model );
             if ( $model->save() and $modelDFlag ) {
+
+                for ($year = date('Y',strtotime($model->date_start));$year<=2021;$year++){
+                    for ($month = date('m',strtotime($model->date_start));$month<=12;$month++){
+                        $sts = Students::find()->where([
+                            'id_org'=>$model->id_org,'YEAR(date_start)'=>$year,'MONTH(date_start)'=>$month,
+                            'name'=>$model->name,'code'=>$model->code
+                        ])->all();
+                        if ($sts){
+                            foreach ($sts as $st){
+                                $st->education_status = $model->education_status;
+                                $st->osnovanie = $model->osnovanie;
+                                $st->grace_period = $model->grace_period;
+                                $st->date_start_grace_period1 = $model->date_start_grace_period1;
+                                $st->date_start_grace_period2 =$model->date_start_grace_period2;
+                                $st->date_end_grace_period2 =$model->date_end_grace_period2;
+                                $st->date_start_grace_period3 = $model->date_start_grace_period3 ;
+                                $st->date_end_grace_period3 =$model->date_end_grace_period3;
+                                $st->perevod = $model->perevod;
+                                $st->isEnder = $model->isEnder;
+                                $st->date_ender = $model->date_ender;
+
+                                if (!$st->dateLastStatus){
+                                    $date = new DatesEducationStatus();
+                                    $date->id = $st->id;
+                                    $date->date_end = date('Y-m-d');
+                                    $date->save(false);
+                                }
+
+                                $st->save(false);
+                            }
+                        }
+                    }
+
+                }
+
+
                 /*$sts = Students::findAll(['name'=>$model->name,'code'=>$model->code]);
                 if ($sts){
                     foreach ($sts as $st){
