@@ -454,6 +454,8 @@ class StudentsController extends AppController
                     $date = Yii::$app->getFormatter()->asDate( $model->dateLastStatus->date_end );
 
                 $dta = ( $date ) ? "$date $data" : '';
+                if ($model->isEnder)
+                    return "<span class='label label-info'>Выпускник</span>".Yii::$app->formatter->asDate($model->date_ender);
 
                 return ( $model->education_status ) ? $model->perevod ? "<span class='label label-info'>Переведен на бюджет</span>" : "<span class='label label-info'> Обучается</span>" : $dta;
             }
