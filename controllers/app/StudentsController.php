@@ -668,7 +668,7 @@ class StudentsController extends AppController
             $this->addDocs( $model );
             if ( $model->save() and $modelDFlag ) {
 
-                $month0 = date('m',strtotime($model->date_start);
+                $month0 = date('m',strtotime($model->date_start));
                 for ($year = date('Y',strtotime($model->date_start));$year<=2021;$year++){
                     for ($month = $month0;$month<=12;$month++){
                         $sts = Students::find()->where([
