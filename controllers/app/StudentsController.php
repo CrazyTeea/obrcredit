@@ -668,8 +668,9 @@ class StudentsController extends AppController
             $this->addDocs( $model );
             if ( $model->save() and $modelDFlag ) {
 
+                $month0 = date('m',strtotime($model->date_start);
                 for ($year = date('Y',strtotime($model->date_start));$year<=2021;$year++){
-                    for ($month = date('m',strtotime($model->date_start));$month<=12;$month++){
+                    for ($month = $month0;$month<=12;$month++){
                         $sts = Students::find()->where([
                             'id_org'=>$model->id_org,'YEAR(date_start)'=>$year,'MONTH(date_start)'=>$month,
                             'name'=>$model->name,'code'=>$model->code
@@ -699,7 +700,7 @@ class StudentsController extends AppController
                             }
                         }
                     }
-
+                    $month0 = 1;
                 }
 
 
