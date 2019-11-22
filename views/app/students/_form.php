@@ -12,6 +12,12 @@ use yii\widgets\ActiveForm;
 /* @var $model app\models\app\students\Students */
 /* @var $form yii\widgets\ActiveForm */
 $cans = Yii::$app->session['cans'];
+
+
+function getDocByDescriptor(string $descriptor,array $docs){
+
+}
+
 ?>
 
 <div class="students-form">
