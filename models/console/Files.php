@@ -1,11 +1,8 @@
 <?php
 
-namespace app\models\app;
+namespace app\models\console;
 
-use app\models\app\students\Students;
-use Yii;
-use yii\helpers\FileHelper;
-use yii\web\UploadedFile;
+
 
 /**
  * This is the model class for table "files".
@@ -58,26 +55,5 @@ class Files extends \yii\db\ActiveRecord
         ];
     }
 
-    /**
-     * @param UploadedFile $instance
-     * @param Students $student
-     * @return int|null
-     * @throws \yii\base\Exception
-     */
-    public function upload( UploadedFile $instance, Students $student){
-        $path = Yii::getAlias('@webroot')."./uploads/$student->id_org/$student->id";
-        FileHelper::createDirectory($path);
-        $this->name = $instance->baseName;
-        $this->extension = $instance->extension;
-        $this->size = $instance->size;
-        if ($instance->saveAs("$path/$instance->baseName.$instance->extension") and $this->save())
-            return $this->id;
-        return null;
-    }
 
-    public function generateLink($id_org,$id_st){
-        $path = Yii::getAlias( '@web' ) . "/uploads/$id_org/$id_st";
-        $path .= "/$this->name.$this->extension";
-        return $path;
-    }
 }

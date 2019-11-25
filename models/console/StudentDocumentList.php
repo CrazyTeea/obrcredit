@@ -1,9 +1,10 @@
 <?php
 
-namespace app\models\app\students;
+namespace app\models\console;
 
-use app\models\app\Files;
+use app\models\console\Files;
 use Yii;
+use yii\db\ActiveRecord;
 use yii\web\UploadedFile;
 
 /**
@@ -17,7 +18,7 @@ use yii\web\UploadedFile;
  * @property string $created_at
  * @property int $system_status
  */
-class StudentDocumentList extends \yii\db\ActiveRecord
+class StudentDocumentList extends ActiveRecord
 {
     /**
      * {@inheritdoc}
@@ -52,26 +53,5 @@ class StudentDocumentList extends \yii\db\ActiveRecord
             'created_at' => 'Created At',
             'system_status' => 'System Status',
         ];
-    }
-    public function getFile(){
-        return $this->hasOne(Files::className(),['id'=>'id_file']);
-    }
-    public function getType(){
-        return $this->hasOne(StudentDocumentTypes::className(),['id'=>'id_document_type']);
-    }
-
-    /**
-     * @param Files $file
-     * @param UploadedFile $instance
-     * @param int $id_student
-     * @param int $id_type
-     * @return bool
-     * @throws \yii\base\Exception
-     */
-    public function add( Files $file, UploadedFile $instance, Students $student, int $id_type){
-        $this->id_student = $student->id;
-        $this->id_file = $file->upload($instance,$student);
-        $this->id_document_type = $id_type;
-        return $this->id_file and $this->save();
     }
 }

@@ -14,8 +14,14 @@ use yii\widgets\ActiveForm;
 $cans = Yii::$app->session['cans'];
 
 
-function getDocByDescriptor(string $descriptor,array $docs){
+function getDocByDescriptor(string $descriptor,array $docs, ActiveForm $form,\app\models\app\Files $file){
 
+    foreach ($docs as $doc){
+        if ($doc->descriptor == $descriptor){
+             return $form->field($file,"[$doc->descriptor]file")->fileInput()->label($doc->label);
+        }
+    }
+    return 'Дескриптор не найден';
 }
 
 ?>
@@ -111,7 +117,7 @@ function getDocByDescriptor(string $descriptor,array $docs){
                     </p>
                 </td>
                 <td rowspan="3">
-                    <?= $form->field($model,'rasp_act0')->fileInput()->label('ООВО загружает копию распорядительного акта образовательной организации')//$rasp_act0 ?  $rasp_act0->file->name : 'Файл не загружен' ?>
+                    <?= getDocByDescriptor('rasp_act0',$docTypes,$form,$file) ?>
                 </td>
                 <td rowspan="3">
                     <?= $form->field($model,'grace_period')->radio([
@@ -127,16 +133,17 @@ function getDocByDescriptor(string $descriptor,array $docs){
                     </p>
                 </td>
                 <td rowspan="3">
-                    <?= $form->field($model,'rasp_act1')->fileInput() ->label('ООВО загружает копию распорядительного акта образовательной организации')//$rasp_act1 ?  $rasp_act1->file->name : 'Файл не загружен' ?>
+                    <?= getDocByDescriptor('rasp_act1',$docTypes,$form,$file) ?>
                 </td>
                 <td rowspan="6">
                     <?= $form->field($model,'perevod',['enableClientValidation' => false])->checkbox([],false)->label('Перевод на бюджет') ?>
 
-                    <?= $form->field($model,'rasp_act4',['enableClientValidation' => false])->fileInput() ->label('акт')?>
+                    <?= getDocByDescriptor('rasp_act4',$docTypes,$form,$file) ?>
                 </td>
                 <td rowspan="6" style="text-align: center;">
                     <?=$form->field($model,'isEnder',['enableClientValidation' => false])->checkbox([],false)?>
                     <?=$form->field($model,'date_ender',['enableClientValidation' => false])->input('date'); ?>
+                    <?= getDocByDescriptor('ender',$docTypes,$form,$file) ?>
                 </td>
             </tr>
             <tr>
@@ -161,9 +168,7 @@ function getDocByDescriptor(string $descriptor,array $docs){
                     </p>
                 </td>
                 <td>
-                    <?= $form->field($model,'dogovor')->fileInput()->label('копия договора об оказании платных образовательных услуг или копия дополнительного соглашения к договору об оказании платных образовательных услуг, заключенные с принимающей образовательной организацией
-(заполняется банком в части изменения наименования образовательной организации)
-') //$dogovor ?  $dogovor->file->name : 'Файл не загружен' ?>
+                    <?= getDocByDescriptor('dogovor',$docTypes,$form,$file) ?>
                 </td>
                 <td>
                     <?= $form->field($model,'grace_period')->radio([
@@ -178,7 +183,7 @@ function getDocByDescriptor(string $descriptor,array $docs){
                     </p>
                 </td>
                 <td>
-                    <?= $form->field($model,'rasp_act2')->fileInput()->label('ООВО загружает копию распорядительного акта образовательной организации')//$rasp_act2 ?  $rasp_act2->file->name : 'Файл не загружен' ?>
+                    <?= getDocByDescriptor('rasp_act2',$docTypes,$form,$file) ?>
                 </td>
 
 
@@ -191,7 +196,7 @@ function getDocByDescriptor(string $descriptor,array $docs){
                         'value'=>6,'uncheck'=>null])->label(false) ?>
                 </td>
                 <td>
-                    <?= $form->field($model,'rasp_act_otch')->fileInput()->label('копия распорядительного акта об отчислении и копия акта о расторжении договора об оказании платных образовательных услуг (заполняется банком)')//$rasp_act_otch ?  $rasp_act_otch->file->name : 'Файл не загружен' ?>
+                    <?= getDocByDescriptor('rasp_act_otch',$docTypes,$form,$file) ?>
                 </td>
                 <td>
                     <?= $form->field($model,'grace_period')->radio([
@@ -206,7 +211,7 @@ function getDocByDescriptor(string $descriptor,array $docs){
                     </p>
                 </td>
                 <td>
-                    <?= $form->field($model,'rasp_act3')->fileInput()->label('ООВО загружает копию распорядительного акта образовательной организации')// $rasp_act3 ?  $rasp_act3->file->name : 'Файл не загружен' ?>
+                    <?= getDocByDescriptor('rasp_act3',$docTypes,$form,$file) ?>
                 </td>
 
 
