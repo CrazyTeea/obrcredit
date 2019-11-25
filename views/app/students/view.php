@@ -27,14 +27,24 @@ $this->params['breadcrumbs'][] = ['label' => 'Обучающиеся', 'url' => 
 $this->params['breadcrumbs'][] = $this->title;
 YiiAsset::register($this);
 
+$files = [];
 
-$rasp_act0 = StudentDocs::getDocByDescriptorName('rasp_act0',$model->id);
+foreach ($model->docs as $doc){
+    $files[$doc->type->descriptor] = Html::a($doc->file->name,$doc->file->generateLink($model->id_org,$model->id));
+}
+foreach ($docTypes as $docType){
+    if (!\yii\helpers\ArrayHelper::keyExists($docType->descriptor,$files)){
+        $files[$docType->descriptor] = 'Файл не загружен';
+    }
+}
+
+/*$rasp_act0 = StudentDocs::getDocByDescriptorName('rasp_act0',$model->id);
 $rasp_act1 = StudentDocs::getDocByDescriptorName('rasp_act1',$model->id);
 $rasp_act2 = StudentDocs::getDocByDescriptorName('rasp_act2',$model->id);
 $rasp_act3 = StudentDocs::getDocByDescriptorName('rasp_act3',$model->id);
 $rasp_act4 = StudentDocs::getDocByDescriptorName('rasp_act4',$model->id);
 $dogovor = StudentDocs::getDocByDescriptorName('dogovor',$model->id);
-$rasp_act_otch = StudentDocs::getDocByDescriptorName('rasp_act_otch',$model->id);
+$rasp_act_otch = StudentDocs::getDocByDescriptorName('rasp_act_otch',$model->id);*/
 //var_dump($model->dateLastStatus->updated_at);
 $canUpdate = ($cans[0] || $model->status != 2) ? 1 : 0;
 ?>
@@ -106,7 +116,7 @@ $canUpdate = ($cans[0] || $model->status != 2) ? 1 : 0;
                 </p>
             </td>
             <td rowspan="3">
-                <?= ($rasp_act0 and $rasp_act0->file) ? Html::a($rasp_act0->file->name,['download','id'=>$rasp_act0->id])  : 'Файл не загружен' ?>
+                <?= $files['rasp_act0'] ?>
             </td>
             <td rowspan="3">
                 <?php
@@ -123,7 +133,7 @@ $canUpdate = ($cans[0] || $model->status != 2) ? 1 : 0;
                 </p>
             </td>
             <td rowspan="3">
-                <?= ($rasp_act1 and $rasp_act1->file) ? Html::a($rasp_act1->file->name,['download','id'=>$rasp_act1->id])  : 'Файл не загружен' ?>
+                <?= $files['rasp_act1'] ?>
             </td>
             <td rowspan="6">
                 <?php
@@ -131,7 +141,7 @@ $canUpdate = ($cans[0] || $model->status != 2) ? 1 : 0;
                     echo "<p class='text-sm-center' > &#9745; Переведен </p>";
                 else echo "<p class='text-sm-center'> &#9744; Переведен</p>";
                 ?>
-                <?= ($rasp_act4 and $rasp_act4->file) ? Html::a($rasp_act4->file->name,['download','id'=>$rasp_act4->id])  : 'Файл не загружен' ?>
+                <?= $files['rasp_act4'] ?>
             </td>
             <td rowspan="6" style="text-align: center;">
                 <?php
@@ -140,6 +150,7 @@ $canUpdate = ($cans[0] || $model->status != 2) ? 1 : 0;
                 else echo "<p class='text-sm-center'> &#9744; Выпускник</p>";
                 ?>
                 <?=Yii::$app->formatter->asDate($model->date_ender) ?>
+                <?= $files['ender'] ?>
             </td>
         </tr>
         <tr>
@@ -168,7 +179,7 @@ $canUpdate = ($cans[0] || $model->status != 2) ? 1 : 0;
                     } ?>
                 </p></td>
             <td>
-                <?= $dogovor and $dogovor->file ? Html::a($dogovor->file->name,['download','id'=>$dogovor->id])  : 'Файл не загружен' ?>
+                <?= $files['dogovor']?>
             </td>
             <td>
                 <?php
@@ -185,7 +196,7 @@ $canUpdate = ($cans[0] || $model->status != 2) ? 1 : 0;
                 </p>
             </td>
             <td>
-                <?= $rasp_act2 and $rasp_act2->file ? Html::a($rasp_act2->file->name,['download','id'=>$rasp_act2->id])  : 'Файл не загружен' ?>
+                <?= $files['rasp_act2'] ?>
             </td>
 
 
@@ -201,7 +212,7 @@ $canUpdate = ($cans[0] || $model->status != 2) ? 1 : 0;
                 ?>
             </td>
             <td>
-                <?= ($rasp_act_otch and $rasp_act_otch->file) ? Html::a($rasp_act_otch->file->name,['download','id'=>$rasp_act_otch->id])  : 'Файл не загружен' ?>
+                <?= $files['rasp_act_otch'] ?>
             </td>
             <td>
                 <?php
@@ -219,7 +230,7 @@ $canUpdate = ($cans[0] || $model->status != 2) ? 1 : 0;
                 </p>
             </td>
             <td>
-                <?= ($rasp_act3  and $rasp_act3->file) ? Html::a($rasp_act3->file->name,['download','id'=>$rasp_act3->id])  : 'Файл не загружен' ?>
+                <?= $files['rasp_act3'] ?>
             </td>
         </tr>
         </tbody>

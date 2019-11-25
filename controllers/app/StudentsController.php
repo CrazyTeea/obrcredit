@@ -3,24 +3,25 @@
 namespace app\controllers\app;
 
 
+use app\models\app\Files;
 use app\models\app\Organizations;
 use app\models\app\students\DatesEducationStatus;
-use app\models\app\students\StudentDocs;
+use app\models\app\students\StudentDocumentList;
+use app\models\app\students\StudentDocumentTypes;
 use app\models\app\students\Students;
 use app\models\app\students\StudentsSearch;
 use app\models\User;
+use phpDocumentor\Reflection\Types\Mixed_;
 use PhpOffice\PhpWord\TemplateProcessor;
-use Throwable;
 use Yii;
-use yii\bootstrap\Html;
 use yii\data\ActiveDataProvider;
 use yii\db\StaleObjectException;
 use yii\filters\VerbFilter;
-use yii\grid\ActionColumn;
-use yii\grid\SerialColumn;
 use yii\helpers\ArrayHelper;
+use yii\web\BadRequestHttpException;
 use yii\web\NotFoundHttpException;
 use yii\web\Response;
+use yii\web\UploadedFile;
 
 /**
  * StudentsController implements the CRUD actions for Students model.
@@ -43,11 +44,22 @@ class StudentsController extends AppController
         ];
     }
 
+    /**
+     * @param $action
+     * @return bool
+     * @throws BadRequestHttpException
+     */
     public function beforeAction( $action )
     {
+        if (parent::beforeAction($action)) {
+            if ($this->enableCsrfValidation && Yii::$app->getErrorHandler()->exception === null && !Yii::$app->getRequest()->validateCsrfToken()) {
+                throw new BadRequestHttpException(Yii::t('yii', 'Не удалось проверить данные.'));
+            }
+            $this->cans = Yii::$app->session->get('cans' );
+            return true;
+        }
 
-        $this->cans = Yii::$app->session[ 'cans' ];
-        return parent::beforeAction( $action );
+        return false;
     }
 
 
@@ -573,9 +585,10 @@ class StudentsController extends AppController
      */
     public function actionView( $id )
     {
-
+        $docTypes = StudentDocumentTypes::getActive()->all();
         return $this->render( 'view', [
             'model' => $this->findModel( $id ),
+            'docTypes'=>$docTypes
         ] );
     }
 
@@ -596,13 +609,16 @@ class StudentsController extends AppController
 
     /**
      * @return string|Response
+     * @throws \yii\base\Exception
      */
     public function actionCreate( $id )
     {
         Yii::$app->session[ 'id_org' ] = $id;
         $model = new Students();
+        $docTypes = StudentDocumentTypes::getActive()->all();
         $modelD = new DatesEducationStatus();
         $orgs = Organizations::getOrgs();
+        $file = new Files();
 
         if ( $model->load( Yii::$app->request->post() ) ) {
             //$model->status = 0;
@@ -610,46 +626,67 @@ class StudentsController extends AppController
             $model->id_org = $id;
 
             if ( $model->save() ) {
-                $this->addDocs( $model );
                 $modelD->id_student = $model->id;
-                $modelD->save();
-                return $this->redirect( ['view', 'id' => $model->id] );
+                if ($this->addStudentDocs($model,$file,$docTypes) and $modelD->save())
+                    return $this->redirect( ['view', 'id' => $model->id] );
             }
         }
 
-        return $this->render( 'create', [
-            'model' => $model,
-            'orgs' => $orgs,
-            // 'id_org'=>Yii::$app->session['id_org']
-        ] );
+        return $this->render( 'create', compact('model','orgs','file','docTypes'));
     }
 
-    public function addDocs( $model )
-    {
-        StudentDocs::addDoc( $model, "/$model->id_org/$model->id", 'rasp_act0' );
-        StudentDocs::addDoc( $model, "/$model->id_org/$model->id", 'rasp_act1' );
-        StudentDocs::addDoc( $model, "/$model->id_org/$model->id", 'rasp_act2' );
-        StudentDocs::addDoc( $model, "/$model->id_org/$model->id", 'rasp_act3' );
-        StudentDocs::addDoc( $model, "/$model->id_org/$model->id", 'rasp_act4' );
-        StudentDocs::addDoc( $model, "/$model->id_org/$model->id", 'dogovor' );
-        StudentDocs::addDoc( $model, "/$model->id_org/$model->id", 'rasp_act_otch' );
+    /**
+     * @param Students $student
+     * @param Files $file
+     * @param array $studentDocTypes
+     * @return bool
+     * @throws \yii\base\Exception
+     */
+    private function addStudentDocs( Students $student,Files $file, array $studentDocTypes){
+
+        $done = true;
+        foreach ($studentDocTypes as $studentDocType){
+            $instance = UploadedFile::getInstance($file,"[$studentDocType->descriptor]file");
+            if ($instance){
+                $studentDoc = new StudentDocumentList();
+                if (!$studentDoc->add($file,$instance,$student,$studentDocType->id)){
+                    $done=false;
+                    break;
+                }
+            }
+        }
+        return $done;
     }
 
-    public function actionDownload( $id )
-    {
-        StudentDocs::download( $id );
+    private function getStudentDoc($value){
+        $document = null;
+        switch (gettype($value)){
+            case 'integer':{
+                $document = StudentDocumentList::findOne($value);
+                break;
+            }
+            case 'string':{
+                $document = StudentDocumentList::find()->joinWith(['type'])->where(['descriptor'=>$value])->all();
+                break;
+            }
+        }
+        return ($document) ? $document : 'Документ не найден';
     }
+
 
     /**
      * @param $id
      * @return string|Response
      * @throws NotFoundHttpException
+     * @throws \yii\base\Exception
      */
     public function actionUpdate( $id )
     {
 
         $model = $this->findModel( $id );
         $orgs = Organizations::getOrgs();
+        $docTypes = StudentDocumentTypes::getActive()->all();
+        $file = new Files();
         $modelDFlag = false;
 
         if ( $model->load( Yii::$app->request->post() ) ) {
@@ -665,7 +702,6 @@ class StudentsController extends AppController
                 $model->dateLastStatus->date_end = !$model->education_status ? date( 'Y-m-d' ) : null;
                 $modelDFlag = $model->dateLastStatus->save();
             }
-            $this->addDocs( $model );
             if ( $model->save() and $modelDFlag ) {
 
                 $month0 = date('m',strtotime($model->date_start));
@@ -703,32 +739,12 @@ class StudentsController extends AppController
                     $month0 = 1;
                 }
 
-
-                /*$sts = Students::findAll(['name'=>$model->name,'code'=>$model->code]);
-                if ($sts){
-                    foreach ($sts as $st){
-                        $st->education_status = $model->education_status;
-                        $st->osnovanie = $model->osnovanie;
-                        $st->grace_period = $model->grace_period;
-                        $st->date_start_grace_period1 = $model->date_start_grace_period1;
-                        $st->date_start_grace_period2 =$model->date_start_grace_period2;
-                        $st->date_end_grace_period2 =$model->date_end_grace_period2;
-                        $st->date_start_grace_period3 = $model->date_start_grace_period3 ;
-                        $st->date_end_grace_period3 =$model->date_end_grace_period3;
-                        $st->perevod = $model->perevod;
-                        $st->isEnder = $model->isEnder;
-                        $st->date_ender = $model->date_ender;
-                        $st->save(false);
-                    }
-                }*/
-                return $this->redirect( ['view', 'id' => $model->id] );
+                if ($this->addStudentDocs($model,$file,$docTypes) and $modelDFlag)
+                    return $this->redirect( ['view', 'id' => $model->id] );
             }
         }
 
-        return $this->render( 'update', [
-            'model' => $model,
-            'orgs' => $orgs,
-        ] );
+        return $this->render( 'update',compact('model','orgs','file','docTypes') );
     }
 
     /**
@@ -737,6 +753,7 @@ class StudentsController extends AppController
      * @throws NotFoundHttpException
      * @throws Throwable
      * @throws StaleObjectException
+     * @throws \Throwable
      */
     public function actionDelete( $id )
     {
@@ -745,11 +762,4 @@ class StudentsController extends AppController
         return $this->redirect( ['index'] );
     }
 
-    public function actionKek()
-    {
-        $user = User::findOne( ['username' => 'user@admin.ru'] );
-        $user->id_org = 100;
-        $user->save();
-        return $this->redirect( ['site/index'] );
-    }
 }

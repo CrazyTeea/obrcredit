@@ -45,14 +45,7 @@ use yii\helpers\Json;
  */
 class Students extends ActiveRecord
 {
-    public $rasp_act0,
-        $rasp_act1,
-        $rasp_act2,
-        $rasp_act3,
-        $rasp_act4,
-        $dogovor,
-        $rasp_act_otch,
-        $count,
+    public $count,
         $month,$year,$bank_name;
 
 
@@ -70,13 +63,13 @@ class Students extends ActiveRecord
     public function rules()
     {
         return [
-            [['rasp_act0','rasp_act1','rasp_act2','rasp_act3','rasp_act4','dogovor','rasp_act_otch'],'file'],
-            [['rasp_act4'],'file','skipOnEmpty'=>false,'when'=>function($model)
+
+           /* [['rasp_act4'],'file','skipOnEmpty'=>false,'when'=>function($model)
             {
                 if ($model->perevod)
                     return true;
                 return false;
-            },'uploadRequired'=>'При переводе на бюджет требуется загрузить файл'],
+            },'uploadRequired'=>'При переводе на бюджет требуется загрузить файл'],*/
             [['id_org', 'education_status', 'status', 'osnovanie', 'grace_period','id_number_pp','id_bank','perevod'], 'integer'],
             [[ 'date_create','date_start',
                 'date_start_grace_period1', 'date_end_grace_period1',
@@ -151,9 +144,8 @@ class Students extends ActiveRecord
     public function getDateStatuses(){
         return $this->hasMany(DatesEducationStatus::className(),['id_student'=>'id']);
     }
-    public function getDocs()
-    {
-        return $this->hasMany(StudentDocs::className(),['id_student'=>'id']);
+    public function getDocs(){
+        return $this->hasMany(StudentDocumentList::className(),['id_student'=>'id']);
     }
     public function getBank()
     {
