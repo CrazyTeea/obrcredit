@@ -65,7 +65,7 @@ class Files extends \yii\db\ActiveRecord
      * @throws \yii\base\Exception
      */
     public function upload( UploadedFile $instance, Students $student){
-        $path = Yii::getAlias('@webroot')."./uploads/$student->id_org/$student->id";
+        $path = Yii::getAlias('@webroot')."/uploads/$student->id_org/$student->id";
         FileHelper::createDirectory($path);
         $this->name = $instance->baseName;
         $this->extension = $instance->extension;
