@@ -3,13 +3,16 @@
 namespace app\controllers\app;
 
 
+use app\models\app\Banks;
 use app\models\app\Files;
 use app\models\app\Organizations;
 use app\models\app\students\DatesEducationStatus;
+use app\models\app\students\NumbersPp;
 use app\models\app\students\StudentDocumentList;
 use app\models\app\students\StudentDocumentTypes;
 use app\models\app\students\Students;
 use app\models\app\students\StudentsSearch;
+use app\models\app\students\StudentsSearch2;
 use app\models\User;
 use phpDocumentor\Reflection\Types\Mixed_;
 use PhpOffice\PhpWord\TemplateProcessor;
@@ -17,7 +20,9 @@ use Yii;
 use yii\data\ActiveDataProvider;
 use yii\db\StaleObjectException;
 use yii\filters\VerbFilter;
+use yii\grid\ActionColumn;
 use yii\helpers\ArrayHelper;
+use yii\helpers\Json;
 use yii\web\BadRequestHttpException;
 use yii\web\NotFoundHttpException;
 use yii\web\Response;
@@ -525,6 +530,8 @@ class StudentsController extends AppController
         }
 
 
+
+
         return $this->render( 'index', [
             'searchModel' => $searchModel,
             'dataProvider' => $dataProvider,
@@ -535,21 +542,32 @@ class StudentsController extends AppController
         ] );
     }
 
-    public function actionApprove()
+    public function actionApprove($id = null)
     {
-        $nPP = Yii::$app->session->get('nPP');
-        $id_org = Yii::$app->getSession()[ 'id_org' ];
-        $month = Yii::$app->getSession()['month'];
-        $year = Yii::$app->getSession()['year'];
-        $id_bank = Yii::$app->getSession()[ 'id_bank' ];
-        $students = Students::find()->where( ['id_org' => $id_org,'MONTH(date_start)'=>$month,'YEAR(date_start)'=>$year,'id_bank'=>$id_bank,'id_number_pp'=>$nPP] )->all();
+        if (is_null($id)) {
+            $nPP = Yii::$app->session->get( 'nPP' );
+            $id_org = Yii::$app->getSession()[ 'id_org' ];
+            $month = Yii::$app->getSession()[ 'month' ];
+            $year = Yii::$app->getSession()[ 'year' ];
+            $id_bank = Yii::$app->getSession()[ 'id_bank' ];
+            $students = Students::find()->where( ['id_org' => $id_org, 'MONTH(date_start)' => $month, 'YEAR(date_start)' => $year, 'id_bank' => $id_bank, 'id_number_pp' => $nPP] )->all();
+            foreach ($students as $student) {
+                $student->status = 2;
+                $student->date_status = date( 'Y-m-d' );
+                $student->save( false );
+            }
+            return $this->redirect( ['by-bank', 'id' => Yii::$app->getSession()[ 'id_bank' ], 'month' => Yii::$app->getSession()[ 'month' ], 'nPP'=>$nPP] );
+        }
 
-        foreach ($students as $student) {
+        $student = $this->findModel( $id );
+        $docTypes = StudentDocumentTypes::getActive()->all();
+
+        if ($student) {
             $student->status = 2;
-            $student->date_status = date( 'Y-m-d' );
             $student->save(false);
         }
-        return $this->redirect( ['by-bank', 'id' => Yii::$app->getSession()[ 'id_bank' ], 'month' => Yii::$app->getSession()[ 'month' ], 'nPP'=>$nPP] );
+        return $this->redirect( ['view','id'=>$id
+        ] );
     }
 
     public function actionExport( $id = null )
@@ -760,6 +778,27 @@ class StudentsController extends AppController
         $this->findModel( $id )->delete();
 
         return $this->redirect( ['index'] );
+    }
+
+    public function actionDeleteView(){
+        $model = new StudentsSearch2();
+        $provider = $model->search(Yii::$app->request->queryParams);
+        $orgs = Organizations::find()->where(['system_status'=>1])->all();
+        $nums = NumbersPp::find()->all();
+        $banks = Banks::find()->all();
+        $orgs = ArrayHelper::map($orgs,'id','name');
+        $nums = ArrayHelper::map($nums,'id','number');
+        $banks = ArrayHelper::map($banks,'id','name');
+
+        return $this->render('delete-view',compact('model','provider','orgs','nums','banks'));
+    }
+    public function actionTurnOff($id){
+        $students = Students::findAll(Json::decode($id));
+        foreach ($students as $student){
+            $student->system_status=0;
+            $student->save(false);
+        }
+        $this->redirect(['delete-view']);
     }
 
 }
