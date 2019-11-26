@@ -2,6 +2,8 @@
 
 use app\models\app\students\Students;
 use kartik\export\ExportMenu;
+use yii\grid\ActionColumn;
+use yii\helpers\ArrayHelper;
 use yii\helpers\Html;
 use yii\grid\GridView;
 use yii\helpers\Url;
@@ -27,12 +29,7 @@ if ($cans[0] || $cans[1])
     $this->params['breadcrumbs'][] = ['label'=>'Организации','url'=>['app/organizations/by-bank','id_bank'=>Yii::$app->session['id_bank'],'month'=>Yii::$app->session['month'],'nPP'=>Yii::$app->session['nPP']]];
 $this->params['breadcrumbs'][] = $this->title;
 
-/*$isApprove = false;
-    foreach ($dataProvider->getModels() as $student)
-        if ($student->status != 2){
-            $isApprove = true;
-            break;
-        }*/
+
 
 ?>
 <div class="students-index">

@@ -13,6 +13,7 @@ use yii\helpers\Json;
  * This is the model class for table "students".
  *
  * @property int $id
+ * @property int $system_status
  * @property string $name
  * @property int $id_org
  * @property string $code

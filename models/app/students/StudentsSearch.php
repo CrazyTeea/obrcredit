@@ -124,10 +124,10 @@ class StudentsSearch extends Students
      */
     public function search($params,$all = false)
     {
-        $query = Students::find()->joinWith(['organization','dateStatuses','numberPP','bank']);
+        $query = Students::find()->where(['students.system_status'=>1])->joinWith(['organization','dateStatuses','numberPP','bank']);
         if (!$all) {
             if ( !empty( $this->id_bank ) )
-                $query->where( ['id_bank' => $this->id_bank] );
+                $query->andWhere( ['id_bank' => $this->id_bank] );
             if ( !empty( $this->month ) )
                 $query->andWhere( ['MONTH(students.date_start)' => $this->month] );
             if ( !empty( $this->year ) )

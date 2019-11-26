@@ -98,4 +98,10 @@ return [
     '/app/students/all' => [
         'type' => 2,
     ],
+    '/app/students/turn-off' => [
+        'type' => 2,
+    ],
+    '/app/students/delete-view' => [
+        'type' => 2,
+    ],
 ];

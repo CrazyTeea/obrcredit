@@ -52,7 +52,7 @@ class OrganizationsSearch extends Organizations
     public function search($params)
     {
 
-        $query = Organizations::find()->where(['system_status'=>1]);
+        $query = Organizations::find()->where(['organizations.system_status'=>1]);
         if ($this->isColored){
             $query->select(['organizations.*', 's.status as student_status'])->joinWith(['students s'=>function($q){
                  $q->andWhere([

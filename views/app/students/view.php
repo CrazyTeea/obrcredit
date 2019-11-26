@@ -67,7 +67,7 @@ $canUpdate = ($cans[0] || $model->status != 2) ? 1 : 0;
         ]) ?>
 
     <?php endif;?>
-
+    <?= ($model->status==1) ?  Html::a('Утвердить', ['approve', 'id' => $model->id],['class'=>'btn btn-success']) : ''?>
 
         <!--<?= Html::a('Экспорт',['export','id'=>$model->id],['class'=>'btn btn-default']) ?>
         -->
