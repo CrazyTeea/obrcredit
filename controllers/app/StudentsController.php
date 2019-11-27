@@ -775,7 +775,9 @@ class StudentsController extends AppController
      */
     public function actionDelete( $id )
     {
-        $this->findModel( $id )->delete();
+        $s=$this->findModel( $id );
+        $s->system_status=0;
+        $s->save(false);
 
         return $this->redirect( ['index'] );
     }
