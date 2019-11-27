@@ -67,8 +67,9 @@ $canUpdate = ($cans[0] || $model->status != 2) ? 1 : 0;
         ]) ?>
 
     <?php endif;?>
+    <!--
     <?= ($model->status==1) ?  Html::a('Утвердить', ['approve', 'id' => $model->id],['class'=>'btn btn-success']) : ''?>
-
+    -->
         <!--<?= Html::a('Экспорт',['export','id'=>$model->id],['class'=>'btn btn-default']) ?>
         -->
     <?= Html::a('Вернуться к списку',['app/students/by-bank','id'=>$model->id_bank,'nPP'=>$model->id_number_pp,'month'=>$month],['class'=>'btn btn-default']) ?>
