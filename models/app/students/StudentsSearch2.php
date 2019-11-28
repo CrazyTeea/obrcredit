@@ -13,6 +13,7 @@ class StudentsSearch2 extends Students
     {
         return [
             [['name','code'],'string'],
+            [['date_start'],'safe'],
             [['id_org','id_number_pp','id_bank'],'each','rule'=>['integer']]
         ];
     }
@@ -36,7 +37,8 @@ class StudentsSearch2 extends Students
             'id_org'=>$this->id_org,
             'id_number_pp'=>$this->id_number_pp,
             'id_bank'=>$this->id_bank,
-            'code'=>$this->code
+            'code'=>$this->code,
+            'date_start'=>$this->date_start
         ]);
         $students->andFilterWhere(['like','students.name',$this->name]);
 

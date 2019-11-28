@@ -30,7 +30,9 @@ YiiAsset::register($this);
 $files = [];
 
 foreach ($model->docs as $doc){
-    $files[$doc->type->descriptor] = Html::a($doc->file->name,$doc->file->generateLink($model->id_org,$model->id));
+    $files[$doc->type->descriptor] =
+        Html::a($doc->file->name,$doc->file->generateLink($model->id_org,$model->id)).'<br>'.
+        Html::a('',['delete-doc','id'=>$model->id,'desc'=>$doc->type->descriptor],['class'=>'glyphicon glyphicon-remove']);
 }
 foreach ($docTypes as $docType){
     if (!\yii\helpers\ArrayHelper::keyExists($docType->descriptor,$files)){

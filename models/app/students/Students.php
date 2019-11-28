@@ -3,11 +3,13 @@
 namespace app\models\app\students;
 
 use app\models\app\Banks;
+use app\models\app\Files;
 use app\models\app\Organizations;
 use Yii;
 use yii\db\ActiveRecord;
 use yii\helpers\ArrayHelper;
 use yii\helpers\Json;
+use yii\web\UploadedFile;
 
 /**
  * This is the model class for table "students".
@@ -117,9 +119,17 @@ class Students extends ActiveRecord
             'date_start'=>'Месяц(дата)'
         ];
     }
+
+    /**
+     * @return \yii\db\ActiveQuery
+     */
     public function getOrganization(){
         return $this->hasOne(Organizations::className(),['id'=>'id_org']);
     }
+
+    /**
+     * @return array
+     */
     public static function getOsnovanie(){
         return [
             '',
@@ -131,6 +141,10 @@ class Students extends ActiveRecord
             'обучающимся (заемщиком) принято решение об отказе от продолжения обучения, по обстоятельствам, не зависящим от воли обучающегося или родителей (законных представителей) несовершеннолетнего обучающегося и образовательной организации, в том числе в случае ликвидации образовательной организации'
         ];
     }
+
+    /**
+     * @return array
+     */
     public static function getGracePeriod(){
         return[
             '',
@@ -139,20 +153,75 @@ class Students extends ActiveRecord
           'отпуск по уходу за ребенком по достижении им 3-х лет',
         ];
     }
+
+    /**
+     * @return \yii\db\ActiveQuery
+     */
     public function getDateLastStatus(){
         return $this->hasOne(DatesEducationStatus::className(),['id_student'=>'id'])->orderBy(['updated_at'=>SORT_DESC]);
     }
+
+    /**
+     * @return \yii\db\ActiveQuery
+     */
     public function getDateStatuses(){
         return $this->hasMany(DatesEducationStatus::className(),['id_student'=>'id']);
     }
+
+    /**
+     * @return \yii\db\ActiveQuery
+     */
     public function getDocs(){
         return $this->hasMany(StudentDocumentList::className(),['id_student'=>'id']);
     }
+
+    /**
+     * @return \yii\db\ActiveQuery
+     */
     public function getBank()
     {
         return $this->hasOne(Banks::className(),['id'=>'id_bank']);
     }
+
+    /**
+     * @return \yii\db\ActiveQuery
+     */
     public function getNumberPP(){
         return $this->hasOne(NumbersPp::className(),['id'=>'id_number_pp']);
     }
+
+    /**
+     * @param Students $student
+     * @param Files $file
+     * @param array $studentDocTypes
+     * @return bool
+     * @throws \yii\base\Exception
+     */
+    public function addStudentDocs(Files $file, array $studentDocTypes){
+
+        $done = true;
+        foreach ($studentDocTypes as $studentDocType){
+            $instance = UploadedFile::getInstance($file,"[$studentDocType->descriptor]file");
+            if ($instance){
+                $studentDoc = new StudentDocumentList();
+                if (!$studentDoc->add($file,$instance,$this,$studentDocType->id)){
+                    $done=false;
+                    break;
+                }
+            }
+        }
+        return $done;
+    }
+    public function deleteDocument(string $descriptor)
+    {
+        $descriptor = StudentDocumentTypes::findOne(['descriptor'=>$descriptor]);
+        if ($descriptor) {
+            $doc = StudentDocumentList::findOne( ['id_student' => $this->id, 'id_document_type' => $descriptor->id] );
+            if ($doc){
+                if ($doc->file) $doc->file->delete($this);
+                $doc->delete();
+            }
+        }
+    }
+
 }

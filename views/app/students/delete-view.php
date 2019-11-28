@@ -34,13 +34,13 @@ use yii\widgets\Pjax;
                         <div class="col-md-3"><?=$form->field($model,'id_bank')->widget(Select2::class,['data'=>$banks,'pluginOptions'=>['multiple'=>true]])?></div>
                     </div>
                     <div class="row">
-                        <div class="col-md-12"><?=$form->field($model,'id_org')->widget(Select2::class,['data'=>$orgs,'pluginOptions'=>['multiple'=>true]])?></div>
+                        <div class="col-md-8"><?=$form->field($model,'id_org')->widget(Select2::class,['data'=>$orgs,'pluginOptions'=>['multiple'=>true]])?></div>
+                        <div class="col-md-4"><?=$form->field($model,'date_start')->input('date')?></div>
                     </div>
                     <div class="row">
                         <div class="col-md-6">
                             <div class="btn-group">
                                 <?=Html::submitButton('Отфильтровать',['class'=>'btn btn-success']) ?>
-                                <?=Html::a('Удалить',['turn-off','id'=> Json::encode(ArrayHelper::map($provider->getModels(),'id','id'))],['class'=>'btn btn-danger'])?>
                             </div>
                         </div>
                         <div class="col-md-6"></div>
@@ -55,6 +55,11 @@ use yii\widgets\Pjax;
 <?php ActiveForm::end();?>
 
 
-<?= GridView::widget(['dataProvider'=>$provider,'columns'=>['name','code','organization.name','numberPP.number','bank.name','date_start:date']]) ?>
+<?= GridView::widget(['dataProvider'=>$provider,'columns'=>
+    [
+            'name','code','organization.name','numberPP.number','bank.name','date_start:date',
+        ['class'=>\yii\grid\ActionColumn::class]
+        ]
+]) ?>
 
 <?php Pjax::end() ?>

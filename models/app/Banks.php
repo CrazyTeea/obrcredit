@@ -41,7 +41,7 @@ class Banks extends ActiveRecord
     {
         return [
             'id' => 'ID',
-            'name' => 'Name',
+            'name' => 'Наименование банка',
             'system_status' => 'System Status',
         ];
     }

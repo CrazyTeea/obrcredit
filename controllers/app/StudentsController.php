@@ -14,13 +14,11 @@ use app\models\app\students\Students;
 use app\models\app\students\StudentsSearch;
 use app\models\app\students\StudentsSearch2;
 use app\models\User;
-use phpDocumentor\Reflection\Types\Mixed_;
+use http\Url;
 use PhpOffice\PhpWord\TemplateProcessor;
 use Yii;
 use yii\data\ActiveDataProvider;
-use yii\db\StaleObjectException;
 use yii\filters\VerbFilter;
-use yii\grid\ActionColumn;
 use yii\helpers\ArrayHelper;
 use yii\helpers\Json;
 use yii\web\BadRequestHttpException;
@@ -314,8 +312,13 @@ class StudentsController extends AppController
     }
 
 
-
-    public function actionByBank( $id, $nPP,$month )
+    /**
+     * @param $id
+     * @param $nPP
+     * @param $month
+     * @return string|Response
+     */
+    public function actionByBank( $id, $nPP, $month )
     {
         if (!Yii::$app->session->has('year'))
             return $this->redirect(['app/main/index']);
@@ -542,7 +545,12 @@ class StudentsController extends AppController
         ] );
     }
 
-    public function actionApprove($id = null)
+    /**
+     * @param null $id
+     * @return Response
+     * @throws NotFoundHttpException
+     */
+    public function actionApprove( $id = null)
     {
         if (is_null($id)) {
             $nPP = Yii::$app->session->get( 'nPP' );
@@ -570,6 +578,12 @@ class StudentsController extends AppController
         ] );
     }
 
+    /**
+     * @param null $id
+     * @throws \PhpOffice\PhpWord\Exception\CopyFileException
+     * @throws \PhpOffice\PhpWord\Exception\CreateTemporaryFileException
+     * @throws \yii\base\InvalidConfigException
+     */
     public function actionExport( $id = null )
     {
         $student = Students::findOne( $id );
@@ -625,7 +639,9 @@ class StudentsController extends AppController
         throw new NotFoundHttpException( 'The requested page does not exist.' );
     }
 
+
     /**
+     * @param $id
      * @return string|Response
      * @throws \yii\base\Exception
      */
@@ -645,7 +661,7 @@ class StudentsController extends AppController
 
             if ( $model->save() ) {
                 $modelD->id_student = $model->id;
-                if ($this->addStudentDocs($model,$file,$docTypes) and $modelD->save())
+                if ($model->addStudentDocs($file,$docTypes) and $modelD->save())
                     return $this->redirect( ['view', 'id' => $model->id] );
             }
         }
@@ -653,43 +669,8 @@ class StudentsController extends AppController
         return $this->render( 'create', compact('model','orgs','file','docTypes'));
     }
 
-    /**
-     * @param Students $student
-     * @param Files $file
-     * @param array $studentDocTypes
-     * @return bool
-     * @throws \yii\base\Exception
-     */
-    private function addStudentDocs( Students $student,Files $file, array $studentDocTypes){
 
-        $done = true;
-        foreach ($studentDocTypes as $studentDocType){
-            $instance = UploadedFile::getInstance($file,"[$studentDocType->descriptor]file");
-            if ($instance){
-                $studentDoc = new StudentDocumentList();
-                if (!$studentDoc->add($file,$instance,$student,$studentDocType->id)){
-                    $done=false;
-                    break;
-                }
-            }
-        }
-        return $done;
-    }
 
-    private function getStudentDoc($value){
-        $document = null;
-        switch (gettype($value)){
-            case 'integer':{
-                $document = StudentDocumentList::findOne($value);
-                break;
-            }
-            case 'string':{
-                $document = StudentDocumentList::find()->joinWith(['type'])->where(['descriptor'=>$value])->all();
-                break;
-            }
-        }
-        return ($document) ? $document : 'Документ не найден';
-    }
 
 
     /**
@@ -757,29 +738,36 @@ class StudentsController extends AppController
                     $month0 = 1;
                 }
 
-                if ($this->addStudentDocs($model,$file,$docTypes) and $modelDFlag)
+                if ($model->addStudentDocs($file,$docTypes) and $modelDFlag)
                     return $this->redirect( ['view', 'id' => $model->id] );
             }
         }
 
         return $this->render( 'update',compact('model','orgs','file','docTypes') );
     }
+    public function actionDeleteDoc($id,$desc){
+        $st = $this->findModel($id);
+        $st->deleteDocument($desc);
+        return $this->redirect(['view','id'=>$id]);
+    }
 
     /**
      * @param $id
      * @return Response
      * @throws NotFoundHttpException
-     * @throws Throwable
-     * @throws StaleObjectException
-     * @throws \Throwable
      */
     public function actionDelete( $id )
     {
-        $this->findModel( $id )->delete();
+        $s=$this->findModel( $id );
+        $s->system_status=0;
+        $s->save(false);
 
-        return $this->redirect( ['index'] );
+        return $this->redirect(['delete-view']);
     }
 
+    /**
+     * @return string
+     */
     public function actionDeleteView(){
         $model = new StudentsSearch2();
         $provider = $model->search(Yii::$app->request->queryParams);
@@ -791,14 +779,6 @@ class StudentsController extends AppController
         $banks = ArrayHelper::map($banks,'id','name');
 
         return $this->render('delete-view',compact('model','provider','orgs','nums','banks'));
-    }
-    public function actionTurnOff($id){
-        $students = Students::findAll(Json::decode($id));
-        foreach ($students as $student){
-            $student->system_status=0;
-            $student->save(false);
-        }
-        $this->redirect(['delete-view']);
     }
 
 }

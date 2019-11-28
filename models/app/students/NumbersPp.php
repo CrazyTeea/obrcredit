@@ -41,7 +41,7 @@ class NumbersPp extends ActiveRecord
     {
         return [
             'id' => 'ID',
-            'number' => 'Number',
+            'number' => 'Номер пп',
             'system_status' => 'System Status',
         ];
     }
