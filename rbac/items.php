@@ -39,6 +39,7 @@ return [
             '/app/main/*',
             '/app/students/by-bank',
             '/app/students/all',
+            '/app/students/delete-doc',
         ],
     ],
     '/app/students/*' => [
@@ -102,6 +103,9 @@ return [
         'type' => 2,
     ],
     '/app/students/delete-view' => [
+        'type' => 2,
+    ],
+    '/app/students/delete-doc' => [
         'type' => 2,
     ],
 ];
