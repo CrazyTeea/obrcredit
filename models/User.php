@@ -2,6 +2,7 @@
 
 namespace app\models;
 
+use app\models\app\Organizations;
 use mdm\admin\components\Configs;
 use mdm\admin\components\UserStatus;
 use Yii;
@@ -201,5 +202,8 @@ class User extends ActiveRecord implements IdentityInterface
     public static function getDb()
     {
         return Configs::userDb();
+    }
+    public function getOrganization(){
+        return $this->hasOne(Organizations::class,['id'=>'id_org']);
     }
 }

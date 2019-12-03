@@ -65,7 +65,7 @@ class OrganizationsController extends AppController
         $modelColored = Organizations::find();
 
         $modelColored->joinWith(['students' => function ($subquery) {
-            $subquery->onCondition(['students.status' => 2]);
+            $subquery->onCondition(['students.status' => 2,'students.system_status'=>1,]);
         }]);
         $modelColored->select(['organizations.*', 'COUNT(students.id) AS studentsCOUNT']);
         $modelColored->groupBy(['organizations.id']);
@@ -198,6 +198,7 @@ class OrganizationsController extends AppController
         $modelColored = Organizations::find();
 
         $modelColored->joinWith(['students st'])->where([
+            'st.system_status'=>1,
             'st.id_bank'=>$id_bank,'st.status'=>1,
             'MONTH(st.date_start)'=>$month,
             'YEAR(st.date_start)'=>$searchModel->year,
@@ -210,6 +211,7 @@ class OrganizationsController extends AppController
         $dataProviderColored  = new ActiveDataProvider(['query'=>$modelColored,'pagination'=>false]);
 
         $studentsExport =  Students::find()->where([
+            'system_status'=>1,
             'id_bank'=>$id_bank,
             'MONTH(date_start)'=>$month,
             'YEAR(date_start)'=>$searchModel->year,
