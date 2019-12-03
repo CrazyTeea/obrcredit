@@ -28,11 +28,12 @@ $this->params['breadcrumbs'][] = $this->title;
 YiiAsset::register($this);
 
 $files = [];
-
+$canUpdate = ($cans[0] || $model->status != 2) ? 1 : 0;
 foreach ($model->docs as $doc){
+    $delete_link = Html::a('',['delete-doc','id'=>$model->id,'desc'=>$doc->type->descriptor],['class'=>'glyphicon glyphicon-remove']);
     $files[$doc->type->descriptor] =
         Html::a($doc->file->name,$doc->file->generateLink($model->id_org,$model->id)).'<br>'.
-        Html::a('',['delete-doc','id'=>$model->id,'desc'=>$doc->type->descriptor],['class'=>'glyphicon glyphicon-remove']);
+        $s = ($canUpdate) ? $delete_link : '';
 }
 foreach ($docTypes as $docType){
     if (!\yii\helpers\ArrayHelper::keyExists($docType->descriptor,$files)){
@@ -48,7 +49,7 @@ $rasp_act4 = StudentDocs::getDocByDescriptorName('rasp_act4',$model->id);
 $dogovor = StudentDocs::getDocByDescriptorName('dogovor',$model->id);
 $rasp_act_otch = StudentDocs::getDocByDescriptorName('rasp_act_otch',$model->id);*/
 //var_dump($model->dateLastStatus->updated_at);
-$canUpdate = ($cans[0] || $model->status != 2) ? 1 : 0;
+
 ?>
 
 <div class="students-view">
