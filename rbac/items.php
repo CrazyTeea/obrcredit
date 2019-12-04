@@ -40,7 +40,6 @@ return [
             '/app/main/*',
             '/app/students/by-bank',
             '/app/students/all',
-            '/app/students-history/*',
             '/app/students/delete-doc',
         ],
     ],
@@ -105,15 +104,6 @@ return [
         'type' => 2,
     ],
     '/app/students/delete-view' => [
-        'type' => 2,
-    ],
-    '/app/students-history/*' => [
-        'type' => 2,
-    ],
-    '/app/students-history/index' => [
-        'type' => 2,
-    ],
-    '/app/students-history/get-by-number-and-year' => [
         'type' => 2,
     ],
     '/app/students/delete-doc' => [
