@@ -3,6 +3,7 @@
 use app\models\app\students\Students;
 use yii\helpers\Html;
 use yii\grid\GridView;
+use yii\helpers\Url;
 use yii\widgets\Pjax;
 /* @var $this yii\web\View */
 /* @var $searchModel app\models\app\students\StudentsHistorySearch */
@@ -69,9 +70,21 @@ $this->params['breadcrumbs'][] = $this->title;
             ['attribute'=>'student.date_credit','label'=>'Дата заключения<br>кредитного договора','encodeLabel' => false],
             ['attribute'=>'student.numberPP.number','label'=>'Номер<br>пп','encodeLabel' => false],
             ['attribute'=>'student.bank.name','label'=>'Наименование<br>банка','encodeLabel' => false],
-            ['attribute'=>'userFrom.username','label'=>'Первоначальная<br>организация','encodeLabel' => false,'visible'=>!Yii::$app->user->can('podved')],
+            ['attribute'=>'userFrom.username','label'=>'Первоначальная<br>организация','encodeLabel' => false,'value'=>function($model){
+                if (isset($model->userFrom)) {
+                    if (isset($model->userFrom->organization))
+                        return $model->userFrom->organization->name . "(" . $model->userFrom->username . ")";
+                    return  "Не известная организация(" . $model->userFrom->username . ")";
+                }
+               return '';
+            }/*,'visible'=>!Yii::$app->user->can('podved')*/],
             ['attribute'=>'userTo.username','label'=>'Конечная<br>организация','encodeLabel' => false,'value'=>function($model){
-                return $model->userTo->organization->name."(".$model->userTo->username.")";
+                if (isset($model->userTo)) {
+                    if (isset($model->userTo->organization))
+                        return $model->userTo->organization->name . "(" . $model->userTo->username . ")";
+                    return  "Не известная организация(" . $model->userTo->username . ")";
+                }
+                return '';
             }],
             //'id',
             //'userFrom.username',
@@ -85,7 +98,25 @@ $this->params['breadcrumbs'][] = $this->title;
             //'system_status',
             //'id_user_to',
 
-            ['class' => 'yii\grid\ActionColumn'],
+            [
+                    'class' => 'yii\grid\ActionColumn',
+                'template'=>'{view}{add}',
+                'buttons'=>[
+                        'add'=>function ($url, $model, $key) {
+                            return "<a href='$url' aria-label='Скрыть' data-pjax='0'><span class='glyphicon glyphicon-plus'></span></a>";
+                        },
+                        'view'=>function ($url, $model, $key) {
+                            $u = Url::to(['app/students/view','id'=>$model->student->id]);
+                            return "<a href='$u' aria-label='Скрыть' data-pjax='0'><span class='glyphicon glyphicon-eye-open'></span></a>";
+                        }
+                ],
+                'visibleButtons'=>[
+                        'add'=>
+                            function ($model, $key, $index) {
+                                return $model->userTo ? false : true;
+                             }
+                ]
+            ],
         ],
     ]); ?>
 
