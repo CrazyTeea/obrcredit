@@ -25,6 +25,7 @@ return [
             '/site/signup',
             '/site/index',
             '/app/*',
+            '/app/students-history/*',
         ],
     ],
     'podved' => [
