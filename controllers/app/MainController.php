@@ -113,7 +113,7 @@ class MainController extends AppController
 
         $studentsByMonth = Students::find()
             ->select(['YEAR(date_start) year','MONTH(date_start) month','MIN(status) status', 'numbers_pp.id id_number_pp','banks.id id_bank','banks.name bank_name', 'COUNT(t1.id) count'])->from(['t1'=>
-                "(SELECT * FROM `students` WHERE system_status=1 and status != 0 $orgSelect GROUP BY name , YEAR(date_start) , MONTH(date_start) , id_number_pp)"])->joinWith(['numberPP','bank'])
+                "(SELECT id,status,date_start,id_number_pp,id_bank FROM `students` WHERE system_status=1 and status != 0 $orgSelect )"])->joinWith(['numberPP','bank'])
             ->groupBy(['year' , 'month' , 'id_number_pp', 'id_bank'])
             ->orderBy(['year'=>SORT_ASC , 'month' =>SORT_ASC, 'id_number_pp'=>SORT_ASC])->all();
         $exportQuery = [];
@@ -124,47 +124,6 @@ class MainController extends AppController
                 new ActiveDataProvider([ 'query'=>Students::find()->where(['system_status'=>1,'MONTH(date_start)'=>$i,'YEAR(date_start)'=>$year])]);
         }
 
-        /*for ($i = 1;$i<=12;$i++){
-            if (!($this->cans[0] || $this->cans[1])) {
-                $s197 = Students::find()->where( ['YEAR(date_start)' => $year, 'MONTH(date_start)' => $i, 'id_number_pp' => 1, 'id_org'=>Yii::$app->session['id_org']] )->select(['id_bank'] );
-                $s699 = Students::find()->where( ['YEAR(date_start)' => $year, 'MONTH(date_start)' => $i, 'id_number_pp' => 3, 'id_org'=>Yii::$app->session['id_org']] )->select( ['id_bank'] );
-                $s1026 = Students::find()->where( ['YEAR(date_start)' => $year, 'MONTH(date_start)' => $i, 'id_number_pp' => 2, 'id_org'=>Yii::$app->session['id_org']] )->select( ['id_bank'] );
-            }
-            else{
-                $s197 = Students::find()->where( ['YEAR(date_start)' => $year, 'MONTH(date_start)' => $i, 'id_number_pp' => 1] )->select( ['id_bank'] );
-                $s699 = Students::find()->where( ['YEAR(date_start)' => $year, 'MONTH(date_start)' => $i, 'id_number_pp' => 3] )->select( ['id_bank'] );
-                $s1026 = Students::find()->where( ['YEAR(date_start)' => $year, 'MONTH(date_start)' => $i, 'id_number_pp' => 2] )->select( ['id_bank'] );
-            }
-            $studentsByMonth[$i]['exportPr'] = (!$this->cans[2]) ?
-                new ActiveDataProvider(['query'=>Students::find()->where(['YEAR(date_start)' => $year, 'MONTH(date_start)' => $i]),'pagination'=>['pageSize'=>10]])
-                : new ActiveDataProvider(['query'=>Students::find()->where(['YEAR(date_start)' => $year, 'MONTH(date_start)' => $i,'id_org'=>Yii::$app->session['id_org']]),'pagination'=>['pageSize'=>10]]);
-
-            $wBank197 = clone $s197;
-            $wBank699 = clone $s699;
-            $wBank1026 =clone $s1026;
-
-            $snA197 = clone $s197;
-            $snA699 = clone $s699;
-            $snA1026 = clone $s1026;
-
-
-            $studentsByMonth[$i][197]['students']['count'] = $s197->groupBy(['name'])->count();
-            $studentsByMonth[$i][699]['students']['count'] = $s699->groupBy(['name'])->count();
-            $studentsByMonth[$i][1026]['students']['count'] = $s1026->groupBy(['name'])->count();
-
-
-            $studentsByMonth[$i][197]['bank'] = $wBank197->groupBy(['id_bank'])->column() ;
-            $studentsByMonth[$i][699]['bank'] =  $wBank699->groupBy(['id_bank'])->column();
-            $studentsByMonth[$i][1026]['bank'] = $wBank1026->groupBy(['id_bank'])->column();
-
-            $studentsByMonth[$i][197]['students']['notApproved'] = $snA197->andWhere(['status'=>1])->count();
-            $studentsByMonth[$i][699]['students']['notApproved'] = $snA699->andWhere(['status'=>1])->count();
-            $studentsByMonth[$i][1026]['students']['notApproved'] = $snA1026->andWhere(['status'=>1])->count();
-
-
-
-
-        }*/
 
         return $this->render('month',compact('studentsByMonth','exportQuery','exportColumns'));
     }
