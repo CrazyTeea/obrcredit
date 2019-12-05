@@ -72,8 +72,8 @@ $this->params['breadcrumbs'][] = $this->title;
             ['attribute'=>'student.bank.name','label'=>'Наименование<br>банка','encodeLabel' => false],
             ['attribute'=>'userFrom.username','label'=>'Первоначальная<br>организация','encodeLabel' => false,'value'=>function($model){
                 if (isset($model->userFrom)) {
-                    if (isset($model->userFrom->organization))
-                        return $model->userFrom->organization->name . "(" . $model->userFrom->username . ")";
+                    if (isset($model->student->organization))
+                        return $model->student->organization->name . "(" . $model->userFrom->username . ")";
                     return  "Не известная организация(" . $model->userFrom->username . ")";
                 }
                return '';
@@ -86,17 +86,7 @@ $this->params['breadcrumbs'][] = $this->title;
                 }
                 return '';
             }],
-            //'id',
-            //'userFrom.username',
-            //'userTo.username',
-
-            //'id_student',
-            //'id_user_from',
             'changes:ntext',
-            //'updated_at',
-            //'created_at',
-            //'system_status',
-            //'id_user_to',
 
             [
                     'class' => 'yii\grid\ActionColumn',
@@ -113,7 +103,7 @@ $this->params['breadcrumbs'][] = $this->title;
                 'visibleButtons'=>[
                         'add'=>
                             function ($model, $key, $index) {
-                                return $model->userTo ? false : true;
+                                return ($model->userTo) ? false : true;
                              }
                 ]
             ],

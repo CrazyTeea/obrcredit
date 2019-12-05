@@ -75,6 +75,7 @@ $rasp_act_otch = StudentDocs::getDocByDescriptorName('rasp_act_otch',$model->id)
     -->
         <!--<?= Html::a('Экспорт',['export','id'=>$model->id],['class'=>'btn btn-default']) ?>
         -->
+    <?= Html::a('не мой студент',['app/students/add-to-history','id'=>$model->id],['class'=>'btn btn-warning']) ?>
     <?= Html::a('Вернуться к списку',['app/students/by-bank','id'=>$model->id_bank,'nPP'=>$model->id_number_pp,'month'=>$month],['class'=>'btn btn-default']) ?>
     <table class="table table-bordered">
         <thead>

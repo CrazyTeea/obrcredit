@@ -11,6 +11,7 @@ use app\models\app\students\NumbersPp;
 use app\models\app\students\StudentDocumentList;
 use app\models\app\students\StudentDocumentTypes;
 use app\models\app\students\Students;
+use app\models\app\students\StudentsHistory;
 use app\models\app\students\StudentsSearch;
 use app\models\app\students\StudentsSearch2;
 use app\models\User;
@@ -671,7 +672,15 @@ class StudentsController extends AppController
     }
 
 
-
+    public function actionAddToHistory($id){
+        $s_histroy = StudentsHistory::findOne(['id_student'=>$id]);
+        if (!$s_histroy)
+            $s_histroy = new StudentsHistory();
+        $s_histroy->id_student= $id;
+        $s_histroy->id_user_from = Yii::$app->getUser()->getId();
+        $s_histroy->save();
+        return $this->redirect(['view','id'=>$id]);
+    }
 
 
     /**
