@@ -59,16 +59,16 @@ function getDocByDescriptor(string $descriptor,array $docs, ActiveForm $form,\ap
                 <?=$form->field($model,'date_start')->input('date',['readonly'=>$readonly])?>
             </div>
         </div>
-        <div style="display: none">
-            <?= $form->field($model,'osnovanie')->radio([
-                'label'=>'s','value'=>0,'uncheck'=>null
-            ])->label(false) ?>
-            <?= $form->field($model,'grace_period')->radio([
-                'label'=>'s','value'=>0,'uncheck'=>null
-            ])->label(false) ?>
-        </div>
-    <?php endif;?>
 
+    <?php endif;?>
+    <div style="display: none">
+        <?= $form->field($model,'osnovanie')->radio([
+            'label'=>'s','value'=>0,'uncheck'=>null
+        ])->label(false) ?>
+        <?= $form->field($model,'grace_period')->radio([
+            'label'=>'s','value'=>0,'uncheck'=>null
+        ])->label(false) ?>
+    </div>
 
     <div class="panel panel-default" style="overflow: auto">
 
@@ -83,7 +83,8 @@ function getDocByDescriptor(string $descriptor,array $docs, ActiveForm $form,\ap
                 <td rowspan='2'><p class="text-sm-center">Продолжает <br> обучаться </p></td>
                 <td colspan="3"><p class="text-sm-center">Досрочно прекратил образовательные отношения </p></td>
                 <td rowspan='2'><p class="text-sm-center">Отсрочка льготного периода <br> в связи с предоставлением академического права  <br>
-                        (пункт 12 часть 1 статья 34 Федерального закона № 273-ФЗ) </p>
+                        (пункт 12 часть 1 статья 34 Федерального закона № 273-ФЗ)</p>
+                    <br> <button type="button" href="#clean2"> Сбросс</button>
                 </td>
                 <td rowspan='2'><p class="text-sm-center">Срок действия академического права</p> </td>
                 <td rowspan='2'><p class="text-sm-center">Подтверждение
@@ -93,8 +94,11 @@ function getDocByDescriptor(string $descriptor,array $docs, ActiveForm $form,\ap
 
             </tr>
             <tr>
+                <!--
+                $('input[id=students-osnovanie][value=0]').prop('checked',true);
+                -->
                 <td>Пункты постановления <br> Правительства РФ <br> от 26.02.2018 г. № 197</td>
-                <td>Основание</td>
+                <td>Основание <br> <button type="button" href="#clean"> Сбросс</button></td>
                 <td>Подтверждение основания</td>
 
             </tr>

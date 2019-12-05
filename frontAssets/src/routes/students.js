@@ -19,6 +19,12 @@ export default ()=>{
     Router('update').then(()=>{
         let form = document.getElementById('w0');
         let e_status = document.getElementById('students-education_status');
+        $("button[href='#clean']").click(()=>{
+            $(":input[id='students-osnovanie'][value='0']").prop('checked',true);
+        });
+        $("button[href='#clean2']").click(()=>{
+            $(":input[id='students-grace_period'][value='0']").prop('checked',true);
+        });
         if (form.elements['Students[education_status]'].value==1)
             disable(e_status);
         e_status.onchange = e=>{
