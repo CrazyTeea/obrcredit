@@ -761,6 +761,15 @@ class StudentsController extends AppController
         return $this->redirect(['view','id'=>$id]);
     }
 
+    public function actionToHistory($id){
+        $student = $this->findModel($id);
+        $students = Students::find()->where(['name'=>$student->name,'code'=>$student->code,'date_credit'=>$student->date_credit])->all();
+        foreach ($students as $item){
+            $item->system_status=0;
+            $item->save(false);
+        }
+    }
+
     /**
      * @param $id
      * @return Response

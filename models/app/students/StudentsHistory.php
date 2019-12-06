@@ -11,7 +11,7 @@ use Yii;
  * @property int $id
  * @property int|null $id_student
  * @property int|null $id_user_from
- * @property string|null $changes
+ * @property int|null $id_change
  * @property string $updated_at
  * @property string $created_at
  * @property int|null $system_status
@@ -33,8 +33,8 @@ class StudentsHistory extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['id_student', 'id_user_from', 'system_status', 'id_user_to'], 'integer'],
-            [['changes'], 'string'],
+            [['id_student', 'id_user_from', 'system_status', 'id_user_to','id_change'], 'integer'],
+            //[['changes'], 'string'],
             [['updated_at', 'created_at'], 'safe'],
         ];
     }
@@ -68,6 +68,9 @@ class StudentsHistory extends \yii\db\ActiveRecord
      */
     public function getUserFrom(){
         return $this->hasOne(User::class,['id'=>'id_user_from']);
+    }
+    public function getChanges(){
+        return $this->hasOne(Changes::class,['id'=>'id_change']);
     }
 
     /**

@@ -126,6 +126,9 @@ class Students extends ActiveRecord
     public function getOrganization(){
         return $this->hasOne(Organizations::className(),['id'=>'id_org']);
     }
+    public function getOldOrganization(){
+        return $this->hasOne(Organizations::className(),['id'=>'id_']);
+    }
 
     /**
      * @return array

@@ -37,7 +37,7 @@ AppAsset::register($this);
     <?php
     NavBar::begin([
         'brandLabel' => 'Мониторинг образовательного кредитования',
-        'brandUrl' => Url::toRoute(['site/index']),
+        'brandUrl' => Url::toRoute(['/site/index']),
         'brandImage' => 'img/light-logo.svg',
         'options' => [
             'class' => 'navbar-inverse navbar-fixed-top',
@@ -45,7 +45,7 @@ AppAsset::register($this);
     ]);
     echo Nav::widget([
         'options' => ['class' => 'navbar-nav navbar-left'],
-        'items' => [['label'=>'Мониторинг образовательного кредитования','url'=>['site/index']]]
+        'items' => [['label'=>'Мониторинг образовательного кредитования','url'=>['/site/index']]]
     ]);
     echo Nav::widget([
         'options' => ['class' => 'navbar-nav navbar-left'],

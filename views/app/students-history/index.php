@@ -26,7 +26,7 @@ $this->params['breadcrumbs'][] = $this->title;
             ['class' => 'yii\grid\SerialColumn'],
             ['attribute'=>'student.name','label'=>'ФИО<br>обучающегося','encodeLabel' => false],
             ['attribute'=>'student.code','label'=>'Код<br>направления','encodeLabel' => false],
-            ['attribute' => 'student.education_status', 'format' => 'raw', 'label' => 'Статус <br> обучающегося', 'encodeLabel' => false,
+            /*['attribute' => 'student.education_status', 'format' => 'raw', 'label' => 'Статус <br> обучающегося', 'encodeLabel' => false,
                 'content' => function ( $model ) {
                 $os = mb_substr( Students::getOsnovanie()[ !empty( $model->student->osnovanie ) ? $model->student->osnovanie : 0 ], 0, 50 );
                 $data = "";
@@ -66,8 +66,8 @@ $this->params['breadcrumbs'][] = $this->title;
 
                 return ( $model->student->education_status ) ? $model->student->perevod ? "<span class='label label-info'>Переведен на бюджет</span>" : "<span class='label label-info'> Обучается</span>" : $dta;
             }
-            ],
-            ['attribute'=>'student.date_credit','label'=>'Дата заключения<br>кредитного договора','encodeLabel' => false],
+            ],*/
+           // ['attribute'=>'student.date_credit','label'=>'Дата заключения<br>кредитного договора','encodeLabel' => false],
             ['attribute'=>'student.numberPP.number','label'=>'Номер<br>пп','encodeLabel' => false],
             ['attribute'=>'student.bank.name','label'=>'Наименование<br>банка','encodeLabel' => false],
             ['attribute'=>'userFrom.username','label'=>'Первоначальная<br>организация','encodeLabel' => false,'value'=>function($model){
@@ -86,7 +86,7 @@ $this->params['breadcrumbs'][] = $this->title;
                 }
                 return '';
             }],
-            'changes:ntext',
+            'changes.change',
 
             [
                     'class' => 'yii\grid\ActionColumn',
