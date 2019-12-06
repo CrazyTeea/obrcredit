@@ -94,9 +94,7 @@ function getDocByDescriptor(string $descriptor,array $docs, ActiveForm $form,\ap
 
             </tr>
             <tr>
-                <!--
-                $('input[id=students-osnovanie][value=0]').prop('checked',true);
-                -->
+
                 <td>Пункты постановления <br> Правительства РФ <br> от 26.02.2018 г. № 197</td>
                 <td>Основание <br> <button type="button" href="#clean"> Сбросс</button></td>
                 <td>Подтверждение основания</td>
