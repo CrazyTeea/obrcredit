@@ -89,7 +89,7 @@ function getBanks(int $year,int $month,int $nPP, array $students){
                         <div class="thumbnail">
                             <div class="caption">
                                 <div class="row">
-                                    <div class="col-md-6"><?=ExportMenu::widget(['dataProvider'=>$exportQuery[$month],'columns'=>$exportColumns,'timeout'=>300])?></div>
+                                    <div class="col-md-6"><?=ExportMenu::widget(['dataProvider'=>$exportQuery[$month],'columns'=>\app\models\app\students\Students::getColumns(true),'timeout'=>300])?></div>
                                     <div class="col-md-6"><h2><?=getMonth($month)?></h2></div>
                                 </div>
                                 <hr>

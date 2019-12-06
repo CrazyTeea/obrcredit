@@ -57,7 +57,13 @@ use yii\widgets\Pjax;
 
 <?= GridView::widget(['dataProvider'=>$provider,'columns'=>
     [
-            'name','code','organization.name','numberPP.number','bank.name','date_start:date',
+            'name',
+        'code',
+        'organization.name',
+        'numberPP.number',
+        'bank.name',
+        'date_start:date',
+        ['attribute'=>'system_status','value'=>function($m){return (!$m->system_status)?'Удален':'Активен';}],
         ['class'=>\yii\grid\ActionColumn::class]
         ]
 ]) ?>
