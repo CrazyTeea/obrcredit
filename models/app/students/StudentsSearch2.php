@@ -14,7 +14,7 @@ class StudentsSearch2 extends Students
         return [
             [['name','code'],'string'],
             [['date_start'],'safe'],
-            [['id_org','id_number_pp','id_bank'],'each','rule'=>['integer']]
+            [['id_org','id_number_pp','id_bank','system_status'],'each','rule'=>['integer']]
         ];
     }
     public function attributeLabels()
@@ -23,7 +23,7 @@ class StudentsSearch2 extends Students
     }
 
     public function search($queryParams){
-        $students = Students::find()->where(['students.system_status'=>1])->joinWith(['organization','bank','numberPP']);
+        $students = Students::find()->joinWith(['organization','bank','numberPP']);
         $provider = new ActiveDataProvider(['query'=>$students]);
 
         $this->load($queryParams);
@@ -38,7 +38,8 @@ class StudentsSearch2 extends Students
             'id_number_pp'=>$this->id_number_pp,
             'id_bank'=>$this->id_bank,
             'code'=>$this->code,
-            'date_start'=>$this->date_start
+            'date_start'=>$this->date_start,
+            'system_status'=>$this->system_status
         ]);
         $students->andFilterWhere(['like','students.name',$this->name]);
 
