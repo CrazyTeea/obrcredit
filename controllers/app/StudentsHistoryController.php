@@ -2,10 +2,12 @@
 
 namespace app\controllers\app;
 
+use app\models\app\students\Changes;
 use Yii;
 use app\models\app\students\StudentsHistory;
 use app\models\app\students\StudentsHistorySearch;
 use app\controllers\app\AppController;
+use yii\helpers\ArrayHelper;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
 
@@ -38,10 +40,9 @@ class StudentsHistoryController extends AppController
         $searchModel = new StudentsHistorySearch();
         $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
 
-        return $this->render('index', [
-            'searchModel' => $searchModel,
-            'dataProvider' => $dataProvider,
-        ]);
+        $changes = Changes::findAll(['system_status'=>1]);
+
+        return $this->render('index', compact('searchModel','dataProvider','changes'));
     }
     public function actionGetByNumberAndYear($id_number_pp,$year){
         Yii::$app->session->set('year',$year);
@@ -52,12 +53,14 @@ class StudentsHistoryController extends AppController
         $searchModel = new StudentsHistorySearch();
         $searchModel->id_number_pp = $id_number_pp;
         $searchModel->year = $year;
+      //  var_dump(Yii::$app->request->queryParams);exit();
         $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
 
-        return $this->render('index', [
-            'searchModel' => $searchModel,
-            'dataProvider' => $dataProvider,
-        ]);
+
+
+        $changes = ArrayHelper::map(Changes::find()->where(['system_status'=>1])->select(['system_status','id','change'])->all(),'id','change');
+
+        return $this->render('index', compact('searchModel','dataProvider','changes'));
     }
 
     /**

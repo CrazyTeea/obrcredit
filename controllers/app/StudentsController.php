@@ -6,11 +6,13 @@ namespace app\controllers\app;
 use app\models\app\Banks;
 use app\models\app\Files;
 use app\models\app\Organizations;
+use app\models\app\students\Changes;
 use app\models\app\students\DatesEducationStatus;
 use app\models\app\students\NumbersPp;
 use app\models\app\students\StudentDocumentList;
 use app\models\app\students\StudentDocumentTypes;
 use app\models\app\students\Students;
+use app\models\app\students\StudentsHistory;
 use app\models\app\students\StudentsSearch;
 use app\models\app\students\StudentsSearch2;
 use app\models\User;
@@ -249,10 +251,28 @@ class StudentsController extends AppController
     public function actionView( $id )
     {
         $docTypes = StudentDocumentTypes::getActive()->all();
-        return $this->render( 'view', [
-            'model' => $this->findModel( $id ),
-            'docTypes'=>$docTypes
-        ] );
+        $model = $this->findModel( $id );
+        $history = new StudentsHistory();
+        $changes = ArrayHelper::map(Changes::find()->select(['id','change','system_status'])->where(['system_status'=>1])->all(),'id','change');
+        if ($history->load(Yii::$app->request->post()))
+        {
+          //  var_dump($history);exit();
+            $students = Students::findAll(['name'=>$model->name,'code'=>$model->code,'date_credit'=>$model->date_credit]);
+            foreach ($students as $st){
+                $st->system_status = 0;
+                $st->save();
+            }
+            $stMin = Students::find()
+                ->select(['Min(date_start) minV','id','name','code','date_credit'])
+                ->where(['name'=>$model->name,'code'=>$model->code,'date_credit'=>$model->date_credit])->one();
+            $history->id_student = $stMin['id'];
+            $history->id_user_from = Yii::$app->user->getId();
+            $history->save();
+
+
+        }
+
+        return $this->render( 'view',compact('model','docTypes','history','changes'));
     }
 
     /**

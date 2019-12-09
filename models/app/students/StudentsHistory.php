@@ -33,8 +33,7 @@ class StudentsHistory extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['id_student', 'id_user_from', 'system_status', 'id_user_to'], 'integer'],
-            [['changes'], 'string'],
+            [['id_student', 'id_user_from', 'system_status', 'id_user_to','id_change'], 'integer'],
             [['updated_at', 'created_at'], 'safe'],
         ];
     }
@@ -75,5 +74,8 @@ class StudentsHistory extends \yii\db\ActiveRecord
      */
     public function getUserTo(){
         return $this->hasOne(User::class,['id'=>'id_user_to']);
+    }
+    public function getChange(){
+        return $this->hasOne(Changes::class,['id'=>'id_change']);
     }
 }
