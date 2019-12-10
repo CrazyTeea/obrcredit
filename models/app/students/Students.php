@@ -195,10 +195,10 @@ class Students extends ActiveRecord
         if ($export) {
             $ret = [
                 ['class' => 'yii\grid\SerialColumn'],
-                ['attribute' => 'name', 'label' => "ФИО обучающегося"],
-                ['attribute' => 'organization', 'value' => 'organization.short_name', 'label' => 'Наименование ООВО'],
-                ['attribute' => 'code', 'label' => 'Код направления подготовки'],
-                ['attribute' => 'education_status', 'label' => 'Статус обучающегося', 'content' => function ($model) {
+                ['attribute' => 'name', 'label' => "ФИО обучающегося", 'encodeLabel' => false],
+                ['attribute' => 'organization', 'value' => 'organization.short_name', 'label' => 'Наименование ООВО', 'encodeLabel' => false],
+                ['attribute' => 'code', 'label' => 'Код направления подготовки', 'encodeLabel' => false],
+                ['attribute' => 'education_status', 'format' => 'raw', 'label' => 'Статус обучающегося', 'encodeLabel' => false, 'content' => function ($model) {
                     $os = mb_substr(Students::getOsnovanie()[!empty($model->osnovanie) ? $model->osnovanie : 0], 0, 50);
                     $data = "";
                     switch ($model->osnovanie) {
@@ -226,15 +226,19 @@ class Students extends ActiveRecord
                             break;
                         }
                     }
+
                     $date = null;
                     if (isset($model->dateLastStatus) and isset($model->dateLastStatus->date_end))
                         $date = Yii::$app->getFormatter()->asDate($model->dateLastStatus->date_end);
 
                     $dta = ($date) ? "$date $data" : '';
+                    if ($model->isEnder)
+                        return "<span class='label label-info'>Выпускник</span><br>" . Yii::$app->formatter->asDate($model->date_ender);
 
-                    return $model->education_status ? $model->perevod ? 'Переведен на бюджет' : "Обучается" : $dta;
-                }],
-                ['attribute' => 'grace_period', 'value' =>
+                    return ($model->education_status) ? $model->perevod ? "<span class='label label-info'>Переведен на бюджет</span>" : "<span class='label label-info'> Обучается</span>" : $dta;
+                }
+                ],
+                ['attribute' => 'grace_period', 'encodeLabel' => false, 'value' =>
                     function ($model) {
                         $data = "";
                         switch ($model->grace_period) {
@@ -269,14 +273,14 @@ class Students extends ActiveRecord
                     }
                     , 'label' => 'Пролонгация льготного периода'
                 ],
-                ['attribute' => 'date_credit', 'label' => 'Дата заключения кредитного договора',],
-                ['attribute' => 'dateLastStatus', 'value' => 'dateLastStatus.updated_at', 'label' => 'Дата изменения данных'],
+                ['attribute' => 'date_credit', 'encodeLabel' => false, 'label' => 'Дата заключения кредитного договора',],
+                ['attribute' => 'dateLastStatus', 'encodeLabel' => false, 'value' => 'dateLastStatus.updated_at', 'label' => 'Дата изменения данных'],
             ];
             if (!Yii::$app->user->can('podved')){
                 $ret = ArrayHelper::merge( $ret, [
-                    ['attribute' => 'numberPP', 'value' => 'numberPP.number', 'label' => 'Номер ПП по образовательному кредиту'],
-                    ['attribute' => 'bank', 'value' => 'bank.name', 'label' => 'Наименование банка или иной кредитной организации'],
-                    ['attribute' => 'date_status', 'format' => 'date', 'label' => 'Дата утверждения отчета'],
+                    ['attribute' => 'numberPP', 'value' => 'numberPP.number', 'encodeLabel' => false, 'label' => 'Номер ПП по образовательному кредиту'],
+                    ['attribute' => 'bank', 'value' => 'bank.name', 'encodeLabel' => false, 'label' => 'Наименование банка или иной кредитной организации'],
+                    ['attribute' => 'date_status', 'encodeLabel' => false, 'format' => 'date', 'label' => 'Дата утверждения отчета'],
                 ] );
             }
         }else {
