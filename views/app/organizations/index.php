@@ -35,7 +35,7 @@ $this->params['breadcrumbs'][] = $this->title;
                         'pjaxContainerId'=>'ex',
                     'dataProvider'=>$dataProviderStudent,
                     'emptyCell'=>' ',
-                    'columns' =>$exportColumns,
+                    'columns' =>Students::getColumns(true),
                     'batchSize'=>10,'target'=>'_blank'
                 ]) ?>
         </div>
