@@ -120,7 +120,7 @@ class ReferenceController extends Controller
             $student->id_number_pp = $row[ $numPP ];
             $student->id_bank = $row[ $bankId ];
 
-            if ( $student->save() ) {
+            if ( $student->save(false) ) {
                 $org = Organizations::findOne( $student->id_org );
                 if ( $org ) {
                     $org->system_status = 1;
