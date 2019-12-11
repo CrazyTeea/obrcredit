@@ -193,6 +193,191 @@ class Students extends ActiveRecord
         return $this->hasOne(NumbersPp::className(),['id'=>'id_number_pp']);
     }
 
+    public static function getColumns(bool $export){
+        $ret = null;
+        if ($export) {
+            $ret = [
+                ['class' => 'yii\grid\SerialColumn'],
+                ['attribute' => 'name', 'label' => "ФИО обучающегося"],
+                ['attribute' => 'organization', 'value' => 'organization.short_name', 'label' => 'Наименование ООВО'],
+                ['attribute' => 'code', 'label' => 'Код направления подготовки'],
+                ['attribute' => 'education_status', 'label' => 'Статус обучающегося', 'content' => function ($model) {
+                    $os = mb_substr(Students::getOsnovanie()[!empty($model->osnovanie) ? $model->osnovanie : 0], 0, 50);
+                    $data = "";
+                    switch ($model->osnovanie) {
+                        case 1:
+                        case 2:
+                        case 3:
+                        {
+                            $data = "(Пункт 20 $os)";
+                            break;
+                        }
+                        case 4:
+                        case 5:
+                        {
+                            $data = "(Пункт 21 $os)";
+                            break;
+                        }
+                        case 6:
+                        {
+                            $data = "(Пункт 22 $os)";
+                            break;
+                        }
+                        default:
+                        {
+                            $data = "";
+                            break;
+                        }
+                    }
+                    $date = null;
+                    if (isset($model->dateLastStatus) and isset($model->dateLastStatus->date_end))
+                        $date = Yii::$app->getFormatter()->asDate($model->dateLastStatus->date_end);
+
+                    $dta = ($date) ? "$date $data" : '';
+
+                    return $model->education_status ? $model->perevod ? 'Переведен на бюджет' : "Обучается" : $dta;
+                }],
+                ['attribute' => 'grace_period', 'value' =>
+                    function ($model) {
+                        $data = "";
+                        switch ($model->grace_period) {
+                            case 1:
+                            {
+                                $date = ($model->date_start_grace_period1 and $model->date_end_grace_period1) ?
+                                    Yii::$app->getFormatter()->asDate($model->date_start_grace_period1) . '-' . Yii::$app->getFormatter()->asDate($model->date_end_grace_period1) : '';
+                                $data = Students::getGracePeriod()[1] . "($date)";
+                                break;
+                            }
+                            case 2:
+                            {
+                                $date = ($model->date_start_grace_period2 and $model->date_end_grace_period2) ?
+                                    Yii::$app->getFormatter()->asDate($model->date_start_grace_period2) . '-' . Yii::$app->getFormatter()->asDate($model->date_end_grace_period2) : '';
+                                $data = Students::getGracePeriod()[2] . "($date)";
+                                break;
+                            }
+                            case 3:
+                            {
+                                $date = ($model->date_start_grace_period3 and $model->date_end_grace_period3) ?
+                                    Yii::$app->getFormatter()->asDate($model->date_start_grace_period3) . '-' . Yii::$app->getFormatter()->asDate($model->date_end_grace_period3) : '';
+                                $data = Students::getGracePeriod()[3] . "($date)";
+                                break;
+                            }
+                            default:
+                            {
+                                $data = '';
+                                break;
+                            }
+                        }
+                        return $data;
+                    }
+                    , 'label' => 'Пролонгация льготного периода'
+                ],
+                ['attribute' => 'date_credit', 'label' => 'Дата заключения кредитного договора',],
+                ['attribute' => 'dateLastStatus', 'value' => 'dateLastStatus.updated_at', 'label' => 'Дата изменения данных'],
+            ];
+            if (!Yii::$app->user->can('podved')){
+                $ret = ArrayHelper::merge( $ret, [
+                    ['attribute' => 'numberPP', 'value' => 'numberPP.number', 'label' => 'Номер ПП по образовательному кредиту'],
+                    ['attribute' => 'bank', 'value' => 'bank.name', 'label' => 'Наименование банка или иной кредитной организации'],
+                    ['attribute' => 'date_status', 'format' => 'date', 'label' => 'Дата утверждения отчета'],
+                ] );
+            }
+        }else {
+            $ret = [
+                ['class' => 'yii\grid\SerialColumn'],
+                ['attribute' => 'name', 'label' => "ФИО <br> обучающегося", 'encodeLabel' => false],
+                ['attribute' => 'organization', 'value' => 'organization.short_name', 'label' => 'Наименование <br> ООВО', 'encodeLabel' => false],
+                ['attribute' => 'code', 'label' => 'Код <br> направления <br> подготовки', 'encodeLabel' => false],
+                ['attribute' => 'education_status', 'format' => 'raw', 'label' => 'Статус <br> обучающегося', 'encodeLabel' => false, 'content' => function ($model) {
+                    $os = mb_substr(Students::getOsnovanie()[!empty($model->osnovanie) ? $model->osnovanie : 0], 0, 50);
+                    $data = "";
+                    switch ($model->osnovanie) {
+                        case 1:
+                        case 2:
+                        case 3:
+                        {
+                            $data = "(Пункт 20 $os)";
+                            break;
+                        }
+                        case 4:
+                        case 5:
+                        {
+                            $data = "(Пункт 21 $os)";
+                            break;
+                        }
+                        case 6:
+                        {
+                            $data = "(Пункт 22 $os)";
+                            break;
+                        }
+                        default:
+                        {
+                            $data = "";
+                            break;
+                        }
+                    }
+
+                    $date = null;
+                    if (isset($model->dateLastStatus) and isset($model->dateLastStatus->date_end))
+                        $date = Yii::$app->getFormatter()->asDate($model->dateLastStatus->date_end);
+
+                    $dta = ($date) ? "$date $data" : '';
+                    if ($model->isEnder)
+                        return "<span class='label label-info'>Выпускник</span><br>" . Yii::$app->formatter->asDate($model->date_ender);
+
+                    return ($model->education_status) ? $model->perevod ? "<span class='label label-info'>Переведен на бюджет</span>" : "<span class='label label-info'> Обучается</span>" : $dta;
+                }
+                ],
+                ['attribute' => 'grace_period', 'encodeLabel' => false, 'value' =>
+                    function ($model) {
+                        $data = "";
+                        switch ($model->grace_period) {
+                            case 1:
+                            {
+                                $date = ($model->date_start_grace_period1 and $model->date_end_grace_period1) ?
+                                    Yii::$app->getFormatter()->asDate($model->date_start_grace_period1) . '-' . Yii::$app->getFormatter()->asDate($model->date_end_grace_period1) : '';
+                                $data = Students::getGracePeriod()[1] . "($date)";
+                                break;
+                            }
+                            case 2:
+                            {
+                                $date = ($model->date_start_grace_period2 and $model->date_end_grace_period2) ?
+                                    Yii::$app->getFormatter()->asDate($model->date_start_grace_period2) . '-' . Yii::$app->getFormatter()->asDate($model->date_end_grace_period2) : '';
+                                $data = Students::getGracePeriod()[2] . "($date)";
+                                break;
+                            }
+                            case 3:
+                            {
+                                $date = ($model->date_start_grace_period3 and $model->date_end_grace_period3) ?
+                                    Yii::$app->getFormatter()->asDate($model->date_start_grace_period3) . '-' . Yii::$app->getFormatter()->asDate($model->date_end_grace_period3) : '';
+                                $data = Students::getGracePeriod()[3] . "($date)";
+                                break;
+                            }
+                            default:
+                            {
+                                $data = '';
+                                break;
+                            }
+                        }
+                        return $data;
+                    }
+                    , 'label' => 'Пролонгация<br>льготного<br>периода'
+                ],
+                ['attribute' => 'date_credit', 'encodeLabel' => false, 'label' => 'Дата <br> заключения <br> кредитного <br> договора',],
+                ['attribute' => 'dateLastStatus', 'encodeLabel' => false, 'value' => 'dateLastStatus.updated_at', 'label' => 'Дата <br> изменения <br> данных'],
+            ];
+            if (!Yii::$app->user->can('podved')){
+                $ret = ArrayHelper::merge( $ret, [
+                    ['attribute' => 'numberPP', 'value' => 'numberPP.number', 'encodeLabel' => false, 'label' => 'Номер <br> ПП <br> по <br> образовательному <br>кредиту'],
+                    ['attribute' => 'bank', 'value' => 'bank.name', 'encodeLabel' => false, 'label' => 'Наименование <br> банка <br>или<br> иной <br> кредитной <br>организации'],
+                    ['attribute' => 'date_status', 'encodeLabel' => false, 'format' => 'date', 'label' => 'Дата <br> утверждения <br> отчета'],
+                ] );
+            }
+        }
+        return $ret;
+
+    }
+
     /**
      * @param Students $student
      * @param Files $file

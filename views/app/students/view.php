@@ -3,6 +3,7 @@
 use app\models\app\students\StudentDocs;
 use app\models\app\students\Students;
 use app\models\User;
+use yii\bootstrap\ActiveForm;
 use yii\helpers\Html;
 use yii\web\YiiAsset;
 use yii\widgets\DetailView;
@@ -70,6 +71,33 @@ $rasp_act_otch = StudentDocs::getDocByDescriptorName('rasp_act_otch',$model->id)
         ]) ?>
 
     <?php endif;?>
+
+    <!-- Button trigger modal -->
+    <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#myModal" style="margin-bottom: 5px;">
+        Отправить в журнал
+    </button>
+
+    <!-- Modal -->
+    <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <?php $form = ActiveForm::begin()?>
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                    <h4 class="modal-title" id="myModalLabel">Отправить в журнал</h4>
+                </div>
+                <div class="modal-body">
+                    <?=$form->field($history,'id_change')->dropDownList($changes)?>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                    <button type="submit" class="btn btn-primary">Отпрвить</button>
+                </div>
+                <?php ActiveForm::end()?>
+            </div>
+        </div>
+    </div>
+
     <!--
     <?= ($model->status==1) ?  Html::a('Утвердить', ['approve', 'id' => $model->id],['class'=>'btn btn-success']) : ''?>
     -->

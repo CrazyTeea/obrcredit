@@ -44,7 +44,7 @@ $this->params['breadcrumbs'][] = $this->title;
     <?= ExportMenu::widget(
         [
             'dataProvider'=>$exportProvider,
-            'columns' => $exportColumns
+            'columns' => Students::getColumns(true)
             ,'batchSize'=>10,'target'=>'_blank'
         ]
     ) ?>
@@ -57,7 +57,7 @@ $this->params['breadcrumbs'][] = $this->title;
         'dataProvider' => $dataProvider,
         'filterModel' => $searchModel,
         //'options'=>['id'=>'PrintThis'],
-        'columns' => $columns,
+        'columns' => Students::getColumns(false),
         'rowOptions'=>function($model, $index, $attribute)
         {
             $url = Url::to(['view','id'=>$model->id]);

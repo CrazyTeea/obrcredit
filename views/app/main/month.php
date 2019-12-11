@@ -79,7 +79,28 @@ function getBanks(int $year,int $month,int $nPP, array $students){
 
     <div class="panel panel-default">
         <div class="panel-body">
+            <div class="col-sm-6 col-md-4">
+                <div class="thumbnail">
+                    <div class="caption">
+                        <div class="row">
+                            <div class="col-md-12 text-center"><h2>Журнал изменений</h2></div>
+                        </div>
+                        <hr>
+                        <p>
+                            <?=Html::a('Постановление <br> правительства №197',['/app/students-history/get-by-number-and-year','id_number_pp'=>1,'year'=>$year],['class'=>'btn btn-block btn-lg btn-primary'])?>
+                        </p>
 
+                        <p>
+                            <?=Html::a('Постановление <br> правительства №699',['/app/students-history/get-by-number-and-year','id_number_pp'=>3,'year'=>$year],['class'=>'btn btn-block btn-lg btn-primary'])?>
+                        </p>
+
+                        <p>
+                            <?=Html::a('Постановление <br> правительства №1026',['/app/students-history/get-by-number-and-year','id_number_pp'=>2,'year'=>$year],['class'=>'btn btn-block btn-lg btn-primary'])?>
+                        </p>
+
+                    </div>
+                </div>
+            </div>
             <?php for ($month = 1;$month<=12;$month++):?>
                 <?php $student197 = getStudentByMonthYearAndNpp($year,$month,1,$studentsByMonth);?>
                 <?php $student699 = getStudentByMonthYearAndNpp($year,$month,3,$studentsByMonth);?>
@@ -89,7 +110,7 @@ function getBanks(int $year,int $month,int $nPP, array $students){
                         <div class="thumbnail">
                             <div class="caption">
                                 <div class="row">
-                                    <div class="col-md-6"><?=ExportMenu::widget(['dataProvider'=>$exportQuery[$month],'columns'=>$exportColumns,'timeout'=>300])?></div>
+                                    <div class="col-md-6"><?=ExportMenu::widget(['dataProvider'=>$exportQuery[$month],'columns'=>\app\models\app\students\Students::getColumns(true),'timeout'=>300])?></div>
                                     <div class="col-md-6"><h2><?=getMonth($month)?></h2></div>
                                 </div>
                                 <hr>
@@ -230,7 +251,8 @@ function getBanks(int $year,int $month,int $nPP, array $students){
                                         </button>
 
                                     </p>
-                                    <div class="modal fade" id="myModal<?=$i?>197" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+                                    <div class="modal fade" id="m
+ yModal<?=$i?>197" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
                                         <div class="modal-dialog modal-sm" role="document">
                                             <div class="modal-content">
                                                 <div class="modal-header">
