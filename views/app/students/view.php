@@ -75,7 +75,10 @@ $rasp_act_otch = StudentDocs::getDocByDescriptorName('rasp_act_otch',$model->id)
     -->
         <!--<?= Html::a('Экспорт',['export','id'=>$model->id],['class'=>'btn btn-default']) ?>
         -->
-    <?= Html::a('Вернуться к списку',['app/students/by-bank','id'=>$model->id_bank,'nPP'=>$model->id_number_pp,'month'=>$month],['class'=>'btn btn-default']) ?>
+    <?= Html::a('Вернуться к списку',(!$cans[2])
+        ? ['/app/students/index','id'=>$model->id_org] :
+        ['/app/students/by-bank','id'=>$model->id_bank,'nPP'=>$model->id_number_pp,'month'=>$month],
+        ['class'=>'btn btn-default']) ?>
     <table class="table table-bordered">
         <thead>
         <tr>
