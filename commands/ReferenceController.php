@@ -124,7 +124,7 @@ class ReferenceController extends Controller
                 $org = Organizations::findOne( $student->id_org );
                 if ( $org ) {
                     $org->system_status = 1;
-                    $org->save();
+                    $org->save(false);
                 }
                 echo "
             Организация-$student->id_org
