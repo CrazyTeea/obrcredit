@@ -33,9 +33,11 @@ if (isset($model->docs)) {
     foreach ($model->docs as $doc) {
         if (isset($doc->type)) {
             $delete_link = Html::a('', ['delete-doc', 'id' => $model->id, 'desc' => $doc->type->descriptor], ['class' => 'glyphicon glyphicon-remove']);
-            $files[$doc->type->descriptor] =
-                Html::a($doc->file->name, $doc->file->generateLink($model->id_org, $model->id)) . '<br>' .
-                $s = ($canUpdate) ? $delete_link : '';
+            if (isset($doc->file)) {
+                $files[$doc->type->descriptor] =
+                    Html::a($doc->file->name, $doc->file->generateLink($model->id_org, $model->id)) . '<br>' .
+                    $s = ($canUpdate) ? $delete_link : '';
+            }
         }
     }
 }
