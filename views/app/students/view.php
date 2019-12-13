@@ -29,11 +29,15 @@ YiiAsset::register($this);
 
 $files = [];
 $canUpdate = ($cans[0] || $model->status != 2) ? 1 : 0;
-foreach ($model->docs as $doc){
-    $delete_link = Html::a('',['delete-doc','id'=>$model->id,'desc'=>$doc->type->descriptor],['class'=>'glyphicon glyphicon-remove']);
-    $files[$doc->type->descriptor] =
-        Html::a($doc->file->name,$doc->file->generateLink($model->id_org,$model->id)).'<br>'.
-        $s = ($canUpdate) ? $delete_link : '';
+if (isset($model->docs)) {
+    foreach ($model->docs as $doc) {
+        if (isset($doc->type)) {
+            $delete_link = Html::a('', ['delete-doc', 'id' => $model->id, 'desc' => $doc->type->descriptor], ['class' => 'glyphicon glyphicon-remove']);
+            $files[$doc->type->descriptor] =
+                Html::a($doc->file->name, $doc->file->generateLink($model->id_org, $model->id)) . '<br>' .
+                $s = ($canUpdate) ? $delete_link : '';
+        }
+    }
 }
 foreach ($docTypes as $docType){
     if (!\yii\helpers\ArrayHelper::keyExists($docType->descriptor,$files)){
