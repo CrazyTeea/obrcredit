@@ -351,8 +351,7 @@ class StudentsController extends AppController
                     for ($month = $month0;$month<=12;$month++){
                         $sts = Students::find()->where([
                             'id_org'=>$model->id_org,'YEAR(date_start)'=>$year,'MONTH(date_start)'=>$month,
-                            'name'=>$model->name,'code'=>$model->code
-                        ])->all();
+                            'name'=>$model->name])->all();
                         if ($sts){
                             foreach ($sts as $st){
                                 $st->education_status = $model->education_status;
