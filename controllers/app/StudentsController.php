@@ -325,7 +325,7 @@ class StudentsController extends AppController
                 $students = Students::find()->where(['name'=>$model->name,'date_credit'=>$model->date_credit]);
                 $students->andWhere(['<>','id',$model->id]);
                 $students = $students->all();
-                foreach ($students as $s){
+                foreach ($students as $key => $s){
                     $s->old_code = $s->code;
                     $s->code = $model->code;
                     $s->save(false);
