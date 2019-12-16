@@ -33,34 +33,47 @@ function getDocByDescriptor(string $descriptor,array $docs, ActiveForm $form,\ap
 
     ?>
     <?=$form->errorSummary($model)?>
-    <?php if (!$cans[2]):?>
-        <div class="row">
-            <div class="col-md-4">
-                <?= $form->field($model,'name')->textInput(['readonly'=>$readonly]) ?>
-            </div>
-            <div class="col-md-4">
-                <?= $form->field($model,'code')->textInput(['readonly'=>$readonly])?>
-            </div>
-            <div class="col-md-4">
-                <?= $form->field($model,'date_credit')->input('date',['readonly'=>$readonly])?>
-            </div>
+    <div class="row">
+        <div class="col-md-4">
+            <?= $form->field($model,'name')->textInput(['readonly'=>$readonly]) ?>
         </div>
-        <div class="row">
+        <div class="col-md-4">
+            <?= $form->field($model,'code')->textInput()?>
+        </div>
+        <div class="col-md-4">
+            <?= $form->field($model,'date_credit')->textInput(['readonly'=>$readonly])?>
+        </div>
+    </div>
+    <div class="row">
+        <?php if (!$readonly): ?>
             <div class="col-md-3">
                 <?=$form->field($model,'id_number_pp')->dropDownList( NumbersPp::getNumbersArray(),['readonly'=>$readonly])?>
             </div>
             <div class="col-md-3">
                 <?=$form->field($model,'id_bank')->dropDownList( Banks::getBanksArray(),['readonly'=>$readonly])?>
             </div>
+        <?php else:?>
             <div class="col-md-3">
-                <?=$form->field($model,'date_status')->input('date',['readonly'=>1])?>
+                <div class="form-group">
+                    <label for="num_name" class="control-label">Номер ПП по образовательному кредиту</label>
+                    <input type="text" readonly="" id="num_name" class="form-control" value="<?=$model->numberPP->number?>">
+                </div>
             </div>
             <div class="col-md-3">
-                <?=$form->field($model,'date_start')->input('date',['readonly'=>$readonly])?>
+                <div class="form-group">
+                    <label for="num_name" class="control-label">Банк</label>
+                    <input type="text" readonly="" id="num_name" class="form-control" value='<?=$model->bank->name?>'>
+                </div>
             </div>
-        </div>
 
-    <?php endif;?>
+        <?php endif;?>
+        <div class="col-md-3">
+            <?=$form->field($model,'date_status')->input('date',['readonly'=>1])?>
+        </div>
+        <div class="col-md-3">
+            <?=$form->field($model,'date_start')->input('date',['readonly'=>$readonly])?>
+        </div>
+    </div>
     <div style="display: none">
         <?= $form->field($model,'osnovanie')->radio([
             'label'=>'s','value'=>0,'uncheck'=>null
