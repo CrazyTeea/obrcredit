@@ -2,6 +2,7 @@
 
 namespace app\models\app;
 
+use app\models\app\students\Students;
 use Yii;
 use yii\base\Model;
 use yii\data\ActiveDataProvider;
@@ -54,12 +55,7 @@ class OrganizationsSearch extends Organizations
 
         $query = Organizations::find()->where(['organizations.system_status'=>1]);
         if ($this->isColored){
-            $query->select([
-                Organizations::tableName().'.name',
-                'short_name',
-                'full_name',
-                Organizations::tableName().'.system_status',
-                's.status as student_status'])->joinWith(['students s'=>function($q){
+            $query->joinWith(['students s'=>function($q){
                  $q->select(['s.id','s.id_bank','s.date_start','s.id_number_pp'])->andWhere([
                     's.id_bank'=>Yii::$app->session['id_bank'],
                     'MONTH(s.date_start)'=>Yii::$app->session['month'],
@@ -70,15 +66,7 @@ class OrganizationsSearch extends Organizations
             $query->orderBy(['student_status'=>SORT_ASC]);
         }
         else{
-            $query->joinWith(['students s'])->select([
-                Organizations::tableName().'.name',
-                'short_name',
-                'full_name',
-                Organizations::tableName().'.system_status',
-                's.id',
-                's.id_bank',
-                's.date_start',
-                's.id_number_pp'])
+            $query->joinWith(['students s'])
                 ->andWhere(['s.id_bank'=>$this->id_bank,'s.id_number_pp'=>$this->nPP,'MONTH(s.date_start)'=>$this->month,'YEAR(s.date_start)'=>$this->year]);
 
         }
@@ -104,17 +92,15 @@ class OrganizationsSearch extends Organizations
         }
 
 
-
-
-       //grid filtering conditions
+       //grid filtering conditions------------------
         $query->andFilterWhere(['id' => $this->id,]);
 
 
         $query->andFilterWhere(['like', 'organizations.name', $this->name])
             ->andFilterWhere(['like', 'short_name', $this->short_name])
             ->andFilterWhere(['like', 'full_name', $this->full_name]);
-        $query->groupBy([Organizations::tableName().'.id']);
 
+        $query->groupBy([Organizations::tableName().'.id']);
         return $dataProvider;
     }
 }
