@@ -6,6 +6,7 @@ namespace app\models\app\students;
 
 use yii\base\Model;
 use yii\data\ActiveDataProvider;
+use yii\db\ActiveQuery;
 
 
 /**
@@ -47,8 +48,9 @@ class StudentsSearch extends Students
      */
     public function search($params,$all = false)
     {
+       // $subquery = DatesEducationStatus::find()->select(['MAX(updated_at)','id_student'])->groupBy(['id_student']);
         $query = Students::find()
-            ->where(['students.system_status'=>1])->joinWith(['organization','dateStatuses','numberPP','bank']);
+            ->where(['students.system_status'=>1]);
         if (!$all) {
             if ( !empty( $this->id_bank ) )
                 $query->andWhere( ['id_bank' => $this->id_bank] );
