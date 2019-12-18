@@ -6,6 +6,7 @@ use app\models\app\students\Students;
 use Yii;
 use yii\base\Model;
 use yii\data\ActiveDataProvider;
+use yii\db\ActiveQuery;
 use yii\helpers\ArrayHelper;
 
 /**
@@ -53,16 +54,28 @@ class OrganizationsSearch extends Organizations
     public function search($params)
     {
 
-        $query = Organizations::find()->where(['organizations.system_status'=>1]);
-        if ($this->isColored){
-            $query->joinWith(['students s'=>function($q){
-                 $q->select(['s.id','s.id_bank','s.date_start','s.id_number_pp'])->andWhere([
-                    's.id_bank'=>Yii::$app->session['id_bank'],
-                    'MONTH(s.date_start)'=>Yii::$app->session['month'],
+        /*
+         * =>function($q){
+                 $q->select(['s.status as student_status','s.id','s.id_bank','s.date_start','s.id_number_pp'])->andWhere([
+                     's.id_bank'=>Yii::$app->session['id_bank'],
+                     'MONTH(s.date_start)'=>Yii::$app->session['month'],
                      'YEAR(s.date_start)'=>Yii::$app->session['year'],
 
                     's.id_number_pp'=>Yii::$app->session['nPP']]);
-            }]);
+            }
+         */
+        $query = Organizations::find()->where(['organizations.system_status'=>1]);
+        $subquery = Students::find()->select(['id_org','status','date_start','id_number_pp','id_bank','system_status'])
+            ->where([
+                'system_status'=>1,
+                'id_bank'=>Yii::$app->session->get('id_bank'),
+                'MONTH(date_start)'=>Yii::$app->session->get('month'),
+                'YEAR(date_start)'=>Yii::$app->session->get('year'),
+                'id_number_pp'=>Yii::$app->session->get('nPP')
+                ]);
+        if ($this->isColored) {
+            $query->select(['organizations.*','s.status student_status']);
+            $query->Join('JOIN',['s' => $subquery], 's.id_org = organizations.id');
             $query->orderBy(['student_status'=>SORT_ASC]);
         }
         else{
