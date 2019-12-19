@@ -9,6 +9,7 @@ use Yii;
  * This is the model class for table "students_history".
  *
  * @property int $id
+ * @property string $comment
  * @property int|null $id_student
  * @property int|null $id_user_from
  * @property string|null $changes
@@ -34,6 +35,7 @@ class StudentsHistory extends \yii\db\ActiveRecord
     {
         return [
             [['id_student', 'id_user_from', 'system_status', 'id_user_to','id_change'], 'integer'],
+            [['comment'],'string'],
             [['updated_at', 'created_at'], 'safe'],
         ];
     }
@@ -47,11 +49,12 @@ class StudentsHistory extends \yii\db\ActiveRecord
             'id' => 'ID',
             'id_student' => 'Id Student',
             'id_user_from' => 'Id User From',
-            'changes' => 'Changes',
+            'id_change' => 'Причина',
             'updated_at' => 'Updated At',
             'created_at' => 'Created At',
             'system_status' => 'System Status',
             'id_user_to' => 'Id User To',
+            'comment'=>'Комментарий'
         ];
     }
 

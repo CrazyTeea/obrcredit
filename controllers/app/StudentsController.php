@@ -252,7 +252,11 @@ class StudentsController extends AppController
     {
         $docTypes = StudentDocumentTypes::getActive()->all();
         $model = $this->findModel( $id );
-        $history = new StudentsHistory();
+
+        $subQ = Students::find()->select(['id','min(date_start) min_date','name','date_credit'])->where(['name'=>$model->name,'date_credit'=>$model->date_credit]);
+        $minS = Students::find()->from('students t1')->join('JOIN',['t2'=>$subQ],'t2.min_date=t1.date_start and t2.name=t1.name and t2.date_credit=t1.date_credit')->one();
+
+        $history = ($minS) ? StudentsHistory::findOne(['id_student'=>$minS->id]) : new StudentsHistory();
         $changes = ArrayHelper::map(Changes::find()->select(['id','change','system_status'])->where(['system_status'=>1])->all(),'id','change');
         if ($history->load(Yii::$app->request->post()))
         {
@@ -322,6 +326,12 @@ class StudentsController extends AppController
 
 
     public function actionAddToHistory($id){
+        $model = $this->findModel($id);
+        $models = Students::find()->where(['name'=>$model->name,'date_credit'=>$model->date_credit])->all();
+        foreach ($models as $m){
+            $m->system_status = 0;
+            $m->save(false);
+        }
         $s_histroy = StudentsHistory::findOne(['id_student'=>$id]);
         if (!$s_histroy)
             $s_histroy = new StudentsHistory();
