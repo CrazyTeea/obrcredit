@@ -2,12 +2,12 @@
 
 namespace app\models\app\students;
 
-use app\models\app\students\Students;
-use app\models\User;
-use Yii;
+
+
 use yii\base\Model;
 use yii\data\ActiveDataProvider;
-use yii\helpers\ArrayHelper;
+use yii\db\ActiveQuery;
+
 
 /**
  * StudentsSearch represents the model behind the search form of `app\models\app\students\Students`.
@@ -48,7 +48,9 @@ class StudentsSearch extends Students
      */
     public function search($params,$all = false)
     {
-        $query = Students::find()->where(['students.system_status'=>1])->joinWith(['organization','dateStatuses','numberPP','bank']);
+       // $subquery = DatesEducationStatus::find()->select(['MAX(updated_at)','id_student'])->groupBy(['id_student']);
+        $query = Students::find()
+            ->where(['students.system_status'=>1]);
         if (!$all) {
             if ( !empty( $this->id_bank ) )
                 $query->andWhere( ['id_bank' => $this->id_bank] );

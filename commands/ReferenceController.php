@@ -120,11 +120,11 @@ class ReferenceController extends Controller
             $student->id_number_pp = $row[ $numPP ];
             $student->id_bank = $row[ $bankId ];
 
-            if ( $student->save() ) {
+            if ( $student->save(false) ) {
                 $org = Organizations::findOne( $student->id_org );
                 if ( $org ) {
                     $org->system_status = 1;
-                    $org->save();
+                    $org->save(false);
                 }
                 echo "
             Организация-$student->id_org
@@ -139,6 +139,29 @@ class ReferenceController extends Controller
         }
         fclose( $csv );
         echo "success!";
+    }
+    public function actionMonth(){
+        $students = Students::find()->where(['system_status'=>1])
+            ->andWhere(
+                ['id_number_pp'=>[2,3],'education_status'=>1,'osnovanie'=>0,'grace_period'=>0,'isEnder'=>0,'month(date_start)'=>'10','year(date_start)'=>'2019'])->groupBy(['name','code','date_credit'])->all();
+
+
+        foreach ($students as $student) {
+            $newS = new Students();
+            foreach ($student->attributes() as $attr) {
+
+                if (in_array($attr,['id','date_create']))
+                    continue;
+                $newS->{$attr} = $student->{$attr};
+
+            }
+            $newS->date_start = '2019-11-01';
+            $newS->status = 1;
+            $newS->save(false);
+         //   var_dump($newS);exit();
+
+        }
+
     }
 
     public function actionUsers( $file, $orgId, $emailId, $nameID )

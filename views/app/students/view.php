@@ -3,7 +3,6 @@
 use app\models\app\students\StudentDocs;
 use app\models\app\students\Students;
 use app\models\User;
-use yii\bootstrap\ActiveForm;
 use yii\helpers\Html;
 use yii\web\YiiAsset;
 use yii\widgets\DetailView;
@@ -30,11 +29,17 @@ YiiAsset::register($this);
 
 $files = [];
 $canUpdate = ($cans[0] || $model->status != 2) ? 1 : 0;
-foreach ($model->docs as $doc){
-    $delete_link = Html::a('',['delete-doc','id'=>$model->id,'desc'=>$doc->type->descriptor],['class'=>'glyphicon glyphicon-remove']);
-    $files[$doc->type->descriptor] =
-        Html::a($doc->file->name,$doc->file->generateLink($model->id_org,$model->id)).'<br>'.
-        $s = ($canUpdate) ? $delete_link : '';
+if (isset($model->docs)) {
+    foreach ($model->docs as $doc) {
+        if (isset($doc->type)) {
+            $delete_link = Html::a('', ['delete-doc', 'id' => $model->id, 'desc' => $doc->type->descriptor], ['class' => 'glyphicon glyphicon-remove']);
+            if (isset($doc->file)) {
+                $files[$doc->type->descriptor] =
+                    Html::a($doc->file->name, $doc->file->generateLink($model->id_org, $model->id)) . '<br>' .
+                    $s = ($canUpdate) ? $delete_link : '';
+            }
+        }
+    }
 }
 foreach ($docTypes as $docType){
     if (!\yii\helpers\ArrayHelper::keyExists($docType->descriptor,$files)){
@@ -71,39 +76,11 @@ $rasp_act_otch = StudentDocs::getDocByDescriptorName('rasp_act_otch',$model->id)
         ]) ?>
 
     <?php endif;?>
-
-    <!-- Button trigger modal -->
-    <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#myModal" style="margin-bottom: 5px;">
-        Отправить в журнал
-    </button>
-
-    <!-- Modal -->
-    <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
-        <div class="modal-dialog" role="document">
-            <div class="modal-content">
-                <?php $form = ActiveForm::begin()?>
-                <div class="modal-header">
-                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-                    <h4 class="modal-title" id="myModalLabel">Отправить в журнал</h4>
-                </div>
-                <div class="modal-body">
-                    <?=$form->field($history,'id_change')->dropDownList($changes)?>
-                </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-                    <button type="submit" class="btn btn-primary">Отпрвить</button>
-                </div>
-                <?php ActiveForm::end()?>
-            </div>
-        </div>
-    </div>
-
     <!--
     <?= ($model->status==1) ?  Html::a('Утвердить', ['approve', 'id' => $model->id],['class'=>'btn btn-success']) : ''?>
     -->
         <!--<?= Html::a('Экспорт',['export','id'=>$model->id],['class'=>'btn btn-default']) ?>
         -->
-    <?= Html::a('не мой студент',['app/students/add-to-history','id'=>$model->id],['class'=>'btn btn-warning']) ?>
     <?= Html::a('Вернуться к списку',['app/students/by-bank','id'=>$model->id_bank,'nPP'=>$model->id_number_pp,'month'=>$month],['class'=>'btn btn-default']) ?>
     <table class="table table-bordered">
         <thead>

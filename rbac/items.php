@@ -41,6 +41,7 @@ return [
             '/app/students/by-bank',
             '/app/students/all',
             '/app/students/delete-doc',
+            '/app/students-history/*',
         ],
     ],
     '/app/students/*' => [

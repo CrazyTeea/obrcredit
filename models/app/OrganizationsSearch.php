@@ -2,9 +2,11 @@
 
 namespace app\models\app;
 
+use app\models\app\students\Students;
 use Yii;
 use yii\base\Model;
 use yii\data\ActiveDataProvider;
+use yii\db\ActiveQuery;
 use yii\helpers\ArrayHelper;
 
 /**
@@ -52,21 +54,24 @@ class OrganizationsSearch extends Organizations
     public function search($params)
     {
 
-        $query = Organizations::find()->where(['organizations.system_status'=>1]);
-        if ($this->isColored){
-            $query->select(['organizations.*', 's.status as student_status'])->joinWith(['students s'=>function($q){
-                 $q->andWhere([
-                    's.id_bank'=>Yii::$app->session['id_bank'],
-                    'MONTH(s.date_start)'=>Yii::$app->session['month'],
-                     'YEAR(s.date_start)'=>Yii::$app->session['year'],
 
-                    's.id_number_pp'=>Yii::$app->session['nPP']]);
-            }]);
+        $query = Organizations::find()->where(['organizations.system_status'=>1]);
+        $subquery = Students::find()->select(['id_org','status','date_start','id_number_pp','id_bank','system_status'])
+            ->where([
+                'system_status'=>1,
+                'id_bank'=>Yii::$app->session->get('id_bank'),
+                'MONTH(date_start)'=>Yii::$app->session->get('month'),
+                'YEAR(date_start)'=>Yii::$app->session->get('year'),
+                'id_number_pp'=>Yii::$app->session->get('nPP')
+                ]);
+        if ($this->isColored) {
+            $query->select(['organizations.*','s.status student_status']);
+            $query->Join('JOIN',['s' => $subquery], 's.id_org = organizations.id');
             $query->orderBy(['student_status'=>SORT_ASC]);
         }
         else{
             $query->joinWith(['students s'])
-                ->andWhere(['s.id_bank'=>$this->id_bank,'s.id_number_pp'=>$this->nPP,'MONTH(s.date_start)'=>$this->month,'YEAR(s.date_start)'=>$this->year]);
+                ->andWhere(['s.system_status'=>1,'s.id_bank'=>$this->id_bank,'s.id_number_pp'=>$this->nPP,'MONTH(s.date_start)'=>$this->month,'YEAR(s.date_start)'=>$this->year]);
 
         }
 
@@ -91,17 +96,15 @@ class OrganizationsSearch extends Organizations
         }
 
 
-
-
-       //grid filtering conditions
+       //grid filtering conditions------------------
         $query->andFilterWhere(['id' => $this->id,]);
 
 
         $query->andFilterWhere(['like', 'organizations.name', $this->name])
             ->andFilterWhere(['like', 'short_name', $this->short_name])
             ->andFilterWhere(['like', 'full_name', $this->full_name]);
-        $query->groupBy(['id']);
 
+        $query->groupBy([Organizations::tableName().'.id']);
         return $dataProvider;
     }
 }

@@ -102,6 +102,7 @@ function getBanks(int $year,int $month,int $nPP, array $students){
                 </div>
             </div>
             <?php for ($month = 1;$month<=12;$month++):?>
+
                 <?php $student197 = getStudentByMonthYearAndNpp($year,$month,1,$studentsByMonth);?>
                 <?php $student699 = getStudentByMonthYearAndNpp($year,$month,3,$studentsByMonth);?>
                 <?php $student1026 = getStudentByMonthYearAndNpp($year,$month,2,$studentsByMonth);?>

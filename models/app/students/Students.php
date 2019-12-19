@@ -19,6 +19,7 @@ use yii\web\UploadedFile;
  * @property string $name
  * @property int $id_org
  * @property string $code
+ * @property string $old_code
  * @property int $education_status
  * @property string $date_create
  * @property int $status
@@ -67,19 +68,19 @@ class Students extends ActiveRecord
     {
         return [
 
-           /* [['rasp_act4'],'file','skipOnEmpty'=>false,'when'=>function($model)
-            {
-                if ($model->perevod)
-                    return true;
-                return false;
-            },'uploadRequired'=>'При переводе на бюджет требуется загрузить файл'],*/
+            /* [['rasp_act4'],'file','skipOnEmpty'=>false,'when'=>function($model)
+             {
+                 if ($model->perevod)
+                     return true;
+                 return false;
+             },'uploadRequired'=>'При переводе на бюджет требуется загрузить файл'],*/
             [['id_org', 'education_status', 'status', 'osnovanie', 'grace_period','id_number_pp','id_bank','perevod'], 'integer'],
             [[ 'date_create','date_start',
                 'date_start_grace_period1', 'date_end_grace_period1',
                 'date_start_grace_period2', 'date_end_grace_period2',
                 'date_start_grace_period3', 'date_end_grace_period3',
                 'date_credit','date_status'], 'safe'],
-            [['name', 'code',], 'string', 'max' => 255],
+            [['name', 'code','old_code'], 'string', 'max' => 255],
             [['isEnder'],'boolean'],
             [['date_ender'],'required','when'=>function($model){
                 return $model->isEnder ? true : false;
@@ -199,7 +200,7 @@ class Students extends ActiveRecord
             $ret = [
                 ['class' => 'yii\grid\SerialColumn'],
                 ['attribute' => 'name', 'label' => "ФИО обучающегося", 'encodeLabel' => false],
-                ['attribute' => 'organization', 'value' => 'organization.short_name', 'label' => 'Наименование ООВО', 'encodeLabel' => false],
+                ['attribute' => 'organization', 'value' => 'organization.name', 'label' => 'Наименование ООВО', 'encodeLabel' => false],
                 ['attribute' => 'code', 'label' => 'Код направления подготовки', 'encodeLabel' => false],
                 ['attribute' => 'education_status', 'format' => 'raw', 'label' => 'Статус обучающегося', 'encodeLabel' => false, 'content' => function ($model) {
                     $os = mb_substr(Students::getOsnovanie()[!empty($model->osnovanie) ? $model->osnovanie : 0], 0, 50);
@@ -290,7 +291,7 @@ class Students extends ActiveRecord
             $ret = [
                 ['class' => 'yii\grid\SerialColumn'],
                 ['attribute' => 'name', 'label' => "ФИО <br> обучающегося", 'encodeLabel' => false],
-                ['attribute' => 'organization', 'value' => 'organization.short_name', 'label' => 'Наименование <br> ООВО', 'encodeLabel' => false],
+                ['attribute' => 'organization', 'value' => 'organization.name', 'label' => 'Наименование <br> ООВО', 'encodeLabel' => false],
                 ['attribute' => 'code', 'label' => 'Код <br> направления <br> подготовки', 'encodeLabel' => false],
                 ['attribute' => 'education_status', 'format' => 'raw', 'label' => 'Статус <br> обучающегося', 'encodeLabel' => false, 'content' => function ($model) {
                     $os = mb_substr(Students::getOsnovanie()[!empty($model->osnovanie) ? $model->osnovanie : 0], 0, 50);

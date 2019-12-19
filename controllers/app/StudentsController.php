@@ -110,7 +110,7 @@ class StudentsController extends AppController
             'YEAR(date_start)'=>$searchModel->year,
             'id_number_pp'=>$searchModel->id_number_pp,
             'id_org'=>$searchModel->id_org,
-            ] );
+        ] );
         $exportProvider = new ActiveDataProvider( ['query' => $studentsExport, 'pagination' => false] );
 
 
@@ -342,12 +342,24 @@ class StudentsController extends AppController
     {
 
         $model = $this->findModel( $id );
+        $model->old_code = $model->code;
         $orgs = Organizations::getOrgs();
         $docTypes = StudentDocumentTypes::getActive()->all();
         $file = new Files();
         $modelDFlag = false;
 
         if ( $model->load( Yii::$app->request->post() ) ) {
+            if ($model->old_code != $model->code){
+                $students = Students::find()->where(['name'=>$model->name,'date_credit'=>$model->date_credit]);
+                $students->andWhere(['<>','id',$model->id]);
+                $students = $students->all();
+                foreach ($students as $key => $s){
+                    $s->old_code = $s->code;
+                    $s->code = $model->code;
+                    $s->save(false);
+                }
+
+            }
             if ( $this->cans[ 0 ] || $this->cans[ 1 ] )
                 $model->status = 1;
             if ( !$model->dateLastStatus ) {
@@ -367,8 +379,7 @@ class StudentsController extends AppController
                     for ($month = $month0;$month<=12;$month++){
                         $sts = Students::find()->where([
                             'id_org'=>$model->id_org,'YEAR(date_start)'=>$year,'MONTH(date_start)'=>$month,
-                            'name'=>$model->name,'code'=>$model->code
-                        ])->all();
+                            'name'=>$model->name])->all();
                         if ($sts){
                             foreach ($sts as $st){
                                 $st->education_status = $model->education_status;
