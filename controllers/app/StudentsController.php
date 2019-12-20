@@ -255,8 +255,14 @@ class StudentsController extends AppController
 
         $subQ = Students::find()->select(['id','min(date_start) min_date','name','date_credit'])->where(['name'=>$model->name,'date_credit'=>$model->date_credit]);
         $minS = Students::find()->from('students t1')->join('JOIN',['t2'=>$subQ],'t2.min_date=t1.date_start and t2.name=t1.name and t2.date_credit=t1.date_credit')->one();
-
-        $history = ($minS) ? StudentsHistory::findOne(['id_student'=>$minS->id]) : new StudentsHistory();
+        $history = new StudentsHistory();
+        if ($minS){
+            $history =  StudentsHistory::findOne(['id_student'=>$minS->id]);
+            if (!$history){
+                $history = new StudentsHistory();
+            }
+        }
+      //  $history = ($minS) ?  ? $st : new StudentsHistory() : new StudentsHistory();
         $changes = ArrayHelper::map(Changes::find()->select(['id','change','system_status'])->where(['system_status'=>1])->all(),'id','change');
         if ($history->load(Yii::$app->request->post()))
         {
@@ -266,10 +272,7 @@ class StudentsController extends AppController
                 $st->system_status = 0;
                 $st->save();
             }
-            $stMin = Students::find()
-                ->select(['Min(date_start) minV','id','name','code','date_credit'])
-                ->where(['name'=>$model->name,'code'=>$model->code,'date_credit'=>$model->date_credit])->one();
-            $history->id_student = $stMin['id'];
+            $history->id_student = $minS->id;
             $history->id_user_from = Yii::$app->user->getId();
             $history->save();
 

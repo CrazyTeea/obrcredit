@@ -91,20 +91,22 @@ $rasp_act_otch = StudentDocs::getDocByDescriptorName('rasp_act_otch',$model->id)
     <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
         <div class="modal-dialog" role="document">
             <div class="modal-content">
+                <?php $form = ActiveForm::begin();?>
                 <div class="modal-header">
                     <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
                     <h4 class="modal-title" id="myModalLabel">Отправить в журнал</h4>
                 </div>
                 <div class="modal-body">
-                    <?php $form = ActiveForm::begin();?>
+
                     <?=$form->field($history,'id_change')->dropDownList($changes)?>
                     <?=$form->field($history,'comment')?>
-                    <?php ActiveForm::end();?>
+
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-default" data-dismiss="modal">Закрыть</button>
-                    <button type="button" class="btn btn-primary">Отправить</button>
+                    <button type="submit" class="btn btn-primary">Отправить</button>
                 </div>
+                <?php ActiveForm::end();?>
             </div>
         </div>
     </div>

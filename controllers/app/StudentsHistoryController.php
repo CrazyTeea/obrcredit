@@ -3,6 +3,8 @@
 namespace app\controllers\app;
 
 use app\models\app\students\Changes;
+use app\models\app\students\Students;
+use app\models\User;
 use Yii;
 use app\models\app\students\StudentsHistory;
 use app\models\app\students\StudentsHistorySearch;
@@ -61,6 +63,20 @@ class StudentsHistoryController extends AppController
         $changes = ArrayHelper::map(Changes::find()->where(['system_status'=>1])->select(['system_status','id','change'])->all(),'id','change');
 
         return $this->render('index', compact('searchModel','dataProvider','changes'));
+    }
+    public function actionAdd(int $id){
+        $model = $this->findModel($id);
+        $st = Students::findOne(['id'=>$model->id_student]);
+        $allStudents = Students::findAll(['name'=>$st->name,'date_credit'=>$st->date_credit]);
+        $user = User::findIdentity(Yii::$app->user->id);
+        $model->id_user_to = $user->id;
+        foreach ($allStudents as $student){
+            $student->system_status = 1;
+            $student->id_org = $user->id_org;
+            $student->save(false);
+        }
+        $model->save(false);
+        return $this->redirect(['get-by-number-and-year','id_number_pp'=>$st->id_number_pp,'year'=>Yii::$app->session->get('year')]);
     }
 
     /**
