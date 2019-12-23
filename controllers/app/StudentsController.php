@@ -95,7 +95,7 @@ class StudentsController extends AppController
             'id_number_pp'=>$searchModel->id_number_pp,
             'id_org'=>$searchModel->id_org,
             'status'=>1
-        ])->all();
+        ])->count();
 
 
 
@@ -358,9 +358,10 @@ class StudentsController extends AppController
                                 $st->osnovanie = $model->osnovanie;
                                 $st->grace_period = $model->grace_period;
                                 $st->date_start_grace_period1 = $model->date_start_grace_period1;
-                                $st->date_start_grace_period2 =$model->date_start_grace_period2;
+                                $st->date_start_grace_period2 = $model->date_start_grace_period2;
+                                $st->date_start_grace_period3 = $model->date_start_grace_period3;
+                                $st->date_end_grace_period1 =$model->date_end_grace_period1;
                                 $st->date_end_grace_period2 =$model->date_end_grace_period2;
-                                $st->date_start_grace_period3 = $model->date_start_grace_period3 ;
                                 $st->date_end_grace_period3 =$model->date_end_grace_period3;
                                 $st->perevod = $model->perevod;
                                 $st->isEnder = $model->isEnder;
@@ -371,6 +372,10 @@ class StudentsController extends AppController
                                     $date->id_student = $st->id;
                                     $date->date_end = date('Y-m-d');
                                     $date->save(false);
+                                }
+                                else{
+                                    $st->dateLastStatus->date_end = date('Y-m-d');
+                                    $st->dateLastStatus->save(false);
                                 }
 
                                 $st->save(false);
