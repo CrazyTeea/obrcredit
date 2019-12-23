@@ -28,7 +28,7 @@ $this->params['breadcrumbs'][] = $this->title;
 YiiAsset::register($this);
 
 $files = [];
-$canUpdate = ($cans[0] || $model->status != 2) ? 1 : 0;
+$canUpdate = (!$cans[2] || $model->status != 2) ? 1 : 0;
 if (isset($model->docs)) {
     foreach ($model->docs as $doc) {
         if (isset($doc->type)) {
