@@ -12,6 +12,9 @@ a {
 .toVisible:hover{
     background-color: #8bb8df !important;
   }
+#zhurnal_button{
+  background: #A3D8FF;
+}
 .row #no{
     cursor: not-allowed ;
   }

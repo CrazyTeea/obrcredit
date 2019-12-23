@@ -7,7 +7,7 @@
     "test": "tests"
   },
   "scripts": {
-    "dev": "webpack-dev-server --config config/webpack.dev.config.js --hot --inline",
+    "dev": "webpack-dev-server --config config/webpack.dev.config.js --hot --inline --watch",
     "prod": "webpack --config config/webpack.prod.config.js"
   },
   "repository": {
@@ -19,6 +19,8 @@
   "license": "ISC",
   "homepage": "https://bitbucket.org/CrazyTea/educational_lending#readme",
   "devDependencies": {
+    "browser-sync": "^2.26.7",
+    "browser-sync-webpack-plugin": "^2.2.2",
     "webpack-cli": "^3.3.9"
   },
   "dependencies": {

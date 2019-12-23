@@ -87,15 +87,13 @@ function getBanks(int $year,int $month,int $nPP, array $students){
                         </div>
                         <hr>
                         <p>
-                            <?=Html::a('Постановление <br> правительства №197',['/app/students-history/get-by-number-and-year','id_number_pp'=>1,'year'=>$year],['class'=>'btn btn-block btn-lg btn-primary'])?>
+                            <?=Html::a('Постановление <br> правительства №197',['/app/students-history/get-by-number-and-year','id_number_pp'=>1,'year'=>$year],['id'=>'zhurnal_button','class'=>'btn btn-block btn-lg'])?>
                         </p>
-
                         <p>
-                            <?=Html::a('Постановление <br> правительства №699',['/app/students-history/get-by-number-and-year','id_number_pp'=>3,'year'=>$year],['class'=>'btn btn-block btn-lg btn-primary'])?>
+                            <?=Html::a('Постановление <br> правительства №699',['/app/students-history/get-by-number-and-year','id_number_pp'=>3,'year'=>$year],['id'=>'zhurnal_button','class'=>'btn btn-block btn-lg'])?>
                         </p>
-
                         <p>
-                            <?=Html::a('Постановление <br> правительства №1026',['/app/students-history/get-by-number-and-year','id_number_pp'=>2,'year'=>$year],['class'=>'btn btn-block btn-lg btn-primary'])?>
+                            <?=Html::a('Постановление <br> правительства №1026',['/app/students-history/get-by-number-and-year','id_number_pp'=>2,'year'=>$year],['id'=>'zhurnal_button','class'=>'btn btn-block btn-lg'])?>
                         </p>
 
                     </div>
