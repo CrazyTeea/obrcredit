@@ -231,7 +231,7 @@ class Students extends ActiveRecord
 
                     $dta = $data;
                     if ($model->isEnder)
-                        return "Выпускник" . Yii::$app->formatter->asDate($model->date_ender);
+                        return "Выпускник" ;
 
                     return ($model->education_status) ? $l = ($model->perevod) ? "Переведен на бюджет" : "Обучается" : " $dta";
                 }],
