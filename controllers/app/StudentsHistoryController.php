@@ -70,26 +70,27 @@ class StudentsHistoryController extends AppController
     }
     public function actionAdd(int $id){
         $this->updateRouteHistory('/app/students-history/add');
-
-        if ($post = Yii::$app->request->post()){
-            var_dump($post);exit();
-        }else{
-
+        $id_org = null;
+        if (Yii::$app->request->getIsPost()){
+            $post = Yii::$app->request->post();
+            $id_org = $post['id_org'];
+        }else {
+            $user = User::findIdentity(Yii::$app->user->id);
+            $id_org = $user->id_org;
+        }
         $model = $this->findModel($id);
         $st = Students::findOne(['id'=>$model->id_student]);
         $allStudents = Students::findAll(['name'=>$st->name,'date_credit'=>$st->date_credit]);
-        $user = User::findIdentity(Yii::$app->user->id);
-        $model->id_user_to = $user->id;
+
+        $model->id_user_to = Yii::$app->user->id;
         foreach ($allStudents as $student){
             $student->system_status = 1;
             $student->id_org_old = $student->id_org;
-            $student->id_org = $user->id_org;
+            $student->id_org = $id_org;
             $student->save(false);
         }
         $model->save(false);
-       }
-        exit();
-     //   return $this->redirect(['get-by-number-and-year','id_number_pp'=>$st->id_number_pp,'year'=>Yii::$app->session->get('year')]);
+        return $this->redirect(['get-by-number-and-year','id_number_pp'=>$st->id_number_pp,'year'=>Yii::$app->session->get('year')]);
     }
 
     /**

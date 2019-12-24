@@ -129,7 +129,7 @@ class Students extends ActiveRecord
         return $this->hasOne(Organizations::className(),['id'=>'id_org']);
     }
     public function getOldOrganization(){
-        return $this->hasOne(Organizations::className(),['id'=>'id_']);
+        return $this->hasOne(Organizations::className(),['id'=>'id_org_old']);
     }
 
     /**

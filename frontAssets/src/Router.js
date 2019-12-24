@@ -5,7 +5,6 @@ export default route => new Promise((resolve, reject) => {
         href = href.split('%2F');
     else href = href.split('/');
     if (Array.isArray(route)) {
-        console.log(href);
         route.forEach(item => {
 
             if (href.indexOf(item) !== -1) {

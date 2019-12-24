@@ -136,18 +136,19 @@ class StudentsHistorySearch extends StudentsHistory
             ['attribute'=>'student.numberPP.number','label'=>'Номер<br>пп','encodeLabel' => false],
             ['attribute'=>'student.bank.name','label'=>'Наименование<br>банка','encodeLabel' => false],
             ['attribute'=>'userFrom.username','label'=>'Первоначальная<br>организация','encodeLabel' => false,'value'=>function($model){
-                if (isset($model->userFrom)) {
-                    if (isset($model->student->organization))
-                        return $model->student->organization->name . "(" . $model->userFrom->username . ")";
-                    return  "Не известная организация(" . $model->userFrom->username . ")";
-                }
-                return '';
+
+                    if (isset($model->student->oldOrganization))
+                        return $model->student->oldOrganization->name;
+                    elseif(isset($model->student->organization))
+                        return $model->student->organization->name;
+                    else
+                        return  "Неизвестная организация";
             }/*,'visible'=>!Yii::$app->user->can('podved')*/],
             ['attribute'=>'userTo.username','label'=>'Конечная<br>организация','encodeLabel' => false,'value'=>function($model){
                 if (isset($model->userTo)) {
-                    if (isset($model->userTo->organization))
-                        return $model->userTo->organization->name . "(" . $model->userTo->username . ")";
-                    return  "Не известная организация(" . $model->userTo->username . ")";
+                    if (isset($model->student->organization) and isset($model->student->oldOrganization))
+                        return $model->student->organization->name . "(" . $model->userTo->username . ")";
+                    return  "Неизвестная организация(" . $model->userTo->username . ")";
                 }
                 return '';
             }],
@@ -184,6 +185,7 @@ class StudentsHistorySearch extends StudentsHistory
                     <h4 class='modal-title' id='myModalLabel'>Отправить в журнал</h4>
                 </div>
                 <div class='modal-body'>"
+                                .Html::hiddenInput(Yii::$app->request->csrfParam,Yii::$app->request->getCsrfToken())
                                 .Select2::widget([
                                     'name' => 'id_org',
                                     'data' => $orgs,
