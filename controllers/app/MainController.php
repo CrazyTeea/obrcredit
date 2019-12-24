@@ -4,15 +4,16 @@
 namespace app\controllers\app;
 
 
-use app\models\app\Banks;
 use app\models\app\students\Students;
+use app\models\app\students\StudentsHistory;
 use Yii;
 use yii\data\ActiveDataProvider;
-use yii\helpers\ArrayHelper;
+use yii\db\Query;
 
 class MainController extends AppController
 {
     public function actionIndex(){
+        $this->updateRouteHistory('/app/main/index');
         $studentsByYear = null;
         for ($i = 2018;$i<=2021;$i++){
             if (!($this->cans[0] || $this->cans[1])) {
@@ -28,6 +29,7 @@ class MainController extends AppController
         return $this->render('index',compact('studentsByYear'));
     }
     public function actionMonth($year = null){
+        $this->updateRouteHistory('/app/main/month');
         if (is_null($year))
             return $this->redirect(['index']);
 
@@ -53,7 +55,12 @@ class MainController extends AppController
                 new ActiveDataProvider([ 'query'=>Students::find()->where(['system_status'=>1,'MONTH(date_start)'=>$i,'YEAR(date_start)'=>$year])]);
         }
 
+        $st_history_subq = StudentsHistory::find()->select(['id_student','k.id','k.id_number_pp','k.date_start'])->where(['year(k.date_start)'=>$year])
+            ->joinWith(['student k']);
+        $nums = (new Query())->select(['npp.id','number','sh.*','COUNT(id_number_pp) as students_count'])
+            ->from(['numbers_pp npp'])->join('JOIN',['sh'=>$st_history_subq],'sh.id_number_pp = npp.id')->groupBy(['npp.id'])->all();
 
-        return $this->render('month',compact('studentsByMonth','exportQuery'));
+
+        return $this->render('month',compact('studentsByMonth','exportQuery','nums'));
     }
 }

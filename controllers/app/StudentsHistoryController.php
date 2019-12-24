@@ -3,12 +3,15 @@
 namespace app\controllers\app;
 
 use app\models\app\students\Changes;
+use app\models\app\students\NumbersPp;
 use app\models\app\students\Students;
 use app\models\User;
 use Yii;
 use app\models\app\students\StudentsHistory;
 use app\models\app\students\StudentsHistorySearch;
 use app\controllers\app\AppController;
+use yii\db\Query;
+use yii\db\QueryBuilder;
 use yii\helpers\ArrayHelper;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
@@ -39,6 +42,7 @@ class StudentsHistoryController extends AppController
      */
     public function actionIndex()
     {
+        $this->updateRouteHistory('/app/students-history/index');
         $searchModel = new StudentsHistorySearch();
         $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
 
@@ -50,7 +54,7 @@ class StudentsHistoryController extends AppController
         Yii::$app->session->set('year',$year);
         Yii::$app->session->set('nPP',$id_number_pp);
 
-
+        $this->updateRouteHistory('/app/students-history/get-by-number-and-year');
 
         $searchModel = new StudentsHistorySearch();
         $searchModel->id_number_pp = $id_number_pp;
@@ -65,6 +69,12 @@ class StudentsHistoryController extends AppController
         return $this->render('index', compact('searchModel','dataProvider','changes'));
     }
     public function actionAdd(int $id){
+        $this->updateRouteHistory('/app/students-history/add');
+
+        if ($post = Yii::$app->request->post()){
+            var_dump($post);exit();
+        }else{
+
         $model = $this->findModel($id);
         $st = Students::findOne(['id'=>$model->id_student]);
         $allStudents = Students::findAll(['name'=>$st->name,'date_credit'=>$st->date_credit]);
@@ -72,11 +82,14 @@ class StudentsHistoryController extends AppController
         $model->id_user_to = $user->id;
         foreach ($allStudents as $student){
             $student->system_status = 1;
+            $student->id_org_old = $student->id_org;
             $student->id_org = $user->id_org;
             $student->save(false);
         }
         $model->save(false);
-        return $this->redirect(['get-by-number-and-year','id_number_pp'=>$st->id_number_pp,'year'=>Yii::$app->session->get('year')]);
+       }
+        exit();
+     //   return $this->redirect(['get-by-number-and-year','id_number_pp'=>$st->id_number_pp,'year'=>Yii::$app->session->get('year')]);
     }
 
     /**
@@ -87,6 +100,7 @@ class StudentsHistoryController extends AppController
      */
     public function actionView($id)
     {
+        $this->updateRouteHistory('/app/students-history/view');
         return $this->render('view', [
             'model' => $this->findModel($id),
         ]);
@@ -99,6 +113,7 @@ class StudentsHistoryController extends AppController
      */
     public function actionCreate()
     {
+        $this->updateRouteHistory('/app/students-history/create');
         $model = new StudentsHistory();
 
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
@@ -119,6 +134,7 @@ class StudentsHistoryController extends AppController
      */
     public function actionUpdate($id)
     {
+        $this->updateRouteHistory('/app/students-history/update');
         $model = $this->findModel($id);
 
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
@@ -141,6 +157,7 @@ class StudentsHistoryController extends AppController
      */
     public function actionDelete($id)
     {
+        $this->updateRouteHistory('/app/students-history/delete');
         $this->findModel($id)->delete();
 
         return $this->redirect(['index']);

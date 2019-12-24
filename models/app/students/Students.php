@@ -36,6 +36,7 @@ use yii\web\UploadedFile;
  * @property string $date_status
  * @property int $id_bank
  * @property int $perevod
+ * @property int $id_org_old
  * @property string $date_start
  * @property string $date_ender
  * @property boolean $isEnder
@@ -74,7 +75,7 @@ class Students extends ActiveRecord
                      return true;
                  return false;
              },'uploadRequired'=>'При переводе на бюджет требуется загрузить файл'],*/
-            [['id_org', 'education_status', 'status', 'osnovanie', 'grace_period','id_number_pp','id_bank','perevod'], 'integer'],
+            [['id_org', 'education_status', 'status', 'osnovanie', 'grace_period','id_number_pp','id_bank','perevod','id_org_old'], 'integer'],
             [[ 'date_create','date_start',
                 'date_start_grace_period1', 'date_end_grace_period1',
                 'date_start_grace_period2', 'date_end_grace_period2',
@@ -202,7 +203,7 @@ class Students extends ActiveRecord
                 ['attribute' => 'name', 'label' => "ФИО обучающегося", 'encodeLabel' => false],
                 ['attribute' => 'organization', 'value' => 'organization.name', 'label' => 'Наименование ООВО', 'encodeLabel' => false],
                 ['attribute' => 'code', 'label' => 'Код направления подготовки', 'encodeLabel' => false],
-                ['attribute' => 'education_status', 'format' => 'raw', 'label' => 'Статус обучающегося', 'encodeLabel' => false, 'content' => function ($model) {
+                ['attribute' => 'education_status', 'format' => 'raw', 'label' => 'Статус <br> обучающегося', 'encodeLabel' => false, 'content' => function ($model) {
                     $os = mb_substr(Students::getOsnovanie()[!empty($model->osnovanie) ? $model->osnovanie : 0], 0, 50);
                     $data = "";
                     switch ($model->osnovanie) {
@@ -237,11 +238,10 @@ class Students extends ActiveRecord
 
                     $dta = ($date) ? "$date $data" : '';
                     if ($model->isEnder)
-                        return "<span class='label label-info'>Выпускник</span><br>" . Yii::$app->formatter->asDate($model->date_ender);
+                        return "Выпускник" . Yii::$app->formatter->asDate($model->date_ender);
 
-                    return ($model->education_status) ? $model->perevod ? "<span class='label label-info'>Переведен на бюджет</span>" : "<span class='label label-info'> Обучается</span>" : $dta;
-                }
-                ],
+                    return ($model->education_status) ? $l = ($model->perevod) ? "Переведен на бюджет" : "Обучается" : " $dta";
+                }],
                 ['attribute' => 'grace_period', 'encodeLabel' => false, 'value' =>
                     function ($model) {
                         $data = "";
@@ -330,7 +330,7 @@ class Students extends ActiveRecord
                     if ($model->isEnder)
                         return "<span class='label label-info'>Выпускник</span><br>" . Yii::$app->formatter->asDate($model->date_ender);
 
-                    return ($model->education_status) ? $model->perevod ? "<span class='label label-info'>Переведен на бюджет</span>" : "<span class='label label-info'> Обучается</span>" : $dta;
+                    return ($model->education_status) ? $l = ($model->perevod) ? "<span class='label label-info'>Переведен на бюджет</span>" : "<span class='label label-info'> Обучается</span>" : "$dta";
                 }
                 ],
                 ['attribute' => 'grace_period', 'encodeLabel' => false, 'value' =>

@@ -31,12 +31,14 @@ class BanksController extends AppController
         ];
     }
 
+
     /**
      * Lists all Banks models.
      * @return mixed
      */
     public function actionIndex()
     {
+        $this->updateRouteHistory('/app/banks/index');
         $searchModel = new BanksSearch();
         $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
 
@@ -54,6 +56,7 @@ class BanksController extends AppController
      */
     public function actionView($id)
     {
+        $this->updateRouteHistory('/app/banks/view');
         return $this->render('view', [
             'model' => $this->findModel($id),
         ]);
@@ -67,7 +70,7 @@ class BanksController extends AppController
     public function actionCreate()
     {
         $model = new Banks();
-
+        $this->updateRouteHistory('/app/banks/create');
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
             return $this->redirect(['view', 'id' => $model->id]);
         }
@@ -86,6 +89,7 @@ class BanksController extends AppController
      */
     public function actionUpdate($id)
     {
+        $this->updateRouteHistory('/app/banks/update');
         $model = $this->findModel($id);
 
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
@@ -108,6 +112,7 @@ class BanksController extends AppController
      */
     public function actionDelete($id)
     {
+        $this->updateRouteHistory('/app/banks/delete');
         $this->findModel($id)->delete();
 
         return $this->redirect(['index']);

@@ -2,8 +2,12 @@
 
 namespace app\models\app\students;
 
+use app\models\app\Organizations;
+use kartik\select2\Select2;
 use Yii;
 use yii\base\Model;
+use yii\bootstrap\ActiveForm;
+use yii\bootstrap\Html;
 use yii\data\ActiveDataProvider;
 use app\models\app\students\StudentsHistory;
 use yii\helpers\ArrayHelper;
@@ -49,7 +53,7 @@ class StudentsHistorySearch extends StudentsHistory
     public function search($params)
     {
         $query = StudentsHistory::find()->joinWith(['student']);
-        if (!is_null($this->id_number_pp) and !is_null($this->year)){
+        if (isset($this->id_number_pp) and isset($this->year)){
             $query->where([Students::tableName().'.id_number_pp'=>$this->id_number_pp,'YEAR('.Students::tableName().'.date_start)'=>$this->year]);
         }
         // add conditions that should always apply here
@@ -82,6 +86,7 @@ class StudentsHistorySearch extends StudentsHistory
         return $dataProvider;
     }
     public static function getColumns(){
+        $orgs = Organizations::getOrgs();
         return [
             ['class' => 'yii\grid\SerialColumn'],
             ['attribute'=>'student.name','label'=>'ФИО<br>обучающегося','encodeLabel' => false],
@@ -132,8 +137,8 @@ class StudentsHistorySearch extends StudentsHistory
             ['attribute'=>'student.bank.name','label'=>'Наименование<br>банка','encodeLabel' => false],
             ['attribute'=>'userFrom.username','label'=>'Первоначальная<br>организация','encodeLabel' => false,'value'=>function($model){
                 if (isset($model->userFrom)) {
-                    if (isset($model->userFrom->organization))
-                        return $model->userFrom->organization->name . "(" . $model->userFrom->username . ")";
+                    if (isset($model->student->organization))
+                        return $model->student->organization->name . "(" . $model->userFrom->username . ")";
                     return  "Не известная организация(" . $model->userFrom->username . ")";
                 }
                 return '';
@@ -160,8 +165,42 @@ class StudentsHistorySearch extends StudentsHistory
                 'class' => 'yii\grid\ActionColumn',
                 'template'=>'{view}{add}',
                 'buttons'=>[
-                    'add'=>function ($url, $model, $key) {
-                        return "<a href='$url' aria-label='Скрыть' data-pjax='0'><span class='glyphicon glyphicon-plus'></span></a>";
+                    'add'=>function ($url, $model, $key) use ($orgs) {
+                            $btn = "<a href='$url' aria-label='Скрыть' data-pjax='0'><span class='glyphicon glyphicon-plus'></span></a>";
+                        if (!Yii::$app->session->get('cans')[2]) {
+
+                            $btn = "
+<!-- Button trigger modal -->
+    <a  class='glyphicon glyphicon-plus' data-toggle='modal' data-target='#myModal_$model->id' style='margin-bottom: 5px'>
+    </a>
+
+    <!-- Modal -->
+    <div class='modal fade' id='myModal_$model->id' tabindex='-1' role='dialog' aria-labelledby='myModalLabel'>
+        <div class='modal-dialog' role='document'>
+            <div class='modal-content'>
+            <form method='post' action='$url'>
+                <div class='modal-header'>
+                    <button type='button' class='close' data-dismiss='modal' aria-label='Close'><span aria-hidden='true'>&times;</span></button>
+                    <h4 class='modal-title' id='myModalLabel'>Отправить в журнал</h4>
+                </div>
+                <div class='modal-body'>"
+                                .Select2::widget([
+                                    'name' => 'id_org',
+                                    'data' => $orgs,
+                                ]).
+                    "
+                </div>
+                <div class='modal-footer'>
+                    <button type='button' class='btn btn-default' data-dismiss='modal'>Закрыть</button>
+                    <button type='submit' class='btn btn-primary'>Отправить</button>
+                </div>
+            </form>
+            </div>
+        </div>
+    </div>
+";
+                        }
+                        return $btn;
                     },
                     'view'=>function ($url, $model, $key) {
                         $u = Url::to(['app/students/view','id'=>$model->student->id]);

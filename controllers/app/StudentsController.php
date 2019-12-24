@@ -76,6 +76,7 @@ class StudentsController extends AppController
      */
     public function actionIndex( $id = null )
     {
+        $this->updateRouteHistory('/app/students/index');
         $searchModel = new StudentsSearch();
 
         if ( !empty( $id ) )
@@ -97,7 +98,7 @@ class StudentsController extends AppController
             'id_number_pp'=>$searchModel->id_number_pp,
             'id_org'=>$searchModel->id_org,
             'status'=>1
-        ])->all();
+        ])->count();
 
 
 
@@ -131,6 +132,7 @@ class StudentsController extends AppController
      */
     public function actionByBank( $id, $nPP, $month )
     {
+        $this->updateRouteHistory('/app/students/by-bank');
         if (!Yii::$app->session->has('year'))
             return $this->redirect(['app/main/index']);
 
@@ -185,6 +187,7 @@ class StudentsController extends AppController
      */
     public function actionApprove( $id = null)
     {
+        $this->updateRouteHistory('/app/students/approve');
         if (is_null($id)) {
             $nPP = Yii::$app->session->get( 'nPP' );
             $id_org = Yii::$app->getSession()[ 'id_org' ];
@@ -250,6 +253,8 @@ class StudentsController extends AppController
      */
     public function actionView( $id )
     {
+        $route = Yii::$app->session->get('route');
+        $this->updateRouteHistory('/app/students/view');
         $docTypes = StudentDocumentTypes::getActive()->all();
         $model = $this->findModel( $id );
 
@@ -274,12 +279,15 @@ class StudentsController extends AppController
             }
             $history->id_student = $minS->id;
             $history->id_user_from = Yii::$app->user->getId();
-            $history->save();
+            if ($history->save())
+                Yii::$app->session->setFlash('history', 'Обучающийся отправлен в журнал изменений.');
+            else
+                Yii::$app->session->setFlash('history', 'Произошла ошибка при добавлении обучающийся в журнал изменений.');
 
 
         }
 
-        return $this->render( 'view',compact('model','docTypes','history','changes'));
+        return $this->render( 'view',compact('model','docTypes','history','changes','route'));
     }
 
     /**
@@ -305,6 +313,7 @@ class StudentsController extends AppController
      */
     public function actionCreate( $id )
     {
+        $this->updateRouteHistory('/app/students/create');
         Yii::$app->session[ 'id_org' ] = $id;
         $model = new Students();
         $docTypes = StudentDocumentTypes::getActive()->all();
@@ -329,6 +338,7 @@ class StudentsController extends AppController
 
 
     public function actionAddToHistory($id){
+        $this->updateRouteHistory('/app/students/add-to-history');
         $model = $this->findModel($id);
         $models = Students::find()->where(['name'=>$model->name,'date_credit'=>$model->date_credit])->all();
         foreach ($models as $m){
@@ -353,7 +363,7 @@ class StudentsController extends AppController
      */
     public function actionUpdate( $id )
     {
-
+        $this->updateRouteHistory('/app/students/update');
         $model = $this->findModel( $id );
         $model->old_code = $model->code;
         $orgs = Organizations::getOrgs();
@@ -399,9 +409,10 @@ class StudentsController extends AppController
                                 $st->osnovanie = $model->osnovanie;
                                 $st->grace_period = $model->grace_period;
                                 $st->date_start_grace_period1 = $model->date_start_grace_period1;
-                                $st->date_start_grace_period2 =$model->date_start_grace_period2;
+                                $st->date_start_grace_period2 = $model->date_start_grace_period2;
+                                $st->date_start_grace_period3 = $model->date_start_grace_period3;
+                                $st->date_end_grace_period1 =$model->date_end_grace_period1;
                                 $st->date_end_grace_period2 =$model->date_end_grace_period2;
-                                $st->date_start_grace_period3 = $model->date_start_grace_period3 ;
                                 $st->date_end_grace_period3 =$model->date_end_grace_period3;
                                 $st->perevod = $model->perevod;
                                 $st->isEnder = $model->isEnder;
@@ -412,6 +423,10 @@ class StudentsController extends AppController
                                     $date->id_student = $st->id;
                                     $date->date_end = date('Y-m-d');
                                     $date->save(false);
+                                }
+                                else{
+                                    $st->dateLastStatus->date_end = date('Y-m-d');
+                                    $st->dateLastStatus->save(false);
                                 }
 
                                 $st->save(false);
@@ -429,12 +444,14 @@ class StudentsController extends AppController
         return $this->render( 'update',compact('model','orgs','file','docTypes') );
     }
     public function actionDeleteDoc($id,$desc){
+        $this->updateRouteHistory('/app/students/delete-doc');
         $st = $this->findModel($id);
         $st->deleteDocument($desc);
         return $this->redirect(['view','id'=>$id]);
     }
 
     public function actionToHistory($id){
+        $this->updateRouteHistory('/app/students/to-history');
         $student = $this->findModel($id);
         $students = Students::find()->where(['name'=>$student->name,'code'=>$student->code,'date_credit'=>$student->date_credit])->all();
         foreach ($students as $item){
@@ -450,6 +467,7 @@ class StudentsController extends AppController
      */
     public function actionDelete( $id )
     {
+        $this->updateRouteHistory('/app/students/delete');
         $s=$this->findModel( $id );
         $s->system_status=0;
         $s->save(false);
@@ -461,6 +479,7 @@ class StudentsController extends AppController
      * @return string
      */
     public function actionDeleteView(){
+        $this->updateRouteHistory('/app/students/delete-view');
         $model = new StudentsSearch2();
         $provider = $model->search(Yii::$app->request->queryParams);
         $orgs = Organizations::find()->where(['system_status'=>1])->all();

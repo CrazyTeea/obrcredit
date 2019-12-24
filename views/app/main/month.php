@@ -3,6 +3,7 @@
 use kartik\export\ExportMenu;
 use yii\bootstrap\Html;
 use yii\grid\GridView;
+use yii\helpers\ArrayHelper;
 use yii\helpers\Url;
 
 
@@ -19,7 +20,7 @@ $cans = Yii::$app->session['cans'];
  * @var array $studentsByMonth
  * @var array $banks
  */
-$year = Yii::$app->session['year'];
+$year = Yii::$app->session['year']*1;
 $startMonth = 1;
 $endMonth = 12;
 if ($year == 2018)
@@ -69,6 +70,13 @@ function getBanks(int $year,int $month,int $nPP, array $students){
     }
     return $banks;
 }
+function getNumPPCount($npp,$nums){
+    foreach ($nums as $num){
+        if ($num['number'] == $npp)
+            return $num['students_count'];
+    }
+    return 0;
+}
 ?>
 
 <h2>Обучающиеся по государственной поддержке образовательного кредитования за <?=$year?> год</h2>
@@ -83,17 +91,26 @@ function getBanks(int $year,int $month,int $nPP, array $students){
                 <div class="thumbnail">
                     <div class="caption">
                         <div class="row">
-                            <div class="col-md-12 text-center"><h2>Журнал изменений</h2></div>
+                            <div class="col-md-12 text-center">
+                                <h2>Журнал изменений
+                                    <span  title="В данном журнале отображаются все не найденные в организации обучающиеся" class="glyphicon glyphicon-question-sign" data-placement="bottom" data-toggle="tooltip"></span>
+                                </h2>
+                            </div>
                         </div>
                         <hr>
+                        <?php if ($year !== 2018): ?>
                         <p>
-                            <?=Html::a('Постановление <br> правительства №197',['/app/students-history/get-by-number-and-year','id_number_pp'=>1,'year'=>$year],['id'=>'zhurnal_button','class'=>'btn btn-block btn-lg'])?>
+                            <?=Html::a('Постановление <br> правительства №197 <br> '.'<span class="text " style="font-size: 16px;"><i> кол-во обучающихся:'. getNumPPCount(197,$nums) .'</i></span>',['/app/students-history/get-by-number-and-year','id_number_pp'=>1,'year'=>$year],['id'=>'zhurnal_button','class'=>'btn btn-block btn-lg'])?>
+
+                        </p>
+                        <?php endif; ?>
+                        <p>
+                            <?=Html::a('Постановление <br> правительства №699 <br> '.'<span class="text " style="font-size: 16px;"><i> кол-во обучающихся:'. getNumPPCount(699,$nums) .'</i></span>',['/app/students-history/get-by-number-and-year','id_number_pp'=>3,'year'=>$year],['id'=>'zhurnal_button','class'=>'btn btn-block btn-lg'])?>
+                            <span> <?php//= \yii\helpers\ArrayHelper::getValue($nums,function ($nums,$defaultValue){return $nums;}) ?></span>
                         </p>
                         <p>
-                            <?=Html::a('Постановление <br> правительства №699',['/app/students-history/get-by-number-and-year','id_number_pp'=>3,'year'=>$year],['id'=>'zhurnal_button','class'=>'btn btn-block btn-lg'])?>
-                        </p>
-                        <p>
-                            <?=Html::a('Постановление <br> правительства №1026',['/app/students-history/get-by-number-and-year','id_number_pp'=>2,'year'=>$year],['id'=>'zhurnal_button','class'=>'btn btn-block btn-lg'])?>
+                            <?=Html::a('Постановление <br> правительства №1026 <br> '.'<span class="text " style="font-size: 16px;"><i> кол-во обучающихся:'. getNumPPCount(1026,$nums) .'</i></span>',['/app/students-history/get-by-number-and-year','id_number_pp'=>2,'year'=>$year],['id'=>'zhurnal_button','class'=>'btn btn-block btn-lg'])?>
+                            <span> <?php//= \yii\helpers\ArrayHelper::getValue($nums,function ($nums,$defaultValue){return $nums;}) ?></span>
                         </p>
 
                     </div>

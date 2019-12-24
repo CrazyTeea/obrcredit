@@ -3,6 +3,7 @@
 
 use app\models\app\students\Students;
 use yii\bootstrap\ActiveForm;
+use yii\bootstrap\Modal;
 use yii\helpers\Html;
 use yii\web\YiiAsset;
 
@@ -62,6 +63,12 @@ $rasp_act_otch = StudentDocs::getDocByDescriptorName('rasp_act_otch',$model->id)
 
     <h1><?= Html::encode($this->title) ?></h1>
 
+    <div class="alert alert-success">
+        <p>
+            <?=Yii::$app->session->getFlash('history',null,true)?>
+        </p>
+    </div>
+
     <?php if ($canUpdate):?>
         <?= Html::a('Редактировать', ['update', 'id' => $model->id],['class'=>'btn btn-primary']) ?>
     <?php endif;?>
@@ -76,15 +83,11 @@ $rasp_act_otch = StudentDocs::getDocByDescriptorName('rasp_act_otch',$model->id)
         ]) ?>
 
     <?php endif;?>
-    <!--
-    <?= ($model->status==1) ?  Html::a('Утвердить', ['approve', 'id' => $model->id],['class'=>'btn btn-success']) : ''?>
-    -->
-        <!--<?= Html::a('Экспорт',['export','id'=>$model->id],['class'=>'btn btn-default']) ?>
-        -->
+
 
     <!-- Button trigger modal -->
-    <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#myModal">
-        Отправить в журнал
+    <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#myModal" style="margin-bottom: 5px">
+        Не найден
     </button>
 
     <!-- Modal -->
@@ -111,7 +114,34 @@ $rasp_act_otch = StudentDocs::getDocByDescriptorName('rasp_act_otch',$model->id)
         </div>
     </div>
 
-    <?= Html::a('Вернуться к списку',['app/students/by-bank','id'=>$model->id_bank,'nPP'=>$model->id_number_pp,'month'=>$month],['class'=>'btn btn-default']) ?>
+
+    <?php
+    $routeArgs = [$route];
+    switch ($route) {
+        case '/app/students-history/get-by-number-and-year':
+            $routeArgs = array_merge( $routeArgs , [
+                    'id_number_pp'=>$model->id_number_pp,
+                    'year'=>date('Y',strtotime($model->date_start))
+                    ]);
+            break;
+            case '/app/students/index':
+            $routeArgs = array_merge($routeArgs , [
+                    'id'=>$model->id_org,
+                    ]);
+            break;
+            case '/app/students/by-bank':
+                $routeArgs = array_merge($routeArgs , [
+                        'id'=>$model->id_bank,
+                        'nPP'=>$model->id_number_pp,
+                        'month'=>date('m',strtotime($model->date_start))
+                        ]);
+                break;
+    }
+    if ($route !== '/app/students/view' )
+        echo Html::a('Вернуться к списку',$routeArgs,['class'=>'btn btn-default']);
+
+    ?>
+
     <table class="table table-bordered">
         <thead>
         <tr>
@@ -275,5 +305,6 @@ $rasp_act_otch = StudentDocs::getDocByDescriptorName('rasp_act_otch',$model->id)
         </tr>
         </tbody>
     </table>
+
 
 </div>

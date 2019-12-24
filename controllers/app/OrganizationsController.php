@@ -57,7 +57,7 @@ class OrganizationsController extends AppController
     public function actionIndex()
     {
 
-
+        $this->updateRouteHistory('/app/organizations/index');
         $searchModel = new OrganizationsSearch();
         $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
 
@@ -95,6 +95,7 @@ class OrganizationsController extends AppController
      */
     public function actionByBank( $id_bank=null, $month = null, $nPP=null){
 
+        $this->updateRouteHistory('/app/organizations/by-bank');
         if (is_null($id_bank) || is_null($month) || is_null($nPP))
             return $this->redirect(['app/main/index']);
         if (!Yii::$app->session->has('year'))
@@ -163,6 +164,7 @@ class OrganizationsController extends AppController
      */
     public function actionView($id)
     {
+        $this->updateRouteHistory('/app/organizations/view');
         return $this->render('view', [
             'model' => $this->findModel($id),
         ]);
@@ -175,6 +177,7 @@ class OrganizationsController extends AppController
      */
     public function actionCreate()
     {
+        $this->updateRouteHistory('/app/organizations/create');
         $model = new Organizations();
 
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
@@ -195,6 +198,7 @@ class OrganizationsController extends AppController
      */
     public function actionUpdate($id)
     {
+        $this->updateRouteHistory('/app/organizations/update');
         $model = $this->findModel($id);
 
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
@@ -217,6 +221,7 @@ class OrganizationsController extends AppController
      */
     public function actionDelete($id)
     {
+        $this->updateRouteHistory('/app/organizations/delete');
         $this->findModel($id)->delete();
 
         return $this->redirect(['index']);
