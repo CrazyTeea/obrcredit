@@ -60,6 +60,23 @@ class StudentsHistorySearch extends StudentsHistory
 
         $dataProvider = new ActiveDataProvider([
             'query' => $query,
+            'sort' => ['attributes' => [
+                'student.name'=>[
+                    'asc' => ['students.name' => SORT_ASC],
+                    'desc' => ['students.name' => SORT_DESC],
+                ],
+                'student.code'=>[
+                    'asc' => ['students.code' => SORT_ASC],
+                    'desc' => ['students.code' => SORT_DESC],
+                ],
+                'student.date_credit'=>[
+                    'asc' => ['students.date_credit' => SORT_ASC],
+                    'desc' => ['students.date_credit' => SORT_DESC],
+                ],
+
+
+            ]
+            ]
         ]);
 
         $this->load($params);
@@ -81,6 +98,7 @@ class StudentsHistorySearch extends StudentsHistory
             'id_user_to' => $this->id_user_to,
         ]);
 
+
     //    $query->andFilterWhere(['like', 'changes', $this->changes]);
 
         return $dataProvider;
@@ -89,53 +107,12 @@ class StudentsHistorySearch extends StudentsHistory
         $orgs = Organizations::getOrgs();
         return [
             ['class' => 'yii\grid\SerialColumn'],
-            ['attribute'=>'student.name','label'=>'ФИО<br>обучающегося','encodeLabel' => false],
-            ['attribute'=>'student.code','label'=>'Код<br>направления','encodeLabel' => false],
-            /*['attribute' => 'student.education_status', 'format' => 'raw', 'label' => 'Статус <br> обучающегося', 'encodeLabel' => false,
-                'content' => function ( $model ) {
-                $os = mb_substr( Students::getOsnovanie()[ !empty( $model->student->osnovanie ) ? $model->student->osnovanie : 0 ], 0, 50 );
-                $data = "";
-                switch ( $model->student->osnovanie ) {
-                    case 1:
-                    case 2:
-                    case 3:
-                    {
-                        $data = "(Пункт 20 $os)";
-                        break;
-                    }
-                    case 4:
-                    case 5:
-                    {
-                        $data = "(Пункт 21 $os)";
-                        break;
-                    }
-                    case 6:
-                    {
-                        $data = "(Пункт 22 $os)";
-                        break;
-                    }
-                    default:
-                    {
-                        $data = "";
-                        break;
-                    }
-                }
-
-                $date = null;
-                if ( isset( $model->student->dateLastStatus ) and isset( $model->student->dateLastStatus->date_end ) )
-                    $date = Yii::$app->getFormatter()->asDate( $model->student->dateLastStatus->date_end );
-
-                $dta = ( $date ) ? "$date $data" : '';
-                if ($model->student->isEnder)
-                    return "<span class='label label-info'>Выпускник</span><br>".Yii::$app->formatter->asDate($model->student->date_ender);
-
-                return ( $model->student->education_status ) ? $model->student->perevod ? "<span class='label label-info'>Переведен на бюджет</span>" : "<span class='label label-info'> Обучается</span>" : $dta;
-            }
-            ],*/
-            ['attribute'=>'student.date_credit','label'=>'Дата заключения<br>кредитного договора','encodeLabel' => false],
-            ['attribute'=>'student.numberPP.number','label'=>'Номер<br>пп','encodeLabel' => false],
-            ['attribute'=>'student.bank.name','label'=>'Наименование<br>банка','encodeLabel' => false],
-            ['attribute'=>'userFrom.username','label'=>'Первоначальная<br>организация','encodeLabel' => false,'value'=>function($model){
+            ['attribute'=>'student.name','label'=>'ФИО<br>обучающегося','encodeLabel' => false,'filter'=>false],
+            ['attribute'=>'student.code','label'=>'Код<br>направления','encodeLabel' => false,'filter'=>false],
+            ['attribute'=>'student.date_credit','label'=>'Дата заключения<br>кредитного договора','encodeLabel' => false,'filter'=>false],
+            ['attribute'=>'student.numberPP.number','label'=>'Номер<br>пп','encodeLabel' => false,'filter'=>false],
+            ['attribute'=>'student.bank.name','label'=>'Наименование<br>банка','encodeLabel' => false,'filter'=>false],
+            ['attribute'=>'userFrom.username','label'=>'Первоначальная<br>организация','filter'=>false,'encodeLabel' => false,'value'=>function($model){
 
                     if (isset($model->student->oldOrganization))
                         return $model->student->oldOrganization->name;
@@ -143,8 +120,8 @@ class StudentsHistorySearch extends StudentsHistory
                         return $model->student->organization->name;
                     else
                         return  "Неизвестная организация";
-            }/*,'visible'=>!Yii::$app->user->can('podved')*/],
-            ['attribute'=>'userTo.username','label'=>'Конечная<br>организация','encodeLabel' => false,'value'=>function($model){
+            }],
+            ['attribute'=>'userTo.username','label'=>'Конечная<br>организация','filter'=>false,'encodeLabel' => false,'value'=>function($model){
                 if (isset($model->userTo)) {
                     if (isset($model->student->organization) and isset($model->student->oldOrganization))
                         return $model->student->organization->name . "(" . $model->userTo->username . ")";
@@ -155,7 +132,7 @@ class StudentsHistorySearch extends StudentsHistory
 
             'change.change',
 
-            ['attribute'=>'period','content'=>function($model){
+            ['attribute'=>'period','filter'=>false,'content'=>function($model){
                 $sql = "SELECT minV.minV,maxV.maxV FROM 
                       (SELECT MIN(date_start) minV from students where name='{$model->student->name}' and code = '{$model->student->code}' and date_credit = '{$model->student->date_credit}') as minV,
                       (SELECT MAX(date_start) maxV from students where name='{$model->student->name}' and code = '{$model->student->code}' and date_credit = '{$model->student->date_credit}') as maxV";
