@@ -63,11 +63,13 @@ $rasp_act_otch = StudentDocs::getDocByDescriptorName('rasp_act_otch',$model->id)
 
     <h1><?= Html::encode($this->title) ?></h1>
 
+    <?php if(Yii::$app->session->getFlash('history')): ?>
     <div class="alert alert-success">
         <p>
             <?=Yii::$app->session->getFlash('history',null,true)?>
         </p>
     </div>
+    <?php endif;?>
 
     <?php if ($canUpdate):?>
         <?= Html::a('Редактировать', ['update', 'id' => $model->id],['class'=>'btn btn-primary']) ?>

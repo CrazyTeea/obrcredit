@@ -101,8 +101,9 @@ function getNumPPCount($npp,$nums){
                                         <?=ExportMenu::widget(['dataProvider'=>$export['h_e_provider'],'columns'=>\app\models\app\students\StudentsHistorySearch::getColumns()]) ?>
                                     </div>
                                     <div class="col-md-6">
-                                        <h2>Журнал изменений
+                                        <h2 style="margin-top: 10px">Журнал
                                             <span  title="В данном журнале отображаются все не найденные в организации обучающиеся" class="glyphicon glyphicon-question-sign" data-placement="bottom" data-toggle="tooltip"></span>
+
                                         </h2>
                                     </div>
                                 </div>

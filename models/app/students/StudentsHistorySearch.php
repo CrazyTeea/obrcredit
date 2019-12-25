@@ -24,15 +24,21 @@ class StudentsHistorySearch extends StudentsHistory
     public $year;
     public $period;
     public $org;
+    public $student_name;
+    public $student_code;
+    public $student_credit;
+    public $student_number;
+    public $student_bank;
+
     /**
      * {@inheritdoc}
      */
     public function rules()
     {
         return [
-            [['id', 'id_student', 'id_user_from', 'system_status', 'id_user_to'], 'integer'],
+            [['id', 'id_student', 'id_user_from', 'system_status', 'id_user_to','student_number'], 'integer'],
             [['changes', 'updated_at', 'created_at','period'], 'safe'],
-            [['org'],'string']
+            [['org','student_name','student_bank','student_code','student_credit'],'string']
         ];
     }
 
@@ -83,9 +89,21 @@ class StudentsHistorySearch extends StudentsHistory
 
         $this->load($params);
         $ids = $this->id;
+        $ids_q = Students::find()->select(['students.id']);
         if (isset($this->org)){
-            $ids = Students::find()->joinWith(['organization'])->where(['like','organizations.name',$this->org])->select(['students.id'])->column();
+            $ids_q->joinWith(['organization'])->where(['like','organizations.name',$this->org]);
         }
+        if (isset($this->student_bank)){
+            $ids_q->joinWith(['bank'])->andWhere(['like','banks.name',$this->student_bank]);
+        }
+        if (isset($this->student_number)){
+            $ids_q->joinWith(['numberPP'])->andWhere(['like','numbers_pp.number',$this->student_number]);
+        }
+        if (isset($this->student_number) || isset($this->student_bank) || isset($this->org)){
+            $ids = $ids_q->column();
+        }
+
+
 
         if (!$this->validate()) {
             // uncomment the following line if you do not want to return any records when validation fails
@@ -97,6 +115,16 @@ class StudentsHistorySearch extends StudentsHistory
         $query->andFilterWhere([
             Students::tableName().'.id' => $ids,
         ]);
+        $query->andFilterWhere([
+            'like', Students::tableName().'.name', $this->student_name,
+        ]);
+        $query->andFilterWhere([
+            'like', Students::tableName().'.code', $this->student_code,
+        ]);
+        $query->andFilterWhere([
+            'like', Students::tableName().'.date_credit', $this->student_credit,
+        ]);
+
 
 
     //    $query->andFilterWhere(['like', 'changes', $this->changes]);
@@ -107,11 +135,11 @@ class StudentsHistorySearch extends StudentsHistory
         $orgs = Organizations::getOrgs();
         return [
             ['class' => 'yii\grid\SerialColumn'],
-            ['attribute'=>'student.name','label'=>'ФИО<br>обучающегося','encodeLabel' => false,'filter'=>false],
-            ['attribute'=>'student.code','label'=>'Код<br>направления','encodeLabel' => false,'filter'=>false],
-            ['attribute'=>'student.date_credit','label'=>'Дата заключения<br>кредитного договора','encodeLabel' => false,'filter'=>false],
-            ['attribute'=>'student.numberPP.number','label'=>'Номер<br>пп','encodeLabel' => false,'filter'=>false],
-            ['attribute'=>'student.bank.name','label'=>'Наименование<br>банка','encodeLabel' => false,'filter'=>false],
+            ['attribute'=>'student_name','value'=>'student.name','label'=>'ФИО<br>обучающегося','encodeLabel' => false],
+            ['attribute'=>'student_code','value'=>'student.code','label'=>'Код<br>направления','encodeLabel' => false],
+            ['attribute'=>'student_credit','value'=>'student.date_credit','label'=>'Дата заключения<br>кредитного договора','encodeLabel' => false],
+            ['attribute'=>'student_number','value'=>'student.numberPP.number','label'=>'Номер<br>пп','encodeLabel' => false],
+            ['attribute'=>'student_bank','value'=>'student.bank.name','label'=>'Наименование<br>банка','encodeLabel' => false],
             ['attribute'=>'org','label'=>'Первоначальная<br>организация','encodeLabel' => false,'value'=>function($model){
 
                     if (isset($model->student->oldOrganization))
@@ -121,7 +149,7 @@ class StudentsHistorySearch extends StudentsHistory
                     else
                         return  "Неизвестная организация";
             }],
-            ['attribute'=>'userTo.username','label'=>'Конечная<br>организация','filter'=>false,'encodeLabel' => false,'value'=>function($model){
+            ['attribute'=>'userTo.username','label'=>'Конечная<br>организация','encodeLabel' => false,'value'=>function($model){
                 if (isset($model->userTo)) {
                     if (isset($model->student->organization) and isset($model->student->oldOrganization))
                         return $model->student->organization->name . "(" . $model->userTo->username . ")";
