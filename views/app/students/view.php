@@ -84,7 +84,7 @@ $rasp_act_otch = StudentDocs::getDocByDescriptorName('rasp_act_otch',$model->id)
 
     <?php endif;?>
 
-
+    <?php if (!$cans[2]):?>
     <!-- Button trigger modal -->
     <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#myModal" style="margin-bottom: 5px">
         Не найден
@@ -114,7 +114,7 @@ $rasp_act_otch = StudentDocs::getDocByDescriptorName('rasp_act_otch',$model->id)
         </div>
     </div>
 
-
+    <?php endif;?>
     <?php
     $routeArgs = [$route];
     switch ($route) {

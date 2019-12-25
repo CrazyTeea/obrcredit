@@ -2,6 +2,7 @@
 
 use app\models\app\students\Students;
 use app\models\app\students\StudentsHistorySearch;
+use kartik\export\ExportMenu;
 use yii\bootstrap\Modal;
 use yii\helpers\Html;
 use yii\grid\GridView;
@@ -26,6 +27,7 @@ $this->params['breadcrumbs'][] = $this->title;
     <?php Pjax::begin(['enableReplaceState'=>false,'enablePushState'=>false]); ?>
     <?php //= $this->render('_search', ['model' => $searchModel,'changes'=>$changes]); ?>
 
+    <?=ExportMenu::widget(['dataProvider'=>$dataProvider,'columns'=> StudentsHistorySearch::getColumns()]) ?>
     <?= GridView::widget([
         'dataProvider' => $dataProvider,
         'filterModel' => $searchModel,

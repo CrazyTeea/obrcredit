@@ -28,6 +28,7 @@ a {
 .row .panel .panel-body{
       height: 200%;
       overflow-x: auto;
+      display: -webkit-box;
       display: flex;
     }
 
@@ -69,6 +70,7 @@ hr{
     color: rgba(0,0,0,0.5);
   }
 .modal-body a{
+      background:-webkit-gradient(linear, left top, left bottom, from(#4393D8), color-stop(99.99%, rgba(50, 147, 230, 0.458333)), to(rgba(35, 146, 241, 0)));
       background:linear-gradient(180deg, #4393D8 0%, rgba(50, 147, 230, 0.458333) 99.99%, rgba(35, 146, 241, 0) 100%);
   }
 .thumbnail {

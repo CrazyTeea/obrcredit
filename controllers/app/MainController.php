@@ -47,9 +47,15 @@ class MainController extends AppController
                 "(SELECT id,status,date_start,id_number_pp,id_bank FROM `students` WHERE system_status=1 and status != 0 $orgSelect )"])->joinWith(['numberPP','bank'])
             ->groupBy(['year' , 'month' , 'id_number_pp', 'id_bank'])
             ->orderBy(['year'=>SORT_ASC , 'month' =>SORT_ASC, 'id_number_pp'=>SORT_ASC])->all();
-        $exportQuery = [];
+        $export = [];
+
+        $h_e_query = StudentsHistory::find()->joinWith(['student']);
+        $export = [
+            'h_e_provider'=>new ActiveDataProvider(['query'=>$h_e_query,'pagination'=>false]),
+        ];
+
         for ($i=1;$i<=12;$i++){
-            $exportQuery[$i] = ($this->cans[2]) ?
+            $export['e_providers'][$i] = ($this->cans[2]) ?
                 new ActiveDataProvider([ 'query'=>Students::find()->where(['system_status'=>1,'MONTH(date_start)'=>$i,'YEAR(date_start)'=>$year,'id_org'=>$id_org])])
                 :
                 new ActiveDataProvider([ 'query'=>Students::find()->where(['system_status'=>1,'MONTH(date_start)'=>$i,'YEAR(date_start)'=>$year])]);
@@ -61,6 +67,6 @@ class MainController extends AppController
             ->from(['numbers_pp npp'])->join('JOIN',['sh'=>$st_history_subq],'sh.id_number_pp = npp.id')->groupBy(['npp.id'])->all();
 
 
-        return $this->render('month',compact('studentsByMonth','exportQuery','nums'));
+        return $this->render('month',compact('studentsByMonth','export','nums'));
     }
 }

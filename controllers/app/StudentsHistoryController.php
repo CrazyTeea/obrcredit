@@ -58,8 +58,6 @@ class StudentsHistoryController extends AppController
         //  var_dump(Yii::$app->request->queryParams);exit();
         $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
 
-
-
         $changes = ArrayHelper::map(Changes::find()->where(['system_status'=>1])->select(['system_status','id','change'])->all(),'id','change');
 
         return $this->render('index', compact('searchModel','dataProvider','changes'));

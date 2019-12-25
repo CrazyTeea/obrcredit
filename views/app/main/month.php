@@ -76,25 +76,37 @@ function getNumPPCount($npp,$nums){
             return $num['students_count'];
     }
     return 0;
-}
-?>
-
+}?>
+<!--<pre>
+<?php
+/*var_dump($export);
+*/?>
+</pre>
+--><?php
+/*exit();
+*/?>
 <h2>Обучающиеся по государственной поддержке образовательного кредитования за <?=$year?> год</h2>
 
 <div class="row">
-
-
-
     <div class="panel panel-default">
         <div class="panel-body">
+            <?php if (!$cans[2]): ?>
             <div class="col-sm-6 col-md-4">
                 <div class="thumbnail">
                     <div class="caption">
                         <div class="row">
                             <div class="col-md-12 text-center">
-                                <h2>Журнал изменений
-                                    <span  title="В данном журнале отображаются все не найденные в организации обучающиеся" class="glyphicon glyphicon-question-sign" data-placement="bottom" data-toggle="tooltip"></span>
-                                </h2>
+                                <div class="row">
+                                    <div class="col-md-6">
+                                        <?=ExportMenu::widget(['dataProvider'=>$export['h_e_provider'],'columns'=>\app\models\app\students\StudentsHistorySearch::getColumns()]) ?>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <h2>Журнал изменений
+                                            <span  title="В данном журнале отображаются все не найденные в организации обучающиеся" class="glyphicon glyphicon-question-sign" data-placement="bottom" data-toggle="tooltip"></span>
+                                        </h2>
+                                    </div>
+                                </div>
+
                             </div>
                         </div>
                         <hr>
@@ -116,6 +128,7 @@ function getNumPPCount($npp,$nums){
                     </div>
                 </div>
             </div>
+            <?php endif;?>
             <?php for ($month = 1;$month<=12;$month++):?>
 
                 <?php $student197 = getStudentByMonthYearAndNpp($year,$month,1,$studentsByMonth);?>
@@ -126,7 +139,7 @@ function getNumPPCount($npp,$nums){
                         <div class="thumbnail">
                             <div class="caption">
                                 <div class="row">
-                                    <div class="col-md-6"><?=ExportMenu::widget(['dataProvider'=>$exportQuery[$month],'columns'=>\app\models\app\students\Students::getColumns(true),'timeout'=>300])?></div>
+                                    <div class="col-md-6"><?=ExportMenu::widget(['dataProvider'=>$export['e_providers'][$month],'columns'=>\app\models\app\students\Students::getColumns(true),'timeout'=>300])?></div>
                                     <div class="col-md-6"><h2><?=getMonth($month)?></h2></div>
                                 </div>
                                 <hr>
