@@ -119,11 +119,11 @@ function getNumPPCount($npp,$nums){
                         <?php endif; ?>
                         <p>
                             <?=Html::a('Постановление <br> правительства №699 <br> '.'<span class="text " style="font-size: 16px;"><i> кол-во обучающихся:'. getNumPPCount(699,$nums) .'</i></span>',['/app/students-history/get-by-number-and-year','id_number_pp'=>3,'year'=>$year],['id'=>'zhurnal_button','class'=>'btn btn-block btn-lg'])?>
-                            <span> <?php//= \yii\helpers\ArrayHelper::getValue($nums,function ($nums,$defaultValue){return $nums;}) ?></span>
+
                         </p>
                         <p>
                             <?=Html::a('Постановление <br> правительства №1026 <br> '.'<span class="text " style="font-size: 16px;"><i> кол-во обучающихся:'. getNumPPCount(1026,$nums) .'</i></span>',['/app/students-history/get-by-number-and-year','id_number_pp'=>2,'year'=>$year],['id'=>'zhurnal_button','class'=>'btn btn-block btn-lg'])?>
-                            <span> <?php//= \yii\helpers\ArrayHelper::getValue($nums,function ($nums,$defaultValue){return $nums;}) ?></span>
+
                         </p>
 
                     </div>
