@@ -35,6 +35,7 @@ class FilesController extends AppController
      */
     public function actionIndex()
     {
+        $this->updateRouteHistory('/app/files/index');
         $searchModel = new FilesSearch();
         $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
 
@@ -52,6 +53,7 @@ class FilesController extends AppController
      */
     public function actionView($id)
     {
+        $this->updateRouteHistory('/app/files/view');
         return $this->render('view', [
             'model' => $this->findModel($id),
         ]);
@@ -64,6 +66,7 @@ class FilesController extends AppController
      */
     public function actionCreate()
     {
+        $this->updateRouteHistory('/app/files/create');
         $model = new Files();
 
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
@@ -84,6 +87,7 @@ class FilesController extends AppController
      */
     public function actionUpdate($id)
     {
+        $this->updateRouteHistory('/app/files/update');
         $model = $this->findModel($id);
 
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
@@ -101,9 +105,12 @@ class FilesController extends AppController
      * @param integer $id
      * @return mixed
      * @throws NotFoundHttpException if the model cannot be found
+     * @throws \Throwable
+     * @throws \yii\db\StaleObjectException
      */
     public function actionDelete($id)
     {
+        $this->updateRouteHistory('/app/banks/delete');
         $this->findModel($id)->delete();
 
         return $this->redirect(['index']);

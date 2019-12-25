@@ -36,6 +36,7 @@ use yii\web\UploadedFile;
  * @property string $date_status
  * @property int $id_bank
  * @property int $perevod
+ * @property int $id_org_old
  * @property string $date_start
  * @property string $date_ender
  * @property boolean $isEnder
@@ -74,7 +75,7 @@ class Students extends ActiveRecord
                      return true;
                  return false;
              },'uploadRequired'=>'При переводе на бюджет требуется загрузить файл'],*/
-            [['id_org', 'education_status', 'status', 'osnovanie', 'grace_period','id_number_pp','id_bank','perevod'], 'integer'],
+            [['id_org', 'education_status', 'status', 'osnovanie', 'grace_period','id_number_pp','id_bank','perevod','id_org_old'], 'integer'],
             [[ 'date_create','date_start',
                 'date_start_grace_period1', 'date_end_grace_period1',
                 'date_start_grace_period2', 'date_end_grace_period2',
@@ -126,6 +127,9 @@ class Students extends ActiveRecord
      */
     public function getOrganization(){
         return $this->hasOne(Organizations::className(),['id'=>'id_org']);
+    }
+    public function getOldOrganization(){
+        return $this->hasOne(Organizations::className(),['id'=>'id_org_old']);
     }
 
     /**

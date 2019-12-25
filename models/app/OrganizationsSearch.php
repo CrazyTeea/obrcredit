@@ -54,16 +54,7 @@ class OrganizationsSearch extends Organizations
     public function search($params)
     {
 
-        /*
-         * =>function($q){
-                 $q->select(['s.status as student_status','s.id','s.id_bank','s.date_start','s.id_number_pp'])->andWhere([
-                     's.id_bank'=>Yii::$app->session['id_bank'],
-                     'MONTH(s.date_start)'=>Yii::$app->session['month'],
-                     'YEAR(s.date_start)'=>Yii::$app->session['year'],
 
-                    's.id_number_pp'=>Yii::$app->session['nPP']]);
-            }
-         */
         $query = Organizations::find()->where(['organizations.system_status'=>1]);
         $subquery = Students::find()->select(['id_org','status','date_start','id_number_pp','id_bank','system_status'])
             ->where([

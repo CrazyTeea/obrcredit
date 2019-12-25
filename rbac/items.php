@@ -110,7 +110,4 @@ return [
     '/app/students/delete-doc' => [
         'type' => 2,
     ],
-    '/app/students-history/*' => [
-        'type' => 2,
-    ],
 ];

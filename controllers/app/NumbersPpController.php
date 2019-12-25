@@ -37,6 +37,7 @@ class NumbersPpController extends AppController
      */
     public function actionIndex()
     {
+        $this->updateRouteHistory('/app/numbers-pp/index');
         $searchModel = new NumbersPpSearch();
         $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
 
@@ -54,6 +55,7 @@ class NumbersPpController extends AppController
      */
     public function actionView($id)
     {
+        $this->updateRouteHistory('/app/numbers-pp/view');
         return $this->render('view', [
             'model' => $this->findModel($id),
         ]);
@@ -66,6 +68,7 @@ class NumbersPpController extends AppController
      */
     public function actionCreate()
     {
+        $this->updateRouteHistory('/app/numbers-pp/create');
         $model = new NumbersPp();
 
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
@@ -86,6 +89,7 @@ class NumbersPpController extends AppController
      */
     public function actionUpdate($id)
     {
+        $this->updateRouteHistory('/app/numbers-pp/update');
         $model = $this->findModel($id);
 
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
@@ -108,6 +112,7 @@ class NumbersPpController extends AppController
      */
     public function actionDelete($id)
     {
+        $this->updateRouteHistory('/app/numbers-pp/delete');
         $this->findModel($id)->delete();
 
         return $this->redirect(['index']);

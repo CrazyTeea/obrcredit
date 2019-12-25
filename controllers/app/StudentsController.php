@@ -6,11 +6,13 @@ namespace app\controllers\app;
 use app\models\app\Banks;
 use app\models\app\Files;
 use app\models\app\Organizations;
+use app\models\app\students\Changes;
 use app\models\app\students\DatesEducationStatus;
 use app\models\app\students\NumbersPp;
 use app\models\app\students\StudentDocumentList;
 use app\models\app\students\StudentDocumentTypes;
 use app\models\app\students\Students;
+use app\models\app\students\StudentsHistory;
 use app\models\app\students\StudentsSearch;
 use app\models\app\students\StudentsSearch2;
 use app\models\User;
@@ -74,6 +76,7 @@ class StudentsController extends AppController
      */
     public function actionIndex( $id = null )
     {
+        $this->updateRouteHistory('/app/students/index');
         $searchModel = new StudentsSearch();
 
         if ( !empty( $id ) )
@@ -129,6 +132,7 @@ class StudentsController extends AppController
      */
     public function actionByBank( $id, $nPP, $month )
     {
+        $this->updateRouteHistory('/app/students/by-bank');
         if (!Yii::$app->session->has('year'))
             return $this->redirect(['app/main/index']);
 
@@ -183,6 +187,7 @@ class StudentsController extends AppController
      */
     public function actionApprove( $id = null)
     {
+        $this->updateRouteHistory('/app/students/approve');
         if (is_null($id)) {
             $nPP = Yii::$app->session->get( 'nPP' );
             $id_org = Yii::$app->getSession()[ 'id_org' ];
@@ -248,11 +253,41 @@ class StudentsController extends AppController
      */
     public function actionView( $id )
     {
+        $route = Yii::$app->session->get('route');
+        $this->updateRouteHistory('/app/students/view');
         $docTypes = StudentDocumentTypes::getActive()->all();
-        return $this->render( 'view', [
-            'model' => $this->findModel( $id ),
-            'docTypes'=>$docTypes
-        ] );
+        $model = $this->findModel( $id );
+
+        $subQ = Students::find()->select(['id','min(date_start) min_date','name','date_credit'])->where(['name'=>$model->name,'date_credit'=>$model->date_credit]);
+        $minS = Students::find()->from('students t1')->join('JOIN',['t2'=>$subQ],'t2.min_date=t1.date_start and t2.name=t1.name and t2.date_credit=t1.date_credit')->one();
+        $history = new StudentsHistory();
+        if ($minS){
+            $history =  StudentsHistory::findOne(['id_student'=>$minS->id]);
+            if (!$history){
+                $history = new StudentsHistory();
+            }
+        }
+      //  $history = ($minS) ?  ? $st : new StudentsHistory() : new StudentsHistory();
+        $changes = ArrayHelper::map(Changes::find()->select(['id','change','system_status'])->where(['system_status'=>1])->all(),'id','change');
+        if ($history->load(Yii::$app->request->post()))
+        {
+          //  var_dump($history);exit();
+            $students = Students::findAll(['name'=>$model->name,'code'=>$model->code,'date_credit'=>$model->date_credit]);
+            foreach ($students as $st){
+                $st->system_status = 0;
+                $st->save();
+            }
+            $history->id_student = $minS->id;
+            $history->id_user_from = Yii::$app->user->getId();
+            if ($history->save())
+                Yii::$app->session->setFlash('history', 'Обучающийся отправлен в журнал изменений.');
+            else
+                Yii::$app->session->setFlash('history', 'Произошла ошибка при добавлении обучающийся в журнал изменений.');
+
+
+        }
+
+        return $this->render( 'view',compact('model','docTypes','history','changes','route'));
     }
 
     /**
@@ -278,6 +313,7 @@ class StudentsController extends AppController
      */
     public function actionCreate( $id )
     {
+        $this->updateRouteHistory('/app/students/create');
         Yii::$app->session[ 'id_org' ] = $id;
         $model = new Students();
         $docTypes = StudentDocumentTypes::getActive()->all();
@@ -301,7 +337,22 @@ class StudentsController extends AppController
     }
 
 
-
+    public function actionAddToHistory($id){
+        $this->updateRouteHistory('/app/students/add-to-history');
+        $model = $this->findModel($id);
+        $models = Students::find()->where(['name'=>$model->name,'date_credit'=>$model->date_credit])->all();
+        foreach ($models as $m){
+            $m->system_status = 0;
+            $m->save(false);
+        }
+        $s_histroy = StudentsHistory::findOne(['id_student'=>$id]);
+        if (!$s_histroy)
+            $s_histroy = new StudentsHistory();
+        $s_histroy->id_student= $id;
+        $s_histroy->id_user_from = Yii::$app->getUser()->getId();
+        $s_histroy->save();
+        return $this->redirect(['view','id'=>$id]);
+    }
 
 
     /**
@@ -312,7 +363,7 @@ class StudentsController extends AppController
      */
     public function actionUpdate( $id )
     {
-
+        $this->updateRouteHistory('/app/students/update');
         $model = $this->findModel( $id );
         $model->old_code = $model->code;
         $orgs = Organizations::getOrgs();
@@ -393,9 +444,20 @@ class StudentsController extends AppController
         return $this->render( 'update',compact('model','orgs','file','docTypes') );
     }
     public function actionDeleteDoc($id,$desc){
+        $this->updateRouteHistory('/app/students/delete-doc');
         $st = $this->findModel($id);
         $st->deleteDocument($desc);
         return $this->redirect(['view','id'=>$id]);
+    }
+
+    public function actionToHistory($id){
+        $this->updateRouteHistory('/app/students/to-history');
+        $student = $this->findModel($id);
+        $students = Students::find()->where(['name'=>$student->name,'code'=>$student->code,'date_credit'=>$student->date_credit])->all();
+        foreach ($students as $item){
+            $item->system_status=0;
+            $item->save(false);
+        }
     }
 
     /**
@@ -405,6 +467,7 @@ class StudentsController extends AppController
      */
     public function actionDelete( $id )
     {
+        $this->updateRouteHistory('/app/students/delete');
         $s=$this->findModel( $id );
         $s->system_status=0;
         $s->save(false);
@@ -416,6 +479,7 @@ class StudentsController extends AppController
      * @return string
      */
     public function actionDeleteView(){
+        $this->updateRouteHistory('/app/students/delete-view');
         $model = new StudentsSearch2();
         $provider = $model->search(Yii::$app->request->queryParams);
         $orgs = Organizations::find()->where(['system_status'=>1])->all();

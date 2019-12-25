@@ -1,11 +1,12 @@
 <?php
 
-use app\models\app\students\StudentDocs;
+
 use app\models\app\students\Students;
-use app\models\User;
+use yii\bootstrap\ActiveForm;
+use yii\bootstrap\Modal;
 use yii\helpers\Html;
 use yii\web\YiiAsset;
-use yii\widgets\DetailView;
+
 
 /* @var $this yii\web\View */
 /* @var $model app\models\app\students\Students */
@@ -62,6 +63,14 @@ $rasp_act_otch = StudentDocs::getDocByDescriptorName('rasp_act_otch',$model->id)
 
     <h1><?= Html::encode($this->title) ?></h1>
 
+    <?php if(Yii::$app->session->getFlash('history')): ?>
+    <div class="alert alert-success">
+        <p>
+            <?=Yii::$app->session->getFlash('history',null,true)?>
+        </p>
+    </div>
+    <?php endif;?>
+
     <?php if ($canUpdate):?>
         <?= Html::a('Редактировать', ['update', 'id' => $model->id],['class'=>'btn btn-primary']) ?>
     <?php endif;?>
@@ -76,15 +85,65 @@ $rasp_act_otch = StudentDocs::getDocByDescriptorName('rasp_act_otch',$model->id)
         ]) ?>
 
     <?php endif;?>
-    <!--
-    <?= ($model->status==1) ?  Html::a('Утвердить', ['approve', 'id' => $model->id],['class'=>'btn btn-success']) : ''?>
-    -->
-        <!--<?= Html::a('Экспорт',['export','id'=>$model->id],['class'=>'btn btn-default']) ?>
-        -->
-    <?= Html::a('Вернуться к списку',(!$cans[2])
-        ? ['/app/students/index','id'=>$model->id_org] :
-        ['/app/students/by-bank','id'=>$model->id_bank,'nPP'=>$model->id_number_pp,'month'=>$month],
-        ['class'=>'btn btn-default']) ?>
+
+    <?php if (!$cans[2]):?>
+    <!-- Button trigger modal -->
+    <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#myModal" style="margin-bottom: 5px">
+        Не найден
+    </button>
+
+    <!-- Modal -->
+    <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <?php $form = ActiveForm::begin();?>
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                    <h4 class="modal-title" id="myModalLabel">Отправить в журнал</h4>
+                </div>
+                <div class="modal-body">
+
+                    <?=$form->field($history,'id_change')->dropDownList($changes)?>
+                    <?=$form->field($history,'comment')?>
+
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default" data-dismiss="modal">Закрыть</button>
+                    <button type="submit" class="btn btn-primary">Отправить</button>
+                </div>
+                <?php ActiveForm::end();?>
+            </div>
+        </div>
+    </div>
+
+    <?php endif;?>
+    <?php
+    $routeArgs = [$route];
+    switch ($route) {
+        case '/app/students-history/get-by-number-and-year':
+            $routeArgs = array_merge( $routeArgs , [
+                    'id_number_pp'=>$model->id_number_pp,
+                    'year'=>date('Y',strtotime($model->date_start))
+                    ]);
+            break;
+            case '/app/students/index':
+            $routeArgs = array_merge($routeArgs , [
+                    'id'=>$model->id_org,
+                    ]);
+            break;
+            case '/app/students/by-bank':
+                $routeArgs = array_merge($routeArgs , [
+                        'id'=>$model->id_bank,
+                        'nPP'=>$model->id_number_pp,
+                        'month'=>date('m',strtotime($model->date_start))
+                        ]);
+                break;
+    }
+    if ($route !== '/app/students/view' )
+        echo Html::a('Вернуться к списку',$routeArgs,['class'=>'btn btn-default']);
+
+    ?>
+
     <table class="table table-bordered">
         <thead>
         <tr>
@@ -248,5 +307,6 @@ $rasp_act_otch = StudentDocs::getDocByDescriptorName('rasp_act_otch',$model->id)
         </tr>
         </tbody>
     </table>
+
 
 </div>

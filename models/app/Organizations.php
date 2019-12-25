@@ -61,6 +61,6 @@ class Organizations extends ActiveRecord
     }
 
     public static function getOrgs(){
-        return ArrayHelper::map(self::find()->select(['id','short_name'])->all(),'id','short_name');
+        return ArrayHelper::map(self::find()->select(['id','name','system_status'])->where(['system_status'=>1])->all(),'id','name');
     }
 }

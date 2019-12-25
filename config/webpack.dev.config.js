@@ -1,8 +1,6 @@
 
 const path = require('path');
 const ExtractTextPlugin = require('mini-css-extract-plugin');
-const webpack = require("webpack");
-
 
 module.exports = {
     entry: ['@babel/polyfill', '../educational_lending/frontAssets/index.js'],
@@ -61,7 +59,7 @@ module.exports = {
         hot:true,
         liveReload: true,
         proxy: {
-            '/': {
+            '**': {
                 target: 'http://localhost/',
             },
         },
@@ -82,5 +80,4 @@ module.exports = {
 };
 
 
-//console.log(module.exports);
 //console.log(path.resolve(__dirname, '../web/build/'), '11111111');

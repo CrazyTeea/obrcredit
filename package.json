@@ -7,7 +7,7 @@
     "test": "tests"
   },
   "scripts": {
-    "dev": "webpack-dev-server --config config/webpack.dev.config.js --hot --inline",
+    "dev": "webpack-dev-server --config config/webpack.dev.config.js --hot --inline --watch",
     "prod": "webpack --config config/webpack.prod.config.js"
   },
   "repository": {
@@ -19,17 +19,19 @@
   "license": "ISC",
   "homepage": "https://bitbucket.org/CrazyTea/educational_lending#readme",
   "devDependencies": {
-    "webpack-cli": "^3.3.9"
+    "browser-sync": "^2.26.7",
+    "browser-sync-webpack-plugin": "^2.2.2",
+    "webpack-cli": "^3.3.10"
   },
   "dependencies": {
-    "@babel/core": "^7.6.0",
-    "@babel/polyfill": "^7.6.0",
-    "autoprefixer": "^9.6.1",
+    "@babel/core": "^7.7.7",
+    "@babel/polyfill": "^7.7.0",
+    "autoprefixer": "^9.7.3",
     "babel-loader": "^8.0.6",
-    "css-loader": "^3.2.0",
+    "css-loader": "^3.4.0",
     "mini-css-extract-plugin": "latest",
     "postcss-loader": "^3.0.0",
-    "postcss-nested": "^4.1.2",
+    "postcss-nested": "^4.2.1",
     "webpack": "latest"
   }
 }
