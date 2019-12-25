@@ -97,7 +97,7 @@ function getDocByDescriptor(string $descriptor,array $docs, ActiveForm $form,\ap
                 <td colspan="3"><p class="text-sm-center">Досрочно прекратил образовательные отношения </p></td>
                 <td rowspan='2'><p class="text-sm-center">Отсрочка льготного периода <br> в связи с предоставлением академического права  <br>
                         (пункт 12 часть 1 статья 34 Федерального закона № 273-ФЗ)</p>
-                    <br> <button type="button" href="#clean2"> Сбросс</button>
+                    <br> <button type="button" href="#clean2"> Сброс</button>
                 </td>
                 <td rowspan='2'><p class="text-sm-center">Срок действия академического права</p> </td>
                 <td rowspan='2'><p class="text-sm-center">Подтверждение
@@ -109,7 +109,7 @@ function getDocByDescriptor(string $descriptor,array $docs, ActiveForm $form,\ap
             <tr>
 
                 <td>Пункты постановления <br> Правительства РФ <br> от 26.02.2018 г. № 197</td>
-                <td>Основание <br> <button type="button" href="#clean"> Сбросс</button></td>
+                <td>Основание <br> <button type="button" href="#clean"> Сброс</button></td>
                 <td>Подтверждение основания</td>
 
             </tr>

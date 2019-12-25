@@ -232,13 +232,10 @@ class Students extends ActiveRecord
                         }
                     }
 
-                    $date = null;
-                    if (isset($model->dateLastStatus) and isset($model->dateLastStatus->date_end))
-                        $date = Yii::$app->getFormatter()->asDate($model->dateLastStatus->date_end);
 
-                    $dta = ($date) ? "$date $data" : '';
+                    $dta = $data;
                     if ($model->isEnder)
-                        return "Выпускник" . Yii::$app->formatter->asDate($model->date_ender);
+                        return "Выпускник" ;
 
                     return ($model->education_status) ? $l = ($model->perevod) ? "Переведен на бюджет" : "Обучается" : " $dta";
                 }],
