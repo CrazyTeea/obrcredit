@@ -12,7 +12,7 @@ use Yii;
  * @property string $comment
  * @property int|null $id_student
  * @property int|null $id_user_from
- * @property string|null $changes
+ * @property int|null $id_change
  * @property string $updated_at
  * @property string $created_at
  * @property int|null $system_status

@@ -6,6 +6,7 @@ namespace app\commands;
 
 use app\models\app\Organizations;
 use app\models\app\students\Students;
+use app\models\app\students\StudentsHistory;
 use app\models\UserConsole as User;
 use Exception;
 use Lcobucci\JWT\Builder;
@@ -16,6 +17,7 @@ use Yii;
 use yii\console\Controller;
 use yii\console\ExitCode;
 use yii\rbac\PhpManager;
+use function GuzzleHttp\Psr7\str;
 
 class ReferenceController extends Controller
 {
@@ -62,7 +64,6 @@ class ReferenceController extends Controller
                 $row_org->full_name = htmlspecialchars_decode( $data->getValue()->fullname );
                 $row_org->short_name = htmlspecialchars_decode( $data->getValue()->shot_name );
                 $row_org->name = htmlspecialchars_decode( $data->getValue()->name );
-                $row_org->name = htmlspecialchars_decode( $data->getValue()->name );
                 $student = Students::findOne( ['id_org' => $row_org->id] );
                 $row_org->system_status = ( $student ) ? 1 : 0;
                 $row_org->save();
@@ -73,6 +74,55 @@ class ReferenceController extends Controller
             return false;
 
 
+    }
+
+    /**
+     * @param Students[] $array
+     * @param Students $value
+     * @return array
+     */
+    private function finddoubles($array, $value){
+        $arr = array();
+        foreach ($array as $item){
+            if ($item->name == $value->name and $item->date_credit == $value->date_credit){
+                $arr[]=$item;
+            }
+        }
+        return $arr;
+    }
+
+    /**
+     * @param Students[] $array
+     * @param bool $min
+     * @return array
+     */
+    private function findMinMax($array, $min = true){
+        $minv = $maxv = $array[0];
+        foreach ($array as $item){
+            if (strtotime($maxv->date_start) < strtotime($item->date_start))
+                $maxv = $item;
+            if (strtotime($minv->date_start) > strtotime($item->date_start))
+                $minv = $item;
+        }
+        return ['max' => $maxv,'min' => $minv];
+    }
+
+    public function actionZerostudents(){
+        $zeros = Students::findAll(['system_status'=>0]);
+        $exept = [];
+        foreach ($zeros as $i => $zero){
+            if (!in_array($zero->name,$exept)) {
+                $arr = $this->finddoubles($zeros, $zero);
+                $v = $this->findMinMax($arr);
+                echo "$zero->name min {$v['min']->date_start} max {$v['max']->date_start}\n";
+                $exept[] = $v['min']->name;
+                $his = new StudentsHistory();
+                $his->id_student = $v['min']->id;
+                $his->id_user_from = 2;
+                $his->id_change = 1;
+                $his->save();
+            }
+        }
     }
 
     public function actionStudents( $file, $nameId, $codeId, $dCreditId, $orgId, $numPP, $bankId, $dStart )

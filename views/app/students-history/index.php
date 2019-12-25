@@ -1,6 +1,7 @@
 <?php
 
 use app\models\app\students\Students;
+use app\models\app\students\StudentsHistorySearch;
 use yii\bootstrap\Modal;
 use yii\helpers\Html;
 use yii\grid\GridView;
@@ -23,12 +24,12 @@ $this->params['breadcrumbs'][] = $this->title;
     <h1><?= Html::encode($this->title) ?></h1>
 
     <?php Pjax::begin(['enableReplaceState'=>false,'enablePushState'=>false]); ?>
-   <!--<?/*= $this->render('_search', ['model' => $searchModel,'changes'=>$changes]); */?> -->
+    <?php //= $this->render('_search', ['model' => $searchModel,'changes'=>$changes]); ?>
 
     <?= GridView::widget([
         'dataProvider' => $dataProvider,
-       // 'filterModel' => $searchModel,
-        'columns' => \app\models\app\students\StudentsHistorySearch::getColumns(),
+        'filterModel' => $searchModel,
+        'columns' => StudentsHistorySearch::getColumns(),
     ]); ?>
 
     <?php

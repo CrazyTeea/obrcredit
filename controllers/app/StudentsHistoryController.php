@@ -3,15 +3,11 @@
 namespace app\controllers\app;
 
 use app\models\app\students\Changes;
-use app\models\app\students\NumbersPp;
 use app\models\app\students\Students;
 use app\models\User;
 use Yii;
 use app\models\app\students\StudentsHistory;
 use app\models\app\students\StudentsHistorySearch;
-use app\controllers\app\AppController;
-use yii\db\Query;
-use yii\db\QueryBuilder;
 use yii\helpers\ArrayHelper;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
@@ -59,7 +55,7 @@ class StudentsHistoryController extends AppController
         $searchModel = new StudentsHistorySearch();
         $searchModel->id_number_pp = $id_number_pp;
         $searchModel->year = $year;
-      //  var_dump(Yii::$app->request->queryParams);exit();
+        //  var_dump(Yii::$app->request->queryParams);exit();
         $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
 
 

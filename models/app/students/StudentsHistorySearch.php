@@ -23,6 +23,7 @@ class StudentsHistorySearch extends StudentsHistory
     public $id_user_to;
     public $year;
     public $period;
+    public $org;
     /**
      * {@inheritdoc}
      */
@@ -31,6 +32,7 @@ class StudentsHistorySearch extends StudentsHistory
         return [
             [['id', 'id_student', 'id_user_from', 'system_status', 'id_user_to'], 'integer'],
             [['changes', 'updated_at', 'created_at','period'], 'safe'],
+            [['org'],'string']
         ];
     }
 
@@ -80,6 +82,10 @@ class StudentsHistorySearch extends StudentsHistory
         ]);
 
         $this->load($params);
+        $ids = $this->id;
+        if (isset($this->org)){
+            $ids = Students::find()->joinWith(['organization'])->where(['like','organizations.name',$this->org])->select(['students.id'])->column();
+        }
 
         if (!$this->validate()) {
             // uncomment the following line if you do not want to return any records when validation fails
@@ -89,13 +95,7 @@ class StudentsHistorySearch extends StudentsHistory
 
         // grid filtering conditions
         $query->andFilterWhere([
-            Students::tableName().'.id' => $this->id,
-            'id_student' => $this->id_student,
-            'id_user_from' => $this->id_user_from,
-            'updated_at' => $this->updated_at,
-            'created_at' => $this->created_at,
-            'system_status' => $this->system_status,
-            'id_user_to' => $this->id_user_to,
+            Students::tableName().'.id' => $ids,
         ]);
 
 
@@ -112,7 +112,7 @@ class StudentsHistorySearch extends StudentsHistory
             ['attribute'=>'student.date_credit','label'=>'Дата заключения<br>кредитного договора','encodeLabel' => false,'filter'=>false],
             ['attribute'=>'student.numberPP.number','label'=>'Номер<br>пп','encodeLabel' => false,'filter'=>false],
             ['attribute'=>'student.bank.name','label'=>'Наименование<br>банка','encodeLabel' => false,'filter'=>false],
-            ['attribute'=>'userFrom.username','label'=>'Первоначальная<br>организация','filter'=>false,'encodeLabel' => false,'value'=>function($model){
+            ['attribute'=>'org','label'=>'Первоначальная<br>организация','encodeLabel' => false,'value'=>function($model){
 
                     if (isset($model->student->oldOrganization))
                         return $model->student->oldOrganization->name;
