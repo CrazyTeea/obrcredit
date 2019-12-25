@@ -144,7 +144,7 @@ class StudentsHistorySearch extends StudentsHistory
                 'template'=>'{view}{add}',
                 'buttons'=>[
                     'add'=>function ($url, $model, $key) use ($orgs) {
-                            $btn = "<a href='$url' aria-label='Скрыть' data-pjax='0'><span class='glyphicon glyphicon-plus'></span></a>";
+                        $btn = "<a href='$url' aria-label='Скрыть' data-pjax='0'><span class='glyphicon glyphicon-plus'></span></a>";
                         if (!Yii::$app->session->get('cans')[2]) {
 
                             $btn = "
@@ -167,7 +167,7 @@ class StudentsHistorySearch extends StudentsHistory
                                     'name' => 'id_org',
                                     'data' => $orgs,
                                 ]).
-                    "
+                                "
                 </div>
                 <div class='modal-footer'>
                     <button type='button' class='btn btn-default' data-dismiss='modal'>Закрыть</button>
