@@ -4,6 +4,9 @@
 namespace app\controllers\app;
 
 
+use app\models\app\Banks;
+use app\models\app\Oplata;
+use app\models\app\students\NumbersPp;
 use app\models\app\students\Students;
 use app\models\app\students\StudentsHistory;
 use Yii;
@@ -45,6 +48,7 @@ class MainController extends AppController
         $studentsByMonth = Students::find()
             ->select(['YEAR(date_start) year','MONTH(date_start) month','MIN(status) status', 'numbers_pp.id id_number_pp','banks.id id_bank','banks.name bank_name', 'COUNT(t1.id) count'])->from(['t1'=>
                 "(SELECT id,status,date_start,id_number_pp,id_bank FROM `students` WHERE system_status=1 and status != 0 $orgSelect )"])->joinWith(['numberPP','bank'])
+            ->where(['year(date_start)'=>$year])
             ->groupBy(['year' , 'month' , 'id_number_pp', 'id_bank'])
             ->orderBy(['year'=>SORT_ASC , 'month' =>SORT_ASC, 'id_number_pp'=>SORT_ASC])->all();
         $export = [];
@@ -54,7 +58,35 @@ class MainController extends AppController
             'h_e_provider'=>new ActiveDataProvider(['query'=>$h_e_query,'pagination'=>false]),
         ];
 
+        $payments_model = Oplata::find()->select(['*','YEAR(payment_date) payment_year','MONTH(payment_date) payment_month'])->where(['YEAR(payment_date)'=>$year])->all();
+        $payments = null;
+        $payments_status = null;
+        $nums = NumbersPp::find()->all();
+        $banks = Banks::find()->all();
+
+
         for ($i=1;$i<=12;$i++){
+            foreach ($nums as $num){
+                foreach ($banks as $bank){
+                    if ($payments_model) {
+                        foreach ($payments_model as $pay_model) {
+                            if ( !strcasecmp($pay_model->payment_year , $year) and
+                            !strcasecmp($pay_model->payment_month , $i) and
+                            $pay_model->numberpp_id == $num->id and
+                            $pay_model->bank_id == $bank->id) {
+                                $payments_status[$i][$num->id][$bank->id]= true;
+                                $payments[$i][$num->id][$bank->id] =  $pay_model;
+                            } elseif(!isset($payments[$i][$num->id][$bank->id])) {
+                                $payments[$i][$num->id][$bank->id] = new Oplata();
+                                $payments_status[$i][$num->id][$bank->id]= false;
+                            }
+                        }
+                    }else {
+                        $payments_status[$i][$num->id][$bank->id]= false;
+                        $payments[$i][$num->id][$bank->id] = new Oplata();}
+
+                }
+            }
             $export['e_providers'][$i] = ($this->cans[2]) ?
                 new ActiveDataProvider([ 'query'=>Students::find()->where(['system_status'=>1,'MONTH(date_start)'=>$i,'YEAR(date_start)'=>$year,'id_org'=>$id_org])])
                 :
@@ -67,6 +99,6 @@ class MainController extends AppController
             ->from(['numbers_pp npp'])->join('JOIN',['sh'=>$st_history_subq],'sh.id_number_pp = npp.id')->groupBy(['npp.id'])->all();
 
 
-        return $this->render('month',compact('studentsByMonth','export','nums'));
+        return $this->render('month',compact('studentsByMonth','export','nums','payments','payments_status'));
     }
 }
