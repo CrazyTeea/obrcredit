@@ -150,6 +150,7 @@ $payment_modals = null;
 
                                             <span class="text " style="font-size: 16px;"> <i> кол-во обучающихся: <?=getCountStudents($year,$month,1,$studentsByMonth)?> </i> </span>
                                             <br>
+                                            <?php if(!$cans[2]):?>
                                             <div class="center-block" style="border-radius: 10px; width:50%; background-color: #A3D8FF">
                                                 <?php
                                                 $flag = true;
@@ -164,6 +165,7 @@ $payment_modals = null;
                                                 echo $flag ? "<span> Оплачено </span>" : "<span > Не оплачено </span>";
                                                 ?>
                                             </div>
+                                            <?php endif; ?>
                                         </button>
                                     </p>
                                     <div class="modal fade" id="myModal<?=$month?>197" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
@@ -184,6 +186,7 @@ $payment_modals = null;
                                                             'month'=>$month,
                                                             'bank_name' => $bank['name']
                                                         ]; ?>
+                                                    <?php if(!$cans[2]):?>
                                                         <div class="row">
                                                             <div class="col-md-9">
                                                                 <?php if (!$cans[2]):?>
@@ -199,13 +202,20 @@ $payment_modals = null;
                                                                 </button>
                                                             </div>
                                                         </div>
+                                                        <?php else: ?>
+                                                            <?php if (!$cans[2]):?>
+                                                                <?= Html::a($bank['name'],['app/organizations/by-bank','id_bank'=>$bank['id'],'month'=>$month,'nPP'=>1],['class'=>'btn btn-primary btn-block']) ?>
+                                                            <?php else:?>
+                                                                <?= Html::a($bank['name'],['app/students/by-bank','id'=>$bank['id'],'nPP'=>1,'month'=>$month],['class'=>'btn btn-primary btn-block']) ?>
+                                                            <?php endif;?>
+                                                    <?php endif;?>
 
                                                     <?php endforeach;?>
                                                 </div>
                                             </div>
                                         </div>
                                     </div>
-
+                                <?php if (!$cans[2]): ?>
                                     <?php  foreach ($payment_modals as $payment_modal):?>
                                         <!-- Modal -->
                                         <div class="modal fade" id="payment_<?=$payment_modal['id']?>" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
@@ -252,6 +262,7 @@ $payment_modals = null;
                                     $payment_modals = null;
                                     ?>
                                 <?php endif;?>
+                                <?php endif?>
                                 <?php if ($student699):?>
                                     <p>
 
@@ -259,6 +270,7 @@ $payment_modals = null;
                                             Постановление <br>правительства №699 <br>
                                             <span class="text " style="font-size: 16px;"> <i> кол-во обучающихся: <?= getCountStudents($year,$month,3,$studentsByMonth)?> </i> </span>
                                             <br>
+                                            <?php if(!$cans[2]):?>
                                             <div class="center-block" style="border-radius: 10px; width:50%; background-color: #A3D8FF">
                                                 <?php
                                                 $flag = true;
@@ -273,6 +285,7 @@ $payment_modals = null;
                                                 echo $flag ? "<span> Оплачено </span>" : "<span > Не оплачено </span>";
                                                 ?>
                                             </div>
+                                            <?php endif;?>
                                         </button>
                                     </p>
                                     <div class="modal fade" id="myModal<?=$month?>699" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
@@ -283,7 +296,7 @@ $payment_modals = null;
                                                     <h4 class="modal-title" id="myModalLabel">Банки</h4>
                                                 </div>
                                                 <div class="modal-body">
-                                                    <?php foreach ($banks_s as $bank):?>
+                                                    <?php foreach (getBanks($year,$month,3,$studentsByMonth) as $bank):?>
                                                         <?php
                                                         $id_modal = substr(md5(rand()), 0, 7);
                                                         $payment_modals[]=[
@@ -293,6 +306,7 @@ $payment_modals = null;
                                                             'bank_name' => $bank['name']
                                                         ];
                                                         ?>
+                                                    <?php if (!$cans[2]):?>
                                                     <div class="row">
                                                         <div class="col-md-9">
 
@@ -310,11 +324,19 @@ $payment_modals = null;
 
                                                         </div>
                                                     </div>
+                                                    <?php else:?>
+                                                            <?php if (!$cans[2]):?>
+                                                                <?= Html::a($bank['name'],['app/organizations/by-bank','id_bank'=>$bank['id'],'month'=>$month,'nPP'=>3],['class'=>'btn btn-primary btn-block']) ?>
+                                                            <?php else:?>
+                                                                <?= Html::a($bank['name'],['app/students/by-bank','id'=>$bank['id'],'nPP'=>3,'month'=>$month],['class'=>'btn btn-primary btn-block']) ?>
+                                                            <?php endif;?>
+                                                    <?php endif;?>
                                                     <?php endforeach;?>
                                                 </div>
                                             </div>
                                         </div>
                                     </div>
+                                <?php if (!$cans[2]):?>
                                     <?php  foreach ($payment_modals as $payment_modal):?>
                                         <!-- Modal -->
                                         <div class="modal fade" id="payment_<?=$payment_modal['id']?>" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
@@ -360,6 +382,7 @@ $payment_modals = null;
                                     <?php endforeach;
                                     $payment_modals = null;
                                     ?>
+                                    <?php endif;?>
                                 <?php endif;?>
                                 <?php if ($student1026):?>
                                     <p>
@@ -368,6 +391,7 @@ $payment_modals = null;
                                             Постановление <br>правительства №1026 <br>
                                             <span class="text " style="font-size: 16px;"> <i> кол-во обучающихся: <?= getCountStudents($year,$month,2,$studentsByMonth)?> </i> </span>
                                             <br>
+                                            <?php if(!$cans[2]):?>
                                             <div class="center-block" style="border-radius: 10px; width:50%; background-color: #A3D8FF">
                                                 <?php
                                                 $flag = true;
@@ -382,6 +406,7 @@ $payment_modals = null;
                                                 echo $flag ? "<span> Оплачено </span>" : "<span > Не оплачено </span>";
                                                 ?>
                                             </div>
+                                            <?php endif;?>
 
                                         </button>
                                     </p>
@@ -403,6 +428,7 @@ $payment_modals = null;
                                                             'bank_name' => $bank['name']
                                                         ];
                                                         ?>
+                                                    <?php if (!$cans[2]):?>
                                                     <div class="row">
                                                         <div class="col-md-9">
                                                             <?php if (!$cans[2]):?>
@@ -418,11 +444,19 @@ $payment_modals = null;
                                                             </button>
                                                         </div>
                                                     </div>
+                                                        <?php else:?>
+                                                            <?php if (!$cans[2]):?>
+                                                                <?= Html::a($bank['name'],['app/organizations/by-bank','id_bank'=>$bank['id'],'month'=>$month,'nPP'=>2],['class'=>'btn btn-primary btn-block']) ?>
+                                                            <?php else:?>
+                                                                <?= Html::a($bank['name'],['app/students/by-bank','id'=>$bank['id'],'nPP'=>2,'month'=>$month],['class'=>'btn btn-primary btn-block']) ?>
+                                                            <?php endif;?>
+                                                    <?php endif;?>
                                                     <?php endforeach;?>
                                                 </div>
                                             </div>
                                         </div>
                                     </div>
+                                <?php if (!$cans[2]):?>
                                     <?php  foreach ($payment_modals as $payment_modal):?>
                                         <!-- Modal -->
                                         <div class="modal fade" id="payment_<?=$payment_modal['id']?>" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
@@ -468,6 +502,7 @@ $payment_modals = null;
                                     <?php endforeach;
                                     $payment_modals = null;
                                     ?>
+                                <?php endif;?>
                                 <?php endif;?>
                             </div>
                         </div>
