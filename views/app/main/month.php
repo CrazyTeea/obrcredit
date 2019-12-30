@@ -162,7 +162,7 @@ $payment_modals = null;
                                                     }
                                                 }
 
-                                                echo $flag ? "<span> Оплачено </span>" : "<span > Не оплачено </span>";
+                                                echo $flag ? "<span style='font-size: 16px;'> Оплачено </span>" : "<span style='font-size: 16px;'> Не оплачено </span>";
                                                 ?>
                                             </div>
                                             <?php endif; ?>
@@ -282,7 +282,7 @@ $payment_modals = null;
                                                     }
                                                 }
 
-                                                echo $flag ? "<span> Оплачено </span>" : "<span > Не оплачено </span>";
+                                                echo $flag ? "<span style='font-size: 16px;'> Оплачено </span>" : "<span style='font-size: 16px;'> Не оплачено </span>";
                                                 ?>
                                             </div>
                                             <?php endif;?>
@@ -403,7 +403,7 @@ $payment_modals = null;
                                                     }
                                                 }
 
-                                                echo $flag ? "<span> Оплачено </span>" : "<span > Не оплачено </span>";
+                                                echo $flag ? "<span style='font-size: 16px;'> Оплачено </span>" : "<span style='font-size: 16px;'> Не оплачено </span>";
                                                 ?>
                                             </div>
                                             <?php endif;?>
