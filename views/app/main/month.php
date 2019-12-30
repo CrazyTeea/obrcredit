@@ -95,7 +95,7 @@ $payment_modals = null;
                             <div class="col-md-12 text-center">
                                 <div class="row">
                                     <div class="col-md-6">
-                                        <?=ExportMenu::widget(['dataProvider'=>$export['h_e_provider'],'columns'=>\app\models\app\students\StudentsHistorySearch::getColumns()]) ?>
+                                        <?=ExportMenu::widget(['dataProvider'=>$export['h_e_provider'],'columns'=>\app\models\app\students\StudentsHistorySearch::getColumns(true)]) ?>
                                     </div>
                                     <div class="col-md-6">
                                         <h2 style="margin-top: 10px">Журнал

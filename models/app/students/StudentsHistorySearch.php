@@ -131,16 +131,18 @@ class StudentsHistorySearch extends StudentsHistory
 
         return $dataProvider;
     }
-    public static function getColumns(){
+    public static function getColumns(bool $export = false){
         $orgs = Organizations::getOrgs();
-        return [
-            ['class' => 'yii\grid\SerialColumn'],
-            ['attribute'=>'student_name','value'=>'student.name','label'=>'ФИО<br>обучающегося','encodeLabel' => false],
-            ['attribute'=>'student_code','value'=>'student.code','label'=>'Код<br>направления','encodeLabel' => false],
-            ['attribute'=>'student_credit','value'=>'student.date_credit','label'=>'Дата заключения<br>кредитного договора','encodeLabel' => false],
-            ['attribute'=>'student_number','value'=>'student.numberPP.number','label'=>'Номер<br>пп','encodeLabel' => false],
-            ['attribute'=>'student_bank','value'=>'student.bank.name','label'=>'Наименование<br>банка','encodeLabel' => false],
-            ['attribute'=>'org','label'=>'Первоначальная<br>организация','encodeLabel' => false,'value'=>function($model){
+        $ret = null;
+        if (!$export){
+            $ret = [
+                ['class' => 'yii\grid\SerialColumn'],
+                ['attribute'=>'student_name','value'=>'student.name','label'=>'ФИО<br>обучающегося','encodeLabel' => false],
+                ['attribute'=>'student_code','value'=>'student.code','label'=>'Код<br>направления','encodeLabel' => false],
+                ['attribute'=>'student_credit','value'=>'student.date_credit','label'=>'Дата заключения<br>кредитного договора','encodeLabel' => false],
+                ['attribute'=>'student_number','value'=>'student.numberPP.number','label'=>'Номер<br>пп','encodeLabel' => false],
+                ['attribute'=>'student_bank','value'=>'student.bank.name','label'=>'Наименование<br>банка','encodeLabel' => false],
+                ['attribute'=>'org','label'=>'Первоначальная<br>организация','encodeLabel' => false,'value'=>function($model){
 
                     if (isset($model->student->oldOrganization))
                         return $model->student->oldOrganization->name;
@@ -148,34 +150,34 @@ class StudentsHistorySearch extends StudentsHistory
                         return $model->student->organization->name;
                     else
                         return  "Неизвестная организация";
-            }],
-            ['attribute'=>'userTo.username','label'=>'Конечная<br>организация','encodeLabel' => false,'value'=>function($model){
-                if (isset($model->userTo)) {
-                    if (isset($model->student->organization) and isset($model->student->oldOrganization))
-                        return $model->student->organization->name . "(" . $model->userTo->username . ")";
-                    return  "Неизвестная организация(" . $model->userTo->username . ")";
-                }
-                return '';
-            }],
+                }],
+                ['attribute'=>'userTo.username','label'=>'Конечная<br>организация','encodeLabel' => false,'value'=>function($model){
+                    if (isset($model->userTo)) {
+                        if (isset($model->student->organization) and isset($model->student->oldOrganization))
+                            return $model->student->organization->name . "(" . $model->userTo->username . ")";
+                        return  "Неизвестная организация(" . $model->userTo->username . ")";
+                    }
+                    return '';
+                }],
 
-            'change.change',
+                'change.change',
 
-            ['attribute'=>'period','filter'=>false,'content'=>function($model){
-                $sql = "SELECT minV.minV,maxV.maxV FROM 
+                ['attribute'=>'period','filter'=>false,'content'=>function($model){
+                    $sql = "SELECT minV.minV,maxV.maxV FROM 
                       (SELECT MIN(date_start) minV from students where name='{$model->student->name}' and code = '{$model->student->code}' and date_credit = '{$model->student->date_credit}') as minV,
                       (SELECT MAX(date_start) maxV from students where name='{$model->student->name}' and code = '{$model->student->code}' and date_credit = '{$model->student->date_credit}') as maxV";
-                $q = Yii::$app->db->createCommand($sql)->queryOne();
-                return Yii::$app->formatter->asDate($q['minV']).' - '.Yii::$app->formatter->asDate($q['maxV']);
-            },'label'=>'Период'],
-            [
-                'class' => 'yii\grid\ActionColumn',
-                'template'=>'{view}{add}',
-                'buttons'=>[
-                    'add'=>function ($url, $model, $key) use ($orgs) {
-                        $btn = "<a href='$url' aria-label='Скрыть' data-pjax='0'><span class='glyphicon glyphicon-plus'></span></a>";
-                        if (!Yii::$app->session->get('cans')[2]) {
+                    $q = Yii::$app->db->createCommand($sql)->queryOne();
+                    return Yii::$app->formatter->asDate($q['minV']).' - '.Yii::$app->formatter->asDate($q['maxV']);
+                },'label'=>'Период'],
+                [
+                    'class' => 'yii\grid\ActionColumn',
+                    'template'=>'{view}{add}',
+                    'buttons'=>[
+                        'add'=>function ($url, $model, $key) use ($orgs) {
+                            $btn = "<a href='$url' aria-label='Скрыть' data-pjax='0'><span class='glyphicon glyphicon-plus'></span></a>";
+                            if (!Yii::$app->session->get('cans')[2]) {
 
-                            $btn = "
+                                $btn = "
 <!-- Button trigger modal -->
     <a  class='glyphicon glyphicon-plus' data-toggle='modal' data-target='#myModal_$model->id' style='margin-bottom: 5px'>
     </a>
@@ -190,12 +192,12 @@ class StudentsHistorySearch extends StudentsHistory
                     <h4 class='modal-title' id='myModalLabel'>Отправить в журнал</h4>
                 </div>
                 <div class='modal-body'>"
-                                .Html::hiddenInput(Yii::$app->request->csrfParam,Yii::$app->request->getCsrfToken())
-                                .Select2::widget([
-                                    'name' => 'id_org',
-                                    'data' => $orgs,
-                                ]).
-                                "
+                                    .Html::hiddenInput(Yii::$app->request->csrfParam,Yii::$app->request->getCsrfToken())
+                                    .Select2::widget([
+                                        'name' => 'id_org',
+                                        'data' => $orgs,
+                                    ]).
+                                    "
                 </div>
                 <div class='modal-footer'>
                     <button type='button' class='btn btn-default' data-dismiss='modal'>Закрыть</button>
@@ -206,21 +208,61 @@ class StudentsHistorySearch extends StudentsHistory
         </div>
     </div>
 ";
+                            }
+                            return $btn;
+                        },
+                        'view'=>function ($url, $model, $key) {
+                            $u = Url::to(['app/students/view','id'=>$model->student->id]);
+                            return "<a href='$u' aria-label='Скрыть' data-pjax='0'><span class='glyphicon glyphicon-eye-open'></span></a>";
                         }
-                        return $btn;
-                    },
-                    'view'=>function ($url, $model, $key) {
-                        $u = Url::to(['app/students/view','id'=>$model->student->id]);
-                        return "<a href='$u' aria-label='Скрыть' data-pjax='0'><span class='glyphicon glyphicon-eye-open'></span></a>";
-                    }
+                    ],
+                    'visibleButtons'=>[
+                        'add'=>
+                            function ($model, $key, $index) {
+                                return $model->userTo ? false : true;
+                            }
+                    ]
                 ],
-                'visibleButtons'=>[
-                    'add'=>
-                        function ($model, $key, $index) {
-                            return $model->userTo ? false : true;
-                        }
-                ]
-            ],
-        ];
+            ];
+        }
+        else{
+            $ret = [
+                ['class' => 'yii\grid\SerialColumn'],
+                ['attribute'=>'student_name','value'=>'student.name','label'=>'ФИО обучающегося'],
+                ['attribute'=>'student_code','value'=>'student.code','label'=>'Код направления'],
+                ['attribute'=>'student_credit','value'=>'student.date_credit','label'=>'Дата заключения кредитного договора'],
+                ['attribute'=>'student_number','value'=>'student.numberPP.number','label'=>'Номер пп'],
+                ['attribute'=>'student_bank','value'=>'student.bank.name','label'=>'Наименование банка'],
+                ['attribute'=>'org','label'=>'Первоначальная организация','value'=>function($model){
+
+                    if (isset($model->student->oldOrganization))
+                        return $model->student->oldOrganization->name;
+                    elseif(isset($model->student->organization))
+                        return $model->student->organization->name;
+                    else
+                        return  "Неизвестная организация";
+                }],
+                ['attribute'=>'userTo.username','label'=>'Конечная организация','value'=>function($model){
+                    if (isset($model->userTo)) {
+                        if (isset($model->student->organization) and isset($model->student->oldOrganization))
+                            return $model->student->organization->name . "(" . $model->userTo->username . ")";
+                        return  "Неизвестная организация(" . $model->userTo->username . ")";
+                    }
+                    return '';
+                }],
+
+                'change.change',
+
+                ['attribute'=>'period','filter'=>false,'content'=>function($model){
+                    $sql = "SELECT minV.minV,maxV.maxV FROM 
+                      (SELECT MIN(date_start) minV from students where name='{$model->student->name}' and code = '{$model->student->code}' and date_credit = '{$model->student->date_credit}') as minV,
+                      (SELECT MAX(date_start) maxV from students where name='{$model->student->name}' and code = '{$model->student->code}' and date_credit = '{$model->student->date_credit}') as maxV";
+                    $q = Yii::$app->db->createCommand($sql)->queryOne();
+                    return Yii::$app->formatter->asDate($q['minV']).' - '.Yii::$app->formatter->asDate($q['maxV']);
+                },'label'=>'Период'],
+
+            ];
+        }
+        return $ret;
     }
 }
