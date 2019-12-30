@@ -95,7 +95,7 @@ $payment_modals = null;
                             <div class="col-md-12 text-center">
                                 <div class="row">
                                     <div class="col-md-6">
-                                        <?=ExportMenu::widget(['dataProvider'=>$export['h_e_provider'],'columns'=>\app\models\app\students\StudentsHistorySearch::getColumns()]) ?>
+                                        <?=ExportMenu::widget(['dataProvider'=>$export['h_e_provider'],'columns'=>\app\models\app\students\StudentsHistorySearch::getColumns(true)]) ?>
                                     </div>
                                     <div class="col-md-6">
                                         <h2 style="margin-top: 10px">Журнал
@@ -162,7 +162,7 @@ $payment_modals = null;
                                                     }
                                                 }
 
-                                                echo $flag ? "<span> Оплачено </span>" : "<span > Не оплачено </span>";
+                                                echo $flag ? "<span style='font-size: 16px;'> Оплачено </span>" : "<span style='font-size: 16px;'> Не оплачено </span>";
                                                 ?>
                                             </div>
                                             <?php endif; ?>
@@ -282,7 +282,7 @@ $payment_modals = null;
                                                     }
                                                 }
 
-                                                echo $flag ? "<span> Оплачено </span>" : "<span > Не оплачено </span>";
+                                                echo $flag ? "<span style='font-size: 16px;'> Оплачено </span>" : "<span style='font-size: 16px;'> Не оплачено </span>";
                                                 ?>
                                             </div>
                                             <?php endif;?>
@@ -403,7 +403,7 @@ $payment_modals = null;
                                                     }
                                                 }
 
-                                                echo $flag ? "<span> Оплачено </span>" : "<span > Не оплачено </span>";
+                                                echo $flag ? "<span style='font-size: 16px;'> Оплачено </span>" : "<span style='font-size: 16px;'> Не оплачено </span>";
                                                 ?>
                                             </div>
                                             <?php endif;?>

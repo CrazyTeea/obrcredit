@@ -38,7 +38,7 @@ AppAsset::register($this);
     NavBar::begin([
         'brandLabel' => 'Мониторинг образовательного кредитования',
         'brandUrl' => Url::toRoute(['/site/index']),
-        'brandImage' => 'img/light-logo.svg',
+        'brandImage' => Yii::getAlias('@web').'/img/light-logo.svg',
         'options' => [
             'class' => 'navbar-inverse navbar-fixed-top',
         ],

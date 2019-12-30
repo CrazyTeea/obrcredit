@@ -261,11 +261,12 @@ class StudentsController extends AppController
         $subQ = Students::find()->select(['id','min(date_start) min_date','name','date_credit'])->where(['name'=>$model->name,'date_credit'=>$model->date_credit]);
         $minS = Students::find()->from('students t1')->join('JOIN',['t2'=>$subQ],'t2.min_date=t1.date_start and t2.name=t1.name and t2.date_credit=t1.date_credit')->one();
         $history = new StudentsHistory();
+        $is_in_history = false;
         if ($minS){
             $history =  StudentsHistory::findOne(['id_student'=>$minS->id]);
             if (!$history){
                 $history = new StudentsHistory();
-            }
+            }else $is_in_history = true;
         }
       //  $history = ($minS) ?  ? $st : new StudentsHistory() : new StudentsHistory();
         $changes = ArrayHelper::map(Changes::find()->select(['id','change','system_status'])->where(['system_status'=>1])->all(),'id','change');
@@ -287,7 +288,7 @@ class StudentsController extends AppController
 
         }
 
-        return $this->render( 'view',compact('model','docTypes','history','changes','route'));
+        return $this->render( 'view',compact('model','docTypes','history','changes','route','is_in_history'));
     }
 
     /**
