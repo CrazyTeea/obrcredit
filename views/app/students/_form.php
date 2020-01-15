@@ -61,8 +61,8 @@ function getDocByDescriptor(string $descriptor,array $docs, ActiveForm $form,\ap
             </div>
             <div class="col-md-3">
                 <div class="form-group">
-                    <label for="num_name" class="control-label">Банк</label>
-                    <input type="text" readonly="" id="num_name" class="form-control" value='<?=$model->bank->name?>'>
+                    <label for="bank_name" class="control-label">Банк</label>
+                    <input type="text" readonly="" id="bank_name" class="form-control" value='<?=$model->bank->name?>'>
                 </div>
             </div>
 
