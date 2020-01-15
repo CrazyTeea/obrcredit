@@ -79,7 +79,7 @@ function getDocByDescriptor(string $descriptor,array $docs, ActiveForm $form,\ap
             'label'=>'s','value'=>0,'uncheck'=>null
         ])->label(false) ?>
         <?= $form->field($model,'grace_period')->radio([
-            'label'=>'s','value'=>0,'uncheck'=>null
+            'label'=>'s','value'=>0,'uncheck'=>null,'id'=>false
         ])->label(false) ?>
     </div>
 
@@ -136,7 +136,7 @@ function getDocByDescriptor(string $descriptor,array $docs, ActiveForm $form,\ap
                 </td>
                 <td rowspan="3">
                     <?= $form->field($model,'grace_period')->radio([
-                        'label'=>'академический отпуск','value'=>1,'uncheck'=>null
+                        'label'=>'академический отпуск','value'=>1,'uncheck'=>null,'id'=>false
                     ])->label(false) ?>
 
                 </td>
@@ -187,7 +187,7 @@ function getDocByDescriptor(string $descriptor,array $docs, ActiveForm $form,\ap
                 </td>
                 <td>
                     <?= $form->field($model,'grace_period')->radio([
-                        'label'=>'отпуск по беременности и родам','value'=>2,'uncheck'=>null
+                        'label'=>'отпуск по беременности и родам','value'=>2,'uncheck'=>null,'id'=>false
                     ])->label(false) ?>
                 </td>
                 <td>
@@ -215,7 +215,7 @@ function getDocByDescriptor(string $descriptor,array $docs, ActiveForm $form,\ap
                 </td>
                 <td>
                     <?= $form->field($model,'grace_period')->radio([
-                        'label'=>'отпуск по уходу за ребенком по достижении им 3-х лет','value'=>3,'uncheck'=>null
+                        'label'=>'отпуск по уходу за ребенком по достижении им 3-х лет','value'=>3,'uncheck'=>null,'id'=>false
                     ])->label(false) ?>
                 </td>
                 <td>
