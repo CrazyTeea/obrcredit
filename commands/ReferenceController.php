@@ -158,15 +158,8 @@ class ReferenceController extends Controller
 
         while (( $row = fgetcsv( $csv, 1000, ';' ) ) != false) {
 
-            $student = Students::find()->where(['name'=>$row[$nameId],'date_credit'=>$row[$dCreditId],'isEnder'=>1])->one();
+            $student = Students::find()->where(['name'=>$row[$nameId],'date_credit'=>$row[$dCreditId]])->one();
             if ($student) {
-                echo "
-            Организация-$student->id_org
-            ФИО->$student->name
-            КОД->$student->code
-            Дата кредита-> $student->date_credit
-            ПРОПУСК!! ВЫПУСКНИК!!
-             \n";
                 continue;
             }
 
