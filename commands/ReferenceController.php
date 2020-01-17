@@ -195,10 +195,10 @@ class ReferenceController extends Controller
         fclose( $csv );
         echo "success!";
     }
-    public function actionMonth(){
+    public function actionMonth($npp){
         $students = Students::find()->where(['system_status'=>1])
             ->andWhere(
-                ['id_number_pp'=>[2,3],'education_status'=>1,'osnovanie'=>0,'grace_period'=>0,'isEnder'=>0,'month(date_start)'=>'11','year(date_start)'=>'2019'])->groupBy(['name','code','date_credit'])->all();
+                ['id_number_pp'=>$npp,'education_status'=>1,'osnovanie'=>0,'grace_period'=>0,'isEnder'=>0,'month(date_start)'=>'11','year(date_start)'=>'2019'])->groupBy(['name','code','date_credit'])->all();
 
 
         foreach ($students as $student) {
