@@ -3,6 +3,7 @@
 namespace app\models\app;
 
 use app\models\app\students\Students;
+use app\models\User;
 use Yii;
 use yii\db\ActiveRecord;
 use yii\helpers\ArrayHelper;
@@ -43,6 +44,12 @@ class Organizations extends ActiveRecord
             [['name', 'short_name', 'full_name'], 'string', 'max' => 500],
         ];
     }
+    public function getUsers(){
+        return $this->hasMany(User::className(),['id_org'=>'id']);
+    }
+    public function getUsersCount(){
+        return $this->hasMany(User::className(),['id_org'=>'id'])->count();
+    }
 
     /**
      * {@inheritdoc}
@@ -54,6 +61,7 @@ class Organizations extends ActiveRecord
             'name' => 'Наименование',
             'short_name' => 'Краткое Наименование',
             'full_name' => 'Полное Наименование',
+            'usersCount'=>'Кол-во пользователей'
         ];
     }
     public function getStudents(){

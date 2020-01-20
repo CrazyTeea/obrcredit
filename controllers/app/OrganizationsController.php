@@ -50,6 +50,16 @@ class OrganizationsController extends AppController
         return parent::beforeAction($action);
     }
 
+
+    public function actionUsers(){
+
+        $searchModel = new OrganizationsSearch();
+        $dataProvider = $searchModel->searchUsers(Yii::$app->getRequest()->getQueryParams());
+
+
+        return $this->render('users',compact('searchModel','dataProvider'));
+    }
+
     /**
      * Lists all Organizations models.
      * @return mixed

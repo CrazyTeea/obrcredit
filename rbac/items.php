@@ -25,7 +25,6 @@ return [
             '/site/signup',
             '/site/index',
             '/app/*',
-            '/app/students-history/*',
         ],
     ],
     'podved' => [
@@ -41,7 +40,6 @@ return [
             '/app/students/by-bank',
             '/app/students/all',
             '/app/students/delete-doc',
-            '/app/students-history/*',
         ],
     ],
     '/app/students/*' => [
@@ -108,6 +106,9 @@ return [
         'type' => 2,
     ],
     '/app/students/delete-doc' => [
+        'type' => 2,
+    ],
+    '/app/organizations/users' => [
         'type' => 2,
     ],
 ];
