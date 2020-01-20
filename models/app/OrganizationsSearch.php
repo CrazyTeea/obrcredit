@@ -107,4 +107,43 @@ class OrganizationsSearch extends Organizations
         $query->groupBy([Organizations::tableName().'.id']);
         return $dataProvider;
     }
+    /**
+     * Creates data provider instance with search query applied
+     *
+     * @param array $params
+     *
+     * @return ActiveDataProvider
+     */
+    public function searchUsers($params)
+    {
+
+
+        $query = Organizations::find()->where(['organizations.system_status'=>1]);
+
+        // add conditions tha t should always apply here
+
+        $dataProvider = new ActiveDataProvider([
+            'query' => $query,
+        ]);
+
+
+
+        if (!$this->load($params) || !$this->validate()) {
+
+            // uncomment the following line if you do not want to return any records when validation fails
+            // $query->where('0=1');
+            return $dataProvider;
+        }
+
+
+        //grid filtering conditions------------------
+        $query->andFilterWhere(['id' => $this->id,]);
+
+        $query->andFilterWhere(['like', 'organizations.name', $this->name])
+            ->andFilterWhere(['like', 'short_name', $this->short_name])
+            ->andFilterWhere(['like', 'full_name', $this->full_name]);
+
+        $query->groupBy([Organizations::tableName().'.id']);
+        return $dataProvider;
+    }
 }
