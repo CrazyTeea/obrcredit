@@ -2,6 +2,11 @@
 
 use yii\grid\GridView;
 
+/***
+ * @var \yii\data\ActiveDataProvider $dataProvider
+ * @var \app\models\app\OrganizationsSearch $searchModel
+ */
+
 $this->title = "Список организаций";
 $this->params[ 'breadcrumbs' ][] = ['label' => 'ОбрКредит', 'url' => ['/']];
 $this->params['breadcrumbs'][] = $this->title;
