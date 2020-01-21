@@ -6,7 +6,6 @@ export default ()=>{
             let mb = $(".modal-backdrop");
             mb.not(':first').remove();
         });
-
         $('button[type="submit"]').click(function (e) {
             e.preventDefault();
             let form = $(e.target.parentElement.parentElement);
@@ -51,5 +50,5 @@ export default ()=>{
                 }
             });
         })
-    })
+    }).catch(e=>{})
 }
