@@ -170,8 +170,6 @@ class StudentsController extends AppController
         $exportProvider = new ActiveDataProvider( ['query' => $studentsExport, 'pagination' => false] );
 
 
-
-
         return $this->render( 'index', [
             'searchModel' => $searchModel,
             'dataProvider' => $dataProvider,
