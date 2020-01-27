@@ -26,15 +26,16 @@
     "webpack-cli": "^3.3.10"
   },
   "dependencies": {
-    "@babel/core": "^7.7.7",
-    "@babel/polyfill": "^7.7.0",
-    "autoprefixer": "^9.7.3",
+    "@babel/core": "^7.8.3",
+    "@babel/polyfill": "^7.8.3",
+    "autoprefixer": "^9.7.4",
     "babel-loader": "^8.0.6",
-    "css-loader": "^3.4.0",
+    "css-loader": "^3.4.2",
     "mini-css-extract-plugin": "latest",
     "postcss-loader": "^3.0.0",
     "postcss-nested": "^4.2.1",
+    "simple-ajax-uploader": "^2.6.7",
     "style-loader": "^1.1.3",
-    "webpack": "latest"
+    "webpack": "^4.41.5"
   }
 }

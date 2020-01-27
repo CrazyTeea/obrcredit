@@ -22,7 +22,8 @@
         "lcobucci/jwt": "^3.3",
         "kartik-v/yii2-widget-select2": "^2.1",
         "kartik-v/yii2-export": "^1.4",
-        "phpoffice/phpword": "^0.16.0"
+        "phpoffice/phpword": "^0.16.0",
+        "kartik-v/yii2-widget-fileinput": "^1.0"
     },
     "require-dev": {
         "yiisoft/yii2-debug": "~2.1.0",
