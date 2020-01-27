@@ -151,12 +151,12 @@ function getDocByDescriptor(string $descriptor,array $docs, ActiveForm $form,\ap
                     <?= getDocByDescriptor('rasp_act1',$docTypes,$form,$file) ?>
                 </td>
                 <td rowspan="6">
-                    <?= $form->field($model,'perevod',['enableClientValidation' => false])->checkbox([],false)->label('Перевод на бюджет') ?>
+                    <?= $form->field($model,'perevod',['enableClientValidation' => false])->checkbox(['class'=>'status_callback'],false)->label('Перевод на бюджет') ?>
 
                     <?= getDocByDescriptor('rasp_act4',$docTypes,$form,$file) ?>
                 </td>
                 <td rowspan="6" style="text-align: center;">
-                    <?=$form->field($model,'isEnder',['enableClientValidation' => false])->checkbox([],false)?>
+                    <?=$form->field($model,'isEnder',['enableClientValidation' => false])->checkbox(['class'=>'status_callback'],false)?>
                     <?=$form->field($model,'date_ender',['enableClientValidation' => false])->input('date'); ?>
                     <?= getDocByDescriptor('ender',$docTypes,$form,$file) ?>
                 </td>
