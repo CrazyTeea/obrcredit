@@ -22,12 +22,23 @@ export default ()=>{
         let ed_s = $("#students-education_status");
 
         $('div').on('change','.status_callback',function (e) {
-           ed_s.find('[value=0]').checked = true;
-           ed_s.find('input').each(function () {
+            let dis  = true;
+            if (e.target.type == 'checkbox'){
+                dis = !!e.target.checked;
+            }
+            if (dis){
+                ed_s.find('[value=0]').checked = true;
+                ed_s.find('input').each(function () {
                     this.disabled = true;
-           })
-        });
+                })
+            }
+            else
+                ed_s.find('input').each(function () {
+                    this.disabled = false;
+                })
 
+
+        });
 
         let form = document.getElementById('w0');
         let e_status = document.getElementById('students-education_status');
@@ -37,18 +48,20 @@ export default ()=>{
         else disable(e_status,false);
 
         $("button[href='#clean']").click(()=>{
+            $(":input[name='Students[education_status]']").prop('disabled',false);
             $(":input[name='Students[education_status]']").prop('checked',true);
             $(":input[name='Students[osnovanie]'][value='0']").prop('checked',true);
         });
         $("button[href='#clean2']").click(()=>{
+            $(":input[name='Students[education_status]']").prop('disabled',false);
             $(":input[name='Students[education_status]']").prop('checked',true);
             $(":input[name='Students[grace_period]'][value='0']").prop('checked',true);
         });
         ed_s.change(e=>{
-            if(e.target.value == 0){
+            if(e.target.value == 0)
                 disable(e_status,false);
-            }
-            else disable(e_status,true);
+            else
+                disable(e_status,true);
         });
 
         /*if (form.elements['Students[education_status]'].value==1)
