@@ -57,6 +57,8 @@ module.exports = {
             proxy: 'http://localhost:8080/',
         })
     ],
+
+    target: "web",
     resolve: {
         extensions: [
             '.css',

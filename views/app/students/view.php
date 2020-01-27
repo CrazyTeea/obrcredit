@@ -22,9 +22,11 @@ if ($year and $bank){
     $this->params['breadcrumbs'][] = ['label'=>'Выбор месяца','url'=>['app/main/month','year'=>$year]];
 }
 
-if ($cans[0] || $cans[1])
-    $this->params['breadcrumbs'][] = ['label' => 'Организация', 'url' => ['app/organizations/by-bank','id_bank'=>$bank,'month'=>$month,'nPP'=>Yii::$app->session['nPP']]];
-$this->params['breadcrumbs'][] = ['label' => 'Обучающиеся', 'url' => ['by-bank','id'=>$model->id_bank,'nPP'=>$model->id_number_pp,'month'=>$month]];
+if ($cans[0] || $cans[1]) {
+    $this->params['breadcrumbs'][] = ['label' => 'Организация', 'url' => ['app/organizations/by-bank', 'id_bank' => $bank, 'month' => $month, 'nPP' => Yii::$app->session['nPP']]];
+    $this->params['breadcrumbs'][] = ['label' => 'Обучающиеся', 'url' => ['index', 'id' => $model->id_org]];
+}else
+    $this->params['breadcrumbs'][] = ['label' => 'Обучающиеся', 'url' => ['by-bank', 'id' => $model->id_bank, 'nPP' => $model->id_number_pp, 'month' => $month]];
 $this->params['breadcrumbs'][] = $this->title;
 YiiAsset::register($this);
 
@@ -139,8 +141,15 @@ $rasp_act_otch = StudentDocs::getDocByDescriptorName('rasp_act_otch',$model->id)
                         ]);
                 break;
     }
-    if ($route !== '/app/students/view' )
-        echo Html::a('Вернуться к списку',$routeArgs,['class'=>'btn btn-default']);
+    if ($route !== '/app/students/view' ) {
+        if ($cans[0] || $cans[1]){
+            $route = \yii\helpers\Url::to(['index', 'id' => $model->id_org]);
+        }
+        else{
+            $route = \yii\helpers\Url::to(['by-bank', 'id' => $model->id_bank, 'nPP' => $model->id_number_pp, 'month' => $month]);
+        }
+        echo Html::a('Вернуться к списку', $route, ['class' => 'btn btn-default']);
+    }
 
     ?>
 

@@ -76,10 +76,10 @@ function getDocByDescriptor(string $descriptor,array $docs, ActiveForm $form,\ap
     </div>
     <div style="display: none">
         <?= $form->field($model,'osnovanie')->radio([
-            'label'=>'s','value'=>0,'uncheck'=>null,'id'=>false
+            'label'=>'s','value'=>0,'uncheck'=>null,'id'=>false,'class'=>'status_callback'
         ])->label(false) ?>
         <?= $form->field($model,'grace_period')->radio([
-            'label'=>'s','value'=>0,'uncheck'=>null,'id'=>false
+            'label'=>'s','value'=>0,'uncheck'=>null,'id'=>false,'class'=>'status_callback'
         ])->label(false) ?>
     </div>
 
@@ -125,10 +125,10 @@ function getDocByDescriptor(string $descriptor,array $docs, ActiveForm $form,\ap
                         № 273-ФЗ
                         <?= $form->field($model,'osnovanie')->radio([
                             'label'=>'отчисление как меры дисциплинарного взыскания, в случае невыполнения обучающимся по профессиональной образовательной программе обязанностей по добросовестному освоению такой образовательной программы и выполнению учебного плана',
-                            'value'=>1,'uncheck'=>null,'id'=>false])->label(false) ?>
+                            'value'=>1,'uncheck'=>null,'id'=>false,'class'=>'status_callback'])->label(false) ?>
                         <?= $form->field($model,'osnovanie')->radio([
                             'label'=>'установление нарушения порядка приема в образовательную организацию, повлекшего по вине обучающегося его незаконное зачисление в образовательную организацию',
-                            'value'=>2,'uncheck'=>null,'id'=>false])->label(false) ?>
+                            'value'=>2,'uncheck'=>null,'id'=>false,'class'=>'status_callback'])->label(false) ?>
                     </p>
                 </td>
                 <td rowspan="3">
@@ -136,7 +136,7 @@ function getDocByDescriptor(string $descriptor,array $docs, ActiveForm $form,\ap
                 </td>
                 <td rowspan="3">
                     <?= $form->field($model,'grace_period')->radio([
-                        'label'=>'академический отпуск','value'=>1,'uncheck'=>null,'id'=>false
+                        'label'=>'академический отпуск','value'=>1,'uncheck'=>null,'id'=>false,'class'=>'status_callback'
                     ])->label(false) ?>
 
                 </td>
@@ -167,19 +167,19 @@ function getDocByDescriptor(string $descriptor,array $docs, ActiveForm $form,\ap
                 <td>
                     <?= $form->field($model,'osnovanie')->radio([
                         'label'=> 'отчислен по инициативе обучающегося или родителей (законных представителей) несовершеннолетнего обучающегося',
-                        'value'=>3,'uncheck'=>null,'id'=>false])->label(false) ?>
+                        'value'=>3,'uncheck'=>null,'id'=>false,'class'=>'status_callback'])->label(false) ?>
                 </td>
             </tr>
             <tr>
                 <td><p class="text-sm-center"> пункт 21 </p></td>
                 <td><p class="text-sm-center">
                         перевод обучающегося для продолжения освоения основной профессиональной образовательной программы в другую образовательную организацию:
-                        <?= $form->field($model,'osnovanie')->radio([
+                        <?= $form->field($model,'osnovanie',)->radio([
                             'label'=>  'в связи с ликвидацией образовательной организации',
-                            'value'=>4,'uncheck'=>null,'id'=>false])->label(false) ?>
+                            'value'=>4,'uncheck'=>null,'id'=>false,'class'=>'status_callback'])->label(false) ?>
                         <?= $form->field($model,'osnovanie')->radio([
                             'label'=> 'по независящим от воли обучающегося или родителей (законных представителей) несовершеннолетнего обучающегося и образовательной организации',
-                            'value'=>5,'uncheck'=>null,'id'=>false])->label(false) ?>
+                            'value'=>5,'uncheck'=>null,'id'=>false,'class'=>'status_callback'])->label(false) ?>
                     </p>
                 </td>
                 <td>
@@ -187,7 +187,7 @@ function getDocByDescriptor(string $descriptor,array $docs, ActiveForm $form,\ap
                 </td>
                 <td>
                     <?= $form->field($model,'grace_period')->radio([
-                        'label'=>'отпуск по беременности и родам','value'=>2,'uncheck'=>null,'id'=>false
+                        'label'=>'отпуск по беременности и родам','value'=>2,'uncheck'=>null,'id'=>false,'class'=>'status_callback'
                     ])->label(false) ?>
                 </td>
                 <td>
@@ -208,14 +208,14 @@ function getDocByDescriptor(string $descriptor,array $docs, ActiveForm $form,\ap
                 <td>
                     <?= $form->field($model,'osnovanie')->radio([
                         'label'=> 'обучающимся (заемщиком) принято решение об отказе от продолжения обучения, по обстоятельствам, не зависящим от воли обучающегося или родителей (законных представителей) несовершеннолетнего обучающегося и образовательной организации, в том числе в случае ликвидации образовательной организации',
-                        'value'=>6,'uncheck'=>null,'id'=>false])->label(false) ?>
+                        'value'=>6,'uncheck'=>null,'id'=>false,'class'=>'status_callback'])->label(false) ?>
                 </td>
                 <td>
                     <?= getDocByDescriptor('rasp_act_otch',$docTypes,$form,$file) ?>
                 </td>
                 <td>
                     <?= $form->field($model,'grace_period')->radio([
-                        'label'=>'отпуск по уходу за ребенком по достижении им 3-х лет','value'=>3,'uncheck'=>null,'id'=>false
+                        'label'=>'отпуск по уходу за ребенком по достижении им 3-х лет','value'=>3,'uncheck'=>null,'id'=>false,'class'=>'status_callback'
                     ])->label(false) ?>
                 </td>
                 <td>
