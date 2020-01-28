@@ -203,6 +203,7 @@ class Students extends ActiveRecord
                 ['attribute' => 'name', 'label' => "ФИО обучающегося", 'encodeLabel' => false],
                 ['attribute' => 'organization', 'value' => 'organization.name', 'label' => 'Наименование ООВО', 'encodeLabel' => false],
                 ['attribute' => 'code', 'label' => 'Код направления подготовки', 'encodeLabel' => false],
+                ['attribute' => 'old_code', 'label' => 'Старый код направления подготовки', 'encodeLabel' => false],
                 ['attribute' => 'education_status', 'format' => 'raw', 'label' => 'Статус <br> обучающегося', 'encodeLabel' => false, 'content' => function ($model) {
                     $os = mb_substr(Students::getOsnovanie()[!empty($model->osnovanie) ? $model->osnovanie : 0], 0, 50);
                     $data = "";
