@@ -76,52 +76,30 @@ class ReferenceController extends Controller
 
     }
 
-    /**
-     * @param Students[] $array
-     * @param Students $value
-     * @return array
-     */
-    private function finddoubles($array, $value){
-        $arr = array();
-        foreach ($array as $item){
-            if ($item->name == $value->name and $item->date_credit == $value->date_credit){
-                $arr[]=$item;
-            }
-        }
-        return $arr;
-    }
+    public function actionUpdate($from,$id_org,$npp, $onlyEnders = false, $updateDate = false){
+        if (!$updateDate){
+            $students = $onlyEnders ? Students::find()->where(['isEnder'=>true]) : Students::find() ;
+            $students = $students->andWhere(['date_start'=>$from])->andWhere(['id_org'=>$id_org])->all();
 
-    /**
-     * @param Students[] $array
-     * @param bool $min
-     * @return array
-     */
-    private function findMinMax($array, $min = true){
-        $minv = $maxv = $array[0];
-        foreach ($array as $item){
-            if (strtotime($maxv->date_start) < strtotime($item->date_start))
-                $maxv = $item;
-            if (strtotime($minv->date_start) > strtotime($item->date_start))
-                $minv = $item;
-        }
-        return ['max' => $maxv,'min' => $minv];
-    }
-
-    public function actionZerostudents(){
-        $zeros = Students::findAll(['system_status'=>0]);
-        $exept = [];
-        foreach ($zeros as $i => $zero){
-            if (!in_array($zero->name,$exept)) {
-                $arr = $this->finddoubles($zeros, $zero);
-                $v = $this->findMinMax($arr);
-                echo "$zero->name min {$v['min']->date_start} max {$v['max']->date_start}\n";
-                $exept[] = $v['min']->name;
-                $his = new StudentsHistory();
-                $his->id_student = $v['min']->id;
-                $his->id_user_from = 2;
-                $his->id_change = 1;
-                $his->save();
+            foreach ($students as $student){
+                $s = Students::find()->where(['name'=>$student->name,'date_credit'=>$student->date_credit])->andWhere(['id_org'=>$id_org])->andWhere(['>','date_start',$from])->all();
+                foreach ($s as $item){
+                    $item->education_status = $student->education_status;
+                    $item->osnovanie = $student->osnovanie;
+                    $item->grace_period = $student->grace_period;
+                    $item->isEnder = $student->isEnder;
+                    $item->date_start_grace_period1 = $student->date_start_grace_period1;
+                    $item->date_start_grace_period2 = $student->date_start_grace_period2;
+                    $item->date_start_grace_period2 = $student->date_start_grace_period3;
+                    $item->date_end_grace_period1 = $student->date_end_grace_period1;
+                    $item->date_end_grace_period2 = $student->date_end_grace_period2;
+                    $item->date_end_grace_period3 = $student->date_end_grace_period3;
+                    $item->date_ender = $student->date_ender;
+                    echo serialize($item);
+                    $item->save(false);
+                }
             }
+
         }
     }
 
@@ -195,137 +173,9 @@ class ReferenceController extends Controller
         fclose( $csv );
         echo "success!";
     }
-    public function actionMonth($npp){
-        $students = Students::find()->where(['system_status'=>1])
-            ->andWhere(
-                ['id_number_pp'=>$npp,'education_status'=>1,'osnovanie'=>0,'grace_period'=>0,'isEnder'=>0,'month(date_start)'=>'11','year(date_start)'=>'2019'])->groupBy(['name','code','date_credit'])->all();
 
 
-        foreach ($students as $student) {
-            $newS = new Students();
-            foreach ($student->attributes() as $attr) {
-
-                if (in_array($attr,['id','date_create']))
-                    continue;
-                $newS->{$attr} = $student->{$attr};
-
-            }
-            $newS->date_start = '2019-12-01';
-            $newS->status = 1;
-            $newS->save(false);
-         //   var_dump($newS);exit();
-
-        }
-
-    }
-
-    public function actionUsers( $file, $orgId, $emailId, $nameID )
-    {
-        $mailer = Yii::$app->getMailer();
 
 
-        $csv = Yii::getAlias( '@webroot' ) . "/toParse/$file.csv";
-        $csv = fopen( $csv, 'r' );
-
-        while (( $row = fgetcsv( $csv, 1000, ';' ) ) != false) {
-
-            $email = preg_replace( '/\s/', '', $row[ $emailId ] );
-            $user = User::findOne( ['username' => $email] );
-            if ( $user )
-                continue;
-            try {
-                $user = new User();
-
-                $user->status = 10;
-                $login = $user->email = $user->username = $email;
-                $password = Yii::$app->security->generateRandomString( 6 );
-                $user->setPassword( $password );
-                $user->generatePasswordResetToken();
-                $user->generateAuthKey();
-                $user->updated_at = $user->created_at = time();
-                $user->id_org = preg_replace( '/\s/', '', $row[ $orgId ] );
-                $user->name = $row[ $nameID ];
-                if ( $user->save() ) {
-                    $auth = new PhpManager();
-                    $auth->revokeAll( $user->id );
-                    $auth->assign( $auth->getRole( 'podved' ), $user->id );
-
-
-                    $mailer->compose()
-                        ->setTo( $user->email )
-                        ->setFrom( 'ias@mirea.ru' )
-                        ->setSubject( 'Письмо от 18.09.2019 № МН-1323/СК - Мониторинг образовательного кредитования' )
-                        ->setTextBody( "Уважаемые коллеги! Направляем Вам данные для входа в модуль \"Мониторинг образовательного кредитования\".\n Вход в модуль по адрессу обркредит.иасмон.рф:\n
-                    Логин: $login  \n Пароль: $password \n" )
-                        ->send();
-                    echo "$row[$orgId] $row[$nameID] $row[$emailId] $password\n";
-                }
-            } catch (Exception $e) {
-                echo $e->getMessage();
-                echo "\n$user->email";
-            }
-
-        }
-
-        /* $user = new User();
-         $user->status = 10;
-         $login = $user->email = $user->username = 'email@email.ru';
-         $password = "password";
-         $user->setPassword($password);
-         $user->generatePasswordResetToken();
-         $user->generateAuthKey();
-         $user->updated_at = $user->created_at = time();
-         $user->id_org=100;
-         $user->save();
-         $auth = new PhpManager();
-         $auth->assign($auth->getRole('podved'),$user->id);
-
-         $mailer->compose()
-             ->setTo('lipatow.nikita@yandex.ru')
-             ->setFrom('ias@mirea.ru')
-             ->setSubject('Письмо от 18.09.2019 № МН-1323/СК - Мониторинг образовательного кредитования')
-             ->setTextBody("Уважаемые коллеги! Направляем Вам данные для входа в модуль \"Мониторинг образовательного кредитования\". Вход в модуль по адрессу обркредит.иасмон.рф: $login:$password")
-             ->send();
-         //*/
-    }
-
-    public function actionEmail()
-    {
-        $users = User::find()->all();
-        $email = "
-        Предоставление образовательных кредитов банками и иными кредитными организациями для обучающихся осуществляется с учетом выполнения требований, указанных в пункте 4 Постановления, исполнение которых обеспечивает предоставление субсидии банку и иной кредитной организации.
-
-Вместе с тем, обращаем внимание, что случае досрочного прекращения образовательных отношений между обучающемся (заемщиком) и образовательной организацией в соответствии с пунктом 2 части 2 статьи 61 Федерального закона «Об образовании в Российской Федерации», а также по инициативе обучающегося или родителей (законных представителей) несовершеннолетнего обучающегося образовательная организация в течение 10 рабочих дней со дня издания распорядительного акта об отчислении обучающегося (заемщика) обязана проинформировать Министерство, банк и иную кредитную организацию об отчислении обучающегося (заемщика),
-с приложением копии распорядительного акта (пункт 20 Постановления).
-
-Согласно пункту 19 Постановления Министерство ежемесячно информирует образовательные организации о получении обучающимися образовательных услуг за счет средств образовательного кредита.
-
-Во исполнение указанного пункта Министерство направляет список обучающихся, воспользовавшихся образовательным кредитом
-с государственной поддержкой с которым следует ознакомиться
-в информационно-аналитической системе «Мониторинг» Минобрнауки России (https://обркредит.иасмон.рф).
-
-В целях обеспечения исполнения вышеуказанных пунктов Постановления Министерство просит в срок до 14 октября 2019 г. разместить информацию по текущим статусам студентов за отчетный период - сентябрь 2019 года в разработанной форме в ИАС Мониторинг.
-
-Кроме того, необходимо обратить внимание на необходимость учета обучающихся (заемщиков) в указанной информационной системе, воспользовавшихся академическим правом в соответствии с пунктом 12 части 1 статьи 34 Федерального закона «Об образовании в Российской Федерации».
-
-Вместе с тем, абзац подпункта «а» пункта 4 Постановления предусматривает право обучающегося (заемщика) на однократную пролонгацию договора о предоставлении образовательного кредита в случае освоения им других основных образовательных услуг. Пролонгация проводится путем заключения дополнительного соглашения к договору о предоставлении образовательного кредита.
-        
-        ";
-        $mailer = Yii::$app->getMailer();
-        foreach ($users as $i => $user) {
-            if ( $i < 113 )
-                continue;
-            try {
-                $mailer->compose()
-                    ->setTo( $user->email )
-                    ->setFrom( 'ias@mirea.ru' )
-                    ->setSubject( 'Мониторинг образовательного кредитования' )
-                    ->setTextBody( $email )
-                    ->send();
-            } catch (Exception $e) {
-                echo $e->getMessage();
-            }
-        }
-    }
 
 }
