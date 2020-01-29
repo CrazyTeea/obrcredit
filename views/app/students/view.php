@@ -77,7 +77,6 @@ $rasp_act_otch = StudentDocs::getDocByDescriptorName('rasp_act_otch',$model->id)
         <?= Html::a('Редактировать', ['update', 'id' => $model->id],['class'=>'btn btn-primary']) ?>
     <?php endif;?>
     <?php if ($cans[0] or $cans[1]):?>
-
         <?=  Html::a('Удалить', ['delete', 'id' => $model->id], [
                 'class'=>'btn btn-danger',
             'data' => [
@@ -85,7 +84,6 @@ $rasp_act_otch = StudentDocs::getDocByDescriptorName('rasp_act_otch',$model->id)
                 'method' => 'post',
             ],
         ]) ?>
-
     <?php endif;?>
 
     <?php if (!$cans[2] and !$is_in_history):?>
@@ -120,36 +118,8 @@ $rasp_act_otch = StudentDocs::getDocByDescriptorName('rasp_act_otch',$model->id)
 
     <?php endif;?>
     <?php
-    $routeArgs = [$route];
-    switch ($route) {
-        case '/app/students-history/get-by-number-and-year':
-            $routeArgs = array_merge( $routeArgs , [
-                    'id_number_pp'=>$model->id_number_pp,
-                    'year'=>date('Y',strtotime($model->date_start))
-                    ]);
-            break;
-            case '/app/students/index':
-            $routeArgs = array_merge($routeArgs , [
-                    'id'=>$model->id_org,
-                    ]);
-            break;
-            case '/app/students/by-bank':
-                $routeArgs = array_merge($routeArgs , [
-                        'id'=>$model->id_bank,
-                        'nPP'=>$model->id_number_pp,
-                        'month'=>date('m',strtotime($model->date_start))
-                        ]);
-                break;
-    }
-    if ($route !== '/app/students/view' ) {
-        if ($cans[0] || $cans[1]){
-            $route = \yii\helpers\Url::to(['index', 'id' => $model->id_org]);
-        }
-        else{
-            $route = \yii\helpers\Url::to(['by-bank', 'id' => $model->id_bank, 'nPP' => $model->id_number_pp, 'month' => $month]);
-        }
-        echo Html::a('Вернуться к списку', $route, ['class' => 'btn btn-default']);
-    }
+
+    echo Html::a('Вернуться к списку', $route, ['class' => 'btn btn-default']);
 
     ?>
 
