@@ -251,7 +251,6 @@ class StudentsController extends AppController
      */
     public function actionView( $id )
     {
-        $route = Yii::$app->session->get('route');
         $this->updateRouteHistory('/app/students/view');
         $docTypes = StudentDocumentTypes::getActive()->all();
         $model = $this->findModel( $id );
@@ -285,6 +284,24 @@ class StudentsController extends AppController
 
 
         }
+        Yii::$app->getSession()->set('id_bank',$model->id_bank);
+        Yii::$app->getSession()->set('id_org',$model->id_org);
+        Yii::$app->getSession()->set( 'nPP' ,$model->id_number_pp);
+        Yii::$app->getSession()->set('month',date('n',strtotime($model->date_start)));
+        Yii::$app->getSession()->set('year',date('Y',strtotime($model->date_start)));
+        $route = null;
+        if (!Yii::$app->getSession()->get('cans')[2]){
+            $route = ['index','id'=>$model->id_org];
+        }
+        else{
+            $route = ['by-bank','id'=>$model->id_bank,'nPP'=>$model->id_number_pp,'month'=>Yii::$app->getSession()->get('month')];
+        }
+
+
+
+
+        $route = \yii\helpers\Url::to($route);
+
 
         return $this->render( 'view',compact('model','docTypes','history','changes','route','is_in_history'));
     }
