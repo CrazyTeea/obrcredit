@@ -150,7 +150,8 @@ class OrganizationsController extends AppController
             'id_bank'=>$id_bank,
             'MONTH(date_start)'=>$month,
             'YEAR(date_start)'=>$searchModel->year,
-            'id_number_pp'=>$nPP]);
+            'id_number_pp'=>$nPP
+        ])->with(['bank', 'numberPP', 'dateLastStatus', 'organization']);
 
         $exportProvider = new ActiveDataProvider(['query'=>$studentsExport]);
 
