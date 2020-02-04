@@ -143,7 +143,7 @@ class OrganizationsController extends AppController
         $modelColored->groupBy(['organizations.id']);
         //$modelColored->orderBy(['studentsCOUNT' => SORT_DESC]);
 
-        $dataProviderColored  = new ActiveDataProvider(['query'=>$modelColored,'pagination'=>false]);
+        $dataProviderColored  = new ActiveDataProvider(['query'=>$modelColored]);
 
         $studentsExport =  Students::find()->where([
             'system_status'=>1,
@@ -152,7 +152,7 @@ class OrganizationsController extends AppController
             'YEAR(date_start)'=>$searchModel->year,
             'id_number_pp'=>$nPP]);
 
-        $exportProvider = new ActiveDataProvider(['query'=>$studentsExport,'pagination'=>false]);
+        $exportProvider = new ActiveDataProvider(['query'=>$studentsExport]);
 
 
 
