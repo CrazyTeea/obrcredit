@@ -34,11 +34,8 @@ $this->params['breadcrumbs'][] = $this->title;
             'content' => $this->render('_ender',compact('dataProvider2','searchModelEnd')),
         ],
         [
-            'label' => 'Заголовок вкладки 3',
-            'content' => 'Вкладка 3',
-            'headerOptions' => [
-                'id' => 'someId'
-            ]
+            'label' => 'Отчисленные',
+            'content' => $this->render('_otch',compact('dataProvider3','searchModelOtch')),
         ],
     ]]) ?>
 

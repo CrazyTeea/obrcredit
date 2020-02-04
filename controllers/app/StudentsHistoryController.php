@@ -57,17 +57,20 @@ class StudentsHistoryController extends AppController
 
         $searchModel = new StudentsHistorySearch();
         $searchModelEnd = new StudentsSearch();
-        $searchModelEnd->year = $year;
-        $searchModelEnd->id_number_pp = $id_number_pp;
+        $searchModelOtch = new StudentsSearch();
+        $searchModelOtch->year = $searchModelEnd->year = $year;
+        $searchModelOtch->education_status = 0;
+        $searchModelOtch->id_number_pp = $searchModelEnd->id_number_pp = $id_number_pp;
         $searchModel->id_number_pp = $id_number_pp;
         $searchModel->year = $year;
         //  var_dump(Yii::$app->request->queryParams);exit();
         $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
         $dataProvider2 = $searchModelEnd->search(Yii::$app->request->queryParams);
+        $dataProvider3 = $searchModelOtch->search(Yii::$app->request->queryParams);
 
         $changes = ArrayHelper::map(Changes::find()->where(['system_status'=>1])->select(['system_status','id','change'])->all(),'id','change');
 
-        return $this->render('index', compact('searchModel','dataProvider','searchModelEnd','dataProvider2','changes'));
+        return $this->render('index', compact('searchModel','dataProvider','searchModelEnd','dataProvider2','searchModelOtch','dataProvider3','changes'));
     }
     public function actionAdd(int $id){
         $this->updateRouteHistory('/app/students-history/add');
