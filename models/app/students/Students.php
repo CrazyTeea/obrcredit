@@ -234,11 +234,11 @@ class Students extends ActiveRecord
                     }
 
 
-                    $dta = $data;
+                    //$dta = $data;
                     if ($model->isEnder)
                         return "Выпускник" ;
 
-                    return ($model->education_status) ? $l = ($model->perevod) ? "Переведен на бюджет" : "Обучается" : " $dta";
+                    return ($model->education_status) ? $l = ($model->perevod) ? "Переведен на бюджет" : "Обучается" : " {$data}";
                 }],
                 ['attribute' => 'grace_period', 'encodeLabel' => false, 'value' =>
                     function ($model) {

@@ -4,6 +4,7 @@ use app\models\app\students\Students;
 use app\models\app\students\StudentsHistorySearch;
 use kartik\export\ExportMenu;
 use yii\bootstrap\Modal;
+use yii\bootstrap\Tabs;
 use yii\helpers\Html;
 use yii\grid\GridView;
 use yii\helpers\Url;
@@ -22,30 +23,22 @@ $this->params['breadcrumbs'][] = $this->title;
 ?>
 <div class="students-history-index">
 
-    <h1><?= Html::encode($this->title) ?></h1>
+    <?=Tabs::widget(['items'=>[
+        [
+            'label' => 'Журнал',
+            'content' => $this->render('_zhurnal',compact('dataProvider','searchModel')),
+            'active' => true // указывает на активность вкладки
+        ],
+        [
+            'label' => 'Выпускники',
+            'content' => $this->render('_ender',compact('dataProvider2','searchModelEnd')),
+        ],
+        [
+            'label' => 'Отчисленные',
+            'content' => $this->render('_otch',compact('dataProvider3','searchModelOtch')),
+        ],
+    ]]) ?>
 
-    <?php Pjax::begin(['enableReplaceState'=>false,'enablePushState'=>false]); ?>
-    <?php //= $this->render('_search', ['model' => $searchModel,'changes'=>$changes]); ?>
 
-    <?=ExportMenu::widget(['dataProvider'=>$dataProvider,'columns'=> StudentsHistorySearch::getColumns()]) ?>
-    <?= GridView::widget([
-        'dataProvider' => $dataProvider,
-        'filterModel' => $searchModel,
-        'columns' => StudentsHistorySearch::getColumns(),
-    ]); ?>
-
-    <?php
-    Modal::begin([
-        'header'=>'<h4>Update Model</h4>',
-        'id'=>'update-modal',
-        'size'=>'modal-lg'
-    ]);
-
-    echo "<div id='updateModalContent'></div>";
-
-    Modal::end();
-    ?>
-
-    <?php Pjax::end(); ?>
 
 </div>

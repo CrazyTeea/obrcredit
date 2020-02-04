@@ -19,6 +19,7 @@ class StudentsSearch extends Students
     public $year;
     public $org;
     public $cans;
+    public $ender;
     /**
      * {@inheritdoc}
      */
@@ -52,16 +53,19 @@ class StudentsSearch extends Students
         $query = Students::find()
             ->where(['students.system_status'=>1]);
         if (!$all) {
-            if ( !empty( $this->id_bank ) )
+            if ( isset( $this->id_bank ) )
                 $query->andWhere( ['id_bank' => $this->id_bank] );
-            if ( !empty( $this->month ) )
+            if ( isset( $this->month ) )
                 $query->andWhere( ['MONTH(students.date_start)' => $this->month] );
-            if ( !empty( $this->year ) )
+            if ( isset( $this->year ) )
                 $query->andWhere( ['YEAR(students.date_start)' => $this->year] );
-            if (!empty($this->id_number_pp)){
+            if (isset($this->id_number_pp)){
                 $query->andWhere(['id_number_pp'=>$this->id_number_pp]);
             }
+            if (isset($this->ender))
+                $query->andWhere(['isEnder'=>1]);
         }
+
 
        /* if ( User::$cans[2])
             $query->andWhere(['id_org'=>User::findIdentity(Yii::$app->getUser()->getId())->id_org]);*/

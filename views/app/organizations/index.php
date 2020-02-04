@@ -36,7 +36,7 @@ $this->params['breadcrumbs'][] = $this->title;
                     'dataProvider'=>$dataProviderStudent,
                     'emptyCell'=>' ',
                     'columns' =>Students::getColumns(true),
-                    'batchSize'=>10,'target'=>'_blank'
+                    'batchSize'=>500,'target'=>'_blank'
                 ]) ?>
         </div>
 

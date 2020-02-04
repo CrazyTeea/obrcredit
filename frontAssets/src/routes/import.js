@@ -1,6 +1,5 @@
 //import Router from "../Router";
 
-import ss from 'simple-ajax-uploader'
 
 export default ()=>{
 

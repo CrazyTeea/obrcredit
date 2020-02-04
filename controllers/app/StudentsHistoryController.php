@@ -4,6 +4,7 @@ namespace app\controllers\app;
 
 use app\models\app\students\Changes;
 use app\models\app\students\Students;
+use app\models\app\students\StudentsSearch;
 use app\models\User;
 use Yii;
 use app\models\app\students\StudentsHistory;
@@ -50,17 +51,26 @@ class StudentsHistoryController extends AppController
         Yii::$app->session->set('year',$year);
         Yii::$app->session->set('nPP',$id_number_pp);
 
+
+
         $this->updateRouteHistory('/app/students-history/get-by-number-and-year');
 
         $searchModel = new StudentsHistorySearch();
+        $searchModelEnd = new StudentsSearch();
+        $searchModelOtch = new StudentsSearch();
+        $searchModelOtch->year = $searchModelEnd->year = $year;
+        $searchModelOtch->education_status = 0;
+        $searchModelOtch->id_number_pp = $searchModelEnd->id_number_pp = $id_number_pp;
         $searchModel->id_number_pp = $id_number_pp;
         $searchModel->year = $year;
         //  var_dump(Yii::$app->request->queryParams);exit();
         $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
+        $dataProvider2 = $searchModelEnd->search(Yii::$app->request->queryParams);
+        $dataProvider3 = $searchModelOtch->search(Yii::$app->request->queryParams);
 
         $changes = ArrayHelper::map(Changes::find()->where(['system_status'=>1])->select(['system_status','id','change'])->all(),'id','change');
 
-        return $this->render('index', compact('searchModel','dataProvider','changes'));
+        return $this->render('index', compact('searchModel','dataProvider','searchModelEnd','dataProvider2','searchModelOtch','dataProvider3','changes'));
     }
     public function actionAdd(int $id){
         $this->updateRouteHistory('/app/students-history/add');
