@@ -11,7 +11,7 @@ use yii\widgets\Pjax;
 ?>
     <h1><?= Html::encode($this->title) ?></h1>
 
-<?php Pjax::begin(['enableReplaceState'=>false,'enablePushState'=>false]); ?>
+<?php Pjax::begin(['enableReplaceState'=>false,'enablePushState'=>false,'timeout'=>5000]); ?>
 <?php //= $this->render('_search', ['model' => $searchModel,'changes'=>$changes]); ?>
 
 <?=ExportMenu::widget(['dataProvider'=>$dataProvider,'columns'=> StudentsHistorySearch::getColumns()]) ?>

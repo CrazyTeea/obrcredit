@@ -17,7 +17,7 @@ $columns = [
 ?>
     <h1><?= 'Отчисленные' ?></h1>
 
-<?php Pjax::begin(['enableReplaceState'=>false,'enablePushState'=>false]); ?>
+<?php Pjax::begin(['enableReplaceState'=>false,'enablePushState'=>false,'timeout'=>5000]); ?>
 <?php //= $this->render('_search', ['model' => $searchModel,'changes'=>$changes]); ?>
 
 <?=ExportMenu::widget(['dataProvider'=>$dataProvider3,'columns'=>$columns ]) ?>
