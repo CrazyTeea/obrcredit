@@ -40,15 +40,15 @@ export default ()=>{
         });
 
         let form = document.getElementById('w0');
-
+        let input_osn = $(":input[name='Students[education_status]']");
         $("button[href='#clean']").click(()=>{
-            $(":input[name='Students[education_status]']").prop('disabled',false);
-            $(":input[name='Students[education_status]']").prop('checked',true);
+            input_osn.prop('disabled',false);
+            input_osn.prop('checked',true);
             $(":input[name='Students[osnovanie]'][value='0']").prop('checked',true);
         });
         $("button[href='#clean2']").click(()=>{
-            $(":input[name='Students[education_status]']").prop('disabled',false);
-            $(":input[name='Students[education_status]']").prop('checked',true);
+            input_osn.prop('disabled',false);
+            input_osn.prop('checked',true);
             $(":input[name='Students[grace_period]'][value='0']").prop('checked',true);
         });
         ed_s.change(e=>{
