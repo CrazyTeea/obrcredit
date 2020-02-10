@@ -139,6 +139,7 @@ class StudentsSearch extends Students
 
         $query->andFilterWhere(['like', 'students.name', $this->name])
             ->andFilterWhere(['like', 'code', $this->code]);
+        $query->groupBy(['date_credit']);
 
         return $dataProvider;
     }
