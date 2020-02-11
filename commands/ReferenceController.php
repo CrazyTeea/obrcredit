@@ -76,6 +76,25 @@ class ReferenceController extends Controller
 
     }
 
+    public function actionDateUpdate($year,$month,$yearNew,$monthNew){
+        $students = Students::find()->where(['system_status'=>1,'YEAR(date_start)'=>$year,'MONTH(date_start)'=>$month,'education_status'=>1])->all();
+        foreach ($students as $student){
+            $new_student = new Students();
+            foreach (Students::getTableSchema()->getColumnNames() as $attribute){
+
+                if ($attribute == 'id')
+                    continue;
+                $new_student->{$attribute} = $student->{$attribute};
+                echo "$attribute = {$new_student->{$attribute}} \n";
+
+            }
+            $new_student->status=1;
+            $new_student->date_start="{$yearNew}-{$monthNew}-01";
+            $new_student->save(false);
+
+        }
+    }
+
     public function actionUpdate($from,$id_org,$npp, $onlyEnders = false, $updateDate = false){
         if (!$updateDate){
             $students = $onlyEnders ? Students::find()->where(['isEnder'=>true]) : Students::find() ;

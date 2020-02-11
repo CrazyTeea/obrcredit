@@ -61,6 +61,7 @@ class StudentsHistoryController extends AppController
         $searchModelOtch->year = $searchModelEnd->year = $year;
         $searchModelOtch->education_status = 0;
         $searchModelOtch->id_number_pp = $searchModelEnd->id_number_pp = $id_number_pp;
+        $searchModelEnd->isEnder = 1;
         $searchModel->id_number_pp = $id_number_pp;
         $searchModel->year = $year;
         //  var_dump(Yii::$app->request->queryParams);exit();
