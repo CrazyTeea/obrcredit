@@ -9,6 +9,7 @@ use app\models\app\Oplata;
 use app\models\app\students\NumbersPp;
 use app\models\app\students\Students;
 use app\models\app\students\StudentsHistory;
+use PhpOffice\PhpSpreadsheet\IOFactory;
 use Yii;
 use yii\data\ActiveDataProvider;
 use yii\db\Query;
@@ -100,5 +101,64 @@ class MainController extends AppController
 
 
         return $this->render('month',compact('studentsByMonth','export','nums','payments','payments_status'));
+    }
+
+    /**
+     * @param $year
+     * @throws \PhpOffice\PhpSpreadsheet\Exception
+     * @throws \PhpOffice\PhpSpreadsheet\Reader\Exception
+     * @throws \PhpOffice\PhpSpreadsheet\Writer\Exception
+     */
+    public function actionExport($year){
+
+        $student=[];
+        $banks = Banks::find()->all();
+        $nums = NumbersPp::find()->all();
+
+            foreach ($banks as $bank) {
+                $student[$bank->id]['name'] = $bank->name;
+                foreach ($nums as $num) {
+                    $student[$bank->id][$num->id]['name'] = $num->number;
+                    foreach (range(1, 12) as $month) {
+                        $student[$bank->id][$num->id][$month]['count'] = Students::find()
+                            ->where(['YEAR(date_start)' => $year, 'MONTH(date_start)' => $month, 'id_bank' => $bank->id, 'id_number_pp' => $num->id, 'system_status' => 1])->groupBy(['date_credit'])->count();
+                        $student[$bank->id][$num->id][$month]['countO'] = Students::find()
+                            ->where(['YEAR(date_start)' => $year, 'MONTH(date_start)' => $month, 'id_bank' => $bank->id, 'id_number_pp' => $num->id, 'system_status' => 1,'education_status'=>1])->groupBy(['date_credit'])->count();
+                        $student[$bank->id][$num->id][$month]['count20_1'] = Students::find()
+                            ->where(['YEAR(date_start)' => $year, 'MONTH(date_start)' => $month, 'id_bank' => $bank->id, 'id_number_pp' => $num->id, 'system_status' => 1, 'osnovanie' => 1])->groupBy(['date_credit'])->count();
+                        $student[$bank->id][$num->id][$month]['count20_2'] = Students::find()
+                            ->where(['YEAR(date_start)' => $year, 'MONTH(date_start)' => $month, 'id_bank' => $bank->id, 'id_number_pp' => $num->id, 'system_status' => 1, 'osnovanie' => 2])->groupBy(['date_credit'])->count();
+                        $student[$bank->id][$num->id][$month]['count20_3'] = Students::find()
+                            ->where(['YEAR(date_start)' => $year, 'MONTH(date_start)' => $month, 'id_bank' => $bank->id, 'id_number_pp' => $num->id, 'system_status' => 1, 'osnovanie' => 3])->groupBy(['date_credit'])->count();
+                        $student[$bank->id][$num->id][$month]['count21_1'] = Students::find()
+                            ->where(['YEAR(date_start)' => $year, 'MONTH(date_start)' => $month, 'id_bank' => $bank->id, 'id_number_pp' => $num->id, 'system_status' => 1, 'osnovanie' => 4])->groupBy(['date_credit'])->count();
+                        $student[$bank->id][$num->id][$month]['count21_2'] = Students::find()
+                            ->where(['YEAR(date_start)' => $year, 'MONTH(date_start)' => $month, 'id_bank' => $bank->id, 'id_number_pp' => $num->id, 'system_status' => 1, 'osnovanie' => 5])->groupBy(['date_credit'])->count();
+                        $student[$bank->id][$num->id][$month]['count22'] = Students::find()
+                            ->where(['YEAR(date_start)' => $year, 'MONTH(date_start)' => $month, 'id_bank' => $bank->id, 'id_number_pp' => $num->id, 'system_status' => 1, 'osnovanie' => 6])->groupBy(['date_credit'])->count();
+                        $student[$bank->id][$num->id][$month]['countP'] = Students::find()
+                            ->where(['YEAR(date_start)' => $year, 'MONTH(date_start)' => $month, 'id_bank' => $bank->id, 'id_number_pp' => $num->id, 'system_status' => 1, 'perevod' => 1])->groupBy(['date_credit'])->count();
+                        $student[$bank->id][$num->id][$month]['countV'] = Students::find()
+                            ->where(['YEAR(date_start)' => $year, 'MONTH(date_start)' => $month, 'id_bank' => $bank->id, 'id_number_pp' => $num->id, 'system_status' => 1, 'isEnder' => 1])->groupBy(['date_credit'])->count();
+                    }
+                }
+
+            }
+
+            if (Yii::$app->request->post()){
+                $reader = new \PhpOffice\PhpSpreadsheet\Reader\Html();
+                $spreadsheet = $reader->loadFromString($this->renderPartial('export',compact('year','student')));
+
+                $writer = \PhpOffice\PhpSpreadsheet\IOFactory::createWriter($spreadsheet, 'Xls');
+                $writer->save('uploads/write.xls');
+
+                Yii::$app->response->sendFile('uploads/write.xls')->send();
+                unlink('uploads/write.xls');
+            }
+
+
+
+
+        return $this->render('export',compact('year','student'));
     }
 }
