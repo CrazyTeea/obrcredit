@@ -9,6 +9,7 @@ use app\models\app\Oplata;
 use app\models\app\students\NumbersPp;
 use app\models\app\students\Students;
 use app\models\app\students\StudentsHistory;
+use Generator;
 use PhpOffice\PhpSpreadsheet\IOFactory;
 use Yii;
 use yii\data\ActiveDataProvider;
@@ -103,51 +104,87 @@ class MainController extends AppController
         return $this->render('month',compact('studentsByMonth','export','nums','payments','payments_status'));
     }
 
+
     /**
-     * @param $year
-     * @throws \PhpOffice\PhpSpreadsheet\Exception
-     * @throws \PhpOffice\PhpSpreadsheet\Reader\Exception
-     * @throws \PhpOffice\PhpSpreadsheet\Writer\Exception
+     * @param $arr
+     * @param $month
+     * @param $bank
+     * @param $num
+     * @param bool $custom_val
+     * @param int $val
+     * @return int
      */
+    private function sortSt($arr, $month, $bank, $num, $custom_val = false, $val = 0){
+        $cnt=0;
+        $date_credit = null;
+       if (!$custom_val ) {
+           foreach ($arr as $item) {
+               if (date('m', strtotime($item->date_start)) == $month and
+                   $item->id_bank == $bank and
+                   $item->id_number_pp == $num and
+                   $date_credit != $item->date_credit
+               ) {
+                   $cnt++;
+                   $date_credit = $item->date_credit;
+               }
+           }
+       }
+       else {
+           foreach ($arr as $item) {
+               if (date('m', strtotime($item->date_start)) == $month and
+                   $item->id_bank == $bank and
+                   $item->id_number_pp == $num and
+                   $item->{$custom_val} == $val and
+                   $date_credit != $item->date_credit
+               ) {
+                   $cnt++;
+                   $date_credit = $item->date_credit;
+               }
+           }
+       }
+        return $cnt;
+    }
+    private function gen(Generator $generator){
+        $count = 0;
+        foreach($generator as $value)
+        {
+            $count++;
+        }
+        return $count;
+    }
     public function actionExport($year){
 
         $student=[];
         $banks = Banks::find()->all();
         $nums = NumbersPp::find()->all();
-
+        $student = Students::find()->where(['system_status'=>1,'YEAR(date_start)'=>$year])->groupBy(['date_credit'])->all();
+/*
             foreach ($banks as $bank) {
                 $student[$bank->id]['name'] = $bank->name;
                 foreach ($nums as $num) {
                     $student[$bank->id][$num->id]['name'] = $num->number;
                     foreach (range(1, 12) as $month) {
-                        $student[$bank->id][$num->id][$month]['count'] = Students::find()
-                            ->where(['YEAR(date_start)' => $year, 'MONTH(date_start)' => $month, 'id_bank' => $bank->id, 'id_number_pp' => $num->id, 'system_status' => 1])->groupBy(['date_credit'])->count();
-                        $student[$bank->id][$num->id][$month]['countO'] = Students::find()
-                            ->where(['YEAR(date_start)' => $year, 'MONTH(date_start)' => $month, 'id_bank' => $bank->id, 'id_number_pp' => $num->id, 'system_status' => 1,'education_status'=>1])->groupBy(['date_credit'])->count();
-                        $student[$bank->id][$num->id][$month]['count20_1'] = Students::find()
-                            ->where(['YEAR(date_start)' => $year, 'MONTH(date_start)' => $month, 'id_bank' => $bank->id, 'id_number_pp' => $num->id, 'system_status' => 1, 'osnovanie' => 1])->groupBy(['date_credit'])->count();
-                        $student[$bank->id][$num->id][$month]['count20_2'] = Students::find()
-                            ->where(['YEAR(date_start)' => $year, 'MONTH(date_start)' => $month, 'id_bank' => $bank->id, 'id_number_pp' => $num->id, 'system_status' => 1, 'osnovanie' => 2])->groupBy(['date_credit'])->count();
-                        $student[$bank->id][$num->id][$month]['count20_3'] = Students::find()
-                            ->where(['YEAR(date_start)' => $year, 'MONTH(date_start)' => $month, 'id_bank' => $bank->id, 'id_number_pp' => $num->id, 'system_status' => 1, 'osnovanie' => 3])->groupBy(['date_credit'])->count();
-                        $student[$bank->id][$num->id][$month]['count21_1'] = Students::find()
-                            ->where(['YEAR(date_start)' => $year, 'MONTH(date_start)' => $month, 'id_bank' => $bank->id, 'id_number_pp' => $num->id, 'system_status' => 1, 'osnovanie' => 4])->groupBy(['date_credit'])->count();
-                        $student[$bank->id][$num->id][$month]['count21_2'] = Students::find()
-                            ->where(['YEAR(date_start)' => $year, 'MONTH(date_start)' => $month, 'id_bank' => $bank->id, 'id_number_pp' => $num->id, 'system_status' => 1, 'osnovanie' => 5])->groupBy(['date_credit'])->count();
-                        $student[$bank->id][$num->id][$month]['count22'] = Students::find()
-                            ->where(['YEAR(date_start)' => $year, 'MONTH(date_start)' => $month, 'id_bank' => $bank->id, 'id_number_pp' => $num->id, 'system_status' => 1, 'osnovanie' => 6])->groupBy(['date_credit'])->count();
-                        $student[$bank->id][$num->id][$month]['countP'] = Students::find()
-                            ->where(['YEAR(date_start)' => $year, 'MONTH(date_start)' => $month, 'id_bank' => $bank->id, 'id_number_pp' => $num->id, 'system_status' => 1, 'perevod' => 1])->groupBy(['date_credit'])->count();
-                        $student[$bank->id][$num->id][$month]['countV'] = Students::find()
-                            ->where(['YEAR(date_start)' => $year, 'MONTH(date_start)' => $month, 'id_bank' => $bank->id, 'id_number_pp' => $num->id, 'system_status' => 1, 'isEnder' => 1])->groupBy(['date_credit'])->count();
+                        $student[$bank->id][$num->id][$month]['count'] = ;
+                            $student[$bank->id][$num->id][$month]['countO'] = $student_all->getCount($year,$month,$bank->id,$num->id,'education_status',1);
+                        $student[$bank->id][$num->id][$month]['count20_1'] = $student_all->getCount($year,$month,$bank->id,$num->id,'osnovanie',1);
+                        $student[$bank->id][$num->id][$month]['count20_2'] = $student_all->getCount($year,$month,$bank->id,$num->id,'osnovanie',2);
+                        $student[$bank->id][$num->id][$month]['count20_3'] = $student_all->getCount($year,$month,$bank->id,$num->id,'osnovanie',3);
+                        $student[$bank->id][$num->id][$month]['count21_1'] = $student_all->getCount($year,$month,$bank->id,$num->id,'osnovanie',4);
+                        $student[$bank->id][$num->id][$month]['count21_2'] = $student_all->getCount($year,$month,$bank->id,$num->id,'osnovanie',5);
+                        $student[$bank->id][$num->id][$month]['count22'] = $student_all->getCount($year,$month,$bank->id,$num->id,'osnovanie',6);
+                        $student[$bank->id][$num->id][$month]['countP'] = $student_all->getCount($year,$month,$bank->id,$num->id,'perevod',1);
+                        $student[$bank->id][$num->id][$month]['countV'] =$student_all->getCount($year,$month,$bank->id,$num->id,'isEnder',1);
                     }
                 }
 
-            }
+            }*/
+
+
+
 
             if (Yii::$app->request->post()){
                 $reader = new \PhpOffice\PhpSpreadsheet\Reader\Html();
-                $spreadsheet = $reader->loadFromString($this->renderPartial('export',compact('year','student')));
+                $spreadsheet = $reader->loadFromString($this->renderPartial('export',compact('year','student','banks','nums')));
 
                 $writer = \PhpOffice\PhpSpreadsheet\IOFactory::createWriter($spreadsheet, 'Xls');
                 $writer->save('uploads/write.xls');
@@ -159,6 +196,6 @@ class MainController extends AppController
 
 
 
-        return $this->render('export',compact('year','student'));
+        return $this->render('export',compact('year','student','banks','nums'));
     }
 }
