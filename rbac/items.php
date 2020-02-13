@@ -25,6 +25,7 @@ return [
             '/site/signup',
             '/site/index',
             '/app/*',
+            '/admin/*',
         ],
     ],
     'podved' => [
@@ -109,6 +110,9 @@ return [
         'type' => 2,
     ],
     '/app/organizations/users' => [
+        'type' => 2,
+    ],
+    '/app/organizations/off-orgs' => [
         'type' => 2,
     ],
 ];

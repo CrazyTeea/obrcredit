@@ -2,6 +2,7 @@
 
 namespace app\controllers\app;
 
+use app\models\app\off_orgs_search;
 use app\models\app\students\Students;
 
 use Throwable;
@@ -236,6 +237,13 @@ class OrganizationsController extends AppController
         $this->findModel($id)->delete();
 
         return $this->redirect(['index']);
+    }
+
+    public function actionOffOrgs(){
+        $search = new off_orgs_search();
+        $dataProvider = $search->search(Yii::$app->getRequest()->getQueryParams());
+
+        return $this->render('offOrgs',compact('dataProvider','search'));
     }
 
     /**

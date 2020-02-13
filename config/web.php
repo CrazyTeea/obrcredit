@@ -46,6 +46,7 @@ $config = [
             'site/logout',
             'debug/*',
             'export/*',
+           // 'admin/*'
         ],
     ],
 
