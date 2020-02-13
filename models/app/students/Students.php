@@ -180,6 +180,13 @@ class Students extends ActiveRecord
         return $this->hasMany(StudentDocumentList::className(),['id_student'=>'id']);
     }
 
+    public function getCount($year,$month,$id_bank,$id_number_pp,$attr = false, $val=0){
+        $q= self::find()->where(['system_status'=>1,'YEAR(date_start)' => $year,'MONTH(date_start)' => $month,'id_bank'=>$id_bank,'id_number_pp'=>$id_number_pp]);
+        if ($attr)
+            $q->andWhere(["$attr"=>$val]);
+        return $q->count();
+    }
+
     /**
      * @return \yii\db\ActiveQuery
      */

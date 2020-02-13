@@ -130,7 +130,7 @@ $payment_modals = null;
                 </div>
             </div>
             <?php endif;?>
-            <?php for ($month = 1;$month<=12;$month++):?>
+            <?php foreach (range(1,12) as $month):?>
 
                 <?php $student197 = getStudentByMonthYearAndNpp($year,$month,1,$studentsByMonth);?>
                 <?php $student699 = getStudentByMonthYearAndNpp($year,$month,3,$studentsByMonth);?>
@@ -512,7 +512,7 @@ $payment_modals = null;
                     </div>
                 <?php endif;?>
 
-            <?php endfor;?>
+            <?php endforeach;?>
 
         </div>
     </div>
