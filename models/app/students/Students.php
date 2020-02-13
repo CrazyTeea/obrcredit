@@ -39,6 +39,7 @@ use yii\web\UploadedFile;
  * @property int $id_org_old
  * @property string $date_start
  * @property string $date_ender
+ * @property string $date_act
  * @property boolean $isEnder
  *
  * @var StudentDocs $docs
@@ -80,7 +81,7 @@ class Students extends ActiveRecord
                 'date_start_grace_period1', 'date_end_grace_period1',
                 'date_start_grace_period2', 'date_end_grace_period2',
                 'date_start_grace_period3', 'date_end_grace_period3',
-                'date_credit','date_status'], 'safe'],
+                'date_credit','date_status','date_act'], 'safe'],
             [['name', 'code','old_code'], 'string', 'max' => 255],
             [['isEnder'],'boolean'],
             [['date_ender'],'required','when'=>function($model){
@@ -118,7 +119,8 @@ class Students extends ActiveRecord
             'date_status'=>'Дата утверждения отчета',
             'isEnder'=>'Выпускник',
             'date_ender'=>'Дата выпуска',
-            'date_start'=>'Месяц(дата)'
+            'date_start'=>'Месяц(дата)',
+            'date_act'=>'Дата распределительного акта'
         ];
     }
 
@@ -253,23 +255,18 @@ class Students extends ActiveRecord
                         switch ($model->grace_period) {
                             case 1:
                             {
-                                $date = ($model->date_start_grace_period1 and $model->date_end_grace_period1) ?
-                                    Yii::$app->getFormatter()->asDate($model->date_start_grace_period1) . '-' . Yii::$app->getFormatter()->asDate($model->date_end_grace_period1) : '';
-                                $data = Students::getGracePeriod()[1] . "($date)";
+                                $data = Students::getGracePeriod()[1] ;
                                 break;
                             }
                             case 2:
                             {
-                                $date = ($model->date_start_grace_period2 and $model->date_end_grace_period2) ?
-                                    Yii::$app->getFormatter()->asDate($model->date_start_grace_period2) . '-' . Yii::$app->getFormatter()->asDate($model->date_end_grace_period2) : '';
-                                $data = Students::getGracePeriod()[2] . "($date)";
+                                $data = Students::getGracePeriod()[2] ;
                                 break;
                             }
                             case 3:
                             {
-                                $date = ($model->date_start_grace_period3 and $model->date_end_grace_period3) ?
-                                    Yii::$app->getFormatter()->asDate($model->date_start_grace_period3) . '-' . Yii::$app->getFormatter()->asDate($model->date_end_grace_period3) : '';
-                                $data = Students::getGracePeriod()[3] . "($date)";
+
+                                $data = Students::getGracePeriod()[3] ;
                                 break;
                             }
                             default:
@@ -283,13 +280,13 @@ class Students extends ActiveRecord
                     , 'label' => 'Пролонгация льготного периода'
                 ],
                 ['attribute' => 'date_credit', 'encodeLabel' => false, 'label' => 'Дата заключения кредитного договора',],
-                ['attribute' => 'dateLastStatus', 'encodeLabel' => false, 'value' => 'dateLastStatus.updated_at', 'label' => 'Дата изменения данных'],
+                //['attribute' => 'dateLastStatus', 'encodeLabel' => false, 'value' => 'dateLastStatus.updated_at', 'label' => 'Дата изменения данных'],
             ];
             if (!Yii::$app->user->can('podved')){
                 $ret = ArrayHelper::merge( $ret, [
                     ['attribute' => 'numberPP', 'value' => 'numberPP.number', 'encodeLabel' => false, 'label' => 'Номер ПП по образовательному кредиту'],
                     ['attribute' => 'bank', 'value' => 'bank.name', 'encodeLabel' => false, 'label' => 'Наименование банка или иной кредитной организации'],
-                    ['attribute' => 'date_status', 'encodeLabel' => false, 'format' => 'date', 'label' => 'Дата утверждения отчета'],
+                    //['attribute' => 'date_status', 'encodeLabel' => false, 'format' => 'date', 'label' => 'Дата утверждения отчета'],
                 ] );
             }
         }else {

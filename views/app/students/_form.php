@@ -110,7 +110,7 @@ function getDocByDescriptor(string $descriptor,array $docs, ActiveForm $form,\ap
 
                 <td>Пункты постановления <br> Правительства РФ <br> от 26.02.2018 г. № 197</td>
                 <td>Основание <br> <button type="button" href="#clean"> Сброс</button></td>
-                <td>Подтверждение основания</td>
+                <td>Подтверждение основания <?=$form->field($model,'date_act')->input('date')?></td>
 
             </tr>
             </thead>
