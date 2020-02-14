@@ -19,6 +19,7 @@ use app\models\User;
 use http\Url;
 use PhpOffice\PhpWord\TemplateProcessor;
 use Yii;
+use yii\base\Model;
 use yii\data\ActiveDataProvider;
 use yii\filters\VerbFilter;
 use yii\helpers\ArrayHelper;
@@ -176,6 +177,30 @@ class StudentsController extends AppController
             'exportProvider' => $exportProvider,
             'isApprove'=>$isApprove
         ] );
+    }
+
+    public function actionReturn($id){
+        if ($post = Yii::$app->request->post()){
+            $model = $this->findModel($id);
+            if ($model and $model->load($post)){
+                $date = explode('-',$model->date_start);
+                foreach (xrange($date[0],2020) as $year){
+                    foreach (xrange($date[1],12) as $month){
+                        $student = new Students();
+                        $student->date_start = "{$year}-{$month}-01";
+                        $student->name=$model->name;
+                        $student->code=$model->code;
+                        $student->date_credit = $model->date_credit;
+                        $student->id_bank = $model->id_bank;
+                        $student->id_number_pp = $model->id_number_pp;
+                        $student->education_status = 1;
+                        $student->system_status = 1;
+                        $student->save(false);
+                    }
+                    $date[1] = 1;
+                }
+            }
+        }
     }
 
     /**
