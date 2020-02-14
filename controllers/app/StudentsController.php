@@ -194,9 +194,11 @@ class StudentsController extends AppController
             $id_bank = Yii::$app->getSession()[ 'id_bank' ];
             $students = Students::find()->where( ['id_org' => $id_org, 'MONTH(date_start)' => $month, 'YEAR(date_start)' => $year, 'id_bank' => $id_bank, 'id_number_pp' => $nPP] )->all();
             foreach ($students as $student) {
-                $student->status = 2;
-                $student->date_status = date( 'Y-m-d' );
-                $student->save( false );
+                if (!$student->education_status and $student->docs and ($student->osnovanie or $student->grace_period or $student->isEnder)) {
+                    $student->status = 2;
+                    $student->date_status = date('Y-m-d');
+                    $student->save(false);
+                }
             }
             return $this->redirect( ['by-bank', 'id' => Yii::$app->getSession()[ 'id_bank' ], 'month' => Yii::$app->getSession()[ 'month' ], 'nPP'=>$nPP] );
         }
