@@ -33,13 +33,13 @@ export default ()=>{
             education_status.prop('disabled', true);
         }
 
-        $(grace_period).add(osnovanie).add(ender).change(e=>{
+        $(osnovanie).add(ender).change(e=>{
             let ed = getElement(education_status);
             ed.prop('checked',true);
             education_status.prop('disabled', true);
             perevod.prop('checked',false)
         });
-        $(perevod).change(e=>{
+        $(perevod).add(grace_period).change(e=>{
             let ed = getElement(education_status,1);
             ed.prop('checked',true);
             education_status.prop('disabled', true);
