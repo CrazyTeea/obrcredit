@@ -182,6 +182,7 @@ class StudentsController extends AppController
     public function actionReturn($id){
         if ($post = Yii::$app->request->post()){
             $model = $this->findModel($id);
+            $new_id = 0;
             if ($model and $model->load($post)){
                 $date = explode('-',$model->date_start);
                 foreach (xrange($date[0],2020) as $year){
@@ -196,10 +197,12 @@ class StudentsController extends AppController
                         $student->education_status = 1;
                         $student->system_status = 1;
                         $student->save(false);
+                        $new_id=$student->id;
                     }
                     $date[1] = 1;
                 }
             }
+            return $this->redirect(['view','id'=>$new_id]);
         }
     }
 
