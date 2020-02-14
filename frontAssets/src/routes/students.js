@@ -1,68 +1,52 @@
 import Router from "../Router";
 
 export default ()=>{
-    let ed_s = $("#students-education_status");
-    let e_status = document.getElementById('students-education_status');
-    function disable(e_status,check){
 
-        let elements = document.getElementsByTagName('input');
-        for (let i = 0; i < elements.length; i++) {
-            if (elements[i].type === 'radio'&& elements[i].value !== "0" && elements[i].name ==='Students[osnovanie]'
-                || (elements[i].type === 'file' && elements[i].name ==='Students[rasp_act0]')
-                || (elements[i].type === 'file' && elements[i].name ==='Students[dogovor]')
-                || (elements[i].type === 'file' && elements[i].name ==='Students[rasp_act_otch]')  ) {
-                elements[i].disabled = check;
-            }
-            if (elements[i].type === 'radio' && elements[i].name ==='Students[osnovanie]' && elements[i].value === "0" && !e_status.value)
-                elements[i].checked = true;
+    let grace_period = $('input[type="radio"][name="Students[grace_period]"]');
+    let education_status = $('input[type="radio"][name="Students[education_status]"]');
+    let osnovanie = $('input[type="radio"][name="Students[osnovanie]"]');
+    let perevod = $('input[type="checkbox"][name="Students[perevod]"]');
+    let ender = $('input[type="checkbox"][name="Students[isEnder]"]');
 
-        }
+    function getElement(element,val=0){
+        let e_s_0 = null;
+        element.each((index,item)=>{if ($(item).val()==val) {e_s_0 = $(item);return false}});
+       return e_s_0;
     }
+    function getChecked(element){
+        let e_s_0 = null;
+        element.each((index,item)=>{if ($(item).is('checked')) {e_s_0 = $(item);return false}});
+        return e_s_0;
+    }
+
     Router(['create','update']).then(()=>{
+        console.log(getElement(grace_period));
+        console.log(getElement(education_status));
+        console.log(getElement(osnovanie));
 
-        $('div').on('change','.status_callback',function (e) {
-            let dis  = true;
-            if (e.target.type == 'checkbox'){
-                dis = !!e.target.checked;
-            }
-            if (dis){
-                ed_s.find('[value=0]').checked = true;
-                ed_s.find('input').each(function () {
-                    this.disabled = true;
-                })
-            }
-            else
-                ed_s.find('input').each(function () {
-                    this.disabled = false;
-                })
+        let kek = getChecked(osnovanie).val();
+        let kek2 = getChecked(grace_period).val();
 
+        if (kek != 0 || kek2!=0 || ender.is('checked')){
+            let ed = getElement(education_status);
+            ed.prop('checked',true);
+            education_status.prop('disabled', true);
+        }
 
+        $(grace_period).add(osnovanie).add(ender).change(e=>{
+            let ed = getElement(education_status);
+            ed.prop('checked',true);
+            education_status.prop('disabled', true);
+            perevod.prop('checked',false)
         });
-
-        let form = document.getElementById('w0');
-        let input_osn = $(":input[name='Students[education_status]']");
-        $("button[href='#clean']").click(()=>{
-            input_osn.prop('disabled',false);
-            input_osn.prop('checked',true);
-            $(":input[name='Students[osnovanie]'][value='0']").prop('checked',true);
-        });
-        $("button[href='#clean2']").click(()=>{
-            input_osn.prop('disabled',false);
-            input_osn.prop('checked',true);
-            $(":input[name='Students[grace_period]'][value='0']").prop('checked',true);
-        });
-        ed_s.change(e=>{
-            if(e.target.value == 0)
-                disable(e_status,false);
-            else
-                disable(e_status,true);
+        $(perevod).change(e=>{
+            let ed = getElement(education_status,1);
+            ed.prop('checked',true);
+            education_status.prop('disabled', true);
         });
 
     }).catch(e=>{console.log(e)});
     Router('create').then(()=>{
 
-        if(!ed_s.find(':checked').val())
-            disable(e_status,true);
-        else disable(e_status,false);
-    })
+    }).catch(e=>{console.log("Путь create не найден")});
 }
