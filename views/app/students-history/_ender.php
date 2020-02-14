@@ -14,6 +14,7 @@ $columns = [
     'code',
     'organization.name',
     'bank.name',
+    'date_ender:date',
     ['value'=>function($model){
         if ($model->date_ender){
             $date = explode('-',$model->date_ender);
