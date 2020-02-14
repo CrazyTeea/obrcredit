@@ -10,11 +10,22 @@ use yii\widgets\Pjax;
 
 $columns = [
     ['class' => 'yii\grid\SerialColumn'],
-        'name',
+    'name',
     'code',
     'organization.name',
     'bank.name',
-   // ['value'=>function($model){if ($model->date_ender){$date = explode()}}]
+    ['value'=>function($model){
+        if ($model->date_ender){
+            $date = explode('-',$model->date_ender);
+            $date[1]+=3;
+            if ($date[1]>12){
+                $date[1]-=12;
+                $date[0]++;
+            }
+            $date[0]+=10;
+            return implode('-',$date);
+        }
+    },'format'=>'date','encodeLabel' => false,'label'=>'Контроль окончания <br> срока кредитных <br> обязательств']
 ]
 
 
