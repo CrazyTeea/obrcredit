@@ -4,7 +4,7 @@ export default route => new Promise((resolve, reject) => {
      href[href.length-1] = href[href.length-1].split('?')[0];
     if (Array.isArray(route)) {
         route.forEach(item => {
-            if (href.indexOf(item) === -1) {
+            if (href.includes(item)) {
                 return resolve();
             }
             return null;
