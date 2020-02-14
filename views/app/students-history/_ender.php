@@ -13,7 +13,8 @@ $columns = [
         'name',
     'code',
     'organization.name',
-    'bank.name'
+    'bank.name',
+   // ['value'=>function($model){if ($model->date_ender){$date = explode()}}]
 ]
 
 
