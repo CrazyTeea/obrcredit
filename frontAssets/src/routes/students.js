@@ -15,7 +15,7 @@ export default ()=>{
     }
     function getChecked(element){
         let e_s_0 = null;
-        element.each((index,item)=>{if ($(item).is('checked')) {e_s_0 = $(item);return false}});
+        element.each((index,item)=>{if ($(item).prop('checked')) {e_s_0 = $(item);return false}});
         return e_s_0;
     }
 
