@@ -62,10 +62,7 @@ class SiteController extends Controller
         $success = -1;
         if ( $model->load(Yii::$app->request->post()))
         {
-            if ($model->change_password()) {
-                $success = 1;
-            }
-            else $success = 0;
+            $success = $model->change_password();
         }
         echo $success;
         return $this->render('change_password',compact('model','success'));
