@@ -66,6 +66,9 @@ class MainController extends AppController
         $nums = NumbersPp::find()->all();
         $banks = Banks::find()->all();
 
+        $janStudents['otch'] = Students::find()->select(['system_status'=>1,'YEAR(date_start)'=>$year-1,'MONTH(date_start)'=>12,'id_number_pp'=>1])->andWhere(['<>','osnovanie',0])->groupBy(['date_credit'])->count();
+        $janStudents['vip'] = Students::find()->select(['system_status'=>1,'YEAR(date_start)'=>$year-1,'MONTH(date_start)'=>12,'id_number_pp'=>1,])->andWhere(['isEnder'=>1])->groupBy(['date_credit'])->count();
+
 
         for ($i=1;$i<=12;$i++){
             foreach ($nums as $num){
@@ -101,7 +104,7 @@ class MainController extends AppController
             ->from(['numbers_pp npp'])->join('JOIN',['sh'=>$st_history_subq],'sh.id_number_pp = npp.id')->groupBy(['npp.id'])->all();
 
 
-        return $this->render('month',compact('studentsByMonth','export','nums','payments','payments_status'));
+        return $this->render('month',compact('studentsByMonth','export','nums','payments','payments_status','janStudents'));
     }
 
 
@@ -158,6 +161,9 @@ class MainController extends AppController
         $banks = Banks::find()->all();
         $nums = NumbersPp::find()->all();
         $student = Students::find()->where(['system_status'=>1,'YEAR(date_start)'=>$year])->groupBy(['date_credit'])->all();
+
+
+
 /*
             foreach ($banks as $bank) {
                 $student[$bank->id]['name'] = $bank->name;
