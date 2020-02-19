@@ -81,6 +81,7 @@ AppAsset::register($this);
 
         <?= Alert::widget() ?>
         <?= $content ?>
+        <noscript><div><img src="https://mc.yandex.ru/watch/57602071" style="position:absolute; left:-9999px;" alt="" /></div></noscript>
     </div>
 </div>
 
@@ -101,7 +102,7 @@ AppAsset::register($this);
             webvisor:true
         });
     </script>
-    <noscript><div><img src="https://mc.yandex.ru/watch/57602071" style="position:absolute; left:-9999px;" alt="" /></div></noscript>
+
     <!-- /Yandex.Metrika counter -->
 </footer>
 
