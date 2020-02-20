@@ -152,16 +152,17 @@ $payment_modals = null;
                                             Постановление <br>правительства №197 <br>
 
                                             <span class="text " style="font-size: 16px;"> <i> кол-во обучающихся: <?=getCountStudents($year,$month,1,$studentsByMonth)?> </i> </span>
-                                            <?php if($cans[2]): ?>
-                                                <br>
+
+
+
+
+                                            <br>
+                                            <?php if(!$cans[2]):?>
                                                 <?php if ($month == 1):?>
                                                     <span class="text " style="font-size: 16px;"> <i> кол-во отчисленных: <?=$janStudents['otch']?> </i> </span>
                                                     <br>
                                                     <span class="text " style="font-size: 16px;"> <i> кол-во выпускников: <?=$janStudents['vip']?> </i> </span>
                                                 <?php endif?>
-                                            <?php endif?>
-                                            <br>
-                                            <?php if(!$cans[2]):?>
                                             <div class="center-block" style="border-radius: 10px; width:50%; background-color: #A3D8FF">
                                                 <?php
                                                 $flag = true;
