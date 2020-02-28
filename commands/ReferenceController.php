@@ -6,9 +6,7 @@ namespace app\commands;
 
 use app\models\app\Organizations;
 use app\models\app\students\Students;
-use app\models\app\students\StudentsHistory;
-use app\models\UserConsole as User;
-use Exception;
+
 use Lcobucci\JWT\Builder;
 use Lcobucci\JWT\Parser;
 use Lcobucci\JWT\Signer\Hmac\Sha256;
@@ -16,8 +14,7 @@ use Lcobucci\JWT\Signer\Key;
 use Yii;
 use yii\console\Controller;
 use yii\console\ExitCode;
-use yii\rbac\PhpManager;
-use function GuzzleHttp\Psr7\str;
+
 
 class ReferenceController extends Controller
 {
@@ -193,7 +190,21 @@ class ReferenceController extends Controller
         echo "success!";
     }
 
-
+    public function actionKek(){
+        $students = Students::find()->where(['YEAR(date_start)'=>2017])->all();
+        foreach ($students as $student)
+            $student->delete();
+        $students = Students::find()->where(['YEAR(date_start)'=>2018,'MONTH(date_start)'=>1,'id_number_pp'=>3,'id_bank'=>1,'system_status'=>1])->all();
+        $keks = Students::getTableSchema()->getColumnNames();
+        foreach ($students as $student) {
+            $s = new Students();
+            foreach ($keks as $atr){
+                $s->{$atr} = $student->{$atr};
+                $s->date_start = 2017-01-01;
+            }
+            $s->save(false);
+        }
+    }
 
 
 
