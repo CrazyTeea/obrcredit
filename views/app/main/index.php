@@ -5,7 +5,7 @@ use yii\helpers\Url;
 $this->title = "Выбор года";
 $this->params[ 'breadcrumbs' ][] = ['label' => 'ОбрКредит', 'url' => ['/']];
 $this->params['breadcrumbs'][] = $this->title;
-$yearStart = 2018;
+$yearStart = 2017;
 $yearEnd = 2021;
 $curYear = date('Y');
 ?>
