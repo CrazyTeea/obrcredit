@@ -199,7 +199,7 @@ class ReferenceController extends Controller
         foreach ($students as $student) {
             $s = new Students();
             foreach ($keks as $atr){
-                if ($atr == 'date_start')
+                if ($atr == 'date_start' || $atr=='id')
                     continue;
                 $s->$atr = $student->$atr;
             }
