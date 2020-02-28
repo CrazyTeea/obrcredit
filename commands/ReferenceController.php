@@ -194,7 +194,7 @@ class ReferenceController extends Controller
         $students = Students::find()->where(['YEAR(date_start)'=>2017])->all();
         foreach ($students as $student)
             $student->delete();
-        $students = Students::find()->where(['YEAR(date_start)'=>2018,'MONTH(date_start)'=>1,'id_number_pp'=>3,'id_bank'=>1,'system_status'=>1])->all();
+        $students = Students::find()->where(['YEAR(date_start)'=>2019,'MONTH(date_start)'=>1,'id_number_pp'=>3,'id_bank'=>1,'system_status'=>1])->all();
         $keks = Students::getTableSchema()->getColumnNames();
         foreach ($students as $student) {
             $s = new Students();
