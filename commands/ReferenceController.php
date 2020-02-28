@@ -118,7 +118,76 @@ class ReferenceController extends Controller
 
         }
     }
+    public function actionStudents2( $file, $nameId, $codeId, $dCreditId, $orgId, $numPP, $bankId, $dStart )
+    {
 
+        $csvP = Yii::getAlias( '@webroot' ) . "/toParse/$file.csv";
+
+        $csv = fopen( $csvP, 'r' );
+        if ( !$csvP )
+            exit( "Файл не найден" );
+
+        $row = fgetcsv( $csv, 1000, ';' ) ;
+
+        echo "
+            Организация->$row[$orgId]
+            ФИО->$row[$nameId]
+            КОД->$row[$codeId]
+            Дата кредита->$row[$dCreditId]
+            номер пп->$row[$numPP]
+            нмоер банка->$row[$bankId]
+            дата начала обуч->$row[$dStart]  \n";
+
+
+        fclose( $csv );
+        $csv = fopen( $csvP, 'r' );
+        echo "Вы уверене? \n ";
+        $key = readline();
+        if ( !( $key === "yes" || $key === "y" || $key === "Y" ) ) {
+            exit( 0 );
+        }
+        echo "fdsfsd";
+
+
+        while (( $row = fgetcsv( $csv, 1000, ';' ) ) != false) {
+
+            $student = Students::find()->where(['name'=>$row[$nameId],'date_credit'=>$row[$dCreditId],'YEAR(date_start)'=>2017])->one();
+            if ($student) {
+                continue;
+            }
+
+            $student = new Students();
+            $student->education_status = 1;
+            $student->date_start = $row[ $dStart ];
+            $student->name = $row[ $nameId ];
+            $student->code = $row[ $codeId ];
+            $student->date_credit = $row[ $dCreditId ];
+            $student->id_org = $row[ $orgId ];
+            $student->date_create = date( "Y-m-d" );
+            $student->status = 1;
+            $student->id_number_pp = $row[ $numPP ];
+            $student->id_bank = $row[ $bankId ];
+
+            if ( $student->save(false) ) {
+                $org = Organizations::findOne( $student->id_org );
+                if ( $org ) {
+                    $org->system_status = 1;
+                    $org->save(false);
+                }
+                echo "
+            Организация-$student->id_org
+            ФИО->$student->name
+            КОД->$student->code
+            Дата кредита-> $student->date_credit
+            номер пп-> $student->id_number_pp
+            нмоер банка->$student->id_bank
+            дата начала обуч-> $student->date_start  \n";
+            }
+
+        }
+        fclose( $csv );
+        echo "success!";
+    }
     public function actionStudents( $file, $nameId, $codeId, $dCreditId, $orgId, $numPP, $bankId, $dStart )
     {
 
