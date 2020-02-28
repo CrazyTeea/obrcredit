@@ -20,7 +20,7 @@ class MainController extends AppController
     public function actionIndex(){
         $this->updateRouteHistory('/app/main/index');
         $studentsByYear = null;
-        for ($i = 2018;$i<=2021;$i++){
+        for ($i = 2017;$i<=2021;$i++){
             if (!($this->cans[0] || $this->cans[1])) {
                 $studentsByYear[$i]['studentsCount']=Students::find()->where(['system_status'=>1,'YEAR(date_start)'=>$i, 'id_org'=>Yii::$app->session['id_org']])->select(['name','status'])->distinct(['name'])->count();
                 $studentsByYear[$i]['studentsApprovedCount'] = Students::find()->where(['system_status'=>1,'status'=>2,'YEAR(date_start)'=>$i, 'id_org'=>Yii::$app->session['id_org']])->select(['name','status'])->distinct(['name'])->count();

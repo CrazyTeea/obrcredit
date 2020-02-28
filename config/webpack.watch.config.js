@@ -8,9 +8,10 @@ module.exports = {
     output: {
         path: path.resolve(__dirname, '../web/build/'),
         filename: 'index.js',
-        publicPath: `educational_lending/web/build`,
+        publicPath: `/build/`,
     },
     mode: "development",
+    devtool: "source-map",
     module: {
         rules: [
             {
