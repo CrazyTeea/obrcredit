@@ -203,7 +203,7 @@ class ReferenceController extends Controller
                     continue;
                 $s->$atr = $student->$atr;
             }
-            $s->date_start = 2017-01-01;
+            $s->date_start = '2017-01-01';
             $s->save(false);
         }
     }
