@@ -199,6 +199,8 @@ class ReferenceController extends Controller
         foreach ($students as $student) {
             $s = new Students();
             foreach ($keks as $atr){
+                if ($atr == 'date_start')
+                    continue;
                 $s->$atr = $student->$atr;
             }
             $s->date_start = 2017-01-01;
