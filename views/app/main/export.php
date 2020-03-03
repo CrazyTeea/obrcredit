@@ -84,7 +84,7 @@ function xrange($start,$stop,$step=1){
 
     <?php foreach ($banks as $i=>$bank):?>
         <tr>
-            <td class="tg-0lax" colspan="27"><?=$bank->name?></td>
+            <th class="tg-0lax" colspan="27"><?=$bank->name?></th>
         </tr>
 
         <?php foreach($nums as $num):?>
