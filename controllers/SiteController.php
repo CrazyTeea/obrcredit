@@ -7,6 +7,7 @@ use app\models\forms\SignupForm;
 use app\models\User;
 use Yii;
 use yii\filters\AccessControl;
+use yii\helpers\Json;
 use yii\web\Controller;
 use yii\web\Response;
 use yii\filters\VerbFilter;
@@ -64,7 +65,7 @@ class SiteController extends Controller
         {
             $success = $model->change_password();
         }
-        echo $success;
+        echo Json::encode($success);
         return $this->render('change_password',compact('model','success'));
     }
 

@@ -4,14 +4,14 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "8263dac982e86dbba57be7647907fa0a",
+    "content-hash": "bc513ad43fe3d0077953253378ebff32",
     "packages": [
         {
             "name": "bower-asset/bootstrap",
             "version": "v3.4.1",
             "source": {
                 "type": "git",
-                "url": "git@github.com:twbs/bootstrap.git",
+                "url": "https://github.com/twbs/bootstrap.git",
                 "reference": "68b0d231a13201eb14acd3dc84e51543d16e5f7e"
             },
             "dist": {
@@ -32,7 +32,7 @@
             "version": "3.3.11",
             "source": {
                 "type": "git",
-                "url": "git@github.com:RobinHerbots/Inputmask.git",
+                "url": "https://github.com/RobinHerbots/Inputmask.git",
                 "reference": "5e670ad62f50c738388d4dcec78d2888505ad77b"
             },
             "dist": {
@@ -101,6 +101,47 @@
             "license": [
                 "MIT"
             ]
+        },
+        {
+            "name": "budanoff/yii2-synch-user",
+            "version": "dev-master",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/budanoff/yii2-synch-user.git",
+                "reference": "7c293b6f5a987c6f3133f4deab6030abc754706f"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/budanoff/yii2-synch-user/zipball/7c293b6f5a987c6f3133f4deab6030abc754706f",
+                "reference": "7c293b6f5a987c6f3133f4deab6030abc754706f",
+                "shasum": ""
+            },
+            "require": {
+                "yiisoft/yii2": "~2.0.0"
+            },
+            "type": "yii2-extension",
+            "autoload": {
+                "psr-4": {
+                    "budanoff\\synchuser\\": ""
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "budanoff",
+                    "email": "budanov@mirea.ru"
+                }
+            ],
+            "description": "Расширение для синхронизации пользователей ИАС Мониторинг (для подсистем программного комплекса))",
+            "keywords": [
+                " synch users iasmon",
+                "extension",
+                "yii2"
+            ],
+            "time": "2020-03-02T10:43:11+00:00"
         },
         {
             "name": "cebe/markdown",
@@ -2833,7 +2874,9 @@
     ],
     "aliases": [],
     "minimum-stability": "stable",
-    "stability-flags": [],
+    "stability-flags": {
+        "budanoff/yii2-synch-user": 20
+    },
     "prefer-stable": false,
     "prefer-lowest": false,
     "platform": {
