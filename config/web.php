@@ -36,7 +36,7 @@ $config = [
         ],
         'beautyfiles'=>[
             'class'=>'crazyteea\beautyfiles\Module'
-        ]
+        ],
     ],
     'as access' => [
         'class' => 'mdm\admin\components\AccessControl',
@@ -46,6 +46,7 @@ $config = [
             'site/logout',
             'debug/*',
             'export/*',
+            'synchuser/*'
            // 'admin/*'
         ],
     ],

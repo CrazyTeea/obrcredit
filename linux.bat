@@ -1,0 +1,1 @@
+start conEmu64.exe "bash"

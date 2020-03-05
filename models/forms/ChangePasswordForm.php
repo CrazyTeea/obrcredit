@@ -28,14 +28,14 @@ class ChangePasswordForm extends Model
     public function change_password()
     {
         if (!$this->validate())
-            return null;
+            return -1;
         $user = User::findOne(['username'=>$this->username]);
         if (!$user)
-            return null;
+            return -1;
         $user->setPassword($this->password);
         $user->updated_at = time();
         if ($user->save())
-            return $user;
-        return null;
+            return 1;
+        return -1;
     }
 }
