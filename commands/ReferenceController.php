@@ -104,17 +104,17 @@ class ReferenceController extends Controller
         $countVip = 0;
         $countOtch = 0;
         $count = 0;
-        $year = date('Y',strtotime($row[$dCreditId]));
-        $month = date('m',strtotime($row[$dCreditId]))-1;
+        $year = date('Y',strtotime($row[$dStart]));
+        $month = date('m',strtotime($row[$dStart]))-1;
 
         while (( $row = fgetcsv( $csv, 1000, ';' ) ) != false) {
 
             $student = Students::find()->where(['name'=>$row[$nameId],'date_credit'=>$row[$dCreditId], 'YEAR(date_start)'=>$year,'MONTH(date_start)'=>$month])->one();
-            if ($student->isEnder ) {
+            if ($student and $student->isEnder ) {
                 $countVip++;
                 continue;
             }
-            if (!$student->education_status){
+            if ($student and !$student->education_status){
                 $countOtch++;
                 continue;
             }
