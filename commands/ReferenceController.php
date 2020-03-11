@@ -109,7 +109,7 @@ class ReferenceController extends Controller
 
         while (( $row = fgetcsv( $csv, 1000, ';' ) ) != false) {
 
-            $student = Students::find()->where(['name'=>$row[$nameId],'date_credit'=>$row[$dCreditId]])->one();
+            $student = Students::find()->where(['name'=>$row[$nameId],'system_status'=>1,'date_credit'=>$row[$dCreditId]])->one();
             if ($student and $student->isEnder ) {
                 $countVip++;
                 continue;
@@ -155,6 +155,16 @@ class ReferenceController extends Controller
 
         fclose( $csv );
         echo "success!";
+    }
+    public function actionDel2020(){
+        $students = Students::findAll(['date_start'=>'2020-02-01']);
+        foreach ($students as $student){
+            $s = Students::findOne(['name'=>$student->name,'date_credit'=>$student->date_credit]);
+            if ($s and !$s->system_status) {
+                $student->system_status = 0;
+                $student->save(false);
+            }
+        }
     }
 
 
