@@ -3,11 +3,11 @@ const path = require('path');
 const ExtractTextPlugin = require('mini-css-extract-plugin');
 
 module.exports = {
-    entry: ['@babel/polyfill', '../educational_lending/frontAssets/index.js'],
+    entry: ['@babel/polyfill', '../credit/frontAssets/index.js'],
     output: {
         path: path.resolve(__dirname, '../web/build/'),
         filename: 'index.js',
-        publicPath: '/educational_lending/web/build',
+        publicPath: '/build/',
     },
     mode: 'development',
     module: {

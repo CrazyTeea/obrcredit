@@ -4,7 +4,7 @@ const BrowserSyncPlugin = require('browser-sync-webpack-plugin');
 
 //console.log(path.resolve(__dirname, '../web/build/'), '11111111');
 module.exports = {
-    entry: ['@babel/polyfill', '../educational_lending/frontAssets/index.js'],
+    entry: ['@babel/polyfill', '../credit/frontAssets/index.js'],
     output: {
         path: path.resolve(__dirname, '../web/build/'),
         filename: 'index.js',
