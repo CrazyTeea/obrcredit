@@ -368,6 +368,8 @@ class StudentsController extends AppController
         $file = new Files();
 
         if ( $model->load( Yii::$app->request->post() ) ) {
+            if ($model->perevod)
+                $model->education_status = 1;
             //$model->status = 0;
             $model->date_create = date( 'Y-m-d' );
             $model->id_org = $id;
@@ -418,6 +420,9 @@ class StudentsController extends AppController
         $modelDFlag = false;
 
         if ( $model->load( Yii::$app->request->post() ) ) {
+            if ($model->perevod)
+                $model->education_status = 1;
+
             if ($model->old_code != $model->code){
                 $students = Students::find()->where(['name'=>$model->name,'date_credit'=>$model->date_credit]);
                 $students->andWhere(['<>','id',$model->id]);
