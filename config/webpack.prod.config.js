@@ -5,7 +5,7 @@ const webpack = require("webpack");
 
 
 module.exports = {
-    entry: ['@babel/polyfill', '../educational_lending/frontAssets/index.js'],
+    entry: ['@babel/polyfill', '../credit/frontAssets/index.js'],
     output: {
         path: path.resolve(__dirname, '../web/build/'),
         filename: 'index.js',
