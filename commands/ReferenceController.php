@@ -119,7 +119,6 @@ class ReferenceController extends Controller
                 continue;
             }
 
-
             $student = new Students();
             $student->education_status = 1;
             $student->date_start = $row[ $dStart ];
