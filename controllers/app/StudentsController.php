@@ -9,26 +9,22 @@ use app\models\app\Organizations;
 use app\models\app\students\Changes;
 use app\models\app\students\DatesEducationStatus;
 use app\models\app\students\NumbersPp;
-use app\models\app\students\StudentDocumentList;
 use app\models\app\students\StudentDocumentTypes;
 use app\models\app\students\Students;
 use app\models\app\students\StudentsHistory;
 use app\models\app\students\StudentsSearch;
 use app\models\app\students\StudentsSearch2;
 use app\models\User;
-use http\Url;
 use PhpOffice\PhpWord\TemplateProcessor;
 use Yii;
 use yii\base\InvalidConfigException;
-use yii\base\Model;
 use yii\data\ActiveDataProvider;
 use yii\filters\VerbFilter;
 use yii\helpers\ArrayHelper;
-use yii\helpers\Json;
+use yii\helpers\Url;
 use yii\web\BadRequestHttpException;
 use yii\web\NotFoundHttpException;
 use yii\web\Response;
-use yii\web\UploadedFile;
 
 /**
  * StudentsController implements the CRUD actions for Students model.
@@ -334,10 +330,7 @@ class StudentsController extends AppController
             $route = ['by-bank','id'=>$model->id_bank,'nPP'=>$model->id_number_pp,'month'=>Yii::$app->getSession()->get('month')];
         }
 
-
-
-
-        $route = \yii\helpers\Url::to($route);
+        $route = Url::to($route);
 
 
         return $this->render( 'view',compact('model','docTypes','history','changes','route','is_in_history'));
