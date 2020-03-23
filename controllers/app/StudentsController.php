@@ -429,7 +429,7 @@ class StudentsController extends AppController
         $orgs = Organizations::getOrgs();
         $docTypes = StudentDocumentTypes::getActive()->all();
         $file = new Files();
-        $modelDFlag = false;
+      //  $modelDFlag = false;
 
         if ( $model->load( Yii::$app->request->post() ) ) {
             if ($model->perevod)
