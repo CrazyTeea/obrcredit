@@ -9,25 +9,22 @@ use app\models\app\Organizations;
 use app\models\app\students\Changes;
 use app\models\app\students\DatesEducationStatus;
 use app\models\app\students\NumbersPp;
-use app\models\app\students\StudentDocumentList;
 use app\models\app\students\StudentDocumentTypes;
 use app\models\app\students\Students;
 use app\models\app\students\StudentsHistory;
 use app\models\app\students\StudentsSearch;
 use app\models\app\students\StudentsSearch2;
 use app\models\User;
-use http\Url;
 use PhpOffice\PhpWord\TemplateProcessor;
 use Yii;
-use yii\base\Model;
+use yii\base\InvalidConfigException;
 use yii\data\ActiveDataProvider;
 use yii\filters\VerbFilter;
 use yii\helpers\ArrayHelper;
-use yii\helpers\Json;
+use yii\helpers\Url;
 use yii\web\BadRequestHttpException;
 use yii\web\NotFoundHttpException;
 use yii\web\Response;
-use yii\web\UploadedFile;
 
 /**
  * StudentsController implements the CRUD actions for Students model.
@@ -179,6 +176,11 @@ class StudentsController extends AppController
         ] );
     }
 
+    /**
+     * @param $id
+     * @return Response
+     * @throws NotFoundHttpException
+     */
     public function actionReturn($id){
         if ($post = Yii::$app->request->post()){
             $model = $this->findModel($id);
@@ -204,6 +206,7 @@ class StudentsController extends AppController
             }
             return $this->redirect(['view','id'=>$new_id]);
         }
+        return null;
     }
 
     /**
@@ -232,7 +235,7 @@ class StudentsController extends AppController
         }
 
         $student = $this->findModel( $id );
-        $docTypes = StudentDocumentTypes::getActive()->all();
+        //$docTypes = StudentDocumentTypes::getActive()->all();
 
         if ($student) {
             $student->status = 2;
@@ -246,7 +249,7 @@ class StudentsController extends AppController
      * @param null $id
      * @throws \PhpOffice\PhpWord\Exception\CopyFileException
      * @throws \PhpOffice\PhpWord\Exception\CreateTemporaryFileException
-     * @throws \yii\base\InvalidConfigException
+     * @throws InvalidConfigException
      */
     public function actionExport( $id = null )
     {
@@ -327,10 +330,7 @@ class StudentsController extends AppController
             $route = ['by-bank','id'=>$model->id_bank,'nPP'=>$model->id_number_pp,'month'=>Yii::$app->getSession()->get('month')];
         }
 
-
-
-
-        $route = \yii\helpers\Url::to($route);
+        $route = Url::to($route);
 
 
         return $this->render( 'view',compact('model','docTypes','history','changes','route','is_in_history'));
@@ -385,6 +385,11 @@ class StudentsController extends AppController
     }
 
 
+    /**
+     * @param $id
+     * @return Response
+     * @throws NotFoundHttpException
+     */
     public function actionAddToHistory($id){
         $this->updateRouteHistory('/app/students/add-to-history');
         $model = $this->findModel($id);
@@ -417,7 +422,7 @@ class StudentsController extends AppController
         $orgs = Organizations::getOrgs();
         $docTypes = StudentDocumentTypes::getActive()->all();
         $file = new Files();
-        $modelDFlag = false;
+      //  $modelDFlag = false;
 
         if ( $model->load( Yii::$app->request->post() ) ) {
             if ($model->perevod)
@@ -494,13 +499,24 @@ class StudentsController extends AppController
 
         return $this->render( 'update',compact('model','orgs','file','docTypes') );
     }
-    public function actionDeleteDoc($id,$desc){
+
+    /**
+     * @param $id
+     * @param $desc
+     * @return Response
+     * @throws NotFoundHttpException
+     */
+    public function actionDeleteDoc($id, $desc){
         $this->updateRouteHistory('/app/students/delete-doc');
         $st = $this->findModel($id);
         $st->deleteDocument($desc);
         return $this->redirect(['view','id'=>$id]);
     }
 
+    /**
+     * @param $id
+     * @throws NotFoundHttpException
+     */
     public function actionToHistory($id){
         $this->updateRouteHistory('/app/students/to-history');
         $student = $this->findModel($id);
