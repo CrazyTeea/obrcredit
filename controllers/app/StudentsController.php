@@ -145,7 +145,7 @@ class StudentsController extends AppController
 
         Yii::$app->session->set('nPP',$nPP);
 
-        $searchModel->month = Yii::$app->session->get('month');
+        $searchModel->month = $month;
         $searchModel->year = Yii::$app->session->get('year');
         $searchModel->id_number_pp = $nPP;
 
@@ -167,7 +167,7 @@ class StudentsController extends AppController
             'status'=>1
         ])->all();
 
-        $studentsExport = Students::find()->where( ['system_status'=>1,'id_org' => $searchModel->id_org, 'MONTH(date_start)' => $searchModel->month, 'YEAR(date_start)' => Yii::$app->session[ 'year' ],'id_number_pp'=>1] );
+        $studentsExport = Students::find()->where( ['system_status'=>1,'id_org' => $searchModel->id_org, 'MONTH(date_start)' => $searchModel->month, 'YEAR(date_start)' => Yii::$app->session[ 'year' ],'id_number_pp'=>$nPP] );
         $exportProvider = new ActiveDataProvider( ['query' => $studentsExport, 'pagination' => false] );
 
 
