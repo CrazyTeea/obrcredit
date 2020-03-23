@@ -19,6 +19,7 @@ use app\models\User;
 use http\Url;
 use PhpOffice\PhpWord\TemplateProcessor;
 use Yii;
+use yii\base\InvalidConfigException;
 use yii\base\Model;
 use yii\data\ActiveDataProvider;
 use yii\filters\VerbFilter;
@@ -238,7 +239,7 @@ class StudentsController extends AppController
         }
 
         $student = $this->findModel( $id );
-        $docTypes = StudentDocumentTypes::getActive()->all();
+        //$docTypes = StudentDocumentTypes::getActive()->all();
 
         if ($student) {
             $student->status = 2;
@@ -252,7 +253,7 @@ class StudentsController extends AppController
      * @param null $id
      * @throws \PhpOffice\PhpWord\Exception\CopyFileException
      * @throws \PhpOffice\PhpWord\Exception\CreateTemporaryFileException
-     * @throws \yii\base\InvalidConfigException
+     * @throws InvalidConfigException
      */
     public function actionExport( $id = null )
     {
