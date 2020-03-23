@@ -179,6 +179,11 @@ class StudentsController extends AppController
         ] );
     }
 
+    /**
+     * @param $id
+     * @return Response
+     * @throws NotFoundHttpException
+     */
     public function actionReturn($id){
         if ($post = Yii::$app->request->post()){
             $model = $this->findModel($id);
@@ -204,6 +209,7 @@ class StudentsController extends AppController
             }
             return $this->redirect(['view','id'=>$new_id]);
         }
+        return null;
     }
 
     /**
@@ -385,6 +391,11 @@ class StudentsController extends AppController
     }
 
 
+    /**
+     * @param $id
+     * @return Response
+     * @throws NotFoundHttpException
+     */
     public function actionAddToHistory($id){
         $this->updateRouteHistory('/app/students/add-to-history');
         $model = $this->findModel($id);
@@ -494,13 +505,24 @@ class StudentsController extends AppController
 
         return $this->render( 'update',compact('model','orgs','file','docTypes') );
     }
-    public function actionDeleteDoc($id,$desc){
+
+    /**
+     * @param $id
+     * @param $desc
+     * @return Response
+     * @throws NotFoundHttpException
+     */
+    public function actionDeleteDoc($id, $desc){
         $this->updateRouteHistory('/app/students/delete-doc');
         $st = $this->findModel($id);
         $st->deleteDocument($desc);
         return $this->redirect(['view','id'=>$id]);
     }
 
+    /**
+     * @param $id
+     * @throws NotFoundHttpException
+     */
     public function actionToHistory($id){
         $this->updateRouteHistory('/app/students/to-history');
         $student = $this->findModel($id);

@@ -25,6 +25,8 @@ use yii\web\UploadedFile;
  * @property int $status
  * @property int $osnovanie
  * @property int $grace_period
+ * @property string $date_start_grace_period
+ * @property string $date_end_grace_period
  * @property string $date_start_grace_period1
  * @property string $date_end_grace_period1
  * @property string $date_start_grace_period2
