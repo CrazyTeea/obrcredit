@@ -229,8 +229,7 @@ class StudentsController extends AppController
                     $student->status = 2;
                     $student->date_status = date('Y-m-d');
                     $student->save(false);
-                }else
-                {
+                }else {
                     break;
                 }
             }
