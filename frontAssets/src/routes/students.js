@@ -31,9 +31,11 @@ export default ()=>{
     Router(['create','update']).then(()=>{
         clean_0.click(e=>{
             osnovanie.prop('checked',false);
+            education_status.prop('disabled', false);
         });
         clean_1.click(e=>{
             grace_period.prop('checked',false);
+            education_status.prop('disabled', false);
         });
         let kek = getChecked(osnovanie).val();
         let kek2 = getChecked(grace_period).val();
