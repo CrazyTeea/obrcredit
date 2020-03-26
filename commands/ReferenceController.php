@@ -5,7 +5,6 @@ namespace app\commands;
 
 
 use app\models\app\Organizations;
-use app\models\app\students\NumbersPp;
 use app\models\app\students\Students;
 
 use Lcobucci\JWT\Builder;
@@ -156,15 +155,16 @@ class ReferenceController extends Controller
         fclose( $csv );
         echo "success!";
     }
-    public function actionUpdateStatus($year,$month,$pp){
-        $students = Students::find()->where(['YEAR(date_start)'=>$year,'MONTH(date_start)'=>$month])->joinWith(['numberPP'])->andWhere([NumbersPp::tableName().'.number'=>$pp])->all();
+    public function actionDel2020(){
+        $students = Students::findAll(['date_start'=>'2020-02-01']);
         foreach ($students as $student){
-            if ($student->osnovanie or $student->isEnder)
-                $student->education_status = 0;
-            else if($student->grace_period)
-                $student->education_status = 1;
-            $student->save(false);
-
+            $s = Students::findOne(['name'=>$student->name,'date_credit'=>$student->date_credit]);
+            if ($s and !$s->system_status) {
+                $student->system_status = 0;
+                $student->save(false);
+            }
         }
     }
+
+
 }
