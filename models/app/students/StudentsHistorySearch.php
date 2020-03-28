@@ -24,6 +24,7 @@ class StudentsHistorySearch extends StudentsHistory
     public $year;
     public $period;
     public $org;
+    public $org_old;
     public $student_name;
     public $student_code;
     public $student_credit;
@@ -36,7 +37,7 @@ class StudentsHistorySearch extends StudentsHistory
     public function rules()
     {
         return [
-            [['id', 'id_student', 'id_user_from', 'system_status', 'id_user_to','student_number'], 'integer'],
+            [['id', 'id_student', 'id_user_from', 'system_status', 'id_user_to','student_number','org_old'], 'integer'],
             [['changes', 'updated_at', 'created_at','period'], 'safe'],
             [['org','student_name','student_bank','student_code','student_credit'],'string']
         ];
@@ -64,6 +65,8 @@ class StudentsHistorySearch extends StudentsHistory
         if (isset($this->id_number_pp) and isset($this->year)){
             $query->where([Students::tableName().'.id_number_pp'=>$this->id_number_pp,'YEAR('.Students::tableName().'.date_start)'=>$this->year]);
         }
+        if ($this->org_old)
+            $query->andWhere([Students::tableName().'.id_org_old'=>$this->org_old]);
         // add conditions that should always apply here
 
         $dataProvider = new ActiveDataProvider([
@@ -219,7 +222,7 @@ class StudentsHistorySearch extends StudentsHistory
                     'visibleButtons'=>[
                         'add'=>
                             function ($model, $key, $index) {
-                                return $model->userTo ? false : true;
+                                return !$model->userTo and Yii::$app->user->can('user');
                             }
                     ]
                 ],

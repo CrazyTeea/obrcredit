@@ -12,6 +12,7 @@ use app\models\app\students\NumbersPp;
 use app\models\app\students\StudentDocumentTypes;
 use app\models\app\students\Students;
 use app\models\app\students\StudentsHistory;
+use app\models\app\students\StudentsHistorySearch;
 use app\models\app\students\StudentsSearch;
 use app\models\app\students\StudentsSearch2;
 use app\models\User;
@@ -83,8 +84,12 @@ class StudentsController extends AppController
             Yii::$app->session[ 'id_org' ] = User::findIdentity( Yii::$app->user->id )->id_org ? User::findIdentity( Yii::$app->user->id )->id_org : 1;
         if ( Yii::$app->session[ 'id_org' ] )
             Yii::$app->session[ 'short_name_org' ] = Organizations::findOne( Yii::$app->session[ 'id_org' ] )->name;
-        $searchModel->id_bank = Yii::$app->session[ 'id_bank' ];
         $searchModel->id_org = Yii::$app->session[ 'id_org' ];
+
+        $searchModel2 = clone $searchModel;
+        $searchModel3 = clone $searchModel;
+
+        $searchModel->id_bank = Yii::$app->session[ 'id_bank' ];
         $searchModel->id_number_pp = Yii::$app->session[ 'nPP' ];
         $searchModel->month = Yii::$app->session['month'];
         $searchModel->year = Yii::$app->session['year'];
@@ -98,9 +103,20 @@ class StudentsController extends AppController
             'status'=>1
         ])->count();
 
-
+        $searchModel2->osn = true;
+        $searchModel3->ender = true;
 
         $dataProvider = $searchModel->search( Yii::$app->request->queryParams );
+        $dataProvider2 = $searchModel2->search( Yii::$app->request->queryParams );
+        $dataProvider3 = $searchModel3->search( Yii::$app->request->queryParams );
+
+
+        $searchModel4 = new StudentsHistorySearch();
+        $searchModel4->org_old = $searchModel->id_org;
+        $dataProvider4 = $searchModel4->search(Yii::$app->request->queryParams);
+
+        $changes = Changes::findAll(['system_status'=>1]);
+
 
         $studentsExport = Students::find()->where( [
             'system_status'=>1,
@@ -111,14 +127,22 @@ class StudentsController extends AppController
             'id_org'=>$searchModel->id_org,
         ] );
         $exportProvider = new ActiveDataProvider( ['query' => $studentsExport, 'pagination' => false] );
+        $views['index']['search'] = $searchModel;
+        $views['index']['provider'] = $dataProvider;
+        $views['index']['export'] = $exportProvider;
+        $views['index']['isApprove'] = $isApprove;
 
 
-        return $this->render( 'index', [
-            'searchModel' => $searchModel,
-            'dataProvider' => $dataProvider,
-            'exportProvider' => $exportProvider,
-            'isApprove'=>$isApprove
-        ] );
+        $views['otch']['search'] = $searchModel2;
+        $views['otch']['provider'] = $dataProvider2;
+
+        $views['ender']['search'] = $searchModel3;
+        $views['ender']['provider'] = $dataProvider3;
+
+        $views['keks']['search'] = $searchModel4;
+        $views['keks']['provider'] = $dataProvider4;
+
+        return $this->render( 'index',compact('views') );
     }
 
 
@@ -137,22 +161,35 @@ class StudentsController extends AppController
         Yii::$app->session->set('month',$month);
 
         $searchModel = new StudentsSearch();
-        $searchModel->id_bank = $id;
+
         Yii::$app->session->set('id_bank',$searchModel->id_bank);
 
         Yii::$app->session->set('nPP',$nPP);
 
-        $searchModel->month = $month;
-        $searchModel->year = Yii::$app->session->get('year');
-        $searchModel->id_number_pp = $nPP;
 
         if ( !( $this->cans[ 0 ] || $this->cans[ 1 ] ) )
             Yii::$app->session[ 'id_org' ] = User::findIdentity( Yii::$app->user->id )->id_org ? User::findIdentity( Yii::$app->user->id )->id_org : 1;
         Yii::$app->session[ 'short_name_org' ] = ($org = Organizations::findOne( Yii::$app->session[ 'id_org' ] )) ? $org->name : '';
 
         $searchModel->id_org = Yii::$app->session->get('id_org');
+        $searchModel2 = clone $searchModel;
+        $searchModel3 = clone $searchModel;
+        $searchModel2->osn = true;
+        $searchModel3->ender = true;
+
+
+        $searchModel->id_bank = $id;
+        $searchModel->month = $month;
+        $searchModel->year = Yii::$app->session->get('year');
+        $searchModel->id_number_pp = $nPP;
+
+        $searchModel4 = new StudentsHistorySearch();
+        $searchModel4->org_old = $searchModel->id_org;
+        $dataProvider4 = $searchModel4->search(Yii::$app->request->queryParams);
 
         $dataProvider = $searchModel->search( Yii::$app->request->queryParams );
+        $dataProvider2 = $searchModel2->search( Yii::$app->request->queryParams );
+        $dataProvider3 = $searchModel3->search( Yii::$app->request->queryParams );
 
         $isApprove = Students::find()->where([
             'system_status'=>1,
@@ -167,13 +204,21 @@ class StudentsController extends AppController
         $studentsExport = Students::find()->where( ['system_status'=>1,'id_org' => $searchModel->id_org, 'MONTH(date_start)' => $searchModel->month, 'YEAR(date_start)' => Yii::$app->session[ 'year' ],'id_number_pp'=>$nPP] );
         $exportProvider = new ActiveDataProvider( ['query' => $studentsExport, 'pagination' => false] );
 
+        $views['index']['search'] = $searchModel;
+        $views['index']['provider'] = $dataProvider;
+        $views['index']['export'] = $exportProvider;
+        $views['index']['isApprove'] = $isApprove;
 
-        return $this->render( 'index', [
-            'searchModel' => $searchModel,
-            'dataProvider' => $dataProvider,
-            'exportProvider' => $exportProvider,
-            'isApprove'=>$isApprove
-        ] );
+        $views['otch']['search'] = $searchModel2;
+        $views['otch']['provider'] = $dataProvider2;
+
+        $views['ender']['search'] = $searchModel3;
+        $views['ender']['provider'] = $dataProvider3;
+
+        $views['keks']['search'] = $searchModel4;
+        $views['keks']['provider'] = $dataProvider4;
+
+        return $this->render( 'index',compact('views'));
     }
 
     /**
@@ -213,6 +258,7 @@ class StudentsController extends AppController
      * @param null $id
      * @return Response
      * @throws NotFoundHttpException
+     * @throws \yii\db\Exception
      */
     public function actionApprove( $id = null)
     {

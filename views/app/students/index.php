@@ -1,13 +1,8 @@
 <?php
 
-use app\models\app\students\Students;
-use kartik\export\ExportMenu;
-use yii\grid\ActionColumn;
-use yii\helpers\ArrayHelper;
-use yii\helpers\Html;
-use yii\grid\GridView;
-use yii\helpers\Url;
-use yii\widgets\Pjax;
+use yii\bootstrap\Collapse;
+use yii\bootstrap\Html;
+use yii\bootstrap\Tabs;
 
 
 /* @var $this yii\web\View */
@@ -47,67 +42,26 @@ if ($year and $bank){
 if ($cans[0] || $cans[1])
     $this->params['breadcrumbs'][] = ['label'=>'Организации','url'=>['app/organizations/by-bank','id_bank'=>Yii::$app->session['id_bank'],'month'=>Yii::$app->session['month'],'nPP'=>Yii::$app->session['nPP']]];
 $this->params['breadcrumbs'][] = $this->title;
-
-
-
 ?>
-<div class="students-index">
-    <!-- from gitlab -->
-
-    <h3><?= Html::encode($this->title) ?></h3>
-    <h4><span class="label label-info"><?=" Год: $year Месяц: $month_m номер ПП: $npp"?></span></h4>
-
-    <?php  if ($cans[0] || $cans[1]):?>
-        <?= Html::a('Добавить студента', ['create','id'=>Yii::$app->session[ 'id_org' ]],['class'=>'btn btn-success']) ?>
-    <?php endif;?>
-
-    <?= ExportMenu::widget(
+<h3><?= Html::encode($this->title) ?></h3>
+<h4><span class="label label-info"><?=" Год: $year Месяц: $month_m номер ПП: $npp"?></span></h4>
+<?= Tabs::widget([
+    'items'=>[
         [
-            'dataProvider'=>$exportProvider,
-            'columns' => Students::getColumns(true)
-            ,'batchSize'=>10,'target'=>'_blank'
-        ]
-    ) ?>
-
-    <?php Pjax::begin(['timeout'=>5000]); ?>
-    <?php // echo $this->render('_search', ['model' => $searchModel]); ?>
-
-
-    <?= GridView::widget([
-        'dataProvider' => $dataProvider,
-        'filterModel' => $searchModel,
-        //'options'=>['id'=>'PrintThis'],
-        'columns' => Students::getColumns(false),
-        'rowOptions'=>function($model, $index, $attribute)
-        {
-            $url = Url::to(['view','id'=>$model->id]);
-            return [
-                'onClick'=>"window.location.href='{$url}'",
-                'style'=>'cursor:pointer',
-                'class'=>'toVisible'
-            ];
-        },
-    ]); ?>
-
-    <?php if (!$isApprove):?>
-        <div class="alert alert-warning">
-            <p>
-                Данные утверждены и не подлежат редактированию
-            </p>
-        </div>
-    <?php else:?>
-        <div class="raw">
-            <div class="col-md-6"></div>
-            <div class="col-md-6 text-right">
-                <?= Html::a('Подтвердить за месяц',['approve'],['class'=>'btn btn-danger','data' => [
-                    'confirm' => 'Вы уверены?',
-                ],]) ?>
-            </div>
-        </div>
-    <?php endif;?>
-
-    <?php Pjax::end(); ?>
-
-
-
-</div>
+            'label'=>'Текущие',
+            'content'=>$this->render('_studentsView',compact('views','cans'))
+        ],
+        [
+            'label'=>'Отчисленные',
+            'content'=>$this->render('_otchView',compact('views','cans'))
+        ],
+        [
+            'label'=>'Выпускники',
+            'content'=>$this->render('_endView',compact('views','cans'))
+        ],
+        [
+            'label'=>'Не найденные',
+            'content'=>$this->render('_zhurnal',compact('views','cans'))
+        ],
+    ]
+]) ?>
