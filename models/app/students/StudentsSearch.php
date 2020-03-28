@@ -20,6 +20,7 @@ class StudentsSearch extends Students
     public $org;
     public $cans;
     public $ender;
+    public $osn;
     /**
      * {@inheritdoc}
      */
@@ -27,7 +28,7 @@ class StudentsSearch extends Students
     {
         return [
             [['month','id', 'id_org', 'education_status', 'status', 'osnovanie', 'grace_period','year'], 'integer'],
-            [['name', 'code', 'date_education_status','date_create', 'date_start_grace_period', 'date_end_grace_period','org'], 'safe'],
+            [['name', 'code', 'date_education_status','date_create', 'date_start_grace_period', 'date_end_grace_period','org','osn'], 'safe'],
         ];
     }
     /**
@@ -64,6 +65,8 @@ class StudentsSearch extends Students
             }
             if (isset($this->ender))
                 $query->andWhere(['isEnder'=>1]);
+            if (isset($this->osn))
+                $query->andWhere(['>','osnovanie',0]);
         }
 
 
