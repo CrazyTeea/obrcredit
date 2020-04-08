@@ -162,7 +162,7 @@ class StudentsController extends AppController
 
         $searchModel = new StudentsSearch();
 
-        Yii::$app->session->set('id_bank',$searchModel->id_bank);
+        Yii::$app->session->set('id_bank',$id);
 
         Yii::$app->session->set('nPP',$nPP);
 
