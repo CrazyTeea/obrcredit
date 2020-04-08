@@ -162,7 +162,7 @@ class StudentsController extends AppController
 
         $searchModel = new StudentsSearch();
 
-        Yii::$app->session->set('id_bank',$searchModel->id_bank);
+        Yii::$app->session->set('id_bank',$id);
 
         Yii::$app->session->set('nPP',$nPP);
 
@@ -273,16 +273,8 @@ class StudentsController extends AppController
             $transaction = Yii::$app->db->beginTransaction();
             $save = true;
             foreach ($students as $student) {
-                if (
-                    (($student->osnovanie or $student->isEnder) and $student->education_status) or
-                    (!$student->education_status and $student->grace_period)){
-                    $save &= false;
-                    break;
-                }
-                else {
-                    $student->status = 2;
-                    $save &=$student->save(false);
-                }
+                $student->status = 2;
+                $save &=$student->save(false);
             }
             if ($save) $transaction->commit(); else $transaction->rollBack();
             return $this->redirect( ['by-bank', 'id' => Yii::$app->getSession()[ 'id_bank' ], 'month' => Yii::$app->getSession()[ 'month' ], 'nPP'=>$nPP] );
