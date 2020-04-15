@@ -7,6 +7,7 @@ namespace app\commands;
 use app\models\app\Organizations;
 use app\models\app\students\Students;
 
+use app\models\User;
 use Lcobucci\JWT\Builder;
 use Lcobucci\JWT\Parser;
 use Lcobucci\JWT\Signer\Hmac\Sha256;
@@ -73,6 +74,28 @@ class ReferenceController extends Controller
 
     }
 
+    public function actionGetId($file){
+        $csvP = Yii::getAlias( '@webroot' ) . "/toParse/$file.csv";
+
+        $csv = fopen( $csvP, 'r' );
+        if ( !$csvP )
+            exit( "Файл не найден" );
+
+        while (( $row = fgetcsv( $csv, 1000, ';' ) ) != false) {
+            $student = Students::findOne(['name'=>$row[0]]);
+            echo $row[0];
+            if ($student)
+                echo "\n Имя {$row[0]} \n id {$student->id}\n";
+            else echo "\n {$row[0]} id Не найден\n";
+        }
+
+
+
+
+
+        fclose( $csv );
+    }
+
     public function actionStudents( $file, $nameId, $codeId, $dCreditId, $orgId, $numPP, $bankId, $dStart )
     {
 
@@ -82,9 +105,9 @@ class ReferenceController extends Controller
         if ( !$csvP )
             exit( "Файл не найден" );
 
-         $row = fgetcsv( $csv, 1000, ';' ) ;
+        $row = fgetcsv( $csv, 1000, ';' ) ;
 
-            echo "
+        echo "
             Организация->$row[$orgId]
             ФИО->$row[$nameId]
             КОД->$row[$codeId]
@@ -159,7 +182,7 @@ class ReferenceController extends Controller
         $students = Students::findAll(['system_status'=>1]);
         foreach ($students as $student){
             if ($student->osnovanie or $student->isEnder)
-            $student->education_status = 0;
+                $student->education_status = 0;
             else
                 $student->education_status = 1;
             $student->save(false);
