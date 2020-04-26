@@ -121,8 +121,18 @@ class ReferenceController extends Controller
             exit( "Файл не найден" );
 
         $row = fgetcsv( $csv, 1000, ';' ) ;
-        $num = NumbersPp::findOne($row[$numPP])->number;
-        $bank = Banks::findOne($row[$bankId])->name;
+        $num = NumbersPp::findOne($row[$numPP]);
+        if (!$num) {
+            echo "пп не верный $row[$numPP]";
+            exit(-1);
+        }
+        $num = $num->number;
+        $bank = Banks::findOne($row[$bankId]);
+        if (!$bank) {
+            echo "бфнк не верный $row[$bankId]";
+            exit(-1);
+        }
+        $bank = $bank->name;
         echo "
             Организация->$row[$orgId]
             ФИО->$row[$nameId]
