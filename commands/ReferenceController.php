@@ -4,7 +4,9 @@
 namespace app\commands;
 
 
+use app\models\app\Banks;
 use app\models\app\Organizations;
+use app\models\app\students\NumbersPp;
 use app\models\app\students\Students;
 
 use app\models\User;
@@ -119,14 +121,15 @@ class ReferenceController extends Controller
             exit( "Файл не найден" );
 
         $row = fgetcsv( $csv, 1000, ';' ) ;
-
+        $num = NumbersPp::findOne($row[$numPP])->number;
+        $bank = Banks::findOne($row[$bankId])->name;
         echo "
             Организация->$row[$orgId]
             ФИО->$row[$nameId]
             КОД->$row[$codeId]
             Дата кредита->$row[$dCreditId]
-            номер пп->$row[$numPP]
-            нмоер банка->$row[$bankId]
+            пп-> $num
+            банк->$bank
             дата начала обуч->$row[$dStart]  \n";
 
 
