@@ -106,6 +106,11 @@ class StudentsController extends AppController
         $searchModel2->osn = true;
         $searchModel3->ender = true;
 
+        $searchModel2->id_bank = Yii::$app->session[ 'id_bank' ];
+        $searchModel2->id_number_pp = Yii::$app->session[ 'nPP' ];
+        $searchModel3->id_bank = Yii::$app->session[ 'id_bank' ];
+        $searchModel3->id_number_pp = Yii::$app->session[ 'nPP' ];
+
         $dataProvider = $searchModel->search( Yii::$app->request->queryParams );
         $dataProvider2 = $searchModel2->search( Yii::$app->request->queryParams );
         $dataProvider3 = $searchModel3->search( Yii::$app->request->queryParams );
@@ -186,6 +191,13 @@ class StudentsController extends AppController
         $searchModel4 = new StudentsHistorySearch();
         $searchModel4->org_old = $searchModel->id_org;
         $dataProvider4 = $searchModel4->search(Yii::$app->request->queryParams);
+
+
+        $searchModel2->id_bank = $id;
+        $searchModel2->id_number_pp = $nPP;
+        $searchModel3->id_bank = $id;
+        $searchModel3->id_number_pp = $nPP;
+
 
         $dataProvider = $searchModel->search( Yii::$app->request->queryParams );
         $dataProvider2 = $searchModel2->search( Yii::$app->request->queryParams );
