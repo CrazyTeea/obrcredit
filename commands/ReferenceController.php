@@ -9,6 +9,7 @@ use app\models\app\Organizations;
 use app\models\app\students\NumbersPp;
 use app\models\app\students\Students;
 
+use app\models\app\students\StudentsHistory;
 use app\models\User;
 use Lcobucci\JWT\Builder;
 use Lcobucci\JWT\Parser;
@@ -212,6 +213,21 @@ class ReferenceController extends Controller
             else
                 $student->education_status = 1;
             $student->save(false);
+        }
+    }
+
+    public function actionDelete(){
+        $history = StudentsHistory::find()->all();
+        foreach ($history as $item){
+            $student = Students::findOne(['id'=>$item->id_student,'system_status'=>1]);
+            if ($student) {
+                $students = Students::findAll(['name' => $student->name, 'system_status' => 1]);
+                foreach ($students as $kek){
+                    echo "\n удален {$kek->name} {$kek->id_org}";
+                    $kek->system_status = 0;
+                    $kek->save(false);
+                }
+            }
         }
     }
 
