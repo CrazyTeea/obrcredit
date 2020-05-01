@@ -98,6 +98,10 @@ class StudentsAdminController extends AppController
         ]);
     }
 
+    /**
+     * @param $id
+     * @throws NotFoundHttpException
+     */
     public function actionAddHistory($id){
         $model = $this->findModel($id);
         $models = StudentsAdmin::find()->where(['name'=>$model->name,'date_credit'=>$model->date_credit])->all();
@@ -168,19 +172,6 @@ class StudentsAdminController extends AppController
         }
         return $this->redirect(['view','id'=>$id]);
     }
-    /**
-     * Deletes an existing StudentsHistory model.
-     * If deletion is successful, the browser will be redirected to the 'index' page.
-     * @param integer $id
-     * @return mixed
-     * @throws Throwable
-     */
-    public function actionDeleteZhurnal($id)
-    {
-        StudentsHistory::deleteAll(['id_student'=>$id]);
-        return $this->redirect(['view','id'=>$id]);
-    }
-
     /**
      * Recover an existing StudentsAdmin model.
      * If deletion is successful, the browser will be redirected to the 'index' page.

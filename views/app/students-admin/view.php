@@ -45,13 +45,6 @@ $this->params['breadcrumbs'][] = $this->title;
                 'method' => 'post',
             ],
         ]) ?>
-        <?= Html::a('Удалить из журнала', ['delete-zhurnal', 'id' => $model->id], [
-            'class' => 'btn btn-warning',
-            'data' => [
-                'confirm' => 'Уверен?',
-                'method' => 'post',
-            ],
-        ]) ?>
         <?= Html::a('Удалить из журнала клонов', ['delete-zhurnal-all', 'id' => $model->id], [
             'class' => 'btn btn-warning',
             'data' => [
@@ -64,6 +57,9 @@ $this->params['breadcrumbs'][] = $this->title;
         ]) ?>
         <?= Html::a('Восстановить этого и всех клонов', ['recover-all', 'id' => $model->id], [
             'class' => 'btn btn-info',
+        ]) ?>
+        <?= Html::a('Отправить в журнал', ['add-history', 'id' => $model->id], [
+            'class' => 'btn btn-danger',
         ]) ?>
     </p>
 
