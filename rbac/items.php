@@ -115,4 +115,10 @@ return [
     '/app/organizations/off-orgs' => [
         'type' => 2,
     ],
+    '/app/students-admin/*' => [
+        'type' => 2,
+    ],
+    '/app/students-admin/index' => [
+        'type' => 2,
+    ],
 ];
