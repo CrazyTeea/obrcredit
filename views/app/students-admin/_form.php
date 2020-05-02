@@ -1,5 +1,7 @@
 <?php
 
+use app\models\app\Organizations;
+use kartik\select2\Select2;
 use yii\helpers\Html;
 use yii\widgets\ActiveForm;
 
@@ -14,7 +16,9 @@ use yii\widgets\ActiveForm;
 
     <?= $form->field($model, 'name')->textInput(['maxlength' => true]) ?>
 
-    <?= $form->field($model, 'id_org')->textInput() ?>
+    <?= $form->field($model, 'id_org')->widget(\kartik\select2\Select2::className(),
+        ['data'=> \yii\helpers\ArrayHelper::map(\app\models\app\Organizations::find()->select(['id','name'])
+            ->all(),'id','name')]) ?>
 
     <?= $form->field($model, 'code')->textInput(['maxlength' => true]) ?>
 
@@ -39,9 +43,7 @@ use yii\widgets\ActiveForm;
         3=>'отпуск по уходу за ребенком по достижении им 3-х лет',
     ]) ?>
 
-    <?= $form->field($model, 'date_start_grace_period3')->input('date') ?>
 
-    <?= $form->field($model, 'date_end_grace_period3')->input('date') ?>
 
     <?= $form->field($model, 'date_credit')->textInput() ?>
 
@@ -51,12 +53,11 @@ use yii\widgets\ActiveForm;
 
 
     <?= $form->field($model, 'date_start_grace_period1')->input('date') ?>
-
     <?= $form->field($model, 'date_end_grace_period1')->input('date') ?>
-
     <?= $form->field($model, 'date_start_grace_period2')->input('date') ?>
-
     <?= $form->field($model, 'date_end_grace_period2')->input('date') ?>
+    <?= $form->field($model, 'date_start_grace_period3')->input('date') ?>
+    <?= $form->field($model, 'date_end_grace_period3')->input('date') ?>
 
     <?= $form->field($model, 'date_start')->input('date') ?>
 
@@ -70,12 +71,19 @@ use yii\widgets\ActiveForm;
 
     <?= $form->field($model, 'old_code')->textInput(['maxlength' => true]) ?>
 
-    <?= $form->field($model, 'id_org_old')->textInput() ?>
+    <?= $form->field($model, 'id_org_old')->widget(Select2::class,
+        [
+            'data'=> \yii\helpers\ArrayHelper::map(Organizations::find()->all(),'id','name'),
+            'size' => Select2::MEDIUM,
+            'options' => ['placeholder' => ''],
+            'pluginOptions' => [
+                    'allowClear' => true
+            ],
+        ]) ?>
 
-    <?= $form->field($model, 'date_act')->input('date') ?>
 
     <div class="form-group">
-        <?= Html::submitButton('Save', ['class' => 'btn btn-success']) ?>
+        <?= Html::submitButton('Сохранить', ['class' => 'btn btn-success']) ?>
     </div>
 
     <?php ActiveForm::end(); ?>
