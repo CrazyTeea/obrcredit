@@ -61,6 +61,12 @@ $this->params['breadcrumbs'][] = $this->title;
         <?= Html::a('Отправить в журнал', ['add-history', 'id' => $model->id], [
             'class' => 'btn btn-danger',
         ]) ?>
+        <?= Html::a('Удалить всех до этого', ['delete-date', 'id' => $model->id,'bolshe'=>false], [
+            'class' => 'btn btn-danger',
+        ]) ?>
+        <?= Html::a('Удалить всех после этого', ['delete-date', 'id' => $model->id,'bolshe'=>true], [
+            'class' => 'btn btn-danger',
+        ]) ?>
     </p>
 
     <?= DetailView::widget([

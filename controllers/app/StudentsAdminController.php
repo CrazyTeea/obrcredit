@@ -143,6 +143,30 @@ class StudentsAdminController extends AppController
      * @throws Throwable
      * @throws StaleObjectException
      */
+    public function actionDeleteDate($id,$bolshe)
+    {
+        $model = $this->findModel($id);
+        if ($model) {
+            $models = StudentsAdmin::find()
+                ->where(['name' => $model->name])
+                ->orWhere(['date_credit' => $model->date_credit])
+                ->andWhere([$s = ($bolshe) ? '>=' : '<=', 'date_start', $model->date_start])
+                ->all();
+            foreach ($models as $item)
+                $item->delete();
+        }
+        return $this->redirect(['index']);
+    }
+
+    /**
+     * Deletes an existing StudentsAdmin model.
+     * If deletion is successful, the browser will be redirected to the 'index' page.
+     * @param integer $id
+     * @return mixed
+     * @throws NotFoundHttpException if the model cannot be found
+     * @throws Throwable
+     * @throws StaleObjectException
+     */
     public function actionDeleteLogic($id)
     {
         $model = $this->findModel($id);
