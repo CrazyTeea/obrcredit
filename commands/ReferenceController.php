@@ -159,7 +159,9 @@ class ReferenceController extends Controller
 
         while (( $row = fgetcsv( $csv, 1000, ';' ) ) != false) {
 
-            $student = Students::find()->where(['name'=>$row[$nameId],'system_status'=>1,'date_credit'=>$row[$dCreditId]])->one();
+            $student = Students::find()->where(['name'=>$row[$nameId],'date_credit'=>$row[$dCreditId]])->one();
+            if ($student and !$student->system_status)
+                continue;
             if ($student and $student->isEnder ) {
                 $countVip++;
                 continue;
