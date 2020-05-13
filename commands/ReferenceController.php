@@ -130,7 +130,7 @@ class ReferenceController extends Controller
         $num = $num->number;
         $bank = Banks::findOne($row[$bankId]);
         if (!$bank) {
-            echo "бфнк не верный $row[$bankId]";
+            echo "банк не верный $row[$bankId]";
             exit(-1);
         }
         $bank = $bank->name;
