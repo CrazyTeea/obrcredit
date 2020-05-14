@@ -90,46 +90,6 @@ $payment_modals = null;
 <div class="row">
     <div class="panel panel-default">
         <div class="panel-body">
-            <?php if (!$cans[2]): ?>
-            <div class="col-sm-6 col-md-4">
-                <div class="thumbnail">
-                    <div class="caption">
-                        <div class="row">
-                            <div class="col-md-12 text-center">
-                                <div class="row">
-                                    <div class="col-md-6">
-                                        <?=ExportMenu::widget(['dataProvider'=>$export['h_e_provider'],'columns'=>\app\models\app\students\StudentsHistorySearch::getColumns(true)]) ?>
-                                    </div>
-                                    <div class="col-md-6">
-                                        <h2 style="margin-top: 10px">Журнал
-                                            <span  title="В данном журнале отображаются все не найденные в организации обучающиеся" class="glyphicon glyphicon-question-sign" data-placement="bottom" data-toggle="tooltip"></span>
-
-                                        </h2>
-                                    </div>
-                                </div>
-
-                            </div>
-                        </div>
-                        <hr>
-                        <?php if ($year !== 2018): ?>
-                        <p>
-                            <?=Html::a('Постановление <br> правительства №197 <br> '.'<span class="text " style="font-size: 16px;"><i> кол-во обучающихся:'. getNumPPCount(197,$nums) .'</i></span>',['/app/students-history/get-by-number-and-year','id_number_pp'=>1,'year'=>$year],['id'=>'zhurnal_button','class'=>'btn btn-block btn-lg'])?>
-
-                        </p>
-                        <?php endif; ?>
-                        <p>
-                            <?=Html::a('Постановление <br> правительства №699 <br> '.'<span class="text " style="font-size: 16px;"><i> кол-во обучающихся:'. getNumPPCount(699,$nums) .'</i></span>',['/app/students-history/get-by-number-and-year','id_number_pp'=>3,'year'=>$year],['id'=>'zhurnal_button','class'=>'btn btn-block btn-lg'])?>
-
-                        </p>
-                        <p>
-                            <?=Html::a('Постановление <br> правительства №1026 <br> '.'<span class="text " style="font-size: 16px;"><i> кол-во обучающихся:'. getNumPPCount(1026,$nums) .'</i></span>',['/app/students-history/get-by-number-and-year','id_number_pp'=>2,'year'=>$year],['id'=>'zhurnal_button','class'=>'btn btn-block btn-lg'])?>
-
-                        </p>
-
-                    </div>
-                </div>
-            </div>
-            <?php endif;?>
             <?php foreach (range(1,12) as $month):?>
 
                 <?php $student197 = getStudentByMonthYearAndNpp($year,$month,1,$studentsByMonth);?>
