@@ -55,11 +55,6 @@ class MainController extends AppController
             ->orderBy(['year'=>SORT_ASC , 'month' =>SORT_ASC, 'id_number_pp'=>SORT_ASC])->all();
         $export = [];
 
-        $h_e_query = StudentsHistory::find()->joinWith(['student']);
-        $export = [
-            'h_e_provider'=>new ActiveDataProvider(['query'=>$h_e_query,'pagination'=>false]),
-        ];
-
         $payments_model = Oplata::find()->select(['*','YEAR(payment_date) payment_year','MONTH(payment_date) payment_month'])->where(['YEAR(payment_date)'=>$year])->all();
         $payments = null;
         $payments_status = null;
