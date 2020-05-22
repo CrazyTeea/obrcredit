@@ -79,37 +79,15 @@ class ReferenceController extends Controller
 
     }
 
-    public function actionGetId($file){
-        $csvP = Yii::getAlias( '@webroot' ) . "/toParse/$file.csv";
-
-        $csv = fopen( $csvP, 'r' );
-        if ( !$csvP )
-            exit( "Файл не найден" );
-        $spreadsheet = new Spreadsheet();
-        $sheet = $spreadsheet->getActiveSheet();
-        $i = 1;
-        while (( $row = fgetcsv( $csv, 1000, ';' ) ) != false) {
-            $student = Students::findOne(['name'=>$row[0]]);
-            echo $row[0];
-            if ($student)
-                echo "\n Имя {$row[0]} \n id {$student->id}\n";
-            else echo "\n {$row[0]} id Не найден\n";
-
-            $sheet->setCellValue("A{$i}", $row[0]);
-            $sheet->setCellValue("B{$i}", $student->id ?? 'Нет найден');
-            $i++;
-
+    public function actionKek(){
+        $students = Students::find()->where(['date_start'=>'2020-04-01'])->all();
+        foreach ($students as $student){
+            $s = Students::find()->where(['name'=>$student->name,'MONTH(date_start)'=>03,'YEAR(date_start)'=>2020])->one();
+            if ($s){
+                $student->code = $s->code;
+                $student->save(false);
+            }
         }
-
-
-
-
-        $writer = new Xlsx($spreadsheet);
-        $writer->save("$file.xlsx");
-
-
-
-        fclose( $csv );
     }
 
     public function actionStudents( $file, $nameId, $codeId, $dCreditId, $orgId, $numPP, $bankId, $dStart )
@@ -206,31 +184,6 @@ class ReferenceController extends Controller
 
         fclose( $csv );
         echo "success!";
-    }
-    public function actionKek(){
-        $students = Students::findAll(['system_status'=>1]);
-        foreach ($students as $student){
-            if ($student->osnovanie or $student->isEnder)
-                $student->education_status = 0;
-            else
-                $student->education_status = 1;
-            $student->save(false);
-        }
-    }
-
-    public function actionDelete(){
-        $history = StudentsHistory::find()->all();
-        foreach ($history as $item){
-            $student = Students::findOne(['id'=>$item->id_student,'system_status'=>1]);
-            if ($student) {
-                $students = Students::findAll(['name' => $student->name, 'system_status' => 1]);
-                foreach ($students as $kek){
-                    echo "\n удален {$kek->name} {$kek->id_org}";
-                    $kek->system_status = 0;
-                    $kek->save(false);
-                }
-            }
-        }
     }
 
 
