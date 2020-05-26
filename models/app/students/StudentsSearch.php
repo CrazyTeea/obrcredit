@@ -65,8 +65,9 @@ class StudentsSearch extends Students
             }
             if (isset($this->ender))
                 $query->andWhere(['isEnder'=>1]);
-            if (isset($this->osn))
-                $query->andWhere(['>','osnovanie',0]);
+            if (isset($this->osn)) {
+                $query->andWhere([ 'education_status'=>0]);
+            }
         }
 
 
