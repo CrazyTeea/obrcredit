@@ -84,6 +84,7 @@ $rasp_act_otch = StudentDocs::getDocByDescriptorName('rasp_act_otch',$model->id)
                 'method' => 'post',
             ],
         ]) ?>
+
     <?php endif;?>
 
     <?php if (!$cans[2] and !$is_in_history):?>
@@ -117,11 +118,17 @@ $rasp_act_otch = StudentDocs::getDocByDescriptorName('rasp_act_otch',$model->id)
     </div>
 
     <?php endif;?>
-    <?php
+    <?php if($cans[0] or $cans[1]):?>
 
-    echo Html::a('Вернуться к списку', $route, ['class' => 'btn btn-default']);
+        <div class="btn-group">
+            <?=Html::a('отчисленным',['otch','id'=>$model->id],['class'=>'btn btn-primary'])?>
+            <?=Html::a('Выпускником',['vip','id'=>$model->id],['class'=>'btn btn-success'])?>
+            <?=Html::a('Не найденным',['not-found','id'=>$model->id],['class'=>'btn btn-warning'])?>
+            <?=Html::a('Активным',['active','id'=>$model->id],['class'=>'btn btn-primary'])?>
+        </div>
 
-    ?>
+    <?php endif;?>
+    <?=Html::a('Вернуться к списку', $route, ['class' => 'btn btn-default']); ?>
 
     <table class="table table-bordered">
         <thead>

@@ -465,6 +465,63 @@ class StudentsController extends AppController
         return $this->redirect(['view','id'=>$id]);
     }
 
+    public function actionOtch($id){
+        $model = Students::findOne($id);
+        $model->education_status = 0;
+        $model->save(false);
+        $models = Students::find()->where(['name'=>$model->name])->andWhere(['>=','date_start',$model->date_start])->andWhere(['<>','id',$id])->all();
+        foreach ($models as $model2){
+            $model2->sytem_status = 0;
+            $model2->save(false);
+        }
+        return $this->redirect(Yii::$app->request->referrer);
+
+    }
+    public function actionVip($id){
+        $model = Students::findOne($id);
+        $model->education_status = 0;
+        $model->isEnder = 1;
+        $model->date_ender = $model->date_start;
+        $model->save(false);
+        $models = Students::find()->where(['name'=>$model->name])->andWhere(['>=','date_start',$model->date_start])->andWhere(['<>','id',$id])->all();
+        foreach ($models as $model2){
+            $model2->sytem_status = 0;
+            $model2->save(false);
+        }
+        return $this->redirect(Yii::$app->request->referrer);
+
+    }
+
+    public function actionActive($id){
+        $model = Students::findOne($id);
+        $model->system_status = 1;
+        $model->save(false);
+        $models = Students::find()->select(['id'])->where(['name'=>$model->name,'date_credit'=>$model->date_credit])->andWhere(['<=','date_start',$model->date_start])->column();
+        StudentsHistory::deleteAll(['id_student'=>$models]);
+        return $this->redirect(Yii::$app->request->referrer);
+    }
+
+    public function actionNotFound($id){
+        $model = Students::findOne($id);
+        $subQ = Students::find()->select(['id','min(date_start) min_date','name','date_credit'])->where(['name'=>$model->name,'date_credit'=>$model->date_credit]);
+        $minS = Students::find()->from('students t1')->join('JOIN',['t2'=>$subQ],'t2.min_date=t1.date_start and t2.name=t1.name and t2.date_credit=t1.date_credit')->one();
+        $history =  StudentsHistory::findOne(['id_student'=>$minS->id]);
+        if (!$history) {
+            $history = new StudentsHistory();
+        }
+        $students = Students::findAll(['name'=>$model->name,'date_credit'=>$model->date_credit]);
+        foreach ($students as $st){
+            $st->system_status = 0;
+            $st->save();
+        }
+        $history->id_student = $minS->id;
+        $history->id_change = 1;
+        $history->id_user_from = Yii::$app->user->getId();
+        $history->save(false);
+        return $this->redirect(Yii::$app->request->referrer);
+
+    }
+
 
     /**
      * @param $id
