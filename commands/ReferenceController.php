@@ -195,7 +195,7 @@ class ReferenceController extends Controller
         foreach ($students as $student){
             $s = Students::find()->where(['date_credit'=>$student->date_credit,
                 'MONTH(date_start)'=>$eDate[1],'YEAR(date_start)'=>$eDate[0]])->one();
-            if ($s || !$student->education_status || $student->isEnder)
+            if ($s || $student->osnovanie || !$student->education_status || $student->isEnder)
                 continue;
             $s = clone $student;
             $s->date_start = "$eDate[0]-$eDate[1]-$eDate[1]";
