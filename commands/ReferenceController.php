@@ -186,5 +186,24 @@ class ReferenceController extends Controller
         echo "success!";
     }
 
+    public function actionUpdateDates($sDate,$eDate){
+        $sDate = explode('-',$sDate);
+        $eDate = explode('-',$eDate);
+
+        $students = Students::find()->where(['MONTH(date_start)'=>$sDate[1],'YEAR(date_start)'=>$sDate[0]])->all();
+
+        foreach ($students as $student){
+            $s = Students::find()->where(['date_credit'=>$student->date_credit,
+                'MONTH(date_start)'=>$eDate[1],'YEAR(date_start)'=>$eDate[0]])->one();
+            if ($s || !$student->education_status || $student->isEnder)
+                continue;
+            $s = clone $student;
+            $s->date_start = "$eDate[0]-$eDate[1]-$eDate[1]";
+            $s->isNewRecord = true;
+            $s->id = null;
+            $s->save(false);
+        }
+    }
+
 
 }

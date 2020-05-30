@@ -519,7 +519,6 @@ class StudentsController extends AppController
         $history->id_user_from = Yii::$app->user->getId();
         $history->save(false);
         return $this->redirect(Yii::$app->request->referrer);
-
     }
 
 
