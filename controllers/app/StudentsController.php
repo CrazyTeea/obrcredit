@@ -90,6 +90,7 @@ class StudentsController extends AppController
         $searchModel3 = clone $searchModel;
 
         $searchModel->id_bank = Yii::$app->session[ 'id_bank' ];
+        $searchModel->education_status = 1;
         $searchModel->id_number_pp = Yii::$app->session[ 'nPP' ];
         $searchModel->month = Yii::$app->session['month'];
         $searchModel->year = Yii::$app->session['year'];
@@ -105,6 +106,8 @@ class StudentsController extends AppController
 
         $searchModel2->osn = true;
         $searchModel3->ender = true;
+        $searchModel2->education_status = 0;
+        $searchModel3->education_status = 0;
 
         $searchModel2->id_bank = Yii::$app->session[ 'id_bank' ];
         $searchModel2->id_number_pp = Yii::$app->session[ 'nPP' ];
