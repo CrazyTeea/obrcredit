@@ -107,6 +107,7 @@ class StudentsController extends AppController
         $searchModel2->osn = true;
         $searchModel3->ender = true;
         $searchModel2->education_status = 0;
+        $searchModel2->isEnder = 0;
         $searchModel3->education_status = 0;
 
         $searchModel2->id_bank = Yii::$app->session[ 'id_bank' ];
