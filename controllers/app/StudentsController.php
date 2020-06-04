@@ -66,6 +66,11 @@ class StudentsController extends AppController
         return false;
     }
 
+    public function actionHistory($id){
+        $model = Students::findOne($id);
+        $models = Students::findAll(['name'=>$model->name]);
+        return $this->render('history',compact('models'));
+    }
 
 
     /**

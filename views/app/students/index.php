@@ -45,23 +45,29 @@ $this->params['breadcrumbs'][] = $this->title;
 ?>
 <h3><?= Html::encode($this->title) ?></h3>
 <h4><span class="label label-info"><?=" Год: $year Месяц: $month_m номер ПП: $npp"?></span></h4>
-<?= Tabs::widget([
-    'items'=>[
-        [
-            'label'=>'Текущие',
-            'content'=>$this->render('_studentsView',compact('views','cans'))
-        ],
-        [
-            'label'=>'Отчисленные',
-            'content'=>$this->render('_otchView',compact('views','cans'))
-        ],
-        [
-            'label'=>'Выпускники',
-            'content'=>$this->render('_endView',compact('views','cans'))
-        ],
-        [
-            'label'=>'Не найденные',
-            'content'=>$this->render('_zhurnal',compact('views','cans'))
-        ],
-    ]
-]) ?>
+<div class="row">
+    <div class="col-md-6"><?= Tabs::widget([
+            'items'=>[
+                [
+                    'label'=>'Текущие',
+                    'content'=>$this->render('_studentsView',compact('views','cans'))
+                ],
+                [
+                    'label'=>'Отчисленные',
+                    'content'=>$this->render('_otchView',compact('views','cans'))
+                ],
+                [
+                    'label'=>'Выпускники',
+                    'content'=>$this->render('_endView',compact('views','cans'))
+                ],
+                [
+                    'label'=>'Не найденные',
+                    'content'=>$this->render('_zhurnal',compact('views','cans'))
+                ],
+            ]
+        ]) ?></div>
+    <div class="col-md-6"><?= Html::a('История',['history','id'=>$views['index']['provider']->getModels()[0]->id],['class'=>'btn btn-primary']) ?></div>
+</div>
+
+
+
