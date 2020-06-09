@@ -8,15 +8,10 @@ use app\models\app\Banks;
 use app\models\app\Organizations;
 use app\models\app\students\NumbersPp;
 use app\models\app\students\Students;
-
-use app\models\app\students\StudentsHistory;
-use app\models\User;
 use Lcobucci\JWT\Builder;
 use Lcobucci\JWT\Parser;
 use Lcobucci\JWT\Signer\Hmac\Sha256;
 use Lcobucci\JWT\Signer\Key;
-use PhpOffice\PhpSpreadsheet\Spreadsheet;
-use PhpOffice\PhpSpreadsheet\Writer\Xlsx;
 use Yii;
 use yii\console\Controller;
 use yii\console\ExitCode;
@@ -79,18 +74,8 @@ class ReferenceController extends Controller
 
     }
 
-    public function actionKek(){
-        $students = Students::find()->where(['date_start'=>'2020-04-01'])->all();
-        foreach ($students as $student){
-            $s = Students::find()->where(['name'=>$student->name,'MONTH(date_start)'=>03,'YEAR(date_start)'=>2020])->one();
-            if ($s){
-                $student->code = $s->code;
-                $student->save(false);
-            }
-        }
-    }
 
-    public function actionStudents( $file, $nameId, $codeId, $dCreditId, $orgId, $numPP, $bankId, $dStart )
+    public function actionStudents( $file, $nameId, $dCreditId, $orgId, $numPP, $bankId, $dStart )
     {
 
         $csvP = Yii::getAlias( '@webroot' ) . "/toParse/$file.csv";
@@ -115,7 +100,6 @@ class ReferenceController extends Controller
         echo "
             Организация->$row[$orgId]
             ФИО->$row[$nameId]
-            КОД->$row[$codeId]
             Дата кредита->$row[$dCreditId]
             пп-> $num
             банк->$bank
@@ -137,23 +121,28 @@ class ReferenceController extends Controller
 
         while (( $row = fgetcsv( $csv, 1000, ';' ) ) != false) {
 
-            $student = Students::find()->where(['name'=>$row[$nameId],'date_credit'=>$row[$dCreditId]])->one();
-            if ($student and !$student->system_status)
+            $student2 = Students::find()->where(['name'=>$row[$nameId],'date_credit'=>$row[$dCreditId]])->one();
+            $student = new Students();
+            if ($student2 and !$student2->system_status)
                 continue;
-            if ($student and $student->isEnder ) {
-                $countVip++;
-                continue;
+            else if ($student2 and $student2->isEnder ) {
+                $student->education_status = 0;
+                $student->isEnder = 1;
+                $student->date_ender = $student2->date_ender;
             }
-            if ($student and !$student->education_status){
-                $countOtch++;
-                continue;
+            else if ($student2 and !$student2->education_status and !$student2->isEnder){
+                $student->education_status = 0;
+                $student->osnovanie = $student2->osnovanie;
+                $student2->isEnde = 0;
+            }
+            else {
+                $student->education_status = 1;
             }
 
-            $student = new Students();
-            $student->education_status = 1;
+            $student->code = $student2->code ?? 12345;
+
             $student->date_start = $row[ $dStart ];
             $student->name = $row[ $nameId ];
-            $student->code = $row[ $codeId ];
             $student->date_credit = $row[ $dCreditId ];
             $student->id_org = $row[ $orgId ];
             $student->date_create = date( "Y-m-d" );
@@ -184,25 +173,6 @@ class ReferenceController extends Controller
 
         fclose( $csv );
         echo "success!";
-    }
-
-    public function actionUpdateDates($sDate,$eDate){
-        $sDate = explode('-',$sDate);
-        $eDate = explode('-',$eDate);
-
-        $students = Students::find()->where(['MONTH(date_start)'=>$sDate[1],'YEAR(date_start)'=>$sDate[0]])->all();
-
-        foreach ($students as $student){
-            $s = Students::find()->where(['date_credit'=>$student->date_credit,
-                'MONTH(date_start)'=>$eDate[1],'YEAR(date_start)'=>$eDate[0]])->one();
-            if ($s || $student->osnovanie || !$student->education_status || $student->isEnder)
-                continue;
-            $s = clone $student;
-            $s->date_start = "$eDate[0]-$eDate[1]-$eDate[1]";
-            $s->isNewRecord = true;
-            $s->id = null;
-            $s->save(false);
-        }
     }
 
 
