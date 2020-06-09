@@ -133,7 +133,7 @@ class ReferenceController extends Controller
             else if ($student2 and !$student2->education_status and !$student2->isEnder){
                 $student->education_status = 0;
                 $student->osnovanie = $student2->osnovanie;
-                $student2->isEnde = 0;
+                $student->isEnder = 0;
             }
             else {
                 $student->education_status = 1;
