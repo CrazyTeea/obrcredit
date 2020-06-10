@@ -1,7 +1,7 @@
 <?php
 
 
-use crazyteea\beautyfiles\Module;
+
 use yii\grid\GridView;
 
 $params = require __DIR__ . '/params.php';
@@ -90,7 +90,7 @@ $config = [
             'targets' => [
                 [
                     'class' => 'yii\log\FileTarget',
-                    'levels' => ['error', 'warning','info'],
+                    'levels' => ['error', 'warning'],
                 ],
             ],
         ],

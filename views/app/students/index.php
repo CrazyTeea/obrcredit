@@ -66,7 +66,7 @@ $this->params['breadcrumbs'][] = $this->title;
                 ],
             ]
         ]) ?></div>
-    <div class="col-md-6"><?= Html::a('История',['history','id'=>$views['index']['provider']->getModels()[0]->id],['class'=>'btn btn-primary']) ?></div>
+
 </div>
 
 
