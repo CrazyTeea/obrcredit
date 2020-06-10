@@ -129,6 +129,7 @@ $rasp_act_otch = StudentDocs::getDocByDescriptorName('rasp_act_otch',$model->id)
 
     <?php endif;?>
     <?=Html::a('Вернуться к списку', $route, ['class' => 'btn btn-default']); ?>
+    <?= Html::a('История',['history','id'=>$model->id],['class'=>'btn btn-primary']) ?>
 
     <table class="table table-bordered">
         <thead>
