@@ -187,6 +187,7 @@ class StudentsController extends AppController
 
         $searchModel->month = $month;
         $searchModel->year = Yii::$app->session['year'];
+        $searchModel->id_org = Yii::$app->session[ 'id_org' ];
 
         $searchModel2 = clone $searchModel;
         $searchModel3 = clone $searchModel;
