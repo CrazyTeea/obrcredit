@@ -182,7 +182,7 @@ class StudentsController extends AppController
 
 
         if ( !( $this->cans[ 0 ] || $this->cans[ 1 ] ) )
-            Yii::$app->session[ 'id_org' ] = User::findIdentity( Yii::$app->user->id )->id_org ? User::findIdentity( Yii::$app->user->id )->id_org : 1;
+            Yii::$app->session[ 'id_org' ] = User::findIdentity( Yii::$app->user->id )->id_org ?? 1;
         Yii::$app->session[ 'short_name_org' ] = ($org = Organizations::findOne( Yii::$app->session[ 'id_org' ] )) ? $org->name : '';
 
         $searchModel2 = clone $searchModel;
@@ -223,7 +223,8 @@ class StudentsController extends AppController
             'status'=>1
         ])->all();
 
-        $studentsExport = Students::find()->where( ['system_status'=>1,'id_org' => $searchModel->id_org, 'MONTH(date_start)' => $searchModel->month, 'YEAR(date_start)' => Yii::$app->session[ 'year' ],'id_number_pp'=>$nPP] );
+        $studentsExport = Students::find()->where( ['system_status'=>1,'id_org' => $searchModel->id_org,
+            'MONTH(date_start)' => $searchModel->month, 'YEAR(date_start)' => Yii::$app->session[ 'year' ],'id_number_pp'=>$nPP] );
         $exportProvider = new ActiveDataProvider( ['query' => $studentsExport, 'pagination' => false] );
 
         $views['index']['search'] = $searchModel;
