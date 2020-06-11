@@ -119,9 +119,14 @@ class ReferenceController extends Controller
         $year = date('Y',strtotime($row[$dStart]));
         $month = date('m',strtotime($row[$dStart]))-1;
 
+        if ($month < 1) {
+            $month = 12;
+            $year--;
+        }
+
         while (( $row = fgetcsv( $csv, 1000, ';' ) ) != false) {
 
-            $student2 = Students::find()->where(['name'=>$row[$nameId],'date_credit'=>$row[$dCreditId]])->one();
+            $student2 = Students::find()->where(['name'=>$row[$nameId],'date_credit'=>$row[$dCreditId],'YEAR(date_start)'=>$year,'MONTH(date_start)'=>$month])->one();
             $student = new Students();
             if ($student2 and !$student2->system_status)
                 continue;
