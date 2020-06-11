@@ -185,32 +185,33 @@ class StudentsController extends AppController
             Yii::$app->session[ 'id_org' ] = User::findIdentity( Yii::$app->user->id )->id_org ? User::findIdentity( Yii::$app->user->id )->id_org : 1;
         Yii::$app->session[ 'short_name_org' ] = ($org = Organizations::findOne( Yii::$app->session[ 'id_org' ] )) ? $org->name : '';
 
-        $searchModel->id_org = Yii::$app->session->get('id_org');
         $searchModel2 = clone $searchModel;
         $searchModel3 = clone $searchModel;
+
+        $searchModel->id_bank = Yii::$app->session[ 'id_bank' ];
+        $searchModel->education_status = 1;
+        $searchModel->id_number_pp = Yii::$app->session[ 'nPP' ];
+        $searchModel->month = Yii::$app->session['month'];
+        $searchModel->year = Yii::$app->session['year'];
+
         $searchModel2->osn = true;
         $searchModel3->ender = true;
+        $searchModel2->education_status = 0;
+        $searchModel2->isEnder = 0;
+        $searchModel3->education_status = 0;
 
-
-        $searchModel->id_bank = $id;
-        $searchModel->month = $month;
-        $searchModel->year = Yii::$app->session->get('year');
-        $searchModel->id_number_pp = $nPP;
-
-        $searchModel4 = new StudentsHistorySearch();
-        $searchModel4->org_old = $searchModel->id_org;
-        $dataProvider4 = $searchModel4->search(Yii::$app->request->queryParams);
-
-
-        $searchModel2->id_bank = $id;
-        $searchModel2->id_number_pp = $nPP;
-        $searchModel3->id_bank = $id;
-        $searchModel3->id_number_pp = $nPP;
-
+        $searchModel2->id_bank = Yii::$app->session[ 'id_bank' ];
+        $searchModel2->id_number_pp = Yii::$app->session[ 'nPP' ];
+        $searchModel3->id_bank = Yii::$app->session[ 'id_bank' ];
+        $searchModel3->id_number_pp = Yii::$app->session[ 'nPP' ];
 
         $dataProvider = $searchModel->search( Yii::$app->request->queryParams );
         $dataProvider2 = $searchModel2->search( Yii::$app->request->queryParams );
         $dataProvider3 = $searchModel3->search( Yii::$app->request->queryParams );
+
+        $searchModel4 = new StudentsHistorySearch();
+        $searchModel4->org_old = $searchModel->id_org;
+        $dataProvider4 = $searchModel4->search(Yii::$app->request->queryParams);
 
         $isApprove = Students::find()->where([
             'system_status'=>1,

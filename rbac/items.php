@@ -26,6 +26,7 @@ return [
             '/site/index',
             '/app/*',
             '/admin/*',
+            '/site/change-password',
         ],
     ],
     'podved' => [
