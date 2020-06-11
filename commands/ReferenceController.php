@@ -128,9 +128,7 @@ class ReferenceController extends Controller
 
             $student2 = Students::find()->where(['name'=>$row[$nameId],'date_credit'=>$row[$dCreditId],'YEAR(date_start)'=>$year,'MONTH(date_start)'=>$month])->one();
             $student = new Students();
-            if ($student2 and !$student2->system_status)
-                continue;
-            else if ($student2 and $student2->isEnder ) {
+            if ($student2 and $student2->isEnder ) {
                 $student->education_status = 0;
                 $student->isEnder = 1;
                 $student->date_ender = $student2->date_ender;
