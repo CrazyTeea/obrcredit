@@ -182,28 +182,23 @@ class StudentsController extends AppController
 
 
         if ( !( $this->cans[ 0 ] || $this->cans[ 1 ] ) )
-            Yii::$app->session[ 'id_org' ] = User::findIdentity( Yii::$app->user->id )->id_org ? User::findIdentity( Yii::$app->user->id )->id_org : 1;
+            Yii::$app->session[ 'id_org' ] = User::findIdentity( Yii::$app->user->id )->id_org ?? 1;
         Yii::$app->session[ 'short_name_org' ] = ($org = Organizations::findOne( Yii::$app->session[ 'id_org' ] )) ? $org->name : '';
+
+        $searchModel->month = $month;
+        $searchModel->year = Yii::$app->session['year'];
 
         $searchModel2 = clone $searchModel;
         $searchModel3 = clone $searchModel;
 
-        $searchModel->id_bank = Yii::$app->session[ 'id_bank' ];
+        $searchModel3->id_bank = $searchModel2->id_bank = $searchModel->id_bank = $id;
         $searchModel->education_status = 1;
-        $searchModel->id_number_pp = Yii::$app->session[ 'nPP' ];
-        $searchModel->month = Yii::$app->session['month'];
-        $searchModel->year = Yii::$app->session['year'];
+        $searchModel3->id_number_pp = $searchModel2->id_number_pp = $searchModel->id_number_pp = $nPP;
+
 
         $searchModel2->osn = true;
         $searchModel3->ender = true;
-        $searchModel2->education_status = 0;
-        $searchModel2->isEnder = 0;
-        $searchModel3->education_status = 0;
-
-        $searchModel2->id_bank = Yii::$app->session[ 'id_bank' ];
-        $searchModel2->id_number_pp = Yii::$app->session[ 'nPP' ];
-        $searchModel3->id_bank = Yii::$app->session[ 'id_bank' ];
-        $searchModel3->id_number_pp = Yii::$app->session[ 'nPP' ];
+        $searchModel3->education_status =  $searchModel2->education_status = 0;
 
         $dataProvider = $searchModel->search( Yii::$app->request->queryParams );
         $dataProvider2 = $searchModel2->search( Yii::$app->request->queryParams );
@@ -223,7 +218,8 @@ class StudentsController extends AppController
             'status'=>1
         ])->all();
 
-        $studentsExport = Students::find()->where( ['system_status'=>1,'id_org' => $searchModel->id_org, 'MONTH(date_start)' => $searchModel->month, 'YEAR(date_start)' => Yii::$app->session[ 'year' ],'id_number_pp'=>$nPP] );
+        $studentsExport = Students::find()->where( ['system_status'=>1,'id_org' => $searchModel->id_org,
+            'MONTH(date_start)' => $searchModel->month, 'YEAR(date_start)' => Yii::$app->session[ 'year' ],'id_number_pp'=>$nPP] );
         $exportProvider = new ActiveDataProvider( ['query' => $studentsExport, 'pagination' => false] );
 
         $views['index']['search'] = $searchModel;
