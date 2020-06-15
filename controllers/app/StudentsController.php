@@ -544,8 +544,10 @@ class StudentsController extends AppController
       //  $modelDFlag = false;
 
         if ( $model->load( Yii::$app->request->post() ) ) {
+            if (!$model->education_status)
+                $model->education_status = 0;
             if ($model->perevod)
-                $model->education_status = 1;
+                $model->education_status = 0;
 
             if ($model->old_code != $model->code){
                 $students = Students::find()->where(['name'=>$model->name,'date_credit'=>$model->date_credit]);
