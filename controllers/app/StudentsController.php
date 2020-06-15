@@ -95,7 +95,6 @@ class StudentsController extends AppController
         $searchModel3 = clone $searchModel;
 
         $searchModel->id_bank = Yii::$app->session[ 'id_bank' ];
-        $searchModel->education_status = 1;
         $searchModel->id_number_pp = Yii::$app->session[ 'nPP' ];
         $searchModel->month = Yii::$app->session['month'];
         $searchModel->year = Yii::$app->session['year'];
@@ -128,9 +127,6 @@ class StudentsController extends AppController
         $searchModel4 = new StudentsHistorySearch();
         $searchModel4->org_old = $searchModel->id_org;
         $dataProvider4 = $searchModel4->search(Yii::$app->request->queryParams);
-
-        $changes = Changes::findAll(['system_status'=>1]);
-
 
         $studentsExport = Students::find()->where( [
             'system_status'=>1,
