@@ -194,6 +194,8 @@ class StudentsController extends AppController
 
         $searchModel3->id_bank = $searchModel2->id_bank = $searchModel->id_bank = $id;
 
+        $searchModel->isEnder = 0;
+
 
         $searchModel3->id_number_pp = $searchModel2->id_number_pp = $searchModel->id_number_pp = $nPP;
 
