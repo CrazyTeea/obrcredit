@@ -193,7 +193,9 @@ class StudentsController extends AppController
         $searchModel3 = clone $searchModel;
 
         $searchModel3->id_bank = $searchModel2->id_bank = $searchModel->id_bank = $id;
-        $searchModel->education_status = 1;
+        $searchModel->ender = false;
+        $searchModel->osn = false;
+
         $searchModel3->id_number_pp = $searchModel2->id_number_pp = $searchModel->id_number_pp = $nPP;
 
 
