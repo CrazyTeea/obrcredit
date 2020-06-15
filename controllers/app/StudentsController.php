@@ -520,6 +520,7 @@ class StudentsController extends AppController
         $students = Students::findAll(['name'=>$model->name,'date_credit'=>$model->date_credit]);
         foreach ($students as $st){
             $st->system_status = 0;
+            $st->id_org_old= $st->id_org;
             $st->save();
         }
         $history->id_student = $minS->id;
