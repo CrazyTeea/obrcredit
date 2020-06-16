@@ -5,6 +5,8 @@ namespace app\controllers;
 use app\models\forms\ChangePasswordForm;
 use app\models\forms\SignupForm;
 use app\models\User;
+use Lcobucci\JWT\Parser;
+use Lcobucci\JWT\Signer\Hmac\Sha256;
 use Yii;
 use yii\filters\AccessControl;
 use yii\helpers\Json;
@@ -97,7 +99,22 @@ class SiteController extends Controller
         }
 
         $model = new LoginForm();
-        if ($model->load(Yii::$app->request->post()) && $model->login()) {
+        if(Yii::$app->request->get('auth_token')) {
+
+            $signer = new Sha256();
+            $token = (new Parser())->parse(Yii::$app->request->get('auth_token'));
+            if ($token->verify($signer, 'ias@mirea9884')) {
+                $model->username = $token->getClaim("login");
+                $model->password = $token->getClaim("password");
+                if ($model->validate()) {
+                    Yii::$app->user->login($model->getUser());
+                    return $this->redirect(['index']);
+                }
+                Yii::$app->session->setFlash("auth_error", "Ошибка входа!");
+                return $this->redirect(['site/login']);
+            }
+        }
+        else if ($model->load(Yii::$app->request->post()) && $model->login()) {
             return $this->redirect(['index']);
         }
 
