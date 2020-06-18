@@ -86,7 +86,7 @@ class StudentsController extends AppController
         if ( !empty( $id ) )
             Yii::$app->session[ 'id_org' ] = $id;
         if ( !( $this->cans[ 0 ] || $this->cans[ 1 ] ) )
-            Yii::$app->session[ 'id_org' ] = User::findIdentity( Yii::$app->user->id )->id_org ? User::findIdentity( Yii::$app->user->id )->id_org : 1;
+            Yii::$app->session[ 'id_org' ] = User::findIdentity( Yii::$app->user->id )->id_org ?? 1;
         if ( Yii::$app->session[ 'id_org' ] )
             Yii::$app->session[ 'short_name_org' ] = Organizations::findOne( Yii::$app->session[ 'id_org' ] )->name;
         $searchModel->id_org = Yii::$app->session[ 'id_org' ];
@@ -180,23 +180,26 @@ class StudentsController extends AppController
         if ( !( $this->cans[ 0 ] || $this->cans[ 1 ] ) )
             Yii::$app->session[ 'id_org' ] = User::findIdentity( Yii::$app->user->id )->id_org ?? 1;
         Yii::$app->session[ 'short_name_org' ] = ($org = Organizations::findOne( Yii::$app->session[ 'id_org' ] )) ? $org->name : '';
-
-        $searchModel->month = $month;
-        $searchModel->year = Yii::$app->session['year'];
         $searchModel->id_org = Yii::$app->session[ 'id_org' ];
 
         $searchModel2 = clone $searchModel;
         $searchModel3 = clone $searchModel;
 
-        $searchModel3->id_bank = $searchModel2->id_bank = $searchModel->id_bank = $id;
-
-
-        $searchModel3->id_number_pp = $searchModel2->id_number_pp = $searchModel->id_number_pp = $nPP;
-
+        $searchModel->id_bank = Yii::$app->session[ 'id_bank' ];
+        $searchModel->id_number_pp = Yii::$app->session[ 'nPP' ];
+        $searchModel->month = Yii::$app->session['month'];
+        $searchModel->year = Yii::$app->session['year'];
 
         $searchModel2->osn = true;
         $searchModel3->ender = true;
-        $searchModel3->education_status =  $searchModel2->education_status = 0;
+        $searchModel2->education_status = 0;
+        $searchModel2->isEnder = 0;
+        $searchModel3->education_status = 0;
+
+        $searchModel2->id_bank = Yii::$app->session[ 'id_bank' ];
+        $searchModel2->id_number_pp = Yii::$app->session[ 'nPP' ];
+        $searchModel3->id_bank = Yii::$app->session[ 'id_bank' ];
+        $searchModel3->id_number_pp = Yii::$app->session[ 'nPP' ];
 
         $dataProvider = $searchModel->search( Yii::$app->request->queryParams );
         $dataProvider2 = $searchModel2->search( Yii::$app->request->queryParams );
