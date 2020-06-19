@@ -74,6 +74,19 @@ class ReferenceController extends Controller
 
     }
 
+    public function actionPerevod(){
+        $students = Students::find()->all();
+        foreach ($students as $student){
+            if ($student->perevod){
+                $student->education_status = 1;
+                $student->isEnder = 0;
+                $student->grace_period = 0;
+                $student->osnovanie = 0;
+                $student->save(false);
+            }
+        }
+    }
+
 
     public function actionStudents( $file, $nameId, $dCreditId, $orgId, $numPP, $bankId, $dStart )
     {
