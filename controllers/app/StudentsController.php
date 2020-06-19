@@ -91,13 +91,15 @@ class StudentsController extends AppController
             Yii::$app->session[ 'short_name_org' ] = Organizations::findOne( Yii::$app->session[ 'id_org' ] )->name;
         $searchModel->id_org = Yii::$app->session[ 'id_org' ];
 
-        $searchModel2 = clone $searchModel;
-        $searchModel3 = clone $searchModel;
-
         $searchModel->id_bank = Yii::$app->session[ 'id_bank' ];
         $searchModel->id_number_pp = Yii::$app->session[ 'nPP' ];
         $searchModel->month = Yii::$app->session['month'];
         $searchModel->year = Yii::$app->session['year'];
+
+        $searchModel2 = clone $searchModel;
+        $searchModel3 = clone $searchModel;
+
+
 
         $isApprove = Students::find()->where([
             'id_bank'=>$searchModel->id_bank,
@@ -114,10 +116,10 @@ class StudentsController extends AppController
         $searchModel2->isEnder = 0;
         $searchModel3->education_status = 0;
 
-        $searchModel2->id_bank = Yii::$app->session[ 'id_bank' ];
-        $searchModel2->id_number_pp = Yii::$app->session[ 'nPP' ];
-        $searchModel3->id_bank = Yii::$app->session[ 'id_bank' ];
-        $searchModel3->id_number_pp = Yii::$app->session[ 'nPP' ];
+     //   $searchModel2->id_bank = Yii::$app->session[ 'id_bank' ];
+      //  $searchModel2->id_number_pp = Yii::$app->session[ 'nPP' ];
+      //  $searchModel3->id_bank = Yii::$app->session[ 'id_bank' ];
+     //   $searchModel3->id_number_pp = Yii::$app->session[ 'nPP' ];
 
         $dataProvider = $searchModel->search( Yii::$app->request->queryParams );
         $dataProvider2 = $searchModel2->search( Yii::$app->request->queryParams );
@@ -182,13 +184,17 @@ class StudentsController extends AppController
         Yii::$app->session[ 'short_name_org' ] = ($org = Organizations::findOne( Yii::$app->session[ 'id_org' ] )) ? $org->name : '';
         $searchModel->id_org = Yii::$app->session[ 'id_org' ];
 
-        $searchModel2 = clone $searchModel;
-        $searchModel3 = clone $searchModel;
+        $searchModel->month  = Yii::$app->session['month'];
+        $searchModel->year = Yii::$app->session['year'];
 
         $searchModel->id_bank = Yii::$app->session[ 'id_bank' ];
         $searchModel->id_number_pp = Yii::$app->session[ 'nPP' ];
-        $searchModel->month = Yii::$app->session['month'];
-        $searchModel->year = Yii::$app->session['year'];
+
+        $searchModel2 = clone $searchModel;
+        $searchModel3 = clone $searchModel;
+
+
+
 
         $searchModel2->osn = true;
         $searchModel3->ender = true;
@@ -196,10 +202,10 @@ class StudentsController extends AppController
         $searchModel2->isEnder = 0;
         $searchModel3->education_status = 0;
 
-        $searchModel2->id_bank = Yii::$app->session[ 'id_bank' ];
-        $searchModel2->id_number_pp = Yii::$app->session[ 'nPP' ];
-        $searchModel3->id_bank = Yii::$app->session[ 'id_bank' ];
-        $searchModel3->id_number_pp = Yii::$app->session[ 'nPP' ];
+      //  $searchModel2->id_bank = Yii::$app->session[ 'id_bank' ];
+      //  $searchModel2->id_number_pp = Yii::$app->session[ 'nPP' ];
+       // $searchModel3->id_bank = Yii::$app->session[ 'id_bank' ];
+       // $searchModel3->id_number_pp = Yii::$app->session[ 'nPP' ];
 
         $dataProvider = $searchModel->search( Yii::$app->request->queryParams );
         $dataProvider2 = $searchModel2->search( Yii::$app->request->queryParams );
