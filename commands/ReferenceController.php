@@ -82,8 +82,23 @@ class ReferenceController extends Controller
                 $student->isEnder = 0;
                 $student->grace_period = 0;
                 $student->osnovanie = 0;
-                $student->save(false);
+            }elseif ($student->grace_period){
+                $student->education_status = 0;
+                $student->isEnder = 0;
+                $student->osnovanie = 0;
+            }elseif ($student->osnovanie){
+                $student->education_status = 0;
+                $student->isEnder = 0;
+                $student->grace_period = 0;
+            }else{
+                $student->education_status = 1;
+                $student->isEnder = 0;
+                $student->grace_period = 0;
+                $student->osnovanie = 0;
+                $student->perevod = 0;
             }
+
+            $student->save(false);
         }
     }
 
