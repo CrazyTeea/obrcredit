@@ -74,32 +74,19 @@ class ReferenceController extends Controller
 
     }
 
-    public function actionPerevod(){
+    public function actionUpper(){
         $students = Students::find()->all();
-        foreach ($students as $student){
-            if ($student->perevod){
-                $student->education_status = 1;
-                $student->isEnder = 0;
-                $student->grace_period = 0;
-                $student->osnovanie = 0;
-            }elseif ($student->grace_period){
-                $student->education_status = 0;
-                $student->isEnder = 0;
-                $student->osnovanie = 0;
-            }elseif ($student->osnovanie){
-                $student->education_status = 0;
-                $student->isEnder = 0;
-                $student->grace_period = 0;
-            }else{
-                $student->education_status = 1;
-                $student->isEnder = 0;
-                $student->grace_period = 0;
-                $student->osnovanie = 0;
-                $student->perevod = 0;
-            }
 
+        foreach ($students as $student){
+            $b = $student->name;
+            $student->name = mb_convert_case($student->name,MB_CASE_TITLE);
+            if (!$student->education_status) $student->education_status =0;
             $student->save(false);
+            echo "было $b стало $student->name \n";
         }
+
+
+
     }
 
 
