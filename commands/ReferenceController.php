@@ -164,7 +164,7 @@ class ReferenceController extends Controller
             $student->date_credit = $row[ $dCreditId ];
             $student->id_org = $row[ $orgId ];
             $student->date_create = date( "Y-m-d" );
-            $student->status = 2;
+            $student->status = 1;
             $student->id_number_pp = $row[ $numPP ];
             $student->id_bank = $row[ $bankId ];
 
