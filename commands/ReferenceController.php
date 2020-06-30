@@ -85,6 +85,18 @@ class ReferenceController extends Controller
             echo "было $b стало $student->name \n";
         }
 
+        $students = Students::find()->where(['date_start'=>'2019-04-01','id_number_pp'=>1,'id_bank'=>1])->orderBy('id')->groupBy('name')->all();
+
+        foreach ($students as $student){
+            $s = Students::find()->where(['date_start'=>'2019-04-01','id_number_pp'=>1,'id_bank'=>1,'name'=>$student->name])->andWhere(['<>','id',$student->id])->all();
+            if ($s){
+                foreach ($s as $item){
+                    $item->system_status=0;
+                    $item->save(false);
+                }
+            }
+        }
+
 
 
     }
