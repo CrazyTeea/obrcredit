@@ -10,7 +10,7 @@ use yii\widgets\Pjax;
  * @var $views array
  */
 
-$exportProvider = $views['index']['export'];
+
 $dataProvider = $views['index']['provider'];
 $searchModel = $views['index']['search'];
 $isApprove = $views['index']['isApprove'];
@@ -19,17 +19,9 @@ $isApprove = $views['index']['isApprove'];
 <div class="students-index">
     <br>
 
-<?php  if ($cans[0] || $cans[1]):?>
-    <?= Html::a('Добавить студента', ['create','id'=>Yii::$app->session[ 'id_org' ]],['class'=>'btn btn-success']) ?>
-<?php endif;?>
 
-<?= ExportMenu::widget(
-    [
-        'dataProvider'=>$exportProvider,
-        'columns' => Students::getColumns(true)
-        ,'batchSize'=>10,'target'=>'_blank'
-    ]
-) ?>
+
+
 
 <?php Pjax::begin(['timeout'=>5000]); ?>
 <?php // echo $this->render('_search', ['model' => $searchModel]); ?>
