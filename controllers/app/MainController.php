@@ -85,7 +85,8 @@ class MainController extends AppController
 
         $studentsByMonth = Students::find()
             ->select(['YEAR(date_start) year','MONTH(date_start) month','MIN(status) status', 'numbers_pp.id id_number_pp','banks.id id_bank','banks.name bank_name', 'COUNT(t1.id) count'])->from(['t1'=>
-                "(SELECT id,status,date_start,id_number_pp,id_bank FROM `students` WHERE system_status=1 and status != 0 $orgSelect or id in  )"])->joinWith(['numberPP','bank'])
+                "(SELECT id,status,date_start,id_number_pp,id_bank FROM `students` WHERE system_status=1 and status != 0 $orgSelect or id in 
+                (select students.id from students join students_history sh on sh.id_student = students.id where year(date_start)=$year)  )"])->joinWith(['numberPP','bank'])
             ->where(['year(date_start)'=>$year])
             ->groupBy(['year' , 'month' , 'id_number_pp', 'id_bank'])
             ->orderBy(['year'=>SORT_ASC , 'month' =>SORT_ASC, 'id_number_pp'=>SORT_ASC])->all();
