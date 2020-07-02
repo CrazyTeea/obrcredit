@@ -66,7 +66,7 @@ class StudentsHistorySearch extends StudentsHistory
             $query->where([Students::tableName().'.id_number_pp'=>$this->id_number_pp,'YEAR('.Students::tableName().'.date_start)'=>$this->year]);
         }
         if ($this->org_old)
-            $query->andWhere([Students::tableName().'.id_org_old'=>$this->org_old]);
+            $query->andWhere([Students::tableName().'.id_org'=>$this->org_old]);
         // add conditions that should always apply here
 
         $dataProvider = new ActiveDataProvider([

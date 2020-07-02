@@ -100,7 +100,13 @@ $payment_modals = null;
                         <div class="thumbnail">
                             <div class="caption">
                                 <div class="row">
-                                    <div class="col-md-6"><?=ExportMenu::widget(['dataProvider'=>$export['e_providers'][$month],'columns'=>\app\models\app\students\Students::getColumns(true),'timeout'=>300])?></div>
+                                    <div class="col-md-6"><?=ExportMenu::widget(['dataProvider'=>$export['e_providers'][$month],
+                                            'columns'=>\app\models\app\students\Students::getColumns(true),'timeout'=>300,'exportConfig'=>[
+                                                ExportMenu::FORMAT_HTML=>false,
+                                                ExportMenu::FORMAT_CSV=>false,
+                                                ExportMenu::FORMAT_EXCEL=>false,
+                                                ExportMenu::FORMAT_TEXT=>false,
+                                            ]])?></div>
                                     <div class="col-md-6"><h2><?=getMonth($month)?></h2></div>
                                 </div>
                                 <hr>

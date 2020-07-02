@@ -88,9 +88,26 @@ class MainController extends AppController
                 }
             }
             $export['e_providers'][$i] = ($this->cans[2]) ?
-                new ActiveDataProvider([ 'query'=>Students::find()->where(['system_status'=>1,'MONTH(date_start)'=>$i,'YEAR(date_start)'=>$year,'id_org'=>$id_org])])
-                :
-                new ActiveDataProvider([ 'query'=>Students::find()->where(['system_status'=>1,'MONTH(date_start)'=>$i,'YEAR(date_start)'=>$year])]);
+                new ActiveDataProvider([ 'query'=>Students::find()->where( [
+                    'system_status'=>1,
+                    'MONTH(date_start)'=>$i,
+                    'YEAR(date_start)'=>$year,
+                    'id_org'=>$id_org,
+                ] )->orWhere(['id'=>Students::find()->select(['students.id'])->join('join','students_history','students_history.id_student=students.id')->where([
+                    'MONTH(date_start)'=>$i,
+                    'YEAR(date_start)'=>$year,
+                    'id_org'=>$id_org,
+                ])->asArray()])])
+
+            :
+                new ActiveDataProvider([ 'query'=>Students::find()->where( [
+                    'system_status'=>1,
+                    'MONTH(date_start)'=>$i,
+                    'YEAR(date_start)'=>$year,
+                ] )->orWhere(['id'=>Students::find()->select(['students.id'])->join('join','students_history','students_history.id_student=students.id')->where([
+                    'MONTH(date_start)'=>$i,
+                    'YEAR(date_start)'=>$year,
+                ])->asArray()])]);
         }
 
         $st_history_subq = StudentsHistory::find()->select(['id_student','k.id','k.id_number_pp','k.date_start'])->where(['year(k.date_start)'=>$year])
