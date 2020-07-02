@@ -137,7 +137,16 @@ class StudentsController extends AppController
             'YEAR(date_start)'=>$searchModel->year,
             'id_number_pp'=>$searchModel->id_number_pp,
             'id_org'=>$searchModel->id_org,
-        ] );
+        ] )->orWhere(['id'=>Students::find()->select(['students.id'])->join('join','students_history','students_history.id_student=students.id')->where([
+            'id_bank'=>$searchModel->id_bank,
+            'MONTH(date_start)'=>$searchModel->month,
+            'YEAR(date_start)'=>$searchModel->year,
+            'id_number_pp'=>$searchModel->id_number_pp,
+            'id_org'=>$searchModel->id_org,
+        ])->asArray()]);
+
+       // var_dump($studentsExport->prepare(Yii::$app->db->queryBuilder)->createCommand()->rawSql);exit();
+
         $exportProvider = new ActiveDataProvider( ['query' => $studentsExport, 'pagination' => false] );
         $views['index']['search'] = $searchModel;
         $views['index']['provider'] = $dataProvider;

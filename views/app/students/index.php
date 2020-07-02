@@ -56,7 +56,13 @@ $exportProvider = $views['index']['export'];
     [
         'dataProvider'=>$exportProvider,
         'columns' => Students::getColumns(true)
-        ,'batchSize'=>10,'target'=>'_blank'
+        ,'batchSize'=>10,'target'=>'_blank',
+        'exportConfig'=>[
+            ExportMenu::FORMAT_HTML=>false,
+            ExportMenu::FORMAT_CSV=>false,
+            ExportMenu::FORMAT_EXCEL=>false,
+            ExportMenu::FORMAT_TEXT=>false,
+        ]
     ]
 ) ?>
 <div class="row">

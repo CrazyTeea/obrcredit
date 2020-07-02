@@ -211,6 +211,7 @@ class Students extends ActiveRecord
         if ($export) {
             $ret = [
                 ['class' => 'yii\grid\SerialColumn'],
+                'id',
                 ['attribute' => 'name', 'label' => "ФИО обучающегося", 'encodeLabel' => false],
                 ['attribute' => 'organization', 'value' => 'organization.name', 'label' => 'Наименование ООВО', 'encodeLabel' => false],
                 ['attribute' => 'code', 'label' => 'Код направления подготовки', 'encodeLabel' => false],
@@ -248,6 +249,9 @@ class Students extends ActiveRecord
                     //$dta = $data;
                     if ($model->isEnder)
                         return "Выпускник" ;
+
+                    if (!$model->system_status)
+                        return 'Не найден';
 
                     return ($model->education_status) ? $l = ($model->perevod) ? "Переведен на бюджет" : "Обучается" : " {$data}";
                 }],
