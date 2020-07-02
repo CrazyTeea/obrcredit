@@ -234,8 +234,20 @@ class StudentsController extends AppController
             'status'=>1
         ])->all();
 
-        $studentsExport = Students::find()->where( ['system_status'=>1,'id_org' => $searchModel->id_org,
-            'MONTH(date_start)' => $searchModel->month, 'YEAR(date_start)' => Yii::$app->session[ 'year' ],'id_number_pp'=>$nPP] );
+        $studentsExport = Students::find()->where( [
+            'system_status'=>1,
+            'id_bank'=>$searchModel->id_bank,
+            'MONTH(date_start)'=>$searchModel->month,
+            'YEAR(date_start)'=>$searchModel->year,
+            'id_number_pp'=>$searchModel->id_number_pp,
+            'id_org'=>$searchModel->id_org,
+        ] )->orWhere(['id'=>Students::find()->select(['students.id'])->join('join','students_history','students_history.id_student=students.id')->where([
+            'id_bank'=>$searchModel->id_bank,
+            'MONTH(date_start)'=>$searchModel->month,
+            'YEAR(date_start)'=>$searchModel->year,
+            'id_number_pp'=>$searchModel->id_number_pp,
+            'id_org'=>$searchModel->id_org,
+        ])->asArray()]);
         $exportProvider = new ActiveDataProvider( ['query' => $studentsExport, 'pagination' => false] );
 
         $views['index']['search'] = $searchModel;
