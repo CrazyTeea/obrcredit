@@ -8,6 +8,7 @@ use app\models\app\Banks;
 use app\models\app\Organizations;
 use app\models\app\students\NumbersPp;
 use app\models\app\students\Students;
+use app\models\app\students\StudentsHistory;
 use Lcobucci\JWT\Builder;
 use Lcobucci\JWT\Parser;
 use Lcobucci\JWT\Signer\Hmac\Sha256;
@@ -164,13 +165,13 @@ class ReferenceController extends Controller
                 $student->isEnder = 1;
                 $student->date_ender = $student2->date_ender;
             }
-            else if ($student2 and !$student2->education_status and !$student2->isEnder){
+            if ($student2 and !$student2->education_status and !$student2->isEnder){
                 $student->education_status = 0;
                 $student->osnovanie = $student2->osnovanie;
                 $student->isEnder = 0;
             }
-            else {
-                $student->education_status = 1;
+            if ($student2 and !$student->system_status){
+                $student->system_status = 0;
             }
 
             $student->code = $student2->code ?? 12345;
@@ -199,6 +200,16 @@ class ReferenceController extends Controller
             номер пп-> $student->id_number_pp
             нмоер банка->$student->id_bank
             дата начала обуч-> $student->date_start  \n";
+            }
+            if ($student2 and !$student->system_status){
+                $student->system_status = 0;
+                $sh = StudentsHistory::findOne(['id_student'=>Students::find()->select('id')->where(['name'=>$student->name,'date_credit'=>$student->date_credit])->column()]);
+                if ($sh){
+                    $sh = new StudentsHistory();
+                    $sh->id_student = $student->id;
+                    $sh->id_change=1;
+                    $sh->save();
+                }
             }
 
         }
