@@ -80,6 +80,16 @@ AppAsset::register($this);
         ]) ?>
 
         <?= Alert::widget() ?>
+
+        <div class="alert alert-danger" role="alert">
+            <p class="text-center">Уведомление о проведении технических работ</p>
+            <p class="text-center"> Уважаемые коллеги! Информируем Вас о проведении в период с 1 июля по 31 июля 2020 года технических работ по доработке интерфейса системы «обркредит.иасмон.рф», в связи с чем в системе «обркредит.иасмон.рф» может некорректно отображаться информация о статусах обучающихся(заемщиков).</p>
+            <p class="text-center">Приносим извинения за доставленные неудобства!</p>
+
+
+
+        </div>
+
         <?= $content ?>
         <noscript><div><img src="https://mc.yandex.ru/watch/57602071" style="position:absolute; left:-9999px;" alt="" /></div></noscript>
     </div>
