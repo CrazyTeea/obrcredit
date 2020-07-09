@@ -33,7 +33,7 @@ deploy_files:
   - master
   stage: deploy_files
   script:
-  - EXCLUDE={'.git*','rsync.log','config/db.php','web/index.php','vendor/',
+  - EXCLUDE={'.git*','rsync.log','config/db.php','web/index.php','vendor/','.env',
   - EXCLUDE+='rbac/assignments.php','runtime/','web/uploads/','web/assets/'}
   - '[ -f rsync.log ]&& rm rsync.log'
   - echo $EXCLUDE
