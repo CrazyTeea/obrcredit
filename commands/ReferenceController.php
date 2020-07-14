@@ -163,12 +163,15 @@ class ReferenceController extends Controller
             if ($student2 and $student2->isEnder ) {
                 $student->education_status = 0;
                 $student->isEnder = 1;
+                $student->osnovanie = 0;
+                $student->grace_period = 0;
                 $student->date_ender = $student2->date_ender;
             }
             if ($student2 and !$student2->education_status and !$student2->isEnder){
                 $student->education_status = 0;
                 $student->osnovanie = $student2->osnovanie;
                 $student->isEnder = 0;
+                $student->grace_period = 0;
             }
             if ($student2 and !$student->system_status){
                 $student->system_status = 0;
