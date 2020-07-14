@@ -127,6 +127,10 @@ class StudentsController extends AppController
 
 
         $searchModel4 = new StudentsHistorySearch();
+        $searchModel4->month = $searchModel->month;
+        $searchModel4->year = $searchModel->year;
+        $searchModel4->id_bank = $searchModel->id_bank;
+        $searchModel4->id_number_pp = $searchModel->id_number_pp;
         $searchModel4->org_old = $searchModel->id_org;
         $dataProvider4 = $searchModel4->search(Yii::$app->request->queryParams);
 
@@ -143,7 +147,7 @@ class StudentsController extends AppController
             'YEAR(date_start)'=>$searchModel->year,
             'id_number_pp'=>$searchModel->id_number_pp,
             'id_org'=>$searchModel->id_org,
-        ])->asArray()]);
+        ])->column()]);
 
        // var_dump($studentsExport->prepare(Yii::$app->db->queryBuilder)->createCommand()->rawSql);exit();
 
@@ -221,6 +225,10 @@ class StudentsController extends AppController
         $dataProvider3 = $searchModel3->search( Yii::$app->request->queryParams );
 
         $searchModel4 = new StudentsHistorySearch();
+        $searchModel4->month = $searchModel->month;
+        $searchModel4->year = $searchModel->year;
+        $searchModel4->id_bank = $searchModel->id_bank;
+        $searchModel4->id_number_pp = $searchModel->id_number_pp;
         $searchModel4->org_old = $searchModel->id_org;
         $dataProvider4 = $searchModel4->search(Yii::$app->request->queryParams);
 
@@ -247,7 +255,7 @@ class StudentsController extends AppController
             'YEAR(date_start)'=>$searchModel->year,
             'id_number_pp'=>$searchModel->id_number_pp,
             'id_org'=>$searchModel->id_org,
-        ])->asArray()]);
+        ])->column()]);
         $exportProvider = new ActiveDataProvider( ['query' => $studentsExport, 'pagination' => false] );
 
         $views['index']['search'] = $searchModel;

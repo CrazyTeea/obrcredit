@@ -22,7 +22,9 @@ class StudentsHistorySearch extends StudentsHistory
     public $id_user_from;
     public $id_user_to;
     public $year;
+    public $month;
     public $period;
+    public $id_bank;
     public $org;
     public $org_old;
     public $student_name;
@@ -62,9 +64,14 @@ class StudentsHistorySearch extends StudentsHistory
     public function search($params)
     {
         $query = StudentsHistory::find()->joinWith(['student']);
-        if (isset($this->id_number_pp) and isset($this->year)){
-            $query->where([Students::tableName().'.id_number_pp'=>$this->id_number_pp,'YEAR('.Students::tableName().'.date_start)'=>$this->year]);
-        }
+        if (isset($this->id_number_pp))
+            $query->andWhere(['students.id_number_pp'=>$this->id_number_pp]);
+        if (isset($this->month))
+            $query->andWhere(['month(students.date_start)'=>$this->month]);
+        if (isset($this->year))
+            $query->andWhere(['year(students.date_start)'=>$this->year]);
+        if (isset($this->id_bank))
+            $query->andWhere(['students.id_bank'=>$this->id_bank]);
         if ($this->org_old)
             $query->andWhere([Students::tableName().'.id_org'=>$this->org_old]);
         // add conditions that should always apply here
