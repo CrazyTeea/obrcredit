@@ -158,6 +158,11 @@ class ReferenceController extends Controller
 
         while (( $row = fgetcsv( $csv, 1000, ';' ) ) != false) {
 
+            $student2 = Students::find()
+                ->where(['name'=>$row[$nameId],'date_credit'=>$row[$dCreditId],
+                    'YEAR(date_start)'=>date('Y',strtotime($row[$dStart])),
+                    'MONTH(date_start)'=>date('m',strtotime($row[$dStart]))])->one();
+            if ($student2) continue;
             $student2 = Students::find()->where(['name'=>$row[$nameId],'date_credit'=>$row[$dCreditId],'YEAR(date_start)'=>$year,'MONTH(date_start)'=>$month])->one();
             $student = new Students();
             if ($student2 and $student2->isEnder ) {
