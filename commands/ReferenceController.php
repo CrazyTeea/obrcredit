@@ -158,12 +158,14 @@ class ReferenceController extends Controller
 
         while (( $row = fgetcsv( $csv, 1000, ';' ) ) != false) {
 
+            $name = mb_convert_case($row[ $nameId ],MB_CASE_TITLE);
+
             $student2 = Students::find()
-                ->where(['name'=>$row[$nameId],'date_credit'=>$row[$dCreditId],
+                ->where(['name'=>$name,'date_credit'=>$row[$dCreditId],
                     'YEAR(date_start)'=>date('Y',strtotime($row[$dStart])),
                     'MONTH(date_start)'=>date('m',strtotime($row[$dStart]))])->one();
             if ($student2) continue;
-            $student2 = Students::find()->where(['name'=>$row[$nameId],'date_credit'=>$row[$dCreditId],'YEAR(date_start)'=>$year,'MONTH(date_start)'=>$month])->one();
+            $student2 = Students::find()->where(['name'=>$name,'date_credit'=>$row[$dCreditId],'YEAR(date_start)'=>$year,'MONTH(date_start)'=>$month])->one();
             $student = new Students();
             if ($student2 and $student2->isEnder ) {
                 $student->education_status = 0;
@@ -182,7 +184,7 @@ class ReferenceController extends Controller
             $student->code = $student2->code ?? 12345;
 
             $student->date_start = $row[ $dStart ];
-            $student->name = $row[ $nameId ];
+            $student->name = $name;
             $student->date_credit = $row[ $dCreditId ];
             $student->id_org = $row[ $orgId ];
             $student->date_create = date( "Y-m-d" );
