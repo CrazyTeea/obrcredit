@@ -156,7 +156,7 @@ class ReferenceController extends Controller
             $year--;
         }
 
-        while (( $row = fgetcsv( $csv, 1000, ';' ) ) != false) {
+        while (( $row = fgetcsv( $csv, 32000, ';' ) ) != false) {
 
             $name = mb_convert_case($row[ $nameId ],MB_CASE_TITLE);
 
