@@ -178,9 +178,6 @@ class ReferenceController extends Controller
                 $student->isEnder = 0;
                 $student->grace_period = 0;
             }
-            if ($student2 and !$student->system_status){
-                $student->system_status = 0;
-            }
 
             $student->code = $student2->code ?? 12345;
 
