@@ -5,6 +5,7 @@ namespace app\controllers\app;
 use app\models\app\off_orgs_search;
 use app\models\app\students\Students;
 
+use Mpdf\Tag\Select;
 use Throwable;
 use Yii;
 use app\models\app\Organizations;
@@ -152,7 +153,14 @@ class OrganizationsController extends AppController
             'MONTH(date_start)'=>$month,
             'YEAR(date_start)'=>$searchModel->year,
             'id_number_pp'=>$nPP
-        ])->with(['bank', 'numberPP', 'dateLastStatus', 'organization']);
+        ])->orWhere(['students.id'=>Students::find()
+            ->select(['students.id'])
+            ->join('join','students_history','students_history.id_student=students.id')
+            ->where(['id_bank'=>$id_bank,
+            'MONTH(date_start)'=>$month,
+            'YEAR(date_start)'=>$searchModel->year,
+            'id_number_pp'=>$nPP])
+            ->column()]);
 
         $exportProvider = new ActiveDataProvider(['query'=>$studentsExport]);
 

@@ -70,7 +70,7 @@ class OrganizationsSearch extends Organizations
             $query->orderBy(['student_status'=>SORT_ASC]);
         }
         else{
-            $query->joinWith(['students s'])
+            $query->joinWith(['students s'],true,'join')
                 ->andWhere(['s.system_status'=>1,'s.id_bank'=>$this->id_bank,'s.id_number_pp'=>$this->nPP,'MONTH(s.date_start)'=>$this->month,'YEAR(s.date_start)'=>$this->year]);
 
         }
