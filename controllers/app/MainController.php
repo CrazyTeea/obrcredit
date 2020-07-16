@@ -21,50 +21,51 @@ class MainController extends AppController
         $this->updateRouteHistory('/app/main/index');
         $studentsByYear = null;
         for ($i = 2017;$i<=2021;$i++){
-            if (!($this->cans[0] || $this->cans[1])) {
+            if ($this->cans[2]) {
                 $studentsByYear[$i]['studentsCount']=
                     Students::find()->where(['system_status'=>1,'YEAR(date_start)'=>$i, 'id_org'=>Yii::$app->session['id_org']])
-                        ->orWhere(['id'=>Students::find()->select(['students.id'])->join('join','students_history','students_history.id_student=students.id')->where([
-
-                    'YEAR(date_start)'=>$i,
-                    'id_org'=>Yii::$app->session['id_org']
-                ])->asArray()])->select(['name','status'])->groupBy(['date_credit','name'])->count();
-                $studentsByYear[$i]['studentsApprovedCount'] = Students::find()->where(['system_status'=>1,'status'=>2,'YEAR(date_start)'=>$i, 'id_org'=>Yii::$app->session['id_org']])->orWhere(['id'=>Students::find()->select(['students.id'])->join('join','students_history','students_history.id_student=students.id')->where([
-
-
-                    'YEAR(date_start)'=>$i,
-
-                    'id_org'=>Yii::$app->session['id_org']
-                ])->asArray()])->select(['name','status'])->groupBy(['date_credit','name'])->count();
-                $studentsByYear[$i]['studentsUnapprovedCount'] = Students::find()->where(['system_status'=>1,'status'=>1,'YEAR(date_start)'=>$i, 'id_org'=>Yii::$app->session['id_org']])->orWhere(['id'=>Students::find()->select(['students.id'])->join('join','students_history','students_history.id_student=students.id')->where([
-
-
-                    'YEAR(date_start)'=>$i,
-
-                    'id_org'=>Yii::$app->session['id_org']
-                ])->asArray()])->select(['name','status'])->groupBy(['date_credit','name'])->count();
+                        ->orWhere(['id'=>
+                            Students::find()->select(['students.id'])
+                                ->join('join','students_history','students_history.id_student=students.id')
+                                ->where(['YEAR(date_start)'=>$i, 'id_org'=>Yii::$app->session['id_org']
+                                ])->column()])
+                        ->count();
+                $studentsByYear[$i]['studentsApprovedCount'] =
+                    Students::find()
+                        ->where(['system_status'=>1,'status'=>2,'YEAR(date_start)'=>$i, 'id_org'=>Yii::$app->session['id_org']])
+                        ->orWhere(['id'=>Students::find()->select(['students.id'])
+                            ->join('join','students_history','students_history.id_student=students.id')
+                            ->where(['YEAR(date_start)'=>$i, 'id_org'=>Yii::$app->session['id_org']
+                            ])->column()])
+                        ->count();
+                $studentsByYear[$i]['studentsUnapprovedCount'] = Students::find()
+                    ->where(['system_status'=>1,'status'=>1,'YEAR(date_start)'=>$i, 'id_org'=>Yii::$app->session['id_org']])
+                    ->orWhere(['id'=>Students::find()->select(['students.id'])
+                        ->join('join','students_history','students_history.id_student=students.id')
+                        ->where(['YEAR(date_start)'=>$i, 'id_org'=>Yii::$app->session['id_org']])
+                        ->column()])
+                    ->count();
             }else {
-                $studentsByYear[ $i ][ 'studentsCount' ] = Students::find()->where( ['system_status'=>1,'YEAR(date_start)' => $i] )->orWhere(['id'=>Students::find()->select(['students.id'])->join('join','students_history','students_history.id_student=students.id')->where([
-
-
-                    'YEAR(date_start)'=>$i,
-
-
-                ])->asArray()])->select(['name','status'])->groupBy(['date_credit','name'])->count();
-                $studentsByYear[ $i ][ 'studentsApprovedCount' ] = Students::find()->where( ['system_status'=>1,'status' => 2, 'YEAR(date_start)' => $i] )->orWhere(['id'=>Students::find()->select(['students.id'])->join('join','students_history','students_history.id_student=students.id')->where([
-
-
-                    'YEAR(date_start)'=>$i,
-
-
-                ])->asArray()])->select(['name','status'])->groupBy(['date_credit','name'])->count();
-                $studentsByYear[ $i ][ 'studentsUnapprovedCount' ] = Students::find()->where( ['system_status'=>1,'status' => 1, 'YEAR(date_start)' => $i] )->orWhere(['id'=>Students::find()->select(['students.id'])->join('join','students_history','students_history.id_student=students.id')->where([
-
-
-                    'YEAR(date_start)'=>$i,
-
-
-                ])->asArray()])->select(['name','status'])->groupBy(['date_credit','name'])->count();
+                $studentsByYear[ $i ][ 'studentsCount' ] = Students::find()->where( ['system_status'=>1,'YEAR(date_start)' => $i] )
+                    ->orWhere(['id'=>Students::find()->select(['students.id'])
+                        ->join('join','students_history','students_history.id_student=students.id')
+                        ->where(['YEAR(date_start)'=>$i])
+                        ->column()])
+                    ->count();
+                $studentsByYear[ $i ][ 'studentsApprovedCount' ] = Students::find()
+                    ->where( ['system_status'=>1,'status' => 2, 'YEAR(date_start)' => $i] )
+                    ->orWhere(['id'=>Students::find()->select(['students.id'])
+                        ->join('join','students_history','students_history.id_student=students.id')
+                        ->where(['YEAR(date_start)'=>$i])
+                        ->column()])
+                    ->count();
+                $studentsByYear[ $i ][ 'studentsUnapprovedCount' ] = Students::find()
+                    ->where( ['system_status'=>1,'status' => 1, 'YEAR(date_start)' => $i] )
+                    ->orWhere(['id'=>Students::find()->select(['students.id'])
+                        ->join('join','students_history','students_history.id_student=students.id')
+                        ->where(['YEAR(date_start)'=>$i])
+                        ->column()])
+                    ->count();
             }
         }
         return $this->render('index',compact('studentsByYear'));
