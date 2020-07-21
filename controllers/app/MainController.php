@@ -210,7 +210,7 @@ class MainController extends AppController
         $student=[];
         $banks = Banks::find()->all();
         $nums = NumbersPp::find()->all();
-        $student = Students::find()->where(['system_status'=>1,'YEAR(date_start)'=>$year])->groupBy(['date_credit'])->all();
+        $student = Students::find()->where(['system_status'=>1,'YEAR(date_start)'=>$year])->all();
 
 
 
