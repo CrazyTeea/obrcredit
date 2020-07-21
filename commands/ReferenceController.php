@@ -106,6 +106,17 @@ class ReferenceController extends Controller
 
     }
 
+    public function actionDate(){
+        $st = Students::find()->all();
+        foreach ($st as $item){
+            $date = explode('-',$item->date_start);
+            if (count($date)==3) {
+                $item->date_start = "$date[0]-$date[1]-01";
+                $item->save(false);
+            }
+        }
+    }
+
 
     public function actionStudents( $file, $nameId, $dCreditId, $orgId, $numPP, $bankId, $dStart )
     {
