@@ -86,7 +86,7 @@ class MainController extends AppController
 
         $studentsByMonth = Students::find()
             ->select(['YEAR(date_start) year','MONTH(date_start) month','MIN(status) status', 'numbers_pp.id id_number_pp','banks.id id_bank','banks.name bank_name', 'COUNT(t1.id) count'])->from(['t1'=>
-                "(SELECT id,status,date_start,id_number_pp,id_bank FROM `students` WHERE system_status=1 and status != 0 $orgSelect or id in 
+                "(SELECT id,status,date_start,id_number_pp,id_bank FROM `students` WHERE system_status=1 $orgSelect or id in 
                 (select students.id from students join students_history sh on sh.id_student = students.id where year(date_start)=$year)  )"])->joinWith(['numberPP','bank'])
             ->where(['year(date_start)'=>$year])
             ->groupBy(['year' , 'month' , 'id_number_pp', 'id_bank'])
@@ -211,29 +211,6 @@ class MainController extends AppController
         $banks = Banks::find()->all();
         $nums = NumbersPp::find()->all();
         $student = Students::find()->where(['system_status'=>1,'YEAR(date_start)'=>$year])->all();
-
-
-
-        /*
-                    foreach ($banks as $bank) {
-                        $student[$bank->id]['name'] = $bank->name;
-                        foreach ($nums as $num) {
-                            $student[$bank->id][$num->id]['name'] = $num->number;
-                            foreach (range(1, 12) as $month) {
-                                $student[$bank->id][$num->id][$month]['count'] = ;
-                                    $student[$bank->id][$num->id][$month]['countO'] = $student_all->getCount($year,$month,$bank->id,$num->id,'education_status',1);
-                                $student[$bank->id][$num->id][$month]['count20_1'] = $student_all->getCount($year,$month,$bank->id,$num->id,'osnovanie',1);
-                                $student[$bank->id][$num->id][$month]['count20_2'] = $student_all->getCount($year,$month,$bank->id,$num->id,'osnovanie',2);
-                                $student[$bank->id][$num->id][$month]['count20_3'] = $student_all->getCount($year,$month,$bank->id,$num->id,'osnovanie',3);
-                                $student[$bank->id][$num->id][$month]['count21_1'] = $student_all->getCount($year,$month,$bank->id,$num->id,'osnovanie',4);
-                                $student[$bank->id][$num->id][$month]['count21_2'] = $student_all->getCount($year,$month,$bank->id,$num->id,'osnovanie',5);
-                                $student[$bank->id][$num->id][$month]['count22'] = $student_all->getCount($year,$month,$bank->id,$num->id,'osnovanie',6);
-                                $student[$bank->id][$num->id][$month]['countP'] = $student_all->getCount($year,$month,$bank->id,$num->id,'perevod',1);
-                                $student[$bank->id][$num->id][$month]['countV'] =$student_all->getCount($year,$month,$bank->id,$num->id,'isEnder',1);
-                            }
-                        }
-
-                    }*/
 
 
 
