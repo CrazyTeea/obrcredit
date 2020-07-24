@@ -116,10 +116,10 @@ class StudentsController extends AppController
         $searchModel2->isEnder = 0;
         $searchModel3->education_status = 0;
 
-     //   $searchModel2->id_bank = Yii::$app->session[ 'id_bank' ];
-      //  $searchModel2->id_number_pp = Yii::$app->session[ 'nPP' ];
-      //  $searchModel3->id_bank = Yii::$app->session[ 'id_bank' ];
-     //   $searchModel3->id_number_pp = Yii::$app->session[ 'nPP' ];
+        //   $searchModel2->id_bank = Yii::$app->session[ 'id_bank' ];
+        //  $searchModel2->id_number_pp = Yii::$app->session[ 'nPP' ];
+        //  $searchModel3->id_bank = Yii::$app->session[ 'id_bank' ];
+        //   $searchModel3->id_number_pp = Yii::$app->session[ 'nPP' ];
 
         $dataProvider = $searchModel->search( Yii::$app->request->queryParams );
         $dataProvider2 = $searchModel2->search( Yii::$app->request->queryParams );
@@ -149,7 +149,7 @@ class StudentsController extends AppController
             'id_org'=>$searchModel->id_org,
         ])->column()]);
 
-       // var_dump($studentsExport->prepare(Yii::$app->db->queryBuilder)->createCommand()->rawSql);exit();
+        // var_dump($studentsExport->prepare(Yii::$app->db->queryBuilder)->createCommand()->rawSql);exit();
 
         $exportProvider = new ActiveDataProvider( ['query' => $studentsExport, 'pagination' => false] );
         $views['index']['search'] = $searchModel;
@@ -215,10 +215,10 @@ class StudentsController extends AppController
         $searchModel2->isEnder = 0;
         $searchModel3->education_status = 0;
 
-      //  $searchModel2->id_bank = Yii::$app->session[ 'id_bank' ];
-      //  $searchModel2->id_number_pp = Yii::$app->session[ 'nPP' ];
-       // $searchModel3->id_bank = Yii::$app->session[ 'id_bank' ];
-       // $searchModel3->id_number_pp = Yii::$app->session[ 'nPP' ];
+        //  $searchModel2->id_bank = Yii::$app->session[ 'id_bank' ];
+        //  $searchModel2->id_number_pp = Yii::$app->session[ 'nPP' ];
+        // $searchModel3->id_bank = Yii::$app->session[ 'id_bank' ];
+        // $searchModel3->id_number_pp = Yii::$app->session[ 'nPP' ];
 
         $dataProvider = $searchModel->search( Yii::$app->request->queryParams );
         $dataProvider2 = $searchModel2->search( Yii::$app->request->queryParams );
@@ -398,11 +398,11 @@ class StudentsController extends AppController
                 $history = new StudentsHistory();
             }else $is_in_history = true;
         }
-      //  $history = ($minS) ?  ? $st : new StudentsHistory() : new StudentsHistory();
+        //  $history = ($minS) ?  ? $st : new StudentsHistory() : new StudentsHistory();
         $changes = ArrayHelper::map(Changes::find()->select(['id','change','system_status'])->where(['system_status'=>1])->all(),'id','change');
         if ($history->load(Yii::$app->request->post()))
         {
-          //  var_dump($history);exit();
+            //  var_dump($history);exit();
             $students = Students::findAll(['name'=>$model->name,'code'=>$model->code,'date_credit'=>$model->date_credit]);
             foreach ($students as $st){
                 $st->system_status = 0;
@@ -579,7 +579,7 @@ class StudentsController extends AppController
         $orgs = Organizations::getOrgs();
         $docTypes = StudentDocumentTypes::getActive()->all();
         $file = new Files();
-      //  $modelDFlag = false;
+        //  $modelDFlag = false;
 
         if ( $model->load( Yii::$app->request->post() ) ) {
             if (!$model->education_status)

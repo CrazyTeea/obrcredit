@@ -20,55 +20,7 @@ class MainController extends AppController
     public function actionIndex(){
         $this->updateRouteHistory('/app/main/index');
         $studentsByYear = null;
-        for ($i = 2017;$i<=2021;$i++){
-            if ($this->cans[2]) {
-                $studentsByYear[$i]['studentsCount']=
-                    Students::find()->where(['system_status'=>1,'YEAR(date_start)'=>$i, 'id_org'=>Yii::$app->session['id_org']])
-                        ->orWhere(['id'=>
-                            Students::find()->select(['students.id'])
-                                ->join('join','students_history','students_history.id_student=students.id')
-                                ->where(['YEAR(date_start)'=>$i, 'id_org'=>Yii::$app->session['id_org']
-                                ])->column()])
-                        ->count();
-                $studentsByYear[$i]['studentsApprovedCount'] =
-                    Students::find()
-                        ->where(['system_status'=>1,'status'=>2,'YEAR(date_start)'=>$i, 'id_org'=>Yii::$app->session['id_org']])
-                        ->orWhere(['id'=>Students::find()->select(['students.id'])
-                            ->join('join','students_history','students_history.id_student=students.id')
-                            ->where(['YEAR(date_start)'=>$i, 'id_org'=>Yii::$app->session['id_org']
-                            ])->column()])
-                        ->count();
-                $studentsByYear[$i]['studentsUnapprovedCount'] = Students::find()
-                    ->where(['system_status'=>1,'status'=>1,'YEAR(date_start)'=>$i, 'id_org'=>Yii::$app->session['id_org']])
-                    ->orWhere(['id'=>Students::find()->select(['students.id'])
-                        ->join('join','students_history','students_history.id_student=students.id')
-                        ->where(['YEAR(date_start)'=>$i, 'id_org'=>Yii::$app->session['id_org']])
-                        ->column()])
-                    ->count();
-            }else {
-                $studentsByYear[ $i ][ 'studentsCount' ] = Students::find()->where( ['system_status'=>1,'YEAR(date_start)' => $i] )
-                    ->orWhere(['id'=>Students::find()->select(['students.id'])
-                        ->join('join','students_history','students_history.id_student=students.id')
-                        ->where(['YEAR(date_start)'=>$i])
-                        ->column()])
-                    ->count();
-                $studentsByYear[ $i ][ 'studentsApprovedCount' ] = Students::find()
-                    ->where( ['system_status'=>1,'status' => 2, 'YEAR(date_start)' => $i] )
-                    ->orWhere(['id'=>Students::find()->select(['students.id'])
-                        ->join('join','students_history','students_history.id_student=students.id')
-                        ->where(['YEAR(date_start)'=>$i])
-                        ->column()])
-                    ->count();
-                $studentsByYear[ $i ][ 'studentsUnapprovedCount' ] = Students::find()
-                    ->where( ['system_status'=>1,'status' => 1, 'YEAR(date_start)' => $i] )
-                    ->orWhere(['id'=>Students::find()->select(['students.id'])
-                        ->join('join','students_history','students_history.id_student=students.id')
-                        ->where(['YEAR(date_start)'=>$i])
-                        ->column()])
-                    ->count();
-            }
-        }
-        return $this->render('index',compact('studentsByYear'));
+        return $this->render('index');
     }
     public function actionMonth($year = null){
         $this->updateRouteHistory('/app/main/month');
@@ -84,13 +36,32 @@ class MainController extends AppController
             $orgSelect = "and id_org=$id_org";
         }
 
-        $studentsByMonth = Students::find()
-            ->select(['YEAR(date_start) year','MONTH(date_start) month','MIN(status) status', 'numbers_pp.id id_number_pp','banks.id id_bank','banks.name bank_name', 'COUNT(t1.id) count'])->from(['t1'=>
-                "(SELECT id,status,date_start,id_number_pp,id_bank FROM `students` WHERE system_status=1 and (status != 0 or status is not null) $orgSelect or id in 
-                (select students.id from students join students_history sh on sh.id_student = students.id where year(date_start)=$year)  )"])->joinWith(['numberPP','bank'])
-            ->where(['year(date_start)'=>$year])
-            ->groupBy(['year' , 'month' , 'id_number_pp', 'id_bank'])
-            ->orderBy(['year'=>SORT_ASC , 'month' =>SORT_ASC, 'id_number_pp'=>SORT_ASC])->all();
+        $studentsByMonth = Yii::$app->db->createCommand(
+            "SELECT 
+    year, month, status, id_number_pp, id_bank, COUNT(id) count, bank_name,system_status
+FROM
+    (SELECT 
+         students.id,
+            YEAR(date_start) year,
+            MONTH(date_start) month,
+            status,
+            id_number_pp,
+            id_bank,
+            b.name bank_name,
+            students.system_status
+    FROM
+        students
+        join banks b on b.id = id_bank
+    WHERE
+    students.system_status in (1,0)
+    
+        $orgSelect) t
+GROUP BY year , month , status , id_number_pp , id_bank;"
+        )->queryAll();
+
+
+
+
         $export = [];
 
         $payments_model = Oplata::find()->select(['*','YEAR(payment_date) payment_year','MONTH(payment_date) payment_month'])->where(['YEAR(payment_date)'=>$year])->all();

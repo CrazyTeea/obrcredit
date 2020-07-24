@@ -1,5 +1,6 @@
 <?php
 
+use app\models\app\students\Students;
 use yii\helpers\Url;
 
 $this->title = "Выбор года";
@@ -8,6 +9,9 @@ $this->params['breadcrumbs'][] = $this->title;
 $yearStart = 2017;
 $yearEnd = 2021;
 $curYear = date('Y');
+
+
+
 ?>
 <h2 > Обучающиеся по государственной поддержке образовательного кредитования</h2>
 <div class="row">
@@ -24,15 +28,42 @@ $curYear = date('Y');
                         <hr>
                         <p>
                             <span >Всего обучающихся:</span>
-                            <span id="count" class="badge alert-info"><?=$studentsByYear[$i]['studentsCount']?></span>
+                            <span id="count" class="badge alert-info"><?=Students::find()
+                                    ->where(
+                                            Yii::$app->user->can('podved') ?
+                                        ['system_status'=>1,'YEAR(date_start)'=>$i, 'id_org'=>Yii::$app->session['id_org']] :
+                                        ['system_status'=>1,'YEAR(date_start)'=>$i])
+                                    ->orWhere(['id'=>Students::find()->select(['students.id'])
+                                        ->join('join','students_history','students_history.id_student=students.id')
+                                        ->where(['YEAR(date_start)'=>$i, 'id_org'=>Yii::$app->session['id_org']])
+                                        ->column()])
+                                    ->count();?></span>
                         </p>
                         <p>
                             <span >Утвержденные</span>
-                            <span id="count" class="badge alert-success"><?=$studentsByYear[$i]['studentsApprovedCount']?></span>
+                            <span id="count" class="badge alert-success"><?=Students::find()
+                                    ->where(
+                                        Yii::$app->user->can('podved') ?
+                                            ['system_status'=>1,'YEAR(date_start)'=>$i, 'status'=>2 , 'id_org'=>Yii::$app->session['id_org']] :
+                                            ['system_status'=>1,'status'=>2 ,'YEAR(date_start)'=>$i])
+                                    ->orWhere(['id'=>Students::find()->select(['students.id'])
+                                        ->join('join','students_history','students_history.id_student=students.id')
+                                        ->where(['YEAR(date_start)'=>$i, 'id_org'=>Yii::$app->session['id_org']])
+                                        ->column()])
+                                    ->count();?></span>
                         </p>
                         <p>
                             <span >Неутвержденные</span>
-                            <span id="count" class="badge alert-danger"><?=$studentsByYear[$i]['studentsUnapprovedCount']?></span>
+                            <span id="count" class="badge alert-danger"><?=Students::find()
+                                    ->where(
+                                        Yii::$app->user->can('podved') ?
+                                            ['system_status'=>1,'YEAR(date_start)'=>$i, 'status'=>1 , 'id_org'=>Yii::$app->session['id_org']] :
+                                            ['system_status'=>1,'status'=>1 ,'YEAR(date_start)'=>$i])
+                                    ->orWhere(['id'=>Students::find()->select(['students.id'])
+                                        ->join('join','students_history','students_history.id_student=students.id')
+                                        ->where(['YEAR(date_start)'=>$i, 'id_org'=>Yii::$app->session['id_org']])
+                                        ->column()])
+                                    ->count();?></span>
                         </p>
                     </div>
                 </div>
