@@ -340,6 +340,7 @@ class StudentsController extends AppController
 
         if ($student) {
             $student->status = 2;
+            $student->date_status = date( "Y-m-d" );
             $student->save(false);
         }
         return $this->redirect( ['view','id'=>$id
