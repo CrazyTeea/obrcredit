@@ -89,6 +89,32 @@ class ReferenceController extends Controller
         }
     }
 
+    public function actionKek(){
+        $students = Students::find()->where(['id_org'=>100])->all();
+
+        foreach ($students as $student){
+            $sh = Students::find()
+                ->join('join',StudentsHistory::tableName(),'students.id = students_history.id_student')
+                ->where(['name'=>$student->name,'date_credit'=>$student->date_credit])->one();
+            if ($sh){
+                $st2 = Students::findAll(['name'=>$student->name,'date_credit'=>$student->date_credit]);
+                foreach ($st2 as $item) {
+                    $item->system_status = 0;
+                    $govno = StudentsHistory::find()
+                            ->join('join',Students::tableName(),'students.id = students_history.id_student')
+                            ->where(['name'=>$student->name,'date_credit'=>$student->date_credit,'date_start'=>$item->date_start])
+                            ->one() ?? new StudentsHistory();
+                    if ($govno->isNewRecord) {
+                        $govno->id_student = $item->id;
+                        $govno->id_change = 1;
+                        $govno->save();
+                    }
+                    $item->save();
+                }
+            }
+        }
+    }
+
     public function actionUpper(){
         $students = Students::find()->all();
 
@@ -99,10 +125,6 @@ class ReferenceController extends Controller
             $student->save(false);
             echo "было $b стало $student->name \n";
         }
-
-
-
-
 
     }
 
