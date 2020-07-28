@@ -547,22 +547,22 @@ class StudentsController extends AppController
 
     public function actionNotFound($id){
         $model = Students::findOne($id);
-        $subQ = Students::find()->select(['id','min(date_start) min_date','name','date_credit'])->where(['name'=>$model->name,'date_credit'=>$model->date_credit]);
-        $minS = Students::find()->from('students t1')->join('JOIN',['t2'=>$subQ],'t2.min_date=t1.date_start and t2.name=t1.name and t2.date_credit=t1.date_credit')->one();
-        $history =  StudentsHistory::findOne(['id_student'=>$minS->id]);
-        if (!$history) {
-            $history = new StudentsHistory();
-        }
         $students = Students::findAll(['name'=>$model->name,'date_credit'=>$model->date_credit]);
         foreach ($students as $st){
             $st->system_status = 0;
+            $govno = StudentsHistory::find()
+                    ->join('join',Students::tableName(),'students.id = students_history.id_student')
+                    ->where(['name'=>$st->name,'date_credit'=>$st->date_credit,'date_start'=>$st->date_start])
+                    ->one() ?? new StudentsHistory();
+            if ($govno->isNewRecord){
+                $govno->id_student = $st->id;
+                $govno->id_change = 1;
+                $govno->save();
+            }
             $st->id_org_old= $st->id_org;
             $st->save();
         }
-        $history->id_student = $minS->id;
-        $history->id_change = 1;
-        $history->id_user_from = Yii::$app->user->getId();
-        $history->save(false);
+
         return $this->redirect(Yii::$app->request->referrer);
     }
 
