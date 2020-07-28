@@ -119,7 +119,7 @@ $payment_modals = null;
                                 <?php if ($student197):?>
                                     <p>
 
-                                        <button id="<?=($student197 and $student197->status==2 and $student197->system_status) ? 'green' :  'red'  ?>" type="button" class="btn btn-block btn-lg" data-toggle="modal" data-target="#myModal<?=$month?>197">
+                                        <button id="<?=($student197 and $student197->status==2 ) ? 'green' :  'red'  ?>" type="button" class="btn btn-block btn-lg" data-toggle="modal" data-target="#myModal<?=$month?>197">
                                             Постановление <br>правительства №197 <br>
 
                                             <span class="text " style="font-size: 16px;"> <i> кол-во обучающихся: <?=getCountStudents($year,$month,1,$studentsByMonth)?> </i> </span>
@@ -245,7 +245,7 @@ $payment_modals = null;
                                 <?php if ($student699):?>
                                     <p>
 
-                                        <button id="<?=($student699 and $student699->status==2 and $student699->system_status) ? 'green' :  'red'  ?>" type="button" class="btn btn-block btn-lg" data-toggle="modal" data-target="#myModal<?=$month?>699">
+                                        <button id="<?=($student699 and $student699->status==2 ) ? 'green' :  'red'  ?>" type="button" class="btn btn-block btn-lg" data-toggle="modal" data-target="#myModal<?=$month?>699">
                                             Постановление <br>правительства №699 <br>
                                             <span class="text " style="font-size: 16px;"> <i> кол-во обучающихся: <?= getCountStudents($year,$month,3,$studentsByMonth)?> </i> </span>
                                             <br>
@@ -366,7 +366,7 @@ $payment_modals = null;
                                 <?php if ($student1026):?>
                                     <p>
 
-                                        <button id="<?=($student1026 and $student1026->status==2 and $student1026->system_status) ? 'green' :  'red' ?>" type="button" class="btn btn-block btn-lg" data-toggle="modal" data-target="#myModal<?=$month?>1026">
+                                        <button id="<?=($student1026 and $student1026->status==2 ) ? 'green' :  'red' ?>" type="button" class="btn btn-block btn-lg" data-toggle="modal" data-target="#myModal<?=$month?>1026">
                                             Постановление <br>правительства №1026 <br>
                                             <span class="text " style="font-size: 16px;"> <i> кол-во обучающихся: <?= getCountStudents($year,$month,2,$studentsByMonth)?> </i> </span>
                                             <br>
