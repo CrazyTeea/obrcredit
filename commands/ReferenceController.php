@@ -90,7 +90,7 @@ class ReferenceController extends Controller
     }
 
     public function actionKek(){
-        $students = Students::find()->all();
+        $students = Students::find()->where(['system_status'=>0])->all();
 
         foreach ($students as $student){
             $sh = Students::find()
@@ -245,7 +245,7 @@ class ReferenceController extends Controller
             нмоер банка->$student->id_bank
             дата начала обуч-> $student->date_start  \n";
 
-                if ($student2 and !$student->system_status) {
+                if ($student2 and !$student2->system_status) {
                     $student->system_status = 0;
                     $sh = StudentsHistory::findOne(['id_student' => Students::find()->select('id')->where(['name' => $student->name, 'date_credit' => $student->date_credit])->column()]);
                     if ($sh) {
