@@ -90,7 +90,7 @@ class ReferenceController extends Controller
     }
 
     public function actionKek(){
-        $students = Students::find()->where(['id_org'=>100])->all();
+        $students = Students::find()->all();
 
         foreach ($students as $student){
             $sh = Students::find()
