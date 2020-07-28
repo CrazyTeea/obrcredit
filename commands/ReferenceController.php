@@ -232,6 +232,7 @@ class ReferenceController extends Controller
                         $sh->id_change = 1;
                         $sh->save();
                     }
+                    $student->save();
                 }
             }
 

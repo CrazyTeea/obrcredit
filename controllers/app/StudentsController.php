@@ -328,6 +328,7 @@ class StudentsController extends AppController
             $save = true;
             foreach ($students as $student) {
                 $student->status = 2;
+                $student->date_status = date( "Y-m-d" );
                 $save &=$student->save(false);
             }
             if ($save) $transaction->commit(); else $transaction->rollBack();
