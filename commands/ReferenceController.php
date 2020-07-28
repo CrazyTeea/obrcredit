@@ -197,19 +197,23 @@ class ReferenceController extends Controller
             $student->date_start = $row[ $dStart ];
             $student->name = $name;
             $student->date_credit = $row[ $dCreditId ];
-            $student->id_org = $row[ $orgId ];
+            $student->id_org = $row[$orgId];
             $student->date_create = date( "Y-m-d" );
             $student->status = 1;
             $student->id_number_pp = $row[ $numPP ];
             $student->id_bank = $row[ $bankId ];
 
-            if ( $student->save(false) ) {
+
+
+
+
+            if ( $student->save() ) {
                 $count++;
-                $org = Organizations::findOne( $student->id_org );
-                if ( $org ) {
-                    $org->system_status = 1;
-                    $org->save(false);
-                }
+                /* $org = Organizations::findOne( $student->id_org );
+                 if ( $org ) {
+                     $org->system_status = 1;
+                     $org->save(false);
+                 }*/
                 echo "
             Организация-$student->id_org
             ФИО->$student->name
@@ -218,15 +222,16 @@ class ReferenceController extends Controller
             номер пп-> $student->id_number_pp
             нмоер банка->$student->id_bank
             дата начала обуч-> $student->date_start  \n";
-            }
-            if ($student2 and !$student->system_status){
-                $student->system_status = 0;
-                $sh = StudentsHistory::findOne(['id_student'=>Students::find()->select('id')->where(['name'=>$student->name,'date_credit'=>$student->date_credit])->column()]);
-                if ($sh){
-                    $sh = new StudentsHistory();
-                    $sh->id_student = $student->id;
-                    $sh->id_change=1;
-                    $sh->save();
+
+                if ($student2 and !$student->system_status) {
+                    $student->system_status = 0;
+                    $sh = StudentsHistory::findOne(['id_student' => Students::find()->select('id')->where(['name' => $student->name, 'date_credit' => $student->date_credit])->column()]);
+                    if ($sh) {
+                        $sh = new StudentsHistory();
+                        $sh->id_student = $student->id;
+                        $sh->id_change = 1;
+                        $sh->save();
+                    }
                 }
             }
 
