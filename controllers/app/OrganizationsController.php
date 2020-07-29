@@ -148,19 +148,11 @@ class OrganizationsController extends AppController
         $dataProviderColored  = new ActiveDataProvider(['query'=>$modelColored]);
 
         $studentsExport =  Students::find()->where([
-            'system_status'=>1,
             'id_bank'=>$id_bank,
             'MONTH(date_start)'=>$month,
             'YEAR(date_start)'=>$searchModel->year,
             'id_number_pp'=>$nPP
-        ])->orWhere(['students.id'=>Students::find()
-            ->select(['students.id'])
-            ->join('join','students_history','students_history.id_student=students.id')
-            ->where(['id_bank'=>$id_bank,
-            'MONTH(date_start)'=>$month,
-            'YEAR(date_start)'=>$searchModel->year,
-            'id_number_pp'=>$nPP])
-            ->column()]);
+        ]);
 
         $exportProvider = new ActiveDataProvider(['query'=>$studentsExport]);
 
