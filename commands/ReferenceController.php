@@ -16,6 +16,7 @@ use Lcobucci\JWT\Signer\Key;
 use Yii;
 use yii\console\Controller;
 use yii\console\ExitCode;
+use yii\validators\ValidationAsset;
 
 
 class ReferenceController extends Controller
@@ -191,6 +192,8 @@ class ReferenceController extends Controller
 
         while (( $row = fgetcsv( $csv, 32000, ';' ) ) != false) {
 
+            ;
+
             $name = mb_convert_case($row[ $nameId ],MB_CASE_TITLE);
 
             $student2 = Students::find()
@@ -227,15 +230,13 @@ class ReferenceController extends Controller
 
 
 
-
-
-            if ( $student->save() ) {
+            if ( $student->save(false) ) {
                 $count++;
-                /* $org = Organizations::findOne( $student->id_org );
+                 $org = Organizations::findOne( $student->id_org );
                  if ( $org ) {
                      $org->system_status = 1;
                      $org->save(false);
-                 }*/
+                 }
                 echo "
             Организация-$student->id_org
             ФИО->$student->name
