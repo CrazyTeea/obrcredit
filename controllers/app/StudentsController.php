@@ -323,7 +323,7 @@ class StudentsController extends AppController
             $month = Yii::$app->getSession()[ 'month' ];
             $year = Yii::$app->getSession()[ 'year' ];
             $id_bank = Yii::$app->getSession()[ 'id_bank' ];
-            $students = Students::find()->where( ['id_org' => $id_org, 'MONTH(date_start)' => $month, 'YEAR(date_start)' => $year, 'id_bank' => $id_bank, 'id_number_pp' => $nPP] )->all();
+            $students = Students::find()->where( ['id_org' => $id_org, 'MONTH(date_start)' => $month,'status'=>1, 'YEAR(date_start)' => $year, 'id_bank' => $id_bank, 'id_number_pp' => $nPP] )->all();
             $transaction = Yii::$app->db->beginTransaction();
             $save = true;
             foreach ($students as $student) {
