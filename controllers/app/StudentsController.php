@@ -135,19 +135,12 @@ class StudentsController extends AppController
         $dataProvider4 = $searchModel4->search(Yii::$app->request->queryParams);
 
         $studentsExport = Students::find()->where( [
-            'system_status'=>1,
             'id_bank'=>$searchModel->id_bank,
             'MONTH(date_start)'=>$searchModel->month,
             'YEAR(date_start)'=>$searchModel->year,
             'id_number_pp'=>$searchModel->id_number_pp,
             'id_org'=>$searchModel->id_org,
-        ] )->orWhere(['id'=>Students::find()->select(['students.id'])->join('join','students_history','students_history.id_student=students.id')->where([
-            'id_bank'=>$searchModel->id_bank,
-            'MONTH(date_start)'=>$searchModel->month,
-            'YEAR(date_start)'=>$searchModel->year,
-            'id_number_pp'=>$searchModel->id_number_pp,
-            'id_org'=>$searchModel->id_org,
-        ])->column()]);
+        ]);
 
         // var_dump($studentsExport->prepare(Yii::$app->db->queryBuilder)->createCommand()->rawSql);exit();
 
@@ -243,19 +236,12 @@ class StudentsController extends AppController
         ])->all();
 
         $studentsExport = Students::find()->where( [
-            'system_status'=>1,
             'id_bank'=>$searchModel->id_bank,
             'MONTH(date_start)'=>$searchModel->month,
             'YEAR(date_start)'=>$searchModel->year,
             'id_number_pp'=>$searchModel->id_number_pp,
             'id_org'=>$searchModel->id_org,
-        ] )->orWhere(['id'=>Students::find()->select(['students.id'])->join('join','students_history','students_history.id_student=students.id')->where([
-            'id_bank'=>$searchModel->id_bank,
-            'MONTH(date_start)'=>$searchModel->month,
-            'YEAR(date_start)'=>$searchModel->year,
-            'id_number_pp'=>$searchModel->id_number_pp,
-            'id_org'=>$searchModel->id_org,
-        ])->column()]);
+        ]);
         $exportProvider = new ActiveDataProvider( ['query' => $studentsExport, 'pagination' => false] );
 
         $views['index']['search'] = $searchModel;
@@ -343,8 +329,7 @@ class StudentsController extends AppController
             $student->date_status = date( "Y-m-d" );
             $student->save(false);
         }
-        return $this->redirect( ['view','id'=>$id
-        ] );
+        return $this->redirect( ['view','id'=>$id] );
     }
 
     /**
