@@ -207,12 +207,13 @@ class ReferenceController extends Controller
                 $student->grace_period = 0;
                 $student->date_ender = $student2->date_ender;
             }
-            if ($student2 and !$student2->education_status and !$student2->isEnder){
+            elseif ($student2 and !$student2->education_status and !$student2->isEnder){
                 $student->education_status = 0;
                 $student->osnovanie = $student2->osnovanie;
                 $student->isEnder = 0;
                 $student->grace_period = 0;
-            }
+            }else $student->education_status = 1;
+
 
             $student->code = $student2->code ?? 12345;
 
