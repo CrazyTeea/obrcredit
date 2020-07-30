@@ -127,9 +127,6 @@ class OrganizationsController extends AppController
             }
         }
 
-
-       // $searchModel->isColored = Yii::$app->request->post([''])
-
         $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
 
         $modelColored = Organizations::find();
@@ -155,8 +152,6 @@ class OrganizationsController extends AppController
         ]);
 
         $exportProvider = new ActiveDataProvider(['query'=>$studentsExport]);
-
-
 
 
         return $this->render('index', [

@@ -110,6 +110,7 @@ class StudentsController extends AppController
             'status'=>1
         ])->count();
 
+        $searchModel->grace = true;
         $searchModel2->osn = true;
         $searchModel3->ender = true;
         $searchModel2->education_status = 0;
@@ -196,12 +197,13 @@ class StudentsController extends AppController
         $searchModel->id_bank = Yii::$app->session[ 'id_bank' ];
         $searchModel->id_number_pp = Yii::$app->session[ 'nPP' ];
 
+
+
         $searchModel2 = clone $searchModel;
         $searchModel3 = clone $searchModel;
 
 
-
-
+        $searchModel->grace = true;
         $searchModel2->osn = true;
         $searchModel3->ender = true;
         $searchModel2->education_status = 0;

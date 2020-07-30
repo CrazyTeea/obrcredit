@@ -253,7 +253,7 @@ class Students extends ActiveRecord
                     if (!$model->system_status)
                         return 'Не найден';
 
-                    return ($model->education_status) ? $l = ($model->perevod) ? "Переведен на бюджет" : "Обучается" : " {$data}";
+                    return ($model->education_status) ? ($l = ($model->perevod) ? "Переведен на бюджет" : "Обучается") : " {$data}";
                 }],
                 ['attribute' => 'grace_period', 'encodeLabel' => false, 'value' =>
                     function ($model) {
@@ -334,11 +334,20 @@ class Students extends ActiveRecord
                     if (isset($model->dateLastStatus) and isset($model->dateLastStatus->date_end))
                         $date = Yii::$app->getFormatter()->asDate($model->dateLastStatus->date_end);
 
-                    $dta = ($date) ? "$date $data" : '';
+                    $dta = ($date) ? "$date $data" :  $data;
                     if ($model->isEnder)
                         return "<span class='label label-info'>Выпускник</span><br>" . Yii::$app->formatter->asDate($model->date_ender);
 
-                    return ($model->education_status) ? $l = ($model->perevod) ? "<span class='label label-info'>Переведен на бюджет</span>" : "<span class='label label-info'> Обучается</span>" : "$dta";
+                    if ($model->osnovanie)
+                        return "<span class='label label-info'>Отчислен</span><br> $data";
+
+                    if ($model->perevod)
+                        return "<span class='label label-info'>Переведен на бюджет</span>";
+                    if ($model->education_status || $model->grace_period)
+                        return "<span class='label label-info'> Обучается</span>";
+
+
+                  //  return ($model->education_status) ? ($l = ($model->perevod) ? "<span class='label label-info'>Переведен на бюджет</span>" : "<span class='label label-info'> Обучается</span>") : "$dta";
                 }
                 ],
                 ['attribute' => 'grace_period', 'encodeLabel' => false, 'value' =>
