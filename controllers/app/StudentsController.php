@@ -575,6 +575,8 @@ class StudentsController extends AppController
                 $model->education_status = 0;
             if ($model->perevod)
                 $model->education_status = 1;
+            if ($model->grace_period)
+                $model->education_status = 1;
 
             if ($model->old_code != $model->code){
                 $students = Students::find()->where(['name'=>$model->name,'date_credit'=>$model->date_credit]);
