@@ -228,7 +228,6 @@ class StudentsController extends AppController
         $dataProvider4 = $searchModel4->search(Yii::$app->request->queryParams);
 
         $isApprove = Students::find()->where([
-            'system_status'=>1,
             'id_bank'=>$searchModel->id_bank,
             'MONTH(date_start)'=>$searchModel->month,
             'YEAR(date_start)'=>$searchModel->year,
