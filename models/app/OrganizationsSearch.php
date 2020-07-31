@@ -58,7 +58,7 @@ class OrganizationsSearch extends Organizations
         $query = Organizations::find()->where(['organizations.system_status'=>1]);
         $subquery = Students::find()->select(['id_org','status','date_start','id_number_pp','id_bank','system_status'])
             ->where([
-                'system_status'=>1,
+
                 'id_bank'=>Yii::$app->session->get('id_bank'),
                 'MONTH(date_start)'=>Yii::$app->session->get('month'),
                 'YEAR(date_start)'=>Yii::$app->session->get('year'),
@@ -71,7 +71,7 @@ class OrganizationsSearch extends Organizations
         }
         else{
             $query->joinWith(['students s'],true,'join')
-                ->andWhere(['s.system_status'=>1,'s.id_bank'=>$this->id_bank,'s.id_number_pp'=>$this->nPP,'MONTH(s.date_start)'=>$this->month,'YEAR(s.date_start)'=>$this->year]);
+                ->andWhere(['s.id_bank'=>$this->id_bank,'s.id_number_pp'=>$this->nPP,'MONTH(s.date_start)'=>$this->month,'YEAR(s.date_start)'=>$this->year]);
 
         }
 
