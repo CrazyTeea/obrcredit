@@ -387,12 +387,13 @@ class Students extends ActiveRecord
                 ],
                 ['attribute' => 'date_credit', 'encodeLabel' => false, 'label' => 'Дата <br> заключения <br> кредитного <br> договора',],
                 ['attribute' => 'dateLastStatus', 'encodeLabel' => false, 'value' => 'dateLastStatus.updated_at', 'label' => 'Дата <br> изменения <br> данных'],
+                ['attribute' => 'date_status', 'encodeLabel' => false, 'format' => 'date', 'label' => 'Дата <br> утверждения <br> отчета'],
             ];
             if (!Yii::$app->user->can('podved')){
                 $ret = ArrayHelper::merge( $ret, [
                     ['attribute' => 'numberPP', 'value' => 'numberPP.number', 'encodeLabel' => false, 'label' => 'Номер <br> ПП <br> по <br> образовательному <br>кредиту'],
                     ['attribute' => 'bank', 'value' => 'bank.name', 'encodeLabel' => false, 'label' => 'Наименование <br> банка <br>или<br> иной <br> кредитной <br>организации'],
-                    ['attribute' => 'date_status', 'encodeLabel' => false, 'format' => 'date', 'label' => 'Дата <br> утверждения <br> отчета'],
+
                 ] );
             }
         }

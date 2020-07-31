@@ -132,7 +132,6 @@ class OrganizationsController extends AppController
         $modelColored = Organizations::find();
 
         $modelColored->joinWith(['students st'])->where([
-            'st.system_status'=>1,
             'st.id_bank'=>$id_bank,'st.status'=>1,
             'MONTH(st.date_start)'=>$month,
             'YEAR(st.date_start)'=>$searchModel->year,

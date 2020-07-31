@@ -69,14 +69,28 @@ $this->params['breadcrumbs'][] = $this->title;
 
 
     <?php Pjax::begin(['timeout'=>5000]); ?>
-    <?php  // echo $this->render('_search', ['model' => $searchModel]); ?>
+    <?php
+    function getPersent( array $students){
+        $pers = 0;
+        $all = count($students);
+        foreach ($students as $student){
+            if ($student->status == 1 )
+                $pers++;
+        }
+
+        return $pers*100/$all;
+    }
+    ?>
     <?= GridView::widget([
         'dataProvider' => $dataProvider,
         'filterModel' => $searchModel,
         'emptyCell'=>' ',
         'columns' => [
             ['class' => 'yii\grid\SerialColumn'],
-            'name',
+            ['attribute'=>'name','content'=>function($model){
+                return $model->name/*.' | '. getPersent($model->students) */;
+            }],
+            //'name',
             'short_name',
             'full_name',
         ],
