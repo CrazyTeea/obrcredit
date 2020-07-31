@@ -46,6 +46,17 @@ function getMonth($month){
     return $arr[ $m->format( 'n' ) - 1 ];
 }
 
+function getPersent(int $year, int $month, int $nPP, array $students){
+    $pers = 0;
+    $all = getCountStudents($year,$month,$nPP,$students);
+    foreach ($students as $student){
+        if ($student['year'] == $year and $student['month'] == $month and $student['id_number_pp'] == $nPP and $student['status'] == 1 )
+            $pers+=$student['count'];
+    }
+
+    return $pers*100/$all;
+}
+
 function getCountStudents(int $year, int $month, int $nPP, array $students){
     $c = 0;
     foreach ($students as $student){
@@ -118,7 +129,6 @@ $payment_modals = null;
 
                                 <?php if ($student197):?>
                                     <p>
-
                                         <button id="<?=($student197->status==2 ) ? 'green' :  'red'  ?>" type="button" class="btn btn-block btn-lg" data-toggle="modal" data-target="#myModal<?=$month?>197">
                                             Постановление <br>правительства №197 <br>
 
@@ -140,11 +150,21 @@ $payment_modals = null;
                                                             break;
                                                         }
                                                     }
-
                                                     echo $flag ? "<span style='font-size: 16px;'> Оплачено </span>" : "<span style='font-size: 16px;'> Не оплачено </span>";
                                                     ?>
                                                 </div>
                                             <?php endif; ?>
+                                            <div class="progress" style="margin-top: 5px">
+                                                <?php
+                                                $d = getPersent($year,$month,1,$studentsByMonth);
+                                                $d2 = 100-$d;
+
+                                                ?>
+                                                <div class="progress-bar progress-bar-danger" style="width: <?=$d?>%"></div>
+                                                <div class="progress-bar progress-bar-success" style="width: <?=$d2?>%">
+                                                    <span><?=round($d2,2)?></span>
+                                                </div>
+                                            </div>
                                         </button>
                                     </p>
                                     <div class="modal fade" id="myModal<?=$month?>197" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
@@ -265,6 +285,17 @@ $payment_modals = null;
                                                     ?>
                                                 </div>
                                             <?php endif;?>
+                                            <div class="progress" style="margin-top: 5px">
+                                                <?php
+                                                $d = getPersent($year,$month,3,$studentsByMonth);
+                                                $d2 = 100-$d;
+
+                                                ?>
+                                                <div class="progress-bar progress-bar-danger" style="width: <?=$d?>%"></div>
+                                                <div class="progress-bar progress-bar-success" style="width: <?=$d2?>%">
+                                                    <span><?=round($d2,2)?></span>
+                                                </div>
+                                            </div>
                                         </button>
                                     </p>
                                     <div class="modal fade" id="myModal<?=$month?>699" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
@@ -386,7 +417,18 @@ $payment_modals = null;
                                                     ?>
                                                 </div>
                                             <?php endif;?>
+                                            <div class="progress" style="margin-top: 5px">
+                                                <?php
+                                                $d = getPersent($year,$month,2,$studentsByMonth);
+                                                $d2 = 100-$d;
 
+                                                ?>
+
+                                                <div class="progress-bar progress-bar-danger" style="width: <?=$d?>%"></div>
+                                                <div class="progress-bar progress-bar-success" style="width: <?=$d2?>%">
+                                                    <span><?=round($d2,2)?></span>
+                                                </div>
+                                            </div>
                                         </button>
                                     </p>
                                     <div class="modal fade" id="myModal<?=$month?>1026" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
