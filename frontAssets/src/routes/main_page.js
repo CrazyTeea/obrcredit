@@ -6,13 +6,13 @@ export default ()=>{
             let mb = $(".modal-backdrop");
             mb.not(':first').remove();
         });
-        $('button[type="submit"]').click(function (e) {
+        $('button[class="payment_submit"]').click(function (e) {
             e.preventDefault();
             let form = $(e.target.parentElement.parentElement);
 
             if (form.find('.has-error').length)
             {
-                return
+                return;
             }
             let response_message = form.find('#response_message');
             let response_div = response_message.parent().parent();
@@ -30,12 +30,10 @@ export default ()=>{
                     switch (data.status) {
                         case 'error':{
                             let errors ='';
-                            for (let item in data.errors){
-                                errors+=data.errors[item]+'<br>';
-                            }
-                            response_message.html("Исправьте следующие ошибки <br>"
-                                + errors
-                            );
+                            data.errors.forEach(item=>{
+                                errors+=item+'<br>';
+                            });
+                            response_message.html("Исправьте следующие ошибки <br>" + errors);
                             response_div.attr('class','alert alert-danger');
                             break;
                         }
@@ -49,6 +47,6 @@ export default ()=>{
 
                 }
             });
-        })
-    }).catch(e=>{})
-}
+        });
+    }).catch(e=>{});
+};
