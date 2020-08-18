@@ -64,8 +64,7 @@ class ReferenceController extends Controller
                 $row_org->full_name = htmlspecialchars_decode( $data->getValue()->fullname );
                 $row_org->short_name = htmlspecialchars_decode( $data->getValue()->shot_name );
                 $row_org->name = htmlspecialchars_decode( $data->getValue()->name );
-                $student = Students::findOne( ['id_org' => $row_org->id] );
-                $row_org->system_status = ( $student ) ? 1 : 0;
+                $row_org->system_status = ( Students::findOne( ['id_org' => $row_org->id] ) ) ? 1 : 0;
                 $row_org->save();
 
             }
