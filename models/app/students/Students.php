@@ -43,6 +43,7 @@ use yii\web\UploadedFile;
  * @property string $date_ender
  * @property string $date_act
  * @property boolean $isEnder
+ * @property integer $ext_status
  *
  * @var StudentDocs $docs
  *
@@ -78,7 +79,8 @@ class Students extends ActiveRecord
                      return true;
                  return false;
              },'uploadRequired'=>'При переводе на бюджет требуется загрузить файл'],*/
-            [['id_org', 'education_status', 'status', 'osnovanie', 'grace_period','id_number_pp','id_bank','perevod','id_org_old'], 'integer'],
+            [['id_org', 'education_status', 'status', 'osnovanie','ext_status',
+                'grace_period','id_number_pp','id_bank','perevod','id_org_old'], 'integer'],
             [[ 'date_create','date_start',
                 'date_start_grace_period1', 'date_end_grace_period1',
                 'date_start_grace_period2', 'date_end_grace_period2',

@@ -66,7 +66,7 @@ $exportProvider = $views['index']['export'];
     ]
 ) ?>
 <div class="row">
-    <div class="col-md-6"><?= Tabs::widget([
+    <div class="col-md-12" style="margin-top: 5px"><?= Tabs::widget([
             'items'=>[
                 [
                     'label'=>'Текущие',
@@ -83,6 +83,14 @@ $exportProvider = $views['index']['export'];
                 [
                     'label'=>'Не найденные',
                     'content'=>$this->render('_zhurnal',compact('views','cans'))
+                ],
+                [
+                    'label'=>'Абитуриенты',
+                    'content'=>$this->render('_abiView',compact('views','cans'))
+                ],
+                [
+                    'label'=>'Досрочно погасившие',
+                    'content'=>$this->render('_dosiView',compact('views','cans'))
                 ],
             ]
         ]) ?></div>

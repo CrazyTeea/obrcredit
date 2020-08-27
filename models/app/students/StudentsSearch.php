@@ -22,6 +22,8 @@ class StudentsSearch extends Students
     public $ender;
     public $osn;
     public $grace;
+    public $a;
+    public $d;
     /**
      * {@inheritdoc}
      */
@@ -76,6 +78,13 @@ class StudentsSearch extends Students
             if (isset($this->grace)){
                 $query->andWhere(['or',['is not','grace_period',null],['<>','grace_period',0]]);
             } else $query->andWhere(['or',['is','grace_period',null],['grace_period'=>0]]);
+            if ($this->a){
+                $query->andWhere(['ext_status'=>1]);
+            }elseif ($this->d){
+                $query->andWhere(['ext_status'=>2]);
+            }else{
+                $query->andWhere(['ext_status'=>0]);
+            }
         }
 
 

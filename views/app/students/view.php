@@ -66,19 +66,21 @@ $rasp_act_otch = StudentDocs::getDocByDescriptorName('rasp_act_otch',$model->id)
     <h1><?= Html::encode($this->title) ?></h1>
 
     <?php if(Yii::$app->session->getFlash('history')): ?>
-    <div class="alert alert-success">
-        <p>
-            <?=Yii::$app->session->getFlash('history',null,true)?>
-        </p>
-    </div>
+        <div class="alert alert-success">
+            <p>
+                <?=Yii::$app->session->getFlash('history',null,true)?>
+            </p>
+        </div>
     <?php endif;?>
 
     <?php if ($canUpdate):?>
         <?= Html::a('Редактировать', ['update', 'id' => $model->id],['class'=>'btn btn-primary']) ?>
+        <?= Html::a('Абитуриент', ['ab', 'id' => $model->id],['class'=>'btn btn-primary']) ?>
+        <?= Html::a('Досрочно погасил кредит', ['dp', 'id' => $model->id],['class'=>'btn btn-primary']) ?>
     <?php endif;?>
     <?php if ($cans[0] or $cans[1]):?>
         <?=  Html::a('Удалить', ['delete', 'id' => $model->id], [
-                'class'=>'btn btn-danger',
+            'class'=>'btn btn-danger',
             'data' => [
                 'confirm' => 'Вы уверены, что хотите удалить студента?',
                 'method' => 'post',
@@ -88,34 +90,34 @@ $rasp_act_otch = StudentDocs::getDocByDescriptorName('rasp_act_otch',$model->id)
     <?php endif;?>
 
     <?php if (!$cans[2] and !$is_in_history):?>
-    <!-- Button trigger modal -->
-    <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#myModal" style="margin-bottom: 5px">
-        Не найден
-    </button>
+        <!-- Button trigger modal -->
+        <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#myModal" style="margin-bottom: 5px">
+            Не найден
+        </button>
 
-    <!-- Modal -->
-    <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
-        <div class="modal-dialog" role="document">
-            <div class="modal-content">
-                <?php $form = ActiveForm::begin();?>
-                <div class="modal-header">
-                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-                    <h4 class="modal-title" id="myModalLabel">Отправить в журнал</h4>
-                </div>
-                <div class="modal-body">
+        <!-- Modal -->
+        <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+            <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                    <?php $form = ActiveForm::begin();?>
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                        <h4 class="modal-title" id="myModalLabel">Отправить в журнал</h4>
+                    </div>
+                    <div class="modal-body">
 
-                    <?=$form->field($history,'id_change')->dropDownList($changes)?>
-                    <?=$form->field($history,'comment')?>
+                        <?=$form->field($history,'id_change')->dropDownList($changes)?>
+                        <?=$form->field($history,'comment')?>
 
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-default" data-dismiss="modal">Закрыть</button>
+                        <button type="submit" class="btn btn-primary">Отправить</button>
+                    </div>
+                    <?php ActiveForm::end();?>
                 </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-default" data-dismiss="modal">Закрыть</button>
-                    <button type="submit" class="btn btn-primary">Отправить</button>
-                </div>
-                <?php ActiveForm::end();?>
             </div>
         </div>
-    </div>
 
     <?php endif;?>
     <?php if($cans[0] or $cans[1]):?>
