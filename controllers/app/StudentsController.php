@@ -26,6 +26,7 @@ use yii\helpers\Url;
 use yii\web\BadRequestHttpException;
 use yii\web\NotFoundHttpException;
 use yii\web\Response;
+use function Matrix\trace;
 
 /**
  * StudentsController implements the CRUD actions for Students model.
@@ -73,6 +74,20 @@ class StudentsController extends AppController
     }
 
 
+    public function actionDp($id){
+        $m = Students::findOne($id);
+        $m->ext_status = 2;
+        $m->save(false);
+        return $this->redirect(['view','id'=>$id]);
+    }
+
+    public function actionAb($id){
+        $m = Students::findOne($id);
+        $m->ext_status = 1;
+        $m->save(false);
+        return $this->redirect(['view','id'=>$id]);
+    }
+
     /**
      * Lists all Students models.
      * @param null $id
@@ -98,6 +113,13 @@ class StudentsController extends AppController
 
         $searchModel2 = clone $searchModel;
         $searchModel3 = clone $searchModel;
+
+        $searchAbitur = clone $searchModel;
+        $searchAbitur->a = true;
+        $searchAbitur->d = false;
+        $searchDosPog = clone $searchModel;
+        $searchDosPog->d = true;
+        $searchDosPog->a = false;
 
 
 
@@ -125,6 +147,8 @@ class StudentsController extends AppController
         $dataProvider = $searchModel->search( Yii::$app->request->queryParams );
         $dataProvider2 = $searchModel2->search( Yii::$app->request->queryParams );
         $dataProvider3 = $searchModel3->search( Yii::$app->request->queryParams );
+        $dataProviderA = $searchAbitur->search( Yii::$app->request->queryParams );
+        $dataProviderD = $searchDosPog->search( Yii::$app->request->queryParams );
 
 
         $searchModel4 = new StudentsHistorySearch();
@@ -157,6 +181,12 @@ class StudentsController extends AppController
 
         $views['ender']['search'] = $searchModel3;
         $views['ender']['provider'] = $dataProvider3;
+
+        $views['A']['search'] = $searchAbitur;
+        $views['A']['provider'] = $dataProviderA;
+
+        $views['D']['search'] = $searchDosPog;
+        $views['D']['provider'] = $dataProviderD;
 
         $views['keks']['search'] = $searchModel4;
         $views['keks']['provider'] = $dataProvider4;
@@ -197,11 +227,16 @@ class StudentsController extends AppController
         $searchModel->id_bank = Yii::$app->session[ 'id_bank' ];
         $searchModel->id_number_pp = Yii::$app->session[ 'nPP' ];
 
-
+        $searchModel->ext_status = 0;
 
         $searchModel2 = clone $searchModel;
         $searchModel3 = clone $searchModel;
-
+        $searchAbitur = clone $searchModel;
+        $searchAbitur->a = true;
+        $searchAbitur->d = false;
+        $searchDosPog = clone $searchModel;
+        $searchDosPog->d = true;
+        $searchDosPog->a = false;
 
         $searchModel->grace = true;
         $searchModel2->osn = true;
@@ -218,6 +253,8 @@ class StudentsController extends AppController
         $dataProvider = $searchModel->search( Yii::$app->request->queryParams );
         $dataProvider2 = $searchModel2->search( Yii::$app->request->queryParams );
         $dataProvider3 = $searchModel3->search( Yii::$app->request->queryParams );
+        $dataProviderA = $searchAbitur->search( Yii::$app->request->queryParams );
+        $dataProviderD = $searchDosPog->search( Yii::$app->request->queryParams );
 
         $searchModel4 = new StudentsHistorySearch();
         $searchModel4->month = $searchModel->month;
@@ -255,6 +292,12 @@ class StudentsController extends AppController
 
         $views['ender']['search'] = $searchModel3;
         $views['ender']['provider'] = $dataProvider3;
+
+        $views['A']['search'] = $searchAbitur;
+        $views['A']['provider'] = $dataProviderA;
+
+        $views['D']['search'] = $searchDosPog;
+        $views['D']['provider'] = $dataProviderD;
 
         $views['keks']['search'] = $searchModel4;
         $views['keks']['provider'] = $dataProvider4;
