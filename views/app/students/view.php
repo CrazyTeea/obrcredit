@@ -73,11 +73,12 @@ $rasp_act_otch = StudentDocs::getDocByDescriptorName('rasp_act_otch',$model->id)
         </div>
     <?php endif;?>
 
+
     <?php if ($canUpdate):?>
         <?= Html::a('Редактировать', ['update', 'id' => $model->id],['class'=>'btn btn-primary']) ?>
-        <?= Html::a('Абитуриент', ['ab', 'id' => $model->id],['class'=>'btn btn-primary']) ?>
-        <?= Html::a('Досрочно погасил кредит', ['dp', 'id' => $model->id],['class'=>'btn btn-primary']) ?>
     <?php endif;?>
+    <?= Html::a('Абитуриент', ['ab', 'id' => $model->id],['class'=>'btn btn-primary']) ?>
+    <?= Html::a('Досрочно погасил кредит', ['dp', 'id' => $model->id],['class'=>'btn btn-primary']) ?>
     <?php if ($cans[0] or $cans[1]):?>
         <?=  Html::a('Удалить', ['delete', 'id' => $model->id], [
             'class'=>'btn btn-danger',
