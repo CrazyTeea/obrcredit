@@ -42,6 +42,8 @@ return [
             '/app/students/by-bank',
             '/app/students/all',
             '/app/students/delete-doc',
+            '/app/students/ab',
+            '/app/students/dp',
         ],
     ],
     '/app/students/*' => [
@@ -120,6 +122,12 @@ return [
         'type' => 2,
     ],
     '/app/students-admin/index' => [
+        'type' => 2,
+    ],
+    '/app/students/ab' => [
+        'type' => 2,
+    ],
+    '/app/students/dp' => [
         'type' => 2,
     ],
 ];

@@ -337,6 +337,12 @@ class Students extends ActiveRecord
                         $date = Yii::$app->getFormatter()->asDate($model->dateLastStatus->date_end);
 
                     $dta = ($date) ? "$date $data" :  $data;
+                    if ($model->ext_status == 1) {
+                      return "<span class='label label-info'>Абитуриент</span>";
+                    }
+                    if ($model->ext_status == 2) {
+                        return "<span class='label label-info'>Досрочно погасил</span>";
+                    }
                     if ($model->isEnder)
                         return "<span class='label label-info'>Выпускник</span><br>" . Yii::$app->formatter->asDate($model->date_ender);
 
