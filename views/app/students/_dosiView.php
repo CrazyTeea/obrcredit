@@ -1,4 +1,5 @@
 <?php
+
 use app\models\app\students\Students;
 use yii\grid\GridView;
 use yii\helpers\Url;
@@ -17,7 +18,7 @@ $searchModel = $views['D']['search'];
 <div class="students-otch-index">
     <br>
 
-    <?php Pjax::begin(['timeout'=>5000]); ?>
+    <?php Pjax::begin(['timeout' => 5000]); ?>
     <?php // echo $this->render('_search', ['model' => $searchModel]); ?>
 
 
@@ -26,12 +27,12 @@ $searchModel = $views['D']['search'];
         'filterModel' => $searchModel,
         //'options'=>['id'=>'PrintThis'],
         'columns' => Students::getColumns(false),
-        'rowOptions'=>function($model, $index, $attribute) {
-            $url = Url::to(['view','id'=>$model->id]);
+        'rowOptions' => function ($model, $index, $attribute) {
+            $url = Url::to(['view', 'id' => $model->id]);
             return [
-                'onClick'=>"window.location.href='{$url}'",
-                'style'=>'cursor:pointer',
-                'class'=>'toVisible'
+                'onClick' => "window.location.href='{$url}'",
+                'style' => 'cursor:pointer',
+                'class' => 'toVisible'
             ];
         },
     ]); ?>

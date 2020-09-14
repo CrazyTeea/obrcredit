@@ -47,7 +47,7 @@ function getMonth($month)
     return $arr[$m->format('n') - 1];
 }
 
-function getPersent(int $year, int $month, int $nPP, array $students,int $status = 1,$persent = true)
+function getPersent(int $year, int $month, int $nPP, array $students, int $status = 1, $persent = true)
 {
     $pers = 0;
     $all = getCountStudents($year, $month, $nPP, $students);
@@ -58,6 +58,7 @@ function getPersent(int $year, int $month, int $nPP, array $students,int $status
 
     return $persent ? ($pers * 100 / $all) : ($pers);
 }
+
 function getCountStudents(int $year, int $month, int $nPP, array $students)
 {
     $c = 0;
@@ -169,8 +170,8 @@ $payment_modals = null;
                                             <div class="progress" style="margin-top: 5px">
                                                 <?php
                                                 $d = getPersent($year, $month, 1, $studentsByMonth);
-                                                $utv = getPersent($year, $month, 1, $studentsByMonth,2,false);
-                                                $neut = getPersent($year, $month, 1, $studentsByMonth,1,false);
+                                                $utv = getPersent($year, $month, 1, $studentsByMonth, 2, false);
+                                                $neut = getPersent($year, $month, 1, $studentsByMonth, 1, false);
                                                 $d2 = 100 - $d;
 
                                                 ?>
@@ -178,9 +179,13 @@ $payment_modals = null;
                                                      style="width: <?= $d ?>%"></div>
                                                 <div class="progress-bar progress-bar-success"
                                                      style="width: <?= $d2 ?>%">
-                                                    <span><?=  "утв: $utv неут: $neut | " . round($d2, 2) ?></span>
                                                 </div>
+                                                <div class="progress-bar progress-bar-label">
+                                                    <span><?= "утв: $utv неут: $neut | " . round($d2, 2) ?></span>
+                                                </div>
+
                                             </div>
+
                                         </button>
                                     </p>
                                     <div class="modal fade" id="myModal<?= $month ?>197" tabindex="-1" role="dialog"
@@ -316,11 +321,12 @@ $payment_modals = null;
                                                     ?>
                                                 </div>
                                             <?php endif; ?>
+
                                             <div class="progress" style="margin-top: 5px">
                                                 <?php
                                                 $d = getPersent($year, $month, 3, $studentsByMonth);
-                                                $utv = getPersent($year, $month, 3, $studentsByMonth,2,false);
-                                                $neut = getPersent($year, $month, 3, $studentsByMonth,1,false);
+                                                $utv = getPersent($year, $month, 3, $studentsByMonth, 2, false);
+                                                $neut = getPersent($year, $month, 3, $studentsByMonth, 1, false);
                                                 $d2 = 100 - $d;
 
                                                 ?>
@@ -328,9 +334,12 @@ $payment_modals = null;
                                                      style="width: <?= $d ?>%"></div>
                                                 <div class="progress-bar progress-bar-success"
                                                      style="width: <?= $d2 ?>%">
-                                                    <span><?= "утв: $utv неут: $neut | " .  round($d2, 2) ?></span>
+                                                </div>
+                                                <div class="progress-bar progress-bar-label">
+                                                    <span><?= "утв: $utv неут: $neut | " . round($d2, 2) ?></span>
                                                 </div>
                                             </div>
+
                                         </button>
                                     </p>
                                     <div class="modal fade" id="myModal<?= $month ?>699" tabindex="-1" role="dialog"
@@ -470,8 +479,8 @@ $payment_modals = null;
                                             <div class="progress" style="margin-top: 5px">
                                                 <?php
                                                 $d = getPersent($year, $month, 2, $studentsByMonth);
-                                                $utv = getPersent($year, $month, 3, $studentsByMonth,2,false);
-                                                $neut = getPersent($year, $month, 3, $studentsByMonth,1,false);
+                                                $utv = getPersent($year, $month, 3, $studentsByMonth, 2, false);
+                                                $neut = getPersent($year, $month, 3, $studentsByMonth, 1, false);
                                                 $d2 = 100 - $d;
 
                                                 ?>
@@ -480,7 +489,9 @@ $payment_modals = null;
                                                      style="width: <?= $d ?>%"></div>
                                                 <div class="progress-bar progress-bar-success"
                                                      style="width: <?= $d2 ?>%">
-                                                    <span><?="утв: $utv неут: $neut | " .  round($d2, 2) ?></span>
+                                                </div>
+                                                <div class="progress-bar progress-bar-label">
+                                                    <span><?= "утв: $utv неут: $neut | " . round($d2, 2) ?></span>
                                                 </div>
                                             </div>
                                         </button>
@@ -600,4 +611,15 @@ $payment_modals = null;
         </div>
     </div>
 </div>
+
+<style>
+    .progress-bar-label {
+        display: flex;
+        position: absolute;
+        height: 20px;
+        width: 25%;
+        left: 25%;
+        background-color: transparent !important;
+    }
+</style>
 

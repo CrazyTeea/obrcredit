@@ -16,7 +16,6 @@ use Lcobucci\JWT\Signer\Key;
 use Yii;
 use yii\console\Controller;
 use yii\console\ExitCode;
-use yii\validators\ValidationAsset;
 
 
 class ReferenceController extends Controller
@@ -28,7 +27,7 @@ class ReferenceController extends Controller
     {
         $transaction = Yii::$app->db->beginTransaction();
 
-        if ( $this->actionOrganization() ) {
+        if ($this->actionOrganization()) {
             $transaction->commit();
             echo "success\n";
         } else {
@@ -45,26 +44,26 @@ class ReferenceController extends Controller
         echo "Выполняется синхронизация организаций\n";
 
         $signer = new Sha256();
-        $key = new Key( self::$jwt_key );
-        $token = ( new Builder() )->withClaim( 'reference', 'organization' )
+        $key = new Key(self::$jwt_key);
+        $token = (new Builder())->withClaim('reference', 'organization')
             // ->sign($signer, self::$jwt_key)
-            ->getToken( $signer, $key );
-        $response_token = file_get_contents( "http://api.xn--80apneeq.xn--p1ai/api.php?option=reference_api&action=get_reference&module=constructor&reference_token=$token" );
+            ->getToken($signer, $key);
+        $response_token = file_get_contents("http://api.xn--80apneeq.xn--p1ai/api.php?option=reference_api&action=get_reference&module=constructor&reference_token=$token");
         $signer = new Sha256();
-        $token = ( new Parser() )->parse( $response_token );
-        if ( $token->verify( $signer, self::$jwt_key ) ) {
+        $token = (new Parser())->parse($response_token);
+        if ($token->verify($signer, self::$jwt_key)) {
 
             $data_reference = $token->getClaims();
-            foreach ($data_reference AS $key => $data) {
-                $row_org = Organizations::findOne( $data->getValue()->id );
-                if ( empty( $row_org ) ) {
+            foreach ($data_reference as $key => $data) {
+                $row_org = Organizations::findOne($data->getValue()->id);
+                if (empty($row_org)) {
                     $row_org = new Organizations();
                     $row_org->id = $data->getValue()->id;
                 }
-                $row_org->full_name = htmlspecialchars_decode( $data->getValue()->fullname );
-                $row_org->short_name = htmlspecialchars_decode( $data->getValue()->shot_name );
-                $row_org->name = htmlspecialchars_decode( $data->getValue()->name );
-                $row_org->system_status = ( Students::findOne( ['id_org' => $row_org->id] ) ) ? 1 : 0;
+                $row_org->full_name = htmlspecialchars_decode($data->getValue()->fullname);
+                $row_org->short_name = htmlspecialchars_decode($data->getValue()->shot_name);
+                $row_org->name = htmlspecialchars_decode($data->getValue()->name);
+                $row_org->system_status = (Students::findOne(['id_org' => $row_org->id])) ? 1 : 0;
                 $row_org->save();
 
             }
@@ -75,34 +74,36 @@ class ReferenceController extends Controller
 
     }
 
-    public function actionDoubles($year,$month){
-        $students = Students::find()->where(['YEAR(date_start)'=>$year,'MONTH(date_start)'=>$month,'id_number_pp'=>1,'id_bank'=>1,'system_status'=>1])->orderBy('id')->groupBy('name')->all();
+    public function actionDoubles($year, $month)
+    {
+        $students = Students::find()->where(['YEAR(date_start)' => $year, 'MONTH(date_start)' => $month, 'id_number_pp' => 1, 'id_bank' => 1, 'system_status' => 1])->orderBy('id')->groupBy('name')->all();
 
-        foreach ($students as $student){
-            $s = Students::find()->where(['YEAR(date_start)'=>$year,'MONTH(date_start)'=>$month,'id_number_pp'=>1,'id_bank'=>1,'name'=>$student->name])->andWhere(['<>','id',$student->id])->all();
-            if ($s){
-                foreach ($s as $item){
-                    $item->system_status=0;
+        foreach ($students as $student) {
+            $s = Students::find()->where(['YEAR(date_start)' => $year, 'MONTH(date_start)' => $month, 'id_number_pp' => 1, 'id_bank' => 1, 'name' => $student->name])->andWhere(['<>', 'id', $student->id])->all();
+            if ($s) {
+                foreach ($s as $item) {
+                    $item->system_status = 0;
                     $item->save(false);
                 }
             }
         }
     }
 
-    public function actionKek(){
-        $students = Students::find()->where(['system_status'=>0])->all();
+    public function actionKek()
+    {
+        $students = Students::find()->where(['system_status' => 0])->all();
 
-        foreach ($students as $student){
+        foreach ($students as $student) {
             $sh = Students::find()
-                ->join('join',StudentsHistory::tableName(),'students.id = students_history.id_student')
-                ->where(['name'=>$student->name,'date_credit'=>$student->date_credit])->one();
-            if ($sh){
-                $st2 = Students::findAll(['name'=>$student->name,'date_credit'=>$student->date_credit]);
+                ->join('join', StudentsHistory::tableName(), 'students.id = students_history.id_student')
+                ->where(['name' => $student->name, 'date_credit' => $student->date_credit])->one();
+            if ($sh) {
+                $st2 = Students::findAll(['name' => $student->name, 'date_credit' => $student->date_credit]);
                 foreach ($st2 as $item) {
                     $item->system_status = 0;
                     $govno = StudentsHistory::find()
-                            ->join('join',Students::tableName(),'students.id = students_history.id_student')
-                            ->where(['name'=>$student->name,'date_credit'=>$student->date_credit,'date_start'=>$item->date_start])
+                            ->join('join', Students::tableName(), 'students.id = students_history.id_student')
+                            ->where(['name' => $student->name, 'date_credit' => $student->date_credit, 'date_start' => $item->date_start])
                             ->one() ?? new StudentsHistory();
                     if ($govno->isNewRecord) {
                         $govno->id_student = $item->id;
@@ -115,24 +116,26 @@ class ReferenceController extends Controller
         }
     }
 
-    public function actionUpper(){
+    public function actionUpper()
+    {
         $students = Students::find()->all();
 
-        foreach ($students as $student){
+        foreach ($students as $student) {
             $b = $student->name;
-            $student->name = mb_convert_case($student->name,MB_CASE_TITLE);
-            if (!$student->education_status) $student->education_status =0;
+            $student->name = mb_convert_case($student->name, MB_CASE_TITLE);
+            if (!$student->education_status) $student->education_status = 0;
             $student->save(false);
             echo "было $b стало $student->name \n";
         }
 
     }
 
-    public function actionDate(){
+    public function actionDate()
+    {
         $st = Students::find()->all();
-        foreach ($st as $item){
-            $date = explode('-',$item->date_start);
-            if (count($date)==3) {
+        foreach ($st as $item) {
+            $date = explode('-', $item->date_start);
+            if (count($date) == 3) {
                 $item->date_start = "$date[0]-$date[1]-01";
                 $item->save(false);
             }
@@ -140,16 +143,16 @@ class ReferenceController extends Controller
     }
 
 
-    public function actionStudents( $file, $nameId, $dCreditId, $orgId, $numPP, $bankId, $dStart )
+    public function actionStudents($file, $nameId, $dCreditId, $orgId, $numPP, $bankId, $dStart)
     {
 
-        $csvP = Yii::getAlias( '@webroot' ) . "/toParse/$file.csv";
+        $csvP = Yii::getAlias('@webroot') . "/toParse/$file.csv";
 
-        $csv = fopen( $csvP, 'r' );
-        if ( !$csvP )
-            exit( "Файл не найден" );
+        $csv = fopen($csvP, 'r');
+        if (!$csvP)
+            exit("Файл не найден");
 
-        $row = fgetcsv( $csv, 1000, ';' ) ;
+        $row = fgetcsv($csv, 1000, ';');
         $num = NumbersPp::findOne($row[$numPP]);
         if (!$num) {
             echo "пп не верный $row[$numPP]";
@@ -171,69 +174,67 @@ class ReferenceController extends Controller
             дата начала обуч->$row[$dStart]  \n";
 
 
-        fclose( $csv );
-        $csv = fopen( $csvP, 'r' );
+        fclose($csv);
+        $csv = fopen($csvP, 'r');
         echo "Вы уверене? \n ";
         $key = readline();
-        if ( !( $key === "yes" || $key === "y" || $key === "Y" ) ) {
-            exit( 0 );
+        if (!($key === "yes" || $key === "y" || $key === "Y")) {
+            exit(0);
         }
         $countVip = 0;
         $countOtch = 0;
         $count = 0;
-        $year = date('Y',strtotime($row[$dStart]));
-        $month = date('m',strtotime($row[$dStart]))-1;
+        $year = date('Y', strtotime($row[$dStart]));
+        $month = date('m', strtotime($row[$dStart])) - 1;
 
         if ($month < 1) {
             $month = 12;
             $year--;
         }
 
-        while (( $row = fgetcsv( $csv, 32000, ';' ) ) != false) {
-            $name = mb_convert_case($row[ $nameId ],MB_CASE_TITLE);
+        while (($row = fgetcsv($csv, 32000, ';')) != false) {
+            $name = mb_convert_case($row[$nameId], MB_CASE_TITLE);
 
             $student2 = Students::find()
-                ->where(['name'=>$name,'date_credit'=>$row[$dCreditId],
-                    'YEAR(date_start)'=>date('Y',strtotime($row[$dStart])),
-                    'MONTH(date_start)'=>date('m',strtotime($row[$dStart]))])->one();
+                ->where(['name' => $name, 'date_credit' => $row[$dCreditId],
+                    'YEAR(date_start)' => date('Y', strtotime($row[$dStart])),
+                    'MONTH(date_start)' => date('m', strtotime($row[$dStart]))])->one();
             if ($student2) continue;
-            $student2 = Students::find()->where(['name'=>$name,'date_credit'=>$row[$dCreditId],'YEAR(date_start)'=>$year,'MONTH(date_start)'=>$month])->one();
+            $student2 = Students::find()->where(['name' => $name, 'date_credit' => $row[$dCreditId], 'YEAR(date_start)' => $year, 'MONTH(date_start)' => $month])->one();
             $student = new Students();
-            if ($student2 and $student2->isEnder ) {
+            if ($student2 and $student2->isEnder) {
                 $student->education_status = 0;
                 $student->isEnder = 1;
                 $student->osnovanie = 0;
                 $student->grace_period = 0;
                 $student->date_ender = $student2->date_ender;
-            }
-            elseif ($student2 and !$student2->education_status and !$student2->isEnder){
+            } elseif ($student2 and !$student2->education_status and !$student2->isEnder) {
                 $student->education_status = 0;
                 $student->osnovanie = $student2->osnovanie;
                 $student->isEnder = 0;
                 $student->grace_period = 0;
-            }else $student->education_status = 1;
+            } else $student->education_status = 1;
 
 
             $student->code = $student2->code ?? 12345;
 
-            $student->date_start = $row[ $dStart ];
+            $student->date_start = $row[$dStart];
             $student->name = $name;
-            $student->date_credit = $row[ $dCreditId ];
+            $student->date_credit = $row[$dCreditId];
             $student->id_org = $row[$orgId];
-            $student->date_create = date( "Y-m-d" );
+            $student->date_create = date("Y-m-d");
             $student->status = 1;
-            $student->id_number_pp = $row[ $numPP ];
-            $student->id_bank = $row[ $bankId ];
+            $student->id_number_pp = $row[$numPP];
+            $student->id_bank = $row[$bankId];
 
 
-
-            if ( $student->save(false) ) {
+            if ($student->save(false)) {
                 $count++;
-                 $org = Organizations::findOne( $student->id_org );
-                 if ( $org ) {
-                     $org->system_status = 1;
-                     $org->save(false);
-                 }
+                $org = Organizations::findOne($student->id_org);
+                if ($org) {
+                    $org->system_status = 1;
+                    $org->save(false);
+                }
                 echo "
             Организация-$student->id_org
             ФИО->$student->name
@@ -260,7 +261,7 @@ class ReferenceController extends Controller
         echo "добавлено студентов $count \n отчислены в прошлом месяце $countOtch \n выпускники в прошлом месяце $countVip \n";
 
 
-        fclose( $csv );
+        fclose($csv);
         echo "success!";
     }
 
