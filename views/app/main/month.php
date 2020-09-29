@@ -47,13 +47,27 @@ function getMonth($month)
     return $arr[$m->format('n') - 1];
 }
 
-function getPersent(int $year, int $month, int $nPP, array $students, int $status = 1, $persent = true)
+function getPersent(int $year, int $month, int $nPP, array $students, int $status = 1, $persent = true,$bank = false)
 {
     $pers = 0;
     $all = getCountStudents($year, $month, $nPP, $students);
+
+    $byBank = [
+      1=>0,
+      2=>0,
+      3=>0,
+    ];
+
     foreach ($students as $student) {
         if ($student['year'] == $year and $student['month'] == $month and $student['id_number_pp'] == $nPP and $student['status'] == $status)
-            $pers += $student['count'];
+            $byBank[$student['id_bank']]++;
+    }
+
+    if ($bank) {
+        $pers = $byBank[$bank];
+    }else {
+        foreach ($byBank as $bb)
+            $pers+=$bb;
     }
 
     return $persent ? ($pers * 100 / $all) : ($pers);
@@ -479,8 +493,8 @@ $payment_modals = null;
                                             <div class="progress" style="margin-top: 5px">
                                                 <?php
                                                 $d = getPersent($year, $month, 2, $studentsByMonth);
-                                                $utv = getPersent($year, $month, 3, $studentsByMonth, 2, false);
-                                                $neut = getPersent($year, $month, 3, $studentsByMonth, 1, false);
+                                                $utv = getPersent($year, $month, 2, $studentsByMonth, 2, false);
+                                                $neut = getPersent($year, $month, 2, $studentsByMonth, 1, false);
                                                 $d2 = 100 - $d;
 
                                                 ?>
