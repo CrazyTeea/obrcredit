@@ -47,30 +47,33 @@ function getMonth($month)
     return $arr[$m->format('n') - 1];
 }
 
-function getPersent(int $year, int $month, int $nPP, array $students, int $status = 1, $persent = true,$bank = false)
+function getPersent(int $year, int $month, int $nPP, array $students, int $status = 1, $persent = true, $bank = false)
 {
     $pers = 0;
     $all = getCountStudents($year, $month, $nPP, $students);
 
     $byBank = [
-      1=>0,
-      2=>0,
-      3=>0,
+        1 => 0,
+        2 => 0,
+        3 => 0,
+        4 => 0
     ];
 
     foreach ($students as $student) {
         if ($student['year'] == $year and $student['month'] == $month and $student['id_number_pp'] == $nPP and $student['status'] == $status)
-            $byBank[$student['id_bank']]++;
+            $byBank[$student['id_bank']] += $student['count'];
     }
 
     if ($bank) {
         $pers = $byBank[$bank];
-    }else {
-        foreach ($byBank as $bb)
-            $pers+=$bb;
+    } else {
+        foreach ($byBank as $item) {
+            $pers += $item;
+        }
     }
 
     return $persent ? ($pers * 100 / $all) : ($pers);
+
 }
 
 function getCountStudents(int $year, int $month, int $nPP, array $students)
@@ -336,11 +339,54 @@ $payment_modals = null;
                                                 </div>
                                             <?php endif; ?>
 
+                                            <i>Все</i>
+
                                             <div class="progress" style="margin-top: 5px">
                                                 <?php
                                                 $d = getPersent($year, $month, 3, $studentsByMonth);
                                                 $utv = getPersent($year, $month, 3, $studentsByMonth, 2, false);
                                                 $neut = getPersent($year, $month, 3, $studentsByMonth, 1, false);
+                                                $d2 = 100 - $d;
+
+                                                ?>
+                                                <div class="progress-bar progress-bar-danger"
+                                                     style="width: <?= $d ?>%"></div>
+                                                <div class="progress-bar progress-bar-success"
+                                                     style="width: <?= $d2 ?>%">
+                                                </div>
+                                                <div class="progress-bar progress-bar-label">
+                                                    <span><?= "утв: $utv неут: $neut | " . round($d2, 2) ?></span>
+                                                </div>
+                                            </div>
+
+
+                                            <i>Сбербанк</i>
+
+                                            <div class="progress" style="margin-top: 5px">
+                                                <?php
+                                                $d = getPersent($year, $month, 3, $studentsByMonth,1,true,1);
+                                                $utv = getPersent($year, $month, 3, $studentsByMonth, 2, false,1);
+                                                $neut = getPersent($year, $month, 3, $studentsByMonth, 1, false,1);
+                                                $d2 = 100 - $d;
+
+                                                ?>
+                                                <div class="progress-bar progress-bar-danger"
+                                                     style="width: <?= $d ?>%"></div>
+                                                <div class="progress-bar progress-bar-success"
+                                                     style="width: <?= $d2 ?>%">
+                                                </div>
+                                                <div class="progress-bar progress-bar-label">
+                                                    <span><?= "утв: $utv неут: $neut | " . round($d2, 2) ?></span>
+                                                </div>
+                                            </div>
+
+                                            <i>Союз</i>
+
+                                            <div class="progress" style="margin-top: 5px">
+                                                <?php
+                                                $d = getPersent($year, $month, 3, $studentsByMonth,1,true,2);
+                                                $utv = getPersent($year, $month, 3, $studentsByMonth, 2, false,2);
+                                                $neut = getPersent($year, $month, 3, $studentsByMonth, 1, false,2);
                                                 $d2 = 100 - $d;
 
                                                 ?>
