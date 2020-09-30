@@ -44,6 +44,7 @@ return [
             '/app/students/delete-doc',
             '/app/students/ab',
             '/app/students/dp',
+            '/app/students/history',
         ],
     ],
     '/app/students/*' => [
@@ -128,6 +129,9 @@ return [
         'type' => 2,
     ],
     '/app/students/dp' => [
+        'type' => 2,
+    ],
+    '/app/students/history' => [
         'type' => 2,
     ],
 ];
