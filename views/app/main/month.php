@@ -339,25 +339,25 @@ $payment_modals = null;
                                                 </div>
                                             <?php endif; ?>
 
-                                            <i>Все</i>
+                                            <!--<i>Все</i>
 
                                             <div class="progress" style="margin-top: 5px">
                                                 <?php
-                                                $d = getPersent($year, $month, 3, $studentsByMonth);
-                                                $utv = getPersent($year, $month, 3, $studentsByMonth, 2, false);
-                                                $neut = getPersent($year, $month, 3, $studentsByMonth, 1, false);
-                                                $d2 = 100 - $d;
+                                            /*                                                $d = getPersent($year, $month, 3, $studentsByMonth);
+                                                                                            $utv = getPersent($year, $month, 3, $studentsByMonth, 2, false);
+                                                                                            $neut = getPersent($year, $month, 3, $studentsByMonth, 1, false);
+                                                                                            $d2 = 100 - $d;
 
-                                                ?>
+                                                                                            */ ?>
                                                 <div class="progress-bar progress-bar-danger"
-                                                     style="width: <?= $d ?>%"></div>
+                                                     style="width: <? /*= $d */ ?>%"></div>
                                                 <div class="progress-bar progress-bar-success"
-                                                     style="width: <?= $d2 ?>%">
+                                                     style="width: <? /*= $d2 */ ?>%">
                                                 </div>
                                                 <div class="progress-bar progress-bar-label">
-                                                    <span><?= "утв: $utv неут: $neut | " . round($d2, 2) ?></span>
+                                                    <span><? /*= "утв: $utv неут: $neut | " . round($d2, 2) */ ?></span>
                                                 </div>
-                                            </div>
+                                            </div>-->
 
 
                                             <i>Сбербанк</i>
