@@ -5,7 +5,20 @@ use app\models\app\students\Students;
 use yii\bootstrap\ActiveForm;
 use yii\helpers\Html;
 use yii\web\YiiAsset;
-
+$months = [
+    'Январь',
+    'Февраль',
+    "Март",
+    "Апрель",
+    "Май",
+    "Июнь",
+    "Июль",
+    "Август",
+    "Сентябрь",
+    "Октябрь",
+    "Ноябрь",
+    "Декабрь"
+];
 
 /* @var $this yii\web\View */
 /* @var $model app\models\app\students\Students */
@@ -71,6 +84,9 @@ $rasp_act_otch = StudentDocs::getDocByDescriptorName('rasp_act_otch',$model->id)
             </p>
         </div>
     <?php endif;?>
+
+
+    <h4><span class="label label-info"><?= " Год: $year Месяц: ".$months[date('m',strtotime($model->date_start))-1]." номер ПП: {$model->numberPP->number}" ?></span></h4>
 
 
     <?php if ($canUpdate):?>
