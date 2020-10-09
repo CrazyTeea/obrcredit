@@ -49,21 +49,24 @@ $exportProvider = $views['index']['export'];
 <h3><?= Html::encode($this->title) ?></h3>
 <h4><span class="label label-info"><?= " Год: $year Месяц: $month_m номер ПП: $npp" ?></span></h4>
 <?php if ($cans[0] || $cans[1]): ?>
-    <?= Html::a('Добавить студента', ['create', 'id' => Yii::$app->session['id_org']], ['class' => 'btn btn-success']) ?>
+    <?= Html::a('Добавить студента', ['create', 'id' => Yii::$app->session['id_org']], ['class' => 'btn btn-success','style'=>'margin-top:5px !important;']) ?>
 <?php endif; ?>
-<?= ExportMenu::widget(
-    [
-        'dataProvider' => $exportProvider,
-        'columns' => Students::getColumns(true)
-        , 'batchSize' => 10, 'target' => '_blank',
-        'exportConfig' => [
-            ExportMenu::FORMAT_HTML => false,
-            ExportMenu::FORMAT_CSV => false,
-            ExportMenu::FORMAT_EXCEL => false,
-            ExportMenu::FORMAT_TEXT => false,
+
+    <?= ExportMenu::widget(
+        [
+            'dataProvider' => $exportProvider,
+            'columns' => Students::getColumns(true)
+            , 'batchSize' => 10, 'target' => '_blank',
+            'exportConfig' => [
+                ExportMenu::FORMAT_HTML => false,
+                ExportMenu::FORMAT_CSV => false,
+                ExportMenu::FORMAT_EXCEL => false,
+                ExportMenu::FORMAT_TEXT => false,
+            ]
         ]
-    ]
-) ?>
+    ) ?>
+
+
 <div class="row">
     <div class="col-md-12" style="margin-top: 5px"><?= Tabs::widget([
             'items' => [
