@@ -361,38 +361,19 @@ $payment_modals = null;
                                                 </div>
                                             </div>-->
 
+                                            <?php
+                                            $d = getPersent($year, $month, 3, $studentsByMonth, 1, true, 1);
+                                            $utv = getPersent($year, $month, 3, $studentsByMonth, 2, false, 1);
+                                            $neut = getPersent($year, $month, 3, $studentsByMonth, 1, false, 1);
+                                            $d2 = 100 - $d;
 
-                                            <i>Сбербанк</i>
+                                            ?>
 
-                                            <div class="progress" style="margin-top: 5px">
-                                                <?php
-                                                $d = getPersent($year, $month, 3, $studentsByMonth, 1, true, 1);
-                                                $utv = getPersent($year, $month, 3, $studentsByMonth, 2, false, 1);
-                                                $neut = getPersent($year, $month, 3, $studentsByMonth, 1, false, 1);
-                                                $d2 = 100 - $d;
+                                            <?php if ($utv || $neut): ?>
+                                                <i>Сбербанк</i>
 
-                                                ?>
-                                                <div class="progress-bar progress-bar-danger"
-                                                     style="width: <?= $d ?>%"></div>
-                                                <div class="progress-bar progress-bar-success"
-                                                     style="width: <?= $d2 ?>%">
-                                                </div>
-                                                <div class="progress-bar progress-bar-label">
-                                                    <span><?= "утв: $utv неут: $neut | " . round($d2, 2) ?></span>
-                                                </div>
-                                            </div>
+                                                <div class="progress" style="margin-top: 5px">
 
-                                            <i>Союз</i>
-
-                                            <div class="progress" style="margin-top: 5px">
-                                                <?php
-                                                $d = getPersent($year, $month, 3, $studentsByMonth, 1, true, 2);
-                                                $utv = getPersent($year, $month, 3, $studentsByMonth, 2, false, 2);
-                                                $neut = getPersent($year, $month, 3, $studentsByMonth, 1, false, 2);
-                                                $d2 = 100 - $d;
-
-                                                ?>
-                                                <?php if ($utv > 0 || $neut > 0): ?>
                                                     <div class="progress-bar progress-bar-danger"
                                                          style="width: <?= $d ?>%"></div>
                                                     <div class="progress-bar progress-bar-success"
@@ -401,8 +382,32 @@ $payment_modals = null;
                                                     <div class="progress-bar progress-bar-label">
                                                         <span><?= "утв: $utv неут: $neut | " . round($d2, 2) ?></span>
                                                     </div>
-                                                <?php endif; ?>
-                                            </div>
+                                                </div>
+                                            <?php endif; ?>
+                                            <?php
+                                            $d = getPersent($year, $month, 3, $studentsByMonth, 1, true, 2);
+                                            $utv = getPersent($year, $month, 3, $studentsByMonth, 2, false, 2);
+                                            $neut = getPersent($year, $month, 3, $studentsByMonth, 1, false, 2);
+                                            $d2 = 100 - $d;
+
+                                            ?>
+                                            <?php if ($utv > 0 || $neut > 0): ?>
+
+                                                <i>Союз</i>
+
+                                                <div class="progress" style="margin-top: 5px">
+
+                                                    <div class="progress-bar progress-bar-danger"
+                                                         style="width: <?= $d ?>%"></div>
+                                                    <div class="progress-bar progress-bar-success"
+                                                         style="width: <?= $d2 ?>%">
+                                                    </div>
+                                                    <div class="progress-bar progress-bar-label">
+                                                        <span><?= "утв: $utv неут: $neut | " . round($d2, 2) ?></span>
+                                                    </div>
+
+                                                </div>
+                                            <?php endif; ?>
 
                                         </button>
                                     </p>
