@@ -192,7 +192,7 @@ $payment_modals = null;
                                                 $d2 = 100 - $d;
 
                                                 ?>
-                                                <?php if ($d > 0 || $d2 > 0): ?>
+                                                <?php if ($utv > 0 || $neut > 0): ?>
                                                     <div class="progress-bar progress-bar-danger"
                                                          style="width: <?= $d ?>%"></div>
                                                     <div class="progress-bar progress-bar-success"
@@ -392,7 +392,7 @@ $payment_modals = null;
                                                 $d2 = 100 - $d;
 
                                                 ?>
-                                                <?php if ($d > 0 || $d2 > 0): ?>
+                                                <?php if ($utv > 0 || $neut > 0): ?>
                                                     <div class="progress-bar progress-bar-danger"
                                                          style="width: <?= $d ?>%"></div>
                                                     <div class="progress-bar progress-bar-success"
