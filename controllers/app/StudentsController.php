@@ -587,6 +587,8 @@ class StudentsController extends AppController
     public function actionActive($id){
         $model = Students::findOne($id);
         $model->system_status = 1;
+        $model->education_status = 1;
+        $model->osnovanie = $model->grace_period = $model->isEnder = 0;
         $model->save(false);
         $models = Students::find()->select(['id'])->where(['name'=>$model->name,'id_org'=>$model->id_org])->column();
         StudentsHistory::deleteAll(['id_student'=>$models]);
