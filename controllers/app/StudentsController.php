@@ -544,9 +544,18 @@ class StudentsController extends AppController
         $model = Students::findOne($id);
         $model->education_status = 0;
         $model->save(false);
-        $models = Students::find()->where(['name'=>$model->name])->andWhere(['>=','date_start',$model->date_start])->andWhere(['<>','id',$id])->all();
+        $models = Students::find()->where(['name'=>$model->name,'id_org'=>$model->id_org])->andWhere(['>=','date_start',$model->date_start])->all();
         foreach ($models as $model2){
             $model2->sytem_status = 0;
+
+            $govno = StudentsHistory::findOne(['id_student'=>$model2->id]) ?? new StudentsHistory();
+            if ($govno->isNewRecord){
+                $govno->id_student = $model2->id;
+                $govno->id_change = 1;
+                $govno->save();
+            }
+
+
             $model2->save(false);
         }
         return $this->redirect(Yii::$app->request->referrer);
@@ -554,13 +563,21 @@ class StudentsController extends AppController
     }
     public function actionVip($id){
         $model = Students::findOne($id);
-        $model->education_status = 0;
+        $model->education_status = $model->osnovanie = 0;
         $model->isEnder = 1;
         $model->date_ender = $model->date_start;
         $model->save(false);
-        $models = Students::find()->where(['name'=>$model->name])->andWhere(['>=','date_start',$model->date_start])->andWhere(['<>','id',$id])->all();
+        $models = Students::find()->where(['name'=>$model->name,'id_org'=>$model->id_org])->andWhere(['>','date_start',$model->date_start])->all();
         foreach ($models as $model2){
             $model2->sytem_status = 0;
+
+            $govno = StudentsHistory::findOne(['id_student'=>$model2->id]) ?? new StudentsHistory();
+            if ($govno->isNewRecord){
+                $govno->id_student = $model2->id;
+                $govno->id_change = 1;
+                $govno->save();
+            }
+
             $model2->save(false);
         }
         return $this->redirect(Yii::$app->request->referrer);
@@ -571,7 +588,7 @@ class StudentsController extends AppController
         $model = Students::findOne($id);
         $model->system_status = 1;
         $model->save(false);
-        $models = Students::find()->select(['id'])->where(['name'=>$model->name,'date_credit'=>$model->date_credit])->andWhere(['<=','date_start',$model->date_start])->column();
+        $models = Students::find()->select(['id'])->where(['name'=>$model->name,'id_org'=>$model->id_org])->column();
         StudentsHistory::deleteAll(['id_student'=>$models]);
         return $this->redirect(Yii::$app->request->referrer);
     }
@@ -581,10 +598,7 @@ class StudentsController extends AppController
         $students = Students::findAll(['name'=>$model->name,'date_credit'=>$model->date_credit]);
         foreach ($students as $st){
             $st->system_status = 0;
-            $govno = StudentsHistory::find()
-                    ->join('join',Students::tableName(),'students.id = students_history.id_student')
-                    ->where(['name'=>$st->name,'date_credit'=>$st->date_credit,'date_start'=>$st->date_start])
-                    ->one() ?? new StudentsHistory();
+            $govno = StudentsHistory::findOne(['id_student'=>$st->id]) ?? new StudentsHistory();
             if ($govno->isNewRecord){
                 $govno->id_student = $st->id;
                 $govno->id_change = 1;
