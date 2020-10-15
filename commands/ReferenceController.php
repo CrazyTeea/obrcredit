@@ -264,6 +264,41 @@ class ReferenceController extends Controller
         fclose($csv);
         echo "success!";
     }
+    public function actionCode($file, $code,$nameId,$org)
+    {
+
+        $csvP = Yii::getAlias('@webroot') . "/toParse/$file.csv";
+
+        $csv = fopen($csvP, 'r');
+        if (!$csvP)
+            exit("Файл не найден");
+
+        $row = fgetcsv($csv, 1000, ';');
+        echo "код->$row[$code]  \n";
+
+        fclose($csv);
+        $csv = fopen($csvP, 'r');
+        echo "Вы уверене? \n ";
+        $key = readline();
+        if (!($key === "yes" || $key === "y" || $key === "Y")) {
+            exit(0);
+        }
+
+
+        while (($row = fgetcsv($csv, 32000, ';')) != false) {
+            $name = mb_convert_case($row[$nameId], MB_CASE_TITLE);
+
+            $student = Students::findOne(['name'=>$name,'id_org'=>$row[$org],'date_start'=>'2020-09-01']);
+            if ($student){
+                $student->code = $row[$code];
+                $student->save(false);
+            }
+        }
+
+
+        fclose($csv);
+        echo "success!";
+    }
 
 
 }
