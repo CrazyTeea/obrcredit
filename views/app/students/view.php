@@ -188,7 +188,7 @@ $rasp_act_otch = StudentDocs::getDocByDescriptorName('rasp_act_otch',$model->id)
                 <?= $model->education_status ? 'Обучается' : 'Не обучается' ?> <br>
                 <?php //= ($model->dateLastStatus and $model->dateLastStatus->updated_at) ? Yii::$app->getFormatter()->asDate(strtotime($model->dateLastStatus->updated_at)) : date('d-M-Y') ?>
             </td>
-            <td rowspan="3"><p class="text-sm-center"> пункт 33 </p></td>
+            <td rowspan="3"><p class="text-sm-center"> пункт 20 </p></td>
             <td rowspan="2">
                 <p class="text-sm-center">пункт 2 части 2 статьи 61 Федерального закона
                     № 273-ФЗ
@@ -254,7 +254,7 @@ $rasp_act_otch = StudentDocs::getDocByDescriptorName('rasp_act_otch',$model->id)
 
         </tr>
         <tr>
-            <td><p class="text-sm-center"> пункт 34 </p></td>
+            <td><p class="text-sm-center"> пункт 21 </p></td>
             <td><p class="text-sm-center">
                     перевод обучающегося для продолжения освоения основной профессиональной образовательной программы в
                     другую образовательную организацию:
@@ -289,7 +289,7 @@ $rasp_act_otch = StudentDocs::getDocByDescriptorName('rasp_act_otch',$model->id)
 
         </tr>
         <tr>
-            <td><p class="text-sm-center"> пункт 35 </p></td>
+            <td><p class="text-sm-center"> пункт 22 </p></td>
             <td>
                 <?php
                 $k = Students::getOsnovanie()[6];
@@ -321,19 +321,19 @@ $rasp_act_otch = StudentDocs::getDocByDescriptorName('rasp_act_otch',$model->id)
             </td>
         </tr>
 
-        <tr>
+        <!--<tr>
 
             <td><p class="text-sm-center"> пункт 35 </p></td>
             <td>
                 <?php
-                $k = Students::getOsnovanie()[7];
+/*                $k = Students::getOsnovanie()[7];
                 if (7 == $model->osnovanie)
                     echo "<p class='text-sm-center' > &#9745; {$k} </p>";
                 else echo "<p class='text-sm-center'> &#9744; $k</p>";
-                ?>
+                */?>
             </td>
             <td colspan="4"></td>
-        </tr>
+        </tr>-->
 
         </tbody>
     </table>

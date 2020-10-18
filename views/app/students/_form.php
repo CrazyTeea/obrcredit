@@ -122,10 +122,10 @@ function getDocByDescriptor(string $descriptor, array $docs, ActiveForm $form, \
             </thead>
             <tbody>
             <tr>
-                <td rowspan="6">
+                <td rowspan="5">
                     <?= $form->field($model, 'education_status')->radioList(['Не обучается', 'Обучается']) ?> <br>
                     <?= date('d. M Y') ?> </td>
-                <td rowspan="3"><p class="text-sm-center"> пункт 33 </p></td>
+                <td rowspan="3"><p class="text-sm-center"> пункт 20 </p></td>
                 <td rowspan="2">
                     <p class="text-sm-center">пункт 2 части 2 статьи 61 Федерального закона
                         № 273-ФЗ
@@ -179,7 +179,7 @@ function getDocByDescriptor(string $descriptor, array $docs, ActiveForm $form, \
                 </td>
             </tr>
             <tr>
-                <td><p class="text-sm-center"> пункт 34 </p></td>
+                <td><p class="text-sm-center"> пункт 21 </p></td>
                 <td><p class="text-sm-center">
                         перевод обучающегося для продолжения освоения основной профессиональной образовательной
                         программы в другую образовательную организацию:
@@ -213,7 +213,7 @@ function getDocByDescriptor(string $descriptor, array $docs, ActiveForm $form, \
 
             </tr>
             <tr>
-                <td><p class="text-sm-center"> пункт 35 </p></td>
+                <td><p class="text-sm-center"> пункт 22 </p></td>
                 <td>
                     <?= $form->field($model, 'osnovanie')->radio([
                         'label' => 'обучающимся (заемщиком) принято решение об отказе от продолжения обучения, по обстоятельствам, не зависящим от воли обучающегося или родителей (законных представителей) несовершеннолетнего обучающегося и образовательной организации, в том числе в случае ликвидации образовательной организации',
@@ -240,15 +240,15 @@ function getDocByDescriptor(string $descriptor, array $docs, ActiveForm $form, \
 
 
             </tr>
-             <tr>
+            <!-- <tr>
                 <td><p class="text-sm-center"> пункт 36 </p></td>
                 <td>
-                    <?= $form->field($model, 'osnovanie')->radio([
+                    <?/*= $form->field($model, 'osnovanie')->radio([
                         'label' => 'Смерть заёмщика, либо безвестно отсутствующий',
-                        'value' => 7, 'uncheck' => null, 'id' => false, 'class' => 'status_callback'])->label(false) ?>
+                        'value' => 7, 'uncheck' => null, 'id' => false, 'class' => 'status_callback'])->label(false) */?>
                 </td>
                  <td colspan="4"></td>
-            </tr>
+            </tr>-->
 
             </tbody>
         </table>
