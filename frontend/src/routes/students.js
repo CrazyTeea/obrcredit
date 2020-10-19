@@ -3,6 +3,8 @@ import Router from '../Router';
 export default () => {
     new Router(['create', 'update']).then(() => {
 
+        console.log('flkf');
+
         let osn = $('input[type="radio"][name="Students[osnovanie]"]:checked');
         let ed = $('input[type="radio"][name="Students[education_status]"]');
 
