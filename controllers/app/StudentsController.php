@@ -631,12 +631,6 @@ class StudentsController extends AppController
         //  $modelDFlag = false;
 
         if ( $model->load( Yii::$app->request->post() ) ) {
-            if (!$model->education_status)
-                $model->education_status = 0;
-            if ($model->perevod)
-                $model->education_status = 1;
-            if ($model->grace_period)
-                $model->education_status = 1;
 
             if ($model->old_code != $model->code){
                 $students = Students::find()->where(['name'=>$model->name,'date_credit'=>$model->date_credit]);
@@ -661,49 +655,8 @@ class StudentsController extends AppController
                 $model->dateLastStatus->date_end = !$model->education_status ? date( 'Y-m-d' ) : null;
                 $modelDFlag = $model->dateLastStatus->save();
             }
-            if ( $model->save() and $modelDFlag ) {
-
-                $month0 = date('m',strtotime($model->date_start));
-                for ($year = date('Y',strtotime($model->date_start));$year<=2021;$year++){
-                    for ($month = $month0;$month<=12;$month++){
-                        $sts = Students::find()->where([
-                            'id_org'=>$model->id_org,'YEAR(date_start)'=>$year,'MONTH(date_start)'=>$month,
-                            'name'=>$model->name])->all();
-                        if ($sts){
-                            foreach ($sts as $st){
-                                $st->education_status = $model->education_status;
-                                $st->osnovanie = $model->osnovanie;
-                                $st->grace_period = $model->grace_period;
-                                $st->date_start_grace_period1 = $model->date_start_grace_period1;
-                                $st->date_start_grace_period2 = $model->date_start_grace_period2;
-                                $st->date_start_grace_period3 = $model->date_start_grace_period3;
-                                $st->date_end_grace_period1 =$model->date_end_grace_period1;
-                                $st->date_end_grace_period2 =$model->date_end_grace_period2;
-                                $st->date_end_grace_period3 =$model->date_end_grace_period3;
-                                $st->perevod = $model->perevod;
-                                $st->isEnder = $model->isEnder;
-                                $st->date_ender = $model->date_ender;
-
-                                if (!$st->dateLastStatus){
-                                    $date = new DatesEducationStatus();
-                                    $date->id_student = $st->id;
-                                    $date->date_end = date('Y-m-d');
-                                    $date->save(false);
-                                }
-                                else{
-                                    $st->dateLastStatus->date_end = date('Y-m-d');
-                                    $st->dateLastStatus->save(false);
-                                }
-
-                                $st->save(false);
-                            }
-                        }
-                    }
-                    $month0 = 1;
-                }
-
-                if ($model->addStudentDocs($file,$docTypes) and $modelDFlag)
-                    return $this->redirect( ['view', 'id' => $model->id] );
+            if ( $model->save() and $modelDFlag and $model->addStudentDocs($file,$docTypes)) {
+                return $this->redirect( ['view', 'id' => $model->id] );
             }
         }
 

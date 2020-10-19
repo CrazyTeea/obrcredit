@@ -10,6 +10,8 @@ stages:
   - deploy_composer
   - deploy_files
   - deploy_migrate
+  - npm_install
+  - build_front
 
 #deploy_job1:
 #  artifacts:
@@ -49,4 +51,29 @@ run_migrate:
   - >
     ssh -p$PORT $DEST_SERVER "set -x && /usr/bin/php $DEST_PATH/yii
     migrate --interactive=0 2>&1> $DEST_PATH/runtime/logs/migrate2.log"
+
+npm_install:
+  only:
+    refs:
+      - master
+    changes:
+      - frontend/package.json
+      - frontend/package-lock.json
+  stage: npm_install
+  script:
+    # Makes the server print the executed commands to stdout.
+    # Required for monitoring and debug.
+    - ssh -p$PORT $DEST_SERVER "set -x &&cd $DEST_PATH/frontend &&npm install"
+
+build_front:
+  only:
+    refs:
+      - master
+    changes:
+      - frontend/src/**/*
+  stage: build_front
+  script:
+    # Makes the server print the executed commands to stdout.
+    # Required for monitoring and debug.
+    - ssh -p$PORT $DEST_SERVER "set -x &&cd $DEST_PATH/frontend &&npm run prod"
 

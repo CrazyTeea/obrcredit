@@ -1,0 +1,27 @@
+{
+  "bitwise": true,
+  "curly": true,
+  "eqeqeq": true,
+  "esversion": 9,
+  "immed": true,
+  "latedef": true,
+  "newcap": true,
+  "noarg": true,
+  "noempty": true,
+  "nonew": true,
+  "quotmark": "single",
+  "unused": true,
+  "undef": true,
+  "trailing": true,
+  "expr": true,
+  "laxbreak": true,
+  "maxerr": 100,
+  "browser": true,
+  "jquery": false,
+  "-W070": true,
+  "-W024": true,
+  "-W117": true,
+  "globals": {
+    "define": false
+  }
+}
