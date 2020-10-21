@@ -143,7 +143,7 @@ class ReferenceController extends Controller
     }
 
 
-    public function actionStudents($file, $nameId, $dCreditId, $orgId, $numPP, $bankId, $dStart)
+    public function actionStudents($file, $nameId, $dCreditId, $codeId, $orgId, $numPP, $bankId, $dStart)
     {
 
         $csvP = Yii::getAlias('@webroot') . "/toParse/$file.csv";
@@ -216,14 +216,14 @@ class ReferenceController extends Controller
             } else $student->education_status = 1;
 
 
-            $student->code = $student2->code ?? 12345;
-
+            $student->code = $row[$codeId];
+            $student->grace_period = $student->perevod = $student->osnovanie = $student->isEnder = 0;
             $student->date_start = $row[$dStart];
             $student->name = $name;
             $student->date_credit = $row[$dCreditId];
             $student->id_org = $row[$orgId];
             $student->date_create = date("Y-m-d");
-            $student->status = 1;
+            $student->status = 2;
             $student->id_number_pp = $row[$numPP];
             $student->id_bank = $row[$bankId];
 
@@ -264,7 +264,8 @@ class ReferenceController extends Controller
         fclose($csv);
         echo "success!";
     }
-    public function actionCode($file, $code,$nameId,$org)
+
+    public function actionCode($file, $code, $nameId, $org)
     {
 
         $csvP = Yii::getAlias('@webroot') . "/toParse/$file.csv";
@@ -288,8 +289,8 @@ class ReferenceController extends Controller
         while (($row = fgetcsv($csv, 32000, ';')) != false) {
             $name = mb_convert_case($row[$nameId], MB_CASE_TITLE);
 
-            $student = Students::findOne(['name'=>$name,'id_org'=>$row[$org],'date_start'=>'2020-09-01']);
-            if ($student){
+            $student = Students::findOne(['name' => $name, 'id_org' => $row[$org], 'date_start' => '2020-09-01']);
+            if ($student) {
                 $student->code = $row[$code];
                 $student->save(false);
             }
