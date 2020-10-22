@@ -74,74 +74,28 @@ class ReferenceController extends Controller
 
     }
 
-    public function actionDoubles($year, $month)
+    public function actionSt($nameId, $idOrgId, $statusId, $gpId, $esPP, $osnId, $ender, $numpp, $bank)
     {
-        $students = Students::find()->where(['YEAR(date_start)' => $year, 'MONTH(date_start)' => $month, 'id_number_pp' => 1, 'id_bank' => 1, 'system_status' => 1])->orderBy('id')->groupBy('name')->all();
+        $csvP = Yii::getAlias('@webroot') . "/toParse/old.csv";
+        $csv = fopen($csvP, 'r');
+        while (($row = fgetcsv($csv, 32000, ';')) != false) {
+            $name = mb_convert_case($row[$nameId], MB_CASE_TITLE);
+            $student = Students::findOne(['name' => $name, 'id_org' => $row[$idOrgId], 'id_number_pp' => $row[$numpp], 'id_bank' => $row[$bank]]);
 
-        foreach ($students as $student) {
-            $s = Students::find()->where(['YEAR(date_start)' => $year, 'MONTH(date_start)' => $month, 'id_number_pp' => 1, 'id_bank' => 1, 'name' => $student->name])->andWhere(['<>', 'id', $student->id])->all();
-            if ($s) {
-                foreach ($s as $item) {
-                    $item->system_status = 0;
-                    $item->save(false);
-                }
+            if ($student) {
+                $student->grace_period = $row[$gpId];
+                $student->education_status = $row[$esPP];
+                $student->osnovanie = $row[$osnId];
+                $student->isEnder = $row[$ender];
+                $student->status = $row[$statusId];
+                $student->save(false);
             }
-        }
-    }
 
-    public function actionKek()
-    {
-        $students = Students::find()->where(['system_status' => 0])->all();
 
-        foreach ($students as $student) {
-            $sh = Students::find()
-                ->join('join', StudentsHistory::tableName(), 'students.id = students_history.id_student')
-                ->where(['name' => $student->name, 'date_credit' => $student->date_credit])->one();
-            if ($sh) {
-                $st2 = Students::findAll(['name' => $student->name, 'date_credit' => $student->date_credit]);
-                foreach ($st2 as $item) {
-                    $item->system_status = 0;
-                    $govno = StudentsHistory::find()
-                            ->join('join', Students::tableName(), 'students.id = students_history.id_student')
-                            ->where(['name' => $student->name, 'date_credit' => $student->date_credit, 'date_start' => $item->date_start])
-                            ->one() ?? new StudentsHistory();
-                    if ($govno->isNewRecord) {
-                        $govno->id_student = $item->id;
-                        $govno->id_change = 1;
-                        $govno->save();
-                    }
-                    $item->save();
-                }
-            }
-        }
-    }
-
-    public function actionUpper()
-    {
-        $students = Students::find()->all();
-
-        foreach ($students as $student) {
-            $b = $student->name;
-            $student->name = mb_convert_case($student->name, MB_CASE_TITLE);
-            if (!$student->education_status) $student->education_status = 0;
-            $student->save(false);
-            echo "было $b стало $student->name \n";
         }
 
-    }
 
-    public function actionDate()
-    {
-        $st = Students::find()->all();
-        foreach ($st as $item) {
-            $date = explode('-', $item->date_start);
-            if (count($date) == 3) {
-                $item->date_start = "$date[0]-$date[1]-01";
-                $item->save(false);
-            }
-        }
     }
-
 
     public function actionStudents($file, $nameId, $dCreditId, $codeId, $orgId, $numPP, $bankId, $dStart)
     {
@@ -223,7 +177,7 @@ class ReferenceController extends Controller
             $student->date_credit = $row[$dCreditId];
             $student->id_org = $row[$orgId];
             $student->date_create = date("Y-m-d");
-            $student->status = 2;
+            $student->status = 1;
             $student->id_number_pp = $row[$numPP];
             $student->id_bank = $row[$bankId];
 
@@ -259,42 +213,6 @@ class ReferenceController extends Controller
 
         }
         echo "добавлено студентов $count \n отчислены в прошлом месяце $countOtch \n выпускники в прошлом месяце $countVip \n";
-
-
-        fclose($csv);
-        echo "success!";
-    }
-
-    public function actionCode($file, $code, $nameId, $org)
-    {
-
-        $csvP = Yii::getAlias('@webroot') . "/toParse/$file.csv";
-
-        $csv = fopen($csvP, 'r');
-        if (!$csvP)
-            exit("Файл не найден");
-
-        $row = fgetcsv($csv, 1000, ';');
-        echo "код->$row[$code]  \n";
-
-        fclose($csv);
-        $csv = fopen($csvP, 'r');
-        echo "Вы уверене? \n ";
-        $key = readline();
-        if (!($key === "yes" || $key === "y" || $key === "Y")) {
-            exit(0);
-        }
-
-
-        while (($row = fgetcsv($csv, 32000, ';')) != false) {
-            $name = mb_convert_case($row[$nameId], MB_CASE_TITLE);
-
-            $student = Students::findOne(['name' => $name, 'id_org' => $row[$org], 'date_start' => '2020-09-01']);
-            if ($student) {
-                $student->code = $row[$code];
-                $student->save(false);
-            }
-        }
 
 
         fclose($csv);
