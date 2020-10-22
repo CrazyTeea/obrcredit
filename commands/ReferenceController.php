@@ -108,7 +108,7 @@ class ReferenceController extends Controller
 
         while (($row = fgetcsv($csv, 32000, ';')) != false) {
             $name = mb_convert_case($row[$nameId], MB_CASE_TITLE);
-            $student = Students::findOne(['name' => $name, 'id_org' => $row[$idOrgId], 'id_number_pp' => $row[$numpp], 'id_bank' => $row[$bank]]);
+            $student = Students::find()->where(['name' => $name, 'id_org' => $row[$idOrgId], 'id_number_pp' => $row[$numpp], 'id_bank' => $row[$bank], 'year(date_start)'=>2017])->one();
 
             if ($student) {
                 $student->grace_period = $row[$gpId];
