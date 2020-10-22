@@ -74,10 +74,38 @@ class ReferenceController extends Controller
 
     }
 
-    public function actionSt($nameId, $idOrgId, $statusId, $gpId, $esPP, $osnId, $ender, $numpp, $bank)
+    public function actionSt($nameId,$perevod, $idOrgId, $statusId, $gpId, $esPP, $osnId, $ender, $numpp, $bank)
     {
         $csvP = Yii::getAlias('@webroot') . "/toParse/old.csv";
         $csv = fopen($csvP, 'r');
+
+        if (!$csvP)
+            exit("Файл не найден");
+
+        $row = fgetcsv($csv, 1000, ';');
+
+        echo "
+            name->$row[$nameId]
+            id_org->$row[$idOrgId]
+            status кредита->$row[$statusId]
+            perevod->$row[$perevod]
+            gp-> $row[$gpId]
+            es->$row[$esPP]
+            osn->$row[$osnId]
+            ender->$row[$ender]
+            numpp->$row[$numpp]
+            bank ->$row[$bank] \n";
+
+
+        fclose($csv);
+        $csv = fopen($csvP, 'r');
+        echo "Вы уверене? \n ";
+        $key = readline();
+        if (!($key === "yes" || $key === "y" || $key === "Y")) {
+            exit(0);
+        }
+
+
         while (($row = fgetcsv($csv, 32000, ';')) != false) {
             $name = mb_convert_case($row[$nameId], MB_CASE_TITLE);
             $student = Students::findOne(['name' => $name, 'id_org' => $row[$idOrgId], 'id_number_pp' => $row[$numpp], 'id_bank' => $row[$bank]]);
@@ -88,13 +116,10 @@ class ReferenceController extends Controller
                 $student->osnovanie = $row[$osnId];
                 $student->isEnder = $row[$ender];
                 $student->status = $row[$statusId];
+                $student->perevod = $row[$perevod];
                 $student->save(false);
             }
-
-
         }
-
-
     }
 
     public function actionStudents($file, $nameId, $dCreditId, $codeId, $orgId, $numPP, $bankId, $dStart)
