@@ -74,7 +74,7 @@ class ReferenceController extends Controller
 
     }
 
-    public function actionSt($nameId,$perevod, $idOrgId, $statusId, $gpId, $esPP, $osnId, $ender, $numpp, $bank)
+    public function actionSt($nameId, $perevod, $idOrgId, $statusId, $gpId, $esPP, $osnId, $ender, $numpp, $bank)
     {
         $csvP = Yii::getAlias('@webroot') . "/toParse/old.csv";
         $csv = fopen($csvP, 'r');
@@ -108,7 +108,7 @@ class ReferenceController extends Controller
 
         while (($row = fgetcsv($csv, 32000, ';')) != false) {
             $name = mb_convert_case($row[$nameId], MB_CASE_TITLE);
-            $student = Students::find()->where(['name' => $name, 'id_org' => $row[$idOrgId], 'id_number_pp' => $row[$numpp], 'id_bank' => $row[$bank], 'year(date_start)'=>2017])->one();
+            $student = Students::find()->where(['name' => $name, 'id_org' => $row[$idOrgId], 'id_number_pp' => $row[$numpp], 'id_bank' => $row[$bank], 'year(date_start)' => 2017])->one();
 
             if ($student) {
                 $student->grace_period = $row[$gpId];
@@ -242,6 +242,19 @@ class ReferenceController extends Controller
 
         fclose($csv);
         echo "success!";
+    }
+
+    public function actionEnder()
+    {
+        $sts = Students::findAll(['YEAR(date_start)'=>2017]);
+        foreach ($sts as $st){
+            if (($temp = Students::findOne(['id_org'=>$st->id_org,'name'=>$st->name,'id_bank'=>$st->id_bank,'id_number_pp'=>$st->id_number_pp,'year(date_start)'=>2018])) && $temp->date_ender){
+                $st->date_ender = $temp->date_ender;
+                $st->isEnder = true;
+                $st->education_status=$st->osnovanie=$st->grace_period = 0;
+                $st->save(false);
+            }
+        }
     }
 
 
