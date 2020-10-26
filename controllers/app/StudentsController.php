@@ -542,46 +542,36 @@ class StudentsController extends AppController
 
     public function actionOtch($id){
         $model = Students::findOne($id);
-        $model->education_status = 0;
-        $model->save(false);
-        $models = Students::find()->where(['name'=>$model->name,'id_org'=>$model->id_org])->andWhere(['>=','date_start',$model->date_start])->all();
-        foreach ($models as $model2){
-            $model2->sytem_status = 0;
+        $models = Students::find()->where(['name'=>$model->name,'id_org'=>$model->id_org,'id_bank'=>$model->id_bank,'id_number_pp'=>$model->id_number_pp])->andWhere(['>=','date_start',$model->date_start])->all();
 
-            $govno = StudentsHistory::findOne(['id_student'=>$model2->id]) ?? new StudentsHistory();
-            if ($govno->isNewRecord){
-                $govno->id_student = $model2->id;
-                $govno->id_change = 1;
-                $govno->save();
-            }
+        StudentsHistory::deleteAll(['id_student'=>array_map(function ($item){return $item->id;},$models)]);
 
-
+        foreach ($models as $model2) {
+            $model2->system_status=1;
+            $model2->education_status = $model2->grace_period = $model2->isEnder = 0;
+            $model2->osnovanie = 2;
             $model2->save(false);
         }
+
+
         return $this->redirect(Yii::$app->request->referrer);
 
     }
     public function actionVip($id){
         $model = Students::findOne($id);
-        $model->education_status = $model->osnovanie = 0;
-        $model->isEnder = 1;
-        $model->date_ender = $model->date_start;
-        $model->save(false);
-        $models = Students::find()->where(['name'=>$model->name,'id_org'=>$model->id_org])->andWhere(['>','date_start',$model->date_start])->all();
-        foreach ($models as $model2){
-            $model2->sytem_status = 0;
+        $models = Students::find()->where(['name'=>$model->name,'id_org'=>$model->id_org,'id_bank'=>$model->id_bank,'id_number_pp'=>$model->id_number_pp])->andWhere(['>=','date_start',$model->date_start])->all();
 
-            $govno = StudentsHistory::findOne(['id_student'=>$model2->id]) ?? new StudentsHistory();
-            if ($govno->isNewRecord){
-                $govno->id_student = $model2->id;
-                $govno->id_change = 1;
-                $govno->save();
-            }
+        StudentsHistory::deleteAll(['id_student'=>array_map(function ($item){return $item->id;},$models)]);
 
+        foreach ($models as $model2) {
+            $model2->system_status=1;
+            $model2->education_status = $model2->grace_period = $model2->osnovanie = 0;
+            $model2->isEnder = 1;
+            $model2->date_ender = '2020-10-26';
             $model2->save(false);
         }
-        return $this->redirect(Yii::$app->request->referrer);
 
+        return $this->redirect(Yii::$app->request->referrer);
     }
 
     public function actionActive($id){
