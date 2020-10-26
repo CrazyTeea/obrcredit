@@ -357,14 +357,14 @@ class StudentsController extends AppController
             $transaction = Yii::$app->db->beginTransaction();
             $save = true;
             foreach ($students as $student) {
-                if ($student->status !== 2){
+
                     $student->status = 2;
                     $student->date_status = date( "Y-m-d" );
                     $save &=$student->save(false);
-                }
+
             }
             if ($save) $transaction->commit(); else $transaction->rollBack();
-            return $this->redirect( ['by-bank', 'id' => Yii::$app->getSession()[ 'id_bank' ], 'month' => Yii::$app->getSession()[ 'month' ], 'nPP'=>$nPP] );
+            return $this->redirect( Yii::$app->request->referrer );
         }
 
         $student = $this->findModel( $id );
