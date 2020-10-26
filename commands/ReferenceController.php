@@ -246,9 +246,9 @@ class ReferenceController extends Controller
 
     public function actionEnder()
     {
-        $sts = Students::findAll(['YEAR(date_start)'=>2017]);
+        $sts = Students::find()->where(['YEAR(date_start)'=>2017])->all();
         foreach ($sts as $st){
-            if (($temp = Students::findOne(['id_org'=>$st->id_org,'name'=>$st->name,'id_bank'=>$st->id_bank,'id_number_pp'=>$st->id_number_pp,'year(date_start)'=>2018])) && $temp->date_ender){
+            if (($temp = Students::find()->where(['id_org'=>$st->id_org,'name'=>$st->name,'id_bank'=>$st->id_bank,'id_number_pp'=>$st->id_number_pp,'year(date_start)'=>2018])->one()) && $temp->date_ender){
                 $st->date_ender = $temp->date_ender;
                 $st->isEnder = true;
                 $st->education_status=$st->osnovanie=$st->grace_period = 0;
