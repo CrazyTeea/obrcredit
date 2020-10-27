@@ -74,53 +74,6 @@ class ReferenceController extends Controller
 
     }
 
-    public function actionSt($nameId, $perevod, $idOrgId, $statusId, $gpId, $esPP, $osnId, $ender, $numpp, $bank)
-    {
-        $csvP = Yii::getAlias('@webroot') . "/toParse/old.csv";
-        $csv = fopen($csvP, 'r');
-
-        if (!$csvP)
-            exit("Файл не найден");
-
-        $row = fgetcsv($csv, 1000, ';');
-
-        echo "
-            name->$row[$nameId]
-            id_org->$row[$idOrgId]
-            status кредита->$row[$statusId]
-            perevod->$row[$perevod]
-            gp-> $row[$gpId]
-            es->$row[$esPP]
-            osn->$row[$osnId]
-            ender->$row[$ender]
-            numpp->$row[$numpp]
-            bank ->$row[$bank] \n";
-
-
-        fclose($csv);
-        $csv = fopen($csvP, 'r');
-        echo "Вы уверене? \n ";
-        $key = readline();
-        if (!($key === "yes" || $key === "y" || $key === "Y")) {
-            exit(0);
-        }
-
-
-        while (($row = fgetcsv($csv, 32000, ';')) != false) {
-            $name = mb_convert_case($row[$nameId], MB_CASE_TITLE);
-            $student = Students::find()->where(['name' => $name, 'id_org' => $row[$idOrgId], 'id_number_pp' => $row[$numpp], 'id_bank' => $row[$bank], 'year(date_start)' => 2017])->one();
-
-            if ($student) {
-                $student->grace_period = $row[$gpId];
-                $student->education_status = $row[$esPP];
-                $student->osnovanie = $row[$osnId];
-                $student->isEnder = $row[$ender];
-                $student->status = $row[$statusId];
-                $student->perevod = $row[$perevod];
-                $student->save(false);
-            }
-        }
-    }
 
     public function actionStudents($file, $nameId, $dCreditId, $codeId, $orgId, $numPP, $bankId, $dStart)
     {
@@ -243,19 +196,5 @@ class ReferenceController extends Controller
         fclose($csv);
         echo "success!";
     }
-
-    public function actionEnder()
-    {
-        $sts = Students::find()->where(['YEAR(date_start)'=>2017])->all();
-        foreach ($sts as $st){
-            if (($temp = Students::find()->where(['id_org'=>$st->id_org,'name'=>$st->name,'id_bank'=>$st->id_bank,'id_number_pp'=>$st->id_number_pp,'year(date_start)'=>2018])->one()) && $temp->date_ender){
-                $st->date_ender = $temp->date_ender;
-                $st->isEnder = true;
-                $st->education_status=$st->osnovanie=$st->grace_period = 0;
-                $st->save(false);
-            }
-        }
-    }
-
 
 }
