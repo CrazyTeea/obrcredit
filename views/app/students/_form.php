@@ -32,13 +32,23 @@ function getDocByDescriptor(string $descriptor, array $docs, ActiveForm $form, \
     ?>
     <?= $form->errorSummary($model) ?>
     <div class="row">
-        <div class="col-md-4">
+        <div class="col-md-3">
             <?= $form->field($model, 'name')->textInput(['readonly' => $readonly]) ?>
         </div>
+        <?php if ($model->id_org == 325):?>
+        <div class="col-md-3">
+            <?= $form->field($model, 'code')->textInput() ?>
+        </div>
+
+        <div class="col-md-3">
+            <?= $form->field($model, 'birthday')->input('date') ?>
+        </div>
+        <?php else:?>
         <div class="col-md-4">
             <?= $form->field($model, 'code')->textInput() ?>
         </div>
-        <div class="col-md-4">
+        <?php endif;?>
+        <div class="col-md-2">
             <?= $form->field($model, 'date_credit')->textInput(['readonly' => $readonly]) ?>
         </div>
     </div>

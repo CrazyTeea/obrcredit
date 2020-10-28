@@ -90,7 +90,11 @@ $rasp_act_otch = StudentDocs::getDocByDescriptorName('rasp_act_otch',$model->id)
     <h4>
         <span class="label label-info"><?= " Год: $year Месяц: " . $months[date('m', strtotime($model->date_start)) - 1] . " номер ПП: {$model->numberPP->number}" ?></span>
     </h4>
-
+    <?php if ($model->id_org == 325): ?>
+        <h4>
+            <span class="label label-success"> Дата рождения: <?= $model->birthday ? Yii::$app->getFormatter()->asDate(strtotime($model->birthday), 'php: d F Y') : '' ?></span>
+        </h4>
+    <?php endif; ?>
 
     <?php if ($canUpdate): ?>
         <?= Html::a('Редактировать', ['update', 'id' => $model->id], ['class' => 'btn btn-primary']) ?>
@@ -153,6 +157,7 @@ $rasp_act_otch = StudentDocs::getDocByDescriptorName('rasp_act_otch',$model->id)
     <?php endif; ?>
     <?= Html::a('Вернуться к списку', $route, ['class' => 'btn btn-default']); ?>
     <?= Html::a('История', ['history', 'id' => $model->id], ['class' => 'btn btn-primary']) ?>
+
 
     <table class="table table-bordered">
         <thead>
@@ -326,11 +331,11 @@ $rasp_act_otch = StudentDocs::getDocByDescriptorName('rasp_act_otch',$model->id)
             <td><p class="text-sm-center"> пункт 35 </p></td>
             <td>
                 <?php
-/*                $k = Students::getOsnovanie()[7];
-                if (7 == $model->osnovanie)
-                    echo "<p class='text-sm-center' > &#9745; {$k} </p>";
-                else echo "<p class='text-sm-center'> &#9744; $k</p>";
-                */?>
+        /*                $k = Students::getOsnovanie()[7];
+                        if (7 == $model->osnovanie)
+                            echo "<p class='text-sm-center' > &#9745; {$k} </p>";
+                        else echo "<p class='text-sm-center'> &#9744; $k</p>";
+                        */ ?>
             </td>
             <td colspan="4"></td>
         </tr>-->

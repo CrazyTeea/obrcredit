@@ -1,7 +1,7 @@
 <?php
 return [
     1 => [
-        'root',
+        'admin',
     ],
     3 => [
         'podved',
