@@ -26,7 +26,6 @@ use yii\helpers\Url;
 use yii\web\BadRequestHttpException;
 use yii\web\NotFoundHttpException;
 use yii\web\Response;
-use function Matrix\trace;
 
 /**
  * StudentsController implements the CRUD actions for Students model.
@@ -54,38 +53,41 @@ class StudentsController extends AppController
      * @return bool
      * @throws BadRequestHttpException
      */
-    public function beforeAction( $action )
+    public function beforeAction($action)
     {
         if (parent::beforeAction($action)) {
             if ($this->enableCsrfValidation && Yii::$app->getErrorHandler()->exception === null && !Yii::$app->getRequest()->validateCsrfToken()) {
                 throw new BadRequestHttpException(Yii::t('yii', 'Не удалось проверить данные.'));
             }
-            $this->cans = Yii::$app->session->get('cans' );
+            $this->cans = Yii::$app->session->get('cans');
             return true;
         }
 
         return false;
     }
 
-    public function actionHistory($id){
+    public function actionHistory($id)
+    {
         $model = Students::findOne($id);
-        $models = Students::findAll(['name'=>$model->name]);
-        return $this->render('history',compact('models'));
+        $models = Students::findAll(['name' => $model->name]);
+        return $this->render('history', compact('models'));
     }
 
 
-    public function actionDp($id){
+    public function actionDp($id)
+    {
         $m = Students::findOne($id);
         $m->ext_status = 2;
         $m->save(false);
-        return $this->redirect(['view','id'=>$id]);
+        return $this->redirect(['view', 'id' => $id]);
     }
 
-    public function actionAb($id){
+    public function actionAb($id)
+    {
         $m = Students::findOne($id);
         $m->ext_status = 1;
         $m->save(false);
-        return $this->redirect(['view','id'=>$id]);
+        return $this->redirect(['view', 'id' => $id]);
     }
 
     /**
@@ -93,21 +95,21 @@ class StudentsController extends AppController
      * @param null $id
      * @return mixed
      */
-    public function actionIndex( $id = null )
+    public function actionIndex($id = null)
     {
         $this->updateRouteHistory('/app/students/index');
         $searchModel = new StudentsSearch();
 
-        if ( !empty( $id ) )
-            Yii::$app->session[ 'id_org' ] = $id;
-        if ( !( $this->cans[ 0 ] || $this->cans[ 1 ] ) )
-            Yii::$app->session[ 'id_org' ] = User::findIdentity( Yii::$app->user->id )->id_org ?? 1;
-        if ( Yii::$app->session[ 'id_org' ] )
-            Yii::$app->session[ 'short_name_org' ] = Organizations::findOne( Yii::$app->session[ 'id_org' ] )->name;
-        $searchModel->id_org = Yii::$app->session[ 'id_org' ];
+        if (!empty($id))
+            Yii::$app->session['id_org'] = $id;
+        elseif (!($this->cans[0] || $this->cans[1]))
+            Yii::$app->session['id_org'] = User::findIdentity(Yii::$app->user->id)->id_org ?? 1;
+        if (Yii::$app->session['id_org'])
+            Yii::$app->session['short_name_org'] = Organizations::findOne(Yii::$app->session['id_org'])->name;
+        $searchModel->id_org = Yii::$app->session['id_org'];
 
-        $searchModel->id_bank = Yii::$app->session[ 'id_bank' ];
-        $searchModel->id_number_pp = Yii::$app->session[ 'nPP' ];
+        $searchModel->id_bank = Yii::$app->session['id_bank'];
+        $searchModel->id_number_pp = Yii::$app->session['nPP'];
         $searchModel->month = Yii::$app->session['month'];
         $searchModel->year = Yii::$app->session['year'];
 
@@ -122,14 +124,13 @@ class StudentsController extends AppController
         $searchDosPog->a = false;
 
 
-
         $isApprove = Students::find()->where([
-            'id_bank'=>$searchModel->id_bank,
-            'MONTH(date_start)'=>$searchModel->month,
-            'YEAR(date_start)'=>$searchModel->year,
-            'id_number_pp'=>$searchModel->id_number_pp,
-            'id_org'=>$searchModel->id_org,
-            'status'=>1
+            'id_bank' => $searchModel->id_bank,
+            'MONTH(date_start)' => $searchModel->month,
+            'YEAR(date_start)' => $searchModel->year,
+            'id_number_pp' => $searchModel->id_number_pp,
+            'id_org' => $searchModel->id_org,
+            'status' => 1
         ])->count();
 
         $searchModel->grace = true;
@@ -144,11 +145,11 @@ class StudentsController extends AppController
         //  $searchModel3->id_bank = Yii::$app->session[ 'id_bank' ];
         //   $searchModel3->id_number_pp = Yii::$app->session[ 'nPP' ];
 
-        $dataProvider = $searchModel->search( Yii::$app->request->queryParams );
-        $dataProvider2 = $searchModel2->search( Yii::$app->request->queryParams );
-        $dataProvider3 = $searchModel3->search( Yii::$app->request->queryParams );
-        $dataProviderA = $searchAbitur->search( Yii::$app->request->queryParams );
-        $dataProviderD = $searchDosPog->search( Yii::$app->request->queryParams );
+        $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
+        $dataProvider2 = $searchModel2->search(Yii::$app->request->queryParams);
+        $dataProvider3 = $searchModel3->search(Yii::$app->request->queryParams);
+        $dataProviderA = $searchAbitur->search(Yii::$app->request->queryParams);
+        $dataProviderD = $searchDosPog->search(Yii::$app->request->queryParams);
 
 
         $searchModel4 = new StudentsHistorySearch();
@@ -159,17 +160,17 @@ class StudentsController extends AppController
         $searchModel4->org_old = $searchModel->id_org;
         $dataProvider4 = $searchModel4->search(Yii::$app->request->queryParams);
 
-        $studentsExport = Students::find()->where( [
-            'id_bank'=>$searchModel->id_bank,
-            'MONTH(date_start)'=>$searchModel->month,
-            'YEAR(date_start)'=>$searchModel->year,
-            'id_number_pp'=>$searchModel->id_number_pp,
-            'id_org'=>$searchModel->id_org,
+        $studentsExport = Students::find()->where([
+            'id_bank' => $searchModel->id_bank,
+            'MONTH(date_start)' => $searchModel->month,
+            'YEAR(date_start)' => $searchModel->year,
+            'id_number_pp' => $searchModel->id_number_pp,
+            'id_org' => $searchModel->id_org,
         ]);
 
         // var_dump($studentsExport->prepare(Yii::$app->db->queryBuilder)->createCommand()->rawSql);exit();
 
-        $exportProvider = new ActiveDataProvider( ['query' => $studentsExport, 'pagination' => false] );
+        $exportProvider = new ActiveDataProvider(['query' => $studentsExport, 'pagination' => false]);
         $views['index']['search'] = $searchModel;
         $views['index']['provider'] = $dataProvider;
         $views['index']['export'] = $exportProvider;
@@ -191,7 +192,7 @@ class StudentsController extends AppController
         $views['keks']['search'] = $searchModel4;
         $views['keks']['provider'] = $dataProvider4;
 
-        return $this->render( 'index',compact('views') );
+        return $this->render('index', compact('views'));
     }
 
 
@@ -201,31 +202,31 @@ class StudentsController extends AppController
      * @param $month
      * @return string|Response
      */
-    public function actionByBank( $id, $nPP, $month )
+    public function actionByBank($id, $nPP, $month)
     {
         $this->updateRouteHistory('/app/students/by-bank');
         if (!Yii::$app->session->has('year'))
             return $this->redirect(['app/main/index']);
 
-        Yii::$app->session->set('month',$month);
+        Yii::$app->session->set('month', $month);
 
         $searchModel = new StudentsSearch();
 
-        Yii::$app->session->set('id_bank',$id);
+        Yii::$app->session->set('id_bank', $id);
 
-        Yii::$app->session->set('nPP',$nPP);
+        Yii::$app->session->set('nPP', $nPP);
 
 
-        if ( !( $this->cans[ 0 ] || $this->cans[ 1 ] ) )
-            Yii::$app->session[ 'id_org' ] = User::findIdentity( Yii::$app->user->id )->id_org ?? 1;
-        Yii::$app->session[ 'short_name_org' ] = ($org = Organizations::findOne( Yii::$app->session[ 'id_org' ] )) ? $org->name : '';
-        $searchModel->id_org = Yii::$app->session[ 'id_org' ];
+        if (!($this->cans[0] || $this->cans[1]))
+            Yii::$app->session['id_org'] = User::findIdentity(Yii::$app->user->id)->id_org ?? 1;
+        Yii::$app->session['short_name_org'] = ($org = Organizations::findOne(Yii::$app->session['id_org'])) ? $org->name : '';
+        $searchModel->id_org = Yii::$app->session['id_org'];
 
-        $searchModel->month  = Yii::$app->session['month'];
+        $searchModel->month = Yii::$app->session['month'];
         $searchModel->year = Yii::$app->session['year'];
 
-        $searchModel->id_bank = Yii::$app->session[ 'id_bank' ];
-        $searchModel->id_number_pp = Yii::$app->session[ 'nPP' ];
+        $searchModel->id_bank = Yii::$app->session['id_bank'];
+        $searchModel->id_number_pp = Yii::$app->session['nPP'];
 
         $searchModel->ext_status = 0;
 
@@ -250,11 +251,11 @@ class StudentsController extends AppController
         // $searchModel3->id_bank = Yii::$app->session[ 'id_bank' ];
         // $searchModel3->id_number_pp = Yii::$app->session[ 'nPP' ];
 
-        $dataProvider = $searchModel->search( Yii::$app->request->queryParams );
-        $dataProvider2 = $searchModel2->search( Yii::$app->request->queryParams );
-        $dataProvider3 = $searchModel3->search( Yii::$app->request->queryParams );
-        $dataProviderA = $searchAbitur->search( Yii::$app->request->queryParams );
-        $dataProviderD = $searchDosPog->search( Yii::$app->request->queryParams );
+        $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
+        $dataProvider2 = $searchModel2->search(Yii::$app->request->queryParams);
+        $dataProvider3 = $searchModel3->search(Yii::$app->request->queryParams);
+        $dataProviderA = $searchAbitur->search(Yii::$app->request->queryParams);
+        $dataProviderD = $searchDosPog->search(Yii::$app->request->queryParams);
 
         $searchModel4 = new StudentsHistorySearch();
         $searchModel4->month = $searchModel->month;
@@ -265,22 +266,22 @@ class StudentsController extends AppController
         $dataProvider4 = $searchModel4->search(Yii::$app->request->queryParams);
 
         $isApprove = Students::find()->where([
-            'id_bank'=>$searchModel->id_bank,
-            'MONTH(date_start)'=>$searchModel->month,
-            'YEAR(date_start)'=>$searchModel->year,
-            'id_number_pp'=>$searchModel->id_number_pp,
-            'id_org'=>$searchModel->id_org,
-            'status'=>1
+            'id_bank' => $searchModel->id_bank,
+            'MONTH(date_start)' => $searchModel->month,
+            'YEAR(date_start)' => $searchModel->year,
+            'id_number_pp' => $searchModel->id_number_pp,
+            'id_org' => $searchModel->id_org,
+            'status' => 1
         ])->all();
 
-        $studentsExport = Students::find()->where( [
-            'id_bank'=>$searchModel->id_bank,
-            'MONTH(date_start)'=>$searchModel->month,
-            'YEAR(date_start)'=>$searchModel->year,
-            'id_number_pp'=>$searchModel->id_number_pp,
-            'id_org'=>$searchModel->id_org,
+        $studentsExport = Students::find()->where([
+            'id_bank' => $searchModel->id_bank,
+            'MONTH(date_start)' => $searchModel->month,
+            'YEAR(date_start)' => $searchModel->year,
+            'id_number_pp' => $searchModel->id_number_pp,
+            'id_org' => $searchModel->id_org,
         ]);
-        $exportProvider = new ActiveDataProvider( ['query' => $studentsExport, 'pagination' => false] );
+        $exportProvider = new ActiveDataProvider(['query' => $studentsExport, 'pagination' => false]);
 
         $views['index']['search'] = $searchModel;
         $views['index']['provider'] = $dataProvider;
@@ -302,7 +303,7 @@ class StudentsController extends AppController
         $views['keks']['search'] = $searchModel4;
         $views['keks']['provider'] = $dataProvider4;
 
-        return $this->render( 'index',compact('views'));
+        return $this->render('index', compact('views'));
     }
 
     /**
@@ -310,30 +311,31 @@ class StudentsController extends AppController
      * @return Response
      * @throws NotFoundHttpException
      */
-    public function actionReturn($id){
-        if ($post = Yii::$app->request->post()){
+    public function actionReturn($id)
+    {
+        if ($post = Yii::$app->request->post()) {
             $model = $this->findModel($id);
             $new_id = 0;
-            if ($model and $model->load($post)){
-                $date = explode('-',$model->date_start);
-                foreach (xrange($date[0],2020) as $year){
-                    foreach (xrange($date[1],12) as $month){
+            if ($model and $model->load($post)) {
+                $date = explode('-', $model->date_start);
+                foreach (xrange($date[0], 2020) as $year) {
+                    foreach (xrange($date[1], 12) as $month) {
                         $student = new Students();
                         $student->date_start = "{$year}-{$month}-01";
-                        $student->name=$model->name;
-                        $student->code=$model->code;
+                        $student->name = $model->name;
+                        $student->code = $model->code;
                         $student->date_credit = $model->date_credit;
                         $student->id_bank = $model->id_bank;
                         $student->id_number_pp = $model->id_number_pp;
                         $student->education_status = 1;
                         $student->system_status = 1;
                         $student->save(false);
-                        $new_id=$student->id;
+                        $new_id = $student->id;
                     }
                     $date[1] = 1;
                 }
             }
-            return $this->redirect(['view','id'=>$new_id]);
+            return $this->redirect(['view', 'id' => $new_id]);
         }
         return null;
     }
@@ -344,38 +346,38 @@ class StudentsController extends AppController
      * @throws NotFoundHttpException
      * @throws \yii\db\Exception
      */
-    public function actionApprove( $id = null)
+    public function actionApprove($id = null)
     {
         $this->updateRouteHistory('/app/students/approve');
         if (is_null($id)) {
-            $nPP = Yii::$app->session->get( 'nPP' );
-            $id_org = Yii::$app->getSession()[ 'id_org' ];
-            $month = Yii::$app->getSession()[ 'month' ];
-            $year = Yii::$app->getSession()[ 'year' ];
-            $id_bank = Yii::$app->getSession()[ 'id_bank' ];
-            $students = Students::find()->where( ['id_org' => $id_org, 'MONTH(date_start)' => $month,'status'=>1, 'YEAR(date_start)' => $year, 'id_bank' => $id_bank, 'id_number_pp' => $nPP] )->all();
+            $nPP = Yii::$app->session->get('nPP');
+            $id_org = Yii::$app->getSession()['id_org'];
+            $month = Yii::$app->getSession()['month'];
+            $year = Yii::$app->getSession()['year'];
+            $id_bank = Yii::$app->getSession()['id_bank'];
+            $students = Students::find()->where(['id_org' => $id_org, 'MONTH(date_start)' => $month, 'status' => 1, 'YEAR(date_start)' => $year, 'id_bank' => $id_bank, 'id_number_pp' => $nPP])->all();
             $transaction = Yii::$app->db->beginTransaction();
             $save = true;
             foreach ($students as $student) {
 
-                    $student->status = 2;
-                    $student->date_status = date( "Y-m-d" );
-                    $save &=$student->save(false);
+                $student->status = 2;
+                $student->date_status = date("Y-m-d");
+                $save &= $student->save(false);
 
             }
             if ($save) $transaction->commit(); else $transaction->rollBack();
-            return $this->redirect( Yii::$app->request->referrer );
+            return $this->redirect(Yii::$app->request->referrer);
         }
 
-        $student = $this->findModel( $id );
+        $student = $this->findModel($id);
         //$docTypes = StudentDocumentTypes::getActive()->all();
 
         if ($student) {
             $student->status = 2;
-            $student->date_status = date( "Y-m-d" );
+            $student->date_status = date("Y-m-d");
             $student->save(false);
         }
-        return $this->redirect( ['view','id'=>$id] );
+        return $this->redirect(['view', 'id' => $id]);
     }
 
     /**
@@ -384,28 +386,28 @@ class StudentsController extends AppController
      * @throws \PhpOffice\PhpWord\Exception\CreateTemporaryFileException
      * @throws InvalidConfigException
      */
-    public function actionExport( $id = null )
+    public function actionExport($id = null)
     {
-        $student = Students::findOne( $id );
-        $document = new TemplateProcessor( 'templates/export.docx' );
-        $document->setValue( 'fio', $student->name );
-        $document->setValue( 'code', $student->code );
-        $document->setValue( 'e_status', $student->education_status ? '&#9745;' : '&#9744;' );
-        $document->setValue( 'osnovanie1', $student->osnovanie == 1 ? '&#9745;' : '&#9744;' );
-        $document->setValue( 'osnovanie2', $student->osnovanie == 2 ? '&#9745;' : '&#9744;' );
-        $document->setValue( 'osnovanie3', $student->osnovanie == 3 ? '&#9745;' : '&#9744;' );
-        $document->setValue( 'osnovanie4', $student->osnovanie == 4 ? '&#9745;' : '&#9744;' );
-        $document->setValue( 'osnovanie5', $student->osnovanie == 5 ? '&#9745;' : '&#9744;' );
-        $document->setValue( 'osnovanie6', $student->osnovanie == 6 ? '&#9745;' : '&#9744;' );
-        $document->setValue( 'grace1', $student->grace_period == 1 ? '&#9745;' : '&#9744;' );
-        $document->setValue( 'grace2', $student->grace_period == 2 ? '&#9745;' : '&#9744;' );
-        $document->setValue( 'grace3', $student->grace_period == 3 ? '&#9745;' : '&#9744;' );
-        $document->setValue( 'date_start_grace', $student->date_start_grace_period ? Yii::$app->getFormatter()->asDate( $student->date_start_grace_period ) : '' );
-        $document->setValue( 'date_end_grace', $student->date_end_grace_period ? Yii::$app->getFormatter()->asDate( $student->date_end_grace_period ) : '' );
+        $student = Students::findOne($id);
+        $document = new TemplateProcessor('templates/export.docx');
+        $document->setValue('fio', $student->name);
+        $document->setValue('code', $student->code);
+        $document->setValue('e_status', $student->education_status ? '&#9745;' : '&#9744;');
+        $document->setValue('osnovanie1', $student->osnovanie == 1 ? '&#9745;' : '&#9744;');
+        $document->setValue('osnovanie2', $student->osnovanie == 2 ? '&#9745;' : '&#9744;');
+        $document->setValue('osnovanie3', $student->osnovanie == 3 ? '&#9745;' : '&#9744;');
+        $document->setValue('osnovanie4', $student->osnovanie == 4 ? '&#9745;' : '&#9744;');
+        $document->setValue('osnovanie5', $student->osnovanie == 5 ? '&#9745;' : '&#9744;');
+        $document->setValue('osnovanie6', $student->osnovanie == 6 ? '&#9745;' : '&#9744;');
+        $document->setValue('grace1', $student->grace_period == 1 ? '&#9745;' : '&#9744;');
+        $document->setValue('grace2', $student->grace_period == 2 ? '&#9745;' : '&#9744;');
+        $document->setValue('grace3', $student->grace_period == 3 ? '&#9745;' : '&#9744;');
+        $document->setValue('date_start_grace', $student->date_start_grace_period ? Yii::$app->getFormatter()->asDate($student->date_start_grace_period) : '');
+        $document->setValue('date_end_grace', $student->date_end_grace_period ? Yii::$app->getFormatter()->asDate($student->date_end_grace_period) : '');
 
-        $document->saveAs( 'uploads/temp.docx' );
-        Yii::$app->response->sendFile( 'uploads/temp.docx' )->send();
-        unlink( 'uploads/temp.docx' );
+        $document->saveAs('uploads/temp.docx');
+        Yii::$app->response->sendFile('uploads/temp.docx')->send();
+        unlink('uploads/temp.docx');
 
     }
 
@@ -415,29 +417,28 @@ class StudentsController extends AppController
      * @return mixed
      * @throws NotFoundHttpException if the model cannot be found
      */
-    public function actionView( $id )
+    public function actionView($id)
     {
         $this->updateRouteHistory('/app/students/view');
         $docTypes = StudentDocumentTypes::getActive()->all();
-        $model = $this->findModel( $id );
+        $model = $this->findModel($id);
 
-        $subQ = Students::find()->select(['id','min(date_start) min_date','name','date_credit'])->where(['name'=>$model->name,'date_credit'=>$model->date_credit]);
-        $minS = Students::find()->from('students t1')->join('JOIN',['t2'=>$subQ],'t2.min_date=t1.date_start and t2.name=t1.name and t2.date_credit=t1.date_credit')->one();
+        $subQ = Students::find()->select(['id', 'min(date_start) min_date', 'name', 'date_credit'])->where(['name' => $model->name, 'date_credit' => $model->date_credit]);
+        $minS = Students::find()->from('students t1')->join('JOIN', ['t2' => $subQ], 't2.min_date=t1.date_start and t2.name=t1.name and t2.date_credit=t1.date_credit')->one();
         $history = new StudentsHistory();
         $is_in_history = false;
-        if ($minS){
-            $history =  StudentsHistory::findOne(['id_student'=>$minS->id]);
-            if (!$history){
+        if ($minS) {
+            $history = StudentsHistory::findOne(['id_student' => $minS->id]);
+            if (!$history) {
                 $history = new StudentsHistory();
-            }else $is_in_history = true;
+            } else $is_in_history = true;
         }
         //  $history = ($minS) ?  ? $st : new StudentsHistory() : new StudentsHistory();
-        $changes = ArrayHelper::map(Changes::find()->select(['id','change','system_status'])->where(['system_status'=>1])->all(),'id','change');
-        if ($history->load(Yii::$app->request->post()))
-        {
+        $changes = ArrayHelper::map(Changes::find()->select(['id', 'change', 'system_status'])->where(['system_status' => 1])->all(), 'id', 'change');
+        if ($history->load(Yii::$app->request->post())) {
             //  var_dump($history);exit();
-            $students = Students::findAll(['name'=>$model->name,'code'=>$model->code,'date_credit'=>$model->date_credit]);
-            foreach ($students as $st){
+            $students = Students::findAll(['name' => $model->name, 'code' => $model->code, 'date_credit' => $model->date_credit]);
+            foreach ($students as $st) {
                 $st->system_status = 0;
                 $st->save();
             }
@@ -450,23 +451,22 @@ class StudentsController extends AppController
 
 
         }
-        Yii::$app->getSession()->set('id_bank',$model->id_bank);
-        Yii::$app->getSession()->set('id_org',$model->id_org);
-        Yii::$app->getSession()->set( 'nPP' ,$model->id_number_pp);
-        Yii::$app->getSession()->set('month',date('n',strtotime($model->date_start)));
-        Yii::$app->getSession()->set('year',date('Y',strtotime($model->date_start)));
+        Yii::$app->getSession()->set('id_bank', $model->id_bank);
+        Yii::$app->getSession()->set('id_org', $model->id_org);
+        Yii::$app->getSession()->set('nPP', $model->id_number_pp);
+        Yii::$app->getSession()->set('month', date('n', strtotime($model->date_start)));
+        Yii::$app->getSession()->set('year', date('Y', strtotime($model->date_start)));
         $route = null;
-        if (!Yii::$app->getSession()->get('cans')[2]){
-            $route = ['index','id'=>$model->id_org];
-        }
-        else{
-            $route = ['by-bank','id'=>$model->id_bank,'nPP'=>$model->id_number_pp,'month'=>Yii::$app->getSession()->get('month')];
+        if (!Yii::$app->getSession()->get('cans')[2]) {
+            $route = ['index', 'id' => $model->id_org];
+        } else {
+            $route = ['by-bank', 'id' => $model->id_bank, 'nPP' => $model->id_number_pp, 'month' => Yii::$app->getSession()->get('month')];
         }
 
         $route = Url::to($route);
 
 
-        return $this->render( 'view',compact('model','docTypes','history','changes','route','is_in_history'));
+        return $this->render('view', compact('model', 'docTypes', 'history', 'changes', 'route', 'is_in_history'));
     }
 
     /**
@@ -476,12 +476,12 @@ class StudentsController extends AppController
      * @return Students the loaded model
      * @throws NotFoundHttpException if the model cannot be found
      */
-    protected function findModel( $id )
+    protected function findModel($id)
     {
-        if ( ( $model = Students::findOne( $id ) ) !== null ) {
+        if (($model = Students::findOne($id)) !== null) {
             return $model;
         }
-        throw new NotFoundHttpException( 'The requested page does not exist.' );
+        throw new NotFoundHttpException('The requested page does not exist.');
     }
 
 
@@ -490,31 +490,31 @@ class StudentsController extends AppController
      * @return string|Response
      * @throws \yii\base\Exception
      */
-    public function actionCreate( $id )
+    public function actionCreate($id)
     {
         $this->updateRouteHistory('/app/students/create');
-        Yii::$app->session[ 'id_org' ] = $id;
+        Yii::$app->session['id_org'] = $id;
         $model = new Students();
         $docTypes = StudentDocumentTypes::getActive()->all();
         $modelD = new DatesEducationStatus();
         $orgs = Organizations::getOrgs();
         $file = new Files();
 
-        if ( $model->load( Yii::$app->request->post() ) ) {
+        if ($model->load(Yii::$app->request->post())) {
             if ($model->perevod)
                 $model->education_status = 1;
             //$model->status = 0;
-            $model->date_create = date( 'Y-m-d' );
+            $model->date_create = date('Y-m-d');
             $model->id_org = $id;
 
-            if ( $model->save() ) {
+            if ($model->save()) {
                 $modelD->id_student = $model->id;
-                if ($model->addStudentDocs($file,$docTypes) and $modelD->save())
-                    return $this->redirect( ['view', 'id' => $model->id] );
+                if ($model->addStudentDocs($file, $docTypes) and $modelD->save())
+                    return $this->redirect(['view', 'id' => $model->id]);
             }
         }
 
-        return $this->render( 'create', compact('model','orgs','file','docTypes'));
+        return $this->render('create', compact('model', 'orgs', 'file', 'docTypes'));
     }
 
 
@@ -523,31 +523,35 @@ class StudentsController extends AppController
      * @return Response
      * @throws NotFoundHttpException
      */
-    public function actionAddToHistory($id){
+    public function actionAddToHistory($id)
+    {
         $this->updateRouteHistory('/app/students/add-to-history');
         $model = $this->findModel($id);
-        $models = Students::find()->where(['name'=>$model->name,'date_credit'=>$model->date_credit])->all();
-        foreach ($models as $m){
+        $models = Students::find()->where(['name' => $model->name, 'date_credit' => $model->date_credit])->all();
+        foreach ($models as $m) {
             $m->system_status = 0;
             $m->save(false);
         }
-        $s_histroy = StudentsHistory::findOne(['id_student'=>$id]);
+        $s_histroy = StudentsHistory::findOne(['id_student' => $id]);
         if (!$s_histroy)
             $s_histroy = new StudentsHistory();
-        $s_histroy->id_student= $id;
+        $s_histroy->id_student = $id;
         $s_histroy->id_user_from = Yii::$app->getUser()->getId();
         $s_histroy->save();
-        return $this->redirect(['view','id'=>$id]);
+        return $this->redirect(['view', 'id' => $id]);
     }
 
-    public function actionOtch($id){
+    public function actionOtch($id)
+    {
         $model = Students::findOne($id);
-        $models = Students::find()->where(['name'=>$model->name,'id_org'=>$model->id_org,'id_bank'=>$model->id_bank,'id_number_pp'=>$model->id_number_pp])->andWhere(['>=','date_start',$model->date_start])->all();
+        $models = Students::find()->where(['name' => $model->name, 'id_org' => $model->id_org, 'id_bank' => $model->id_bank, 'id_number_pp' => $model->id_number_pp])->andWhere(['>=', 'date_start', $model->date_start])->all();
 
-        StudentsHistory::deleteAll(['id_student'=>array_map(function ($item){return $item->id;},$models)]);
+        StudentsHistory::deleteAll(['id_student' => array_map(function ($item) {
+            return $item->id;
+        }, $models)]);
 
         foreach ($models as $model2) {
-            $model2->system_status=1;
+            $model2->system_status = 1;
             $model2->education_status = $model2->grace_period = $model2->isEnder = 0;
             $model2->osnovanie = 2;
             $model2->save(false);
@@ -557,14 +561,18 @@ class StudentsController extends AppController
         return $this->redirect(Yii::$app->request->referrer);
 
     }
-    public function actionVip($id){
-        $model = Students::findOne($id);
-        $models = Students::find()->where(['name'=>$model->name,'id_org'=>$model->id_org,'id_bank'=>$model->id_bank,'id_number_pp'=>$model->id_number_pp])->andWhere(['>=','date_start',$model->date_start])->all();
 
-        StudentsHistory::deleteAll(['id_student'=>array_map(function ($item){return $item->id;},$models)]);
+    public function actionVip($id)
+    {
+        $model = Students::findOne($id);
+        $models = Students::find()->where(['name' => $model->name, 'id_org' => $model->id_org, 'id_bank' => $model->id_bank, 'id_number_pp' => $model->id_number_pp])->andWhere(['>=', 'date_start', $model->date_start])->all();
+
+        StudentsHistory::deleteAll(['id_student' => array_map(function ($item) {
+            return $item->id;
+        }, $models)]);
 
         foreach ($models as $model2) {
-            $model2->system_status=1;
+            $model2->system_status = 1;
             $model2->education_status = $model2->grace_period = $model2->osnovanie = 0;
             $model2->isEnder = 1;
             $model2->date_ender = '2020-10-26';
@@ -574,29 +582,31 @@ class StudentsController extends AppController
         return $this->redirect(Yii::$app->request->referrer);
     }
 
-    public function actionActive($id){
+    public function actionActive($id)
+    {
         $model = Students::findOne($id);
         $model->system_status = 1;
         $model->education_status = 1;
         $model->osnovanie = $model->grace_period = $model->isEnder = 0;
         $model->save(false);
-        $models = Students::find()->select(['id'])->where(['name'=>$model->name,'id_org'=>$model->id_org])->column();
-        StudentsHistory::deleteAll(['id_student'=>$models]);
+        $models = Students::find()->select(['id'])->where(['name' => $model->name, 'id_org' => $model->id_org])->column();
+        StudentsHistory::deleteAll(['id_student' => $models]);
         return $this->redirect(Yii::$app->request->referrer);
     }
 
-    public function actionNotFound($id){
+    public function actionNotFound($id)
+    {
         $model = Students::findOne($id);
-        $students = Students::findAll(['name'=>$model->name,'date_credit'=>$model->date_credit]);
-        foreach ($students as $st){
+        $students = Students::findAll(['name' => $model->name, 'date_credit' => $model->date_credit]);
+        foreach ($students as $st) {
             $st->system_status = 0;
-            $govno = StudentsHistory::findOne(['id_student'=>$st->id]) ?? new StudentsHistory();
-            if ($govno->isNewRecord){
+            $govno = StudentsHistory::findOne(['id_student' => $st->id]) ?? new StudentsHistory();
+            if ($govno->isNewRecord) {
                 $govno->id_student = $st->id;
                 $govno->id_change = 1;
                 $govno->save();
             }
-            $st->id_org_old= $st->id_org;
+            $st->id_org_old = $st->id_org;
             $st->save();
         }
 
@@ -610,47 +620,47 @@ class StudentsController extends AppController
      * @throws NotFoundHttpException
      * @throws \yii\base\Exception
      */
-    public function actionUpdate( $id )
+    public function actionUpdate($id)
     {
         $this->updateRouteHistory('/app/students/update');
-        $model = $this->findModel( $id );
+        $model = $this->findModel($id);
         $model->old_code = $model->code;
         $orgs = Organizations::getOrgs();
         $docTypes = StudentDocumentTypes::getActive()->all();
         $file = new Files();
         //  $modelDFlag = false;
 
-        if ( $model->load( Yii::$app->request->post() ) ) {
+        if ($model->load(Yii::$app->request->post())) {
 
-            if ($model->old_code != $model->code){
-                $students = Students::find()->where(['name'=>$model->name,'date_credit'=>$model->date_credit]);
-                $students->andWhere(['<>','id',$model->id]);
+            if ($model->old_code != $model->code) {
+                $students = Students::find()->where(['name' => $model->name, 'date_credit' => $model->date_credit]);
+                $students->andWhere(['<>', 'id', $model->id]);
                 $students = $students->all();
-                foreach ($students as $key => $s){
+                foreach ($students as $key => $s) {
                     $s->old_code = $s->code;
                     $s->code = $model->code;
                     $s->save(false);
                 }
 
             }
-            if ( $this->cans[ 0 ] || $this->cans[ 1 ] )
+            if ($this->cans[0] || $this->cans[1])
                 $model->status = 1;
-            if ( !$model->dateLastStatus ) {
+            if (!$model->dateLastStatus) {
                 $modelD = new DatesEducationStatus();
                 $modelD->id_student = $id;
-                $modelD->date_end = !$model->education_status ? date( 'Y-m-d' ) : null;
+                $modelD->date_end = !$model->education_status ? date('Y-m-d') : null;
                 $modelDFlag = $modelD->save();
             } else {
                 $model->dateLastStatus->id_student = $id;
-                $model->dateLastStatus->date_end = !$model->education_status ? date( 'Y-m-d' ) : null;
+                $model->dateLastStatus->date_end = !$model->education_status ? date('Y-m-d') : null;
                 $modelDFlag = $model->dateLastStatus->save();
             }
-            if ( $model->save() and $modelDFlag and $model->addStudentDocs($file,$docTypes)) {
-                return $this->redirect( ['view', 'id' => $model->id] );
+            if ($model->save() and $modelDFlag and $model->addStudentDocs($file, $docTypes)) {
+                return $this->redirect(['view', 'id' => $model->id]);
             }
         }
 
-        return $this->render( 'update',compact('model','orgs','file','docTypes') );
+        return $this->render('update', compact('model', 'orgs', 'file', 'docTypes'));
     }
 
     /**
@@ -659,23 +669,25 @@ class StudentsController extends AppController
      * @return Response
      * @throws NotFoundHttpException
      */
-    public function actionDeleteDoc($id, $desc){
+    public function actionDeleteDoc($id, $desc)
+    {
         $this->updateRouteHistory('/app/students/delete-doc');
         $st = $this->findModel($id);
         $st->deleteDocument($desc);
-        return $this->redirect(['view','id'=>$id]);
+        return $this->redirect(['view', 'id' => $id]);
     }
 
     /**
      * @param $id
      * @throws NotFoundHttpException
      */
-    public function actionToHistory($id){
+    public function actionToHistory($id)
+    {
         $this->updateRouteHistory('/app/students/to-history');
         $student = $this->findModel($id);
-        $students = Students::find()->where(['name'=>$student->name,'code'=>$student->code,'date_credit'=>$student->date_credit])->all();
-        foreach ($students as $item){
-            $item->system_status=0;
+        $students = Students::find()->where(['name' => $student->name, 'code' => $student->code, 'date_credit' => $student->date_credit])->all();
+        foreach ($students as $item) {
+            $item->system_status = 0;
             $item->save(false);
         }
     }
@@ -685,11 +697,11 @@ class StudentsController extends AppController
      * @return Response
      * @throws NotFoundHttpException
      */
-    public function actionDelete( $id )
+    public function actionDelete($id)
     {
         $this->updateRouteHistory('/app/students/delete');
-        $s=$this->findModel( $id );
-        $s->system_status=0;
+        $s = $this->findModel($id);
+        $s->system_status = 0;
         $s->save(false);
 
         return $this->redirect(['delete-view']);
@@ -698,18 +710,19 @@ class StudentsController extends AppController
     /**
      * @return string
      */
-    public function actionDeleteView(){
+    public function actionDeleteView()
+    {
         $this->updateRouteHistory('/app/students/delete-view');
         $model = new StudentsSearch2();
         $provider = $model->search(Yii::$app->request->queryParams);
-        $orgs = Organizations::find()->where(['system_status'=>1])->all();
+        $orgs = Organizations::find()->where(['system_status' => 1])->all();
         $nums = NumbersPp::find()->all();
         $banks = Banks::find()->all();
-        $orgs = ArrayHelper::map($orgs,'id','name');
-        $nums = ArrayHelper::map($nums,'id','number');
-        $banks = ArrayHelper::map($banks,'id','name');
+        $orgs = ArrayHelper::map($orgs, 'id', 'name');
+        $nums = ArrayHelper::map($nums, 'id', 'number');
+        $banks = ArrayHelper::map($banks, 'id', 'name');
 
-        return $this->render('delete-view',compact('model','provider','orgs','nums','banks'));
+        return $this->render('delete-view', compact('model', 'provider', 'orgs', 'nums', 'banks'));
     }
 
 }
