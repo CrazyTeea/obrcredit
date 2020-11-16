@@ -117,9 +117,9 @@ class ReferenceController extends Controller
         $countOtch = 0;
         $count = 0;
         $year = date('Y', strtotime($row[$dStart]));
-        $month = date('m', strtotime($row[$dStart])) - 1;
+        $month = date('m', strtotime($row[$dStart]));
 
-        if ($month < 1) {
+        if ($month == 1) {
             $month = 12;
             $year--;
         }
@@ -149,7 +149,7 @@ class ReferenceController extends Controller
 
 
             $student->code = $row[$codeId];
-            $student->grace_period = $student->perevod = $student->osnovanie = $student->isEnder = 0;
+            //$student->grace_period = $student->perevod = $student->osnovanie = $student->isEnder = 0;
             $student->date_start = $row[$dStart];
             $student->name = $name;
             $student->date_credit = $row[$dCreditId];
@@ -195,6 +195,11 @@ class ReferenceController extends Controller
 
         fclose($csv);
         echo "success!";
+    }
+
+    public function actionTest(){
+        var_dump(date('Y',strtotime('2020-12-1')));
+        var_dump(date('m',strtotime('2020-12-1')));
     }
 
 }
