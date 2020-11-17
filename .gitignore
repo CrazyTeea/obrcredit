@@ -19,6 +19,7 @@ Thumbs.db
 /runtime
 /node_modules
 /web/uploads
+/web/assets
 
 # composer itself is not needed
 composer.phar

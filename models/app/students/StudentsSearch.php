@@ -159,7 +159,7 @@ class StudentsSearch extends Students
 
         $query->andFilterWhere(['like', 'students.name', $this->name])
             ->andFilterWhere(['like', 'code', $this->code]);
-        $query->groupBy(['date_credit'])->orderBy('name ASC');
+        $query->groupBy(['date_credit'])->orderBy('id DESC');
 
         return $dataProvider;
     }
