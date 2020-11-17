@@ -204,7 +204,7 @@ class ReferenceController extends Controller
             $st = Students::findOne(['date_start' => '2020-09-1','date_credit'=>$student->date_credit]);
             if ($st and (
                     $st->education_status != $student->education_status or
-                    $student->education_status = $st->education_status or
+                    $student->osnovanie != $st->osnovanie or
                     $st->perevod != $student->perevod or
                     $st->grace_period != $student->grace_period or
                     $st->isEnder != $student->isEnder)) {
