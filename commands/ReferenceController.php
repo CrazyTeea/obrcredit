@@ -201,13 +201,15 @@ class ReferenceController extends Controller
     {
         $students = Students::findAll(['date_start' => '2020-10-01']);
         foreach ($students as $student) {
-            $st = Students::findOne(['date_start' => '2020-09-1']);
+            $st = Students::findOne(['date_start' => '2020-09-1','date_credit'=>$student->date_credit]);
             if ($st and (
                     $st->education_status != $student->education_status or
+                    $student->education_status = $st->education_status or
                     $st->perevod != $student->perevod or
                     $st->grace_period != $student->grace_period or
                     $st->isEnder != $student->isEnder)) {
               $student->education_status = $st->education_status;
+              $student->osnovanie = $st->osnovanie;
               $student->perevod = $st->perevod;
               $student->grace_period = $st->grace_period;
               $student->isEnder = $st->isEnder;
