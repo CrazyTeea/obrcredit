@@ -20,7 +20,7 @@ use yii\console\ExitCode;
 
 class ReferenceController extends Controller
 {
-    static $jwt_key = 'example_key233';
+    static $jwt_key = 'secret';
     public $error_message;
 
     public function actionIndex()
